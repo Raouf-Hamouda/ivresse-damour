@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Confirmation. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+</head>
+
+<!-- ============================================================================
+     CONFIRMATION. Ce que l acheteur lit apres avoir commande. Une lettre de la
+     maison, pas un ticket de caisse : la maison ecrit a la personne, elle ne
+     lui rend pas la monnaie. Le tableau de faits vient apres la lettre, court,
+     et il ne repete pas ce que la lettre a deja dit.
+
+     CE QUE CETTE PAGE N INVENTE PAS.
+     Aucun numero de commande, aucun numero de facture, aucune date de
+     livraison, aucun transporteur. Rien de tout cela n existe : la route
+     technique n est pas tranchee, statique plus Stripe Checkout ou plateforme,
+     et rien n est envoye nulle part aujourd hui. Une confirmation qui affiche
+     un faux numero est un mensonge, et cette maison n en fait pas.
+
+     LE PANIER N EST PAS VIDE ICI. Une boutique ordinaire le viderait. Comme
+     aucune commande ne part reellement, effacer ce que la personne a choisi
+     serait perdre son travail sans contrepartie. La page le dit, et le lien
+     pour le vider est dans le panier.
+
+     Le courriel vient de commande.html, qui le garde sous ida.courriel.
+     ========================================================================= -->
+
+<body data-page=""
+      data-titre-fr="Confirmation. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="Confirmación. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-en="Confirmation. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page">
+
+  <section class="entete-page">
+    <div class="boite">
+      <p class="kicker" data-fr="La commande" data-es="El pedido" data-en="The order"></p>
+      <h1 data-fr="Votre commande est notée" data-es="Su pedido queda anotado" data-en="Your order is noted"></h1>
+      <p class="chapo"
+         data-fr="La maison vous écrit. La facture numérotée suit par courriel, avec le lot de chaque bouteille."
+         data-es="La casa le escribe. La factura numerada sigue por correo, con el lote de cada botella."
+         data-en="The house writes to you. The numbered invoice follows by email, with the lot of each bottle."></p>
+    </div>
+  </section>
+
+  <!-- 02. LA LETTRE. C est le coeur de la page. -->
+  <section class="section section--filet">
+    <div class="boite">
+      <div class="colonne">
+        <p data-fr="Merci. Votre demande est arrivée, et elle est notée à la date du jour avec les bouteilles que vous avez choisies et l'adresse électronique que vous avez donnée."
+           data-es="Gracias. Su solicitud ha llegado, y queda anotada con la fecha de hoy, con las botellas que ha elegido y el correo electrónico que ha dado."
+           data-en="Thank you. Your request has arrived, and it is noted with today's date, with the bottles you chose and the email address you gave."></p>
+
+        <p data-fr="La facture est numérotée par la maison et part par courriel. Elle nomme le lot de chaque bouteille. C'est le même numéro que celui écrit à la main sur l'étiquette, et il ouvre la page de ce lot au registre."
+           data-es="La factura la numera la casa y sale por correo. Nombra el lote de cada botella. Es el mismo número que está escrito a mano en la etiqueta, y abre la página de ese lote en el registro."
+           data-en="The invoice is numbered by the house and goes out by email. It names the lot of each bottle. It is the same number written by hand on the label, and it opens the page of that lot in the register."></p>
+
+        <p data-fr="L'envoi part ensuite. France, Union européenne, international, ou retrait au restaurant de la famille, Toloache, à Paris. Le délai et le transporteur sont écrits dans le courriel, quand la maison les a arrêtés."
+           data-es="El envío sale después. Francia, Unión Europea, internacional, o recogida en el restaurante de la familia, Toloache, en París. El plazo y el transportista se escriben en el correo, cuando la casa los haya fijado."
+           data-en="The shipment leaves afterwards. France, European Union, international, or pickup at the family restaurant, Toloache, in Paris. The time and the carrier are written in the email, once the house has settled them."></p>
+
+        <div data-lang="fr">
+          <p>Si quelque chose doit changer, écrivez à la maison par la page <a class="lien" href="contact.html">Contact</a>.</p>
+        </div>
+        <div data-lang="es">
+          <p>Si algo debe cambiar, escriba a la casa por la página <a class="lien" href="contact.html">Contacto</a>.</p>
+        </div>
+        <div data-lang="en">
+          <p>If anything needs to change, write to the house through the <a class="lien" href="contact.html">Contact</a> page.</p>
+        </div>
+
+        <p class="mention" style="margin-top:calc(var(--u)*4)">Villa Sola de Vega, Oaxaca</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03. Ce qui a ete noté. Court, et rien de ce que la lettre a deja dit. -->
+  <section class="section section--creme">
+    <div class="boite">
+      <p class="kicker" data-fr="Ce qui a été noté" data-es="Lo que quedó anotado" data-en="What was noted"></p>
+      <dl class="faits">
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Bouteilles" data-es="Botellas" data-en="Bottles"></dt>
+          <dd class="faits__v" id="conf-bouteilles"></dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Sous-total" data-es="Subtotal" data-en="Subtotal"></dt>
+          <dd class="faits__v" id="conf-total"></dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Courriel" data-es="Correo" data-en="Email"></dt>
+          <dd class="faits__v"><span data-courriel="1"></span></dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Facture" data-es="Factura" data-en="Invoice"></dt>
+          <dd class="faits__v"
+              data-fr="Numérotée par la maison au départ de la commande. Le numéro figure sur le courriel."
+              data-es="Numerada por la casa cuando el pedido sale. El número figura en el correo."
+              data-en="Numbered by the house when the order leaves. The number appears in the email."></dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Envoi" data-es="Envío" data-en="Shipping"></dt>
+          <dd class="faits__v"
+              data-fr="Frais calculés au pays et au nombre de bouteilles, précisés dans le courriel de la maison."
+              data-es="Gastos calculados por país y por número de botellas, precisados en el correo de la casa."
+              data-en="Cost calculated by country and number of bottles, stated in the house's email."></dd><!-- bareme des frais d envoi a confirmer par la maison -->
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Le lot" data-es="El lote" data-en="The lot"></dt>
+          <dd class="faits__v">
+            <span data-lang="fr">Chaque bouteille porte son numéro, écrit à la main. Il ouvre la page de son lot dans <a class="lien" href="el-registro.html">El Registro</a>.</span>
+            <span data-lang="es">Cada botella lleva su número, escrito a mano. Abre la página de su lote en <a class="lien" href="el-registro.html">El Registro</a>.</span>
+            <span data-lang="en">Every bottle carries its number, written by hand. It opens the page of its lot in <a class="lien" href="el-registro.html">El Registro</a>.</span>
+          </dd>
+        </div>
+      </dl>
+
+      <!-- route technique non tranchee : site statique plus Stripe Checkout, ou plateforme. Rien n est envoye aujourd hui. -->
+      <p class="vente__note"
+         data-fr="Votre commande est enregistrée. La confirmation et la facture numérotée arrivent par courriel."
+         data-es="Su pedido está registrado. La confirmación y la factura numerada llegan por correo."
+         data-en="Your order is recorded. The confirmation and the numbered invoice arrive by email."></p>
+    </div>
+  </section>
+
+  <section class="section section--serre section--filet">
+    <div class="boite centre">
+      <p><a class="lien-discret" href="panier.html" data-fr="Le panier" data-es="El carrito" data-en="The bag"></a></p>
+      <p><a class="lien-discret" href="el-registro.html" data-fr="El Registro" data-es="El Registro" data-en="El Registro"></a></p>
+      <p><a class="lien-discret" href="les-mezcales.html" data-fr="Les trois bouteilles" data-es="Las tres botellas" data-en="The three bottles"></a></p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+siteChrome.init();
+
+/* LE COMPTE DU SAC, AU CHARGEMENT.
+   site.js appelle majPanier() avant d avoir insere l entete dans le document :
+   au chargement d une page le sac affiche donc 0, meme quand le panier
+   contient deux bouteilles. On ne reecrit pas le panier pour autant, on
+   rappelle la fonction de la maison : ajouter zero ne change rien et remet le
+   compte a jour. A corriger un jour dans site.js, en deplacant l appel a
+   majPanier apres insertBefore. */
+(function(){
+  var c = window.siteChrome;
+  if(c && c.panier && c.bouteilles && c.bouteilles.length){
+    c.panier.ajouter(c.bouteilles[0].id, 0);
+  }
+})();
+</script>
+<script>
+/* Ce que la personne a demande, relu dans son navigateur. On ne fabrique
+   aucun numero de commande : il n y en a pas. */
+(function(){
+  var chrome = window.siteChrome;
+  if(!chrome || !chrome.panier) return;
+
+  var PRIX = { espadin:140, tobala:null, coyote:null };
+
+  function euros(n){
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+  }
+
+  function poser(el, fr, es, en){
+    el.setAttribute('data-fr', fr);
+    el.setAttribute('data-es', es);
+    el.setAttribute('data-en', en);
+  }
+
+  var p = chrome.panier.lire();
+  var noms = [], total = 0, n = 0;
+  var b = chrome.bouteilles || [];
+  for(var i=0;i<b.length;i++){
+    var q = p[b[i].id] | 0;
+    if(q < 1) continue;
+    n += q;
+    noms.push(b[i].fr + ' × ' + q);
+    if(typeof PRIX[b[i].id] === 'number') total += PRIX[b[i].id] * q;
+  }
+
+  var cb = document.getElementById('conf-bouteilles');
+  var ct = document.getElementById('conf-total');
+
+  if(n > 0){
+    var l = noms.join(', ');
+    poser(cb, l, l, l);
+    poser(ct, euros(total), euros(total), euros(total));
+  } else {
+    poser(cb,
+      'Le panier de ce navigateur est vide. Rien n\'a été noté depuis cet appareil.',
+      'El carrito de este navegador está vacío. Nada quedó anotado desde este aparato.',
+      'The bag in this browser is empty. Nothing was noted from this device.');
+    poser(ct, '0 €', '0 €', '0 €');
+  }
+
+  var courriel = '';
+  try{ courriel = window.localStorage.getItem('ida.courriel') || ''; }catch(e){}
+  var els = document.querySelectorAll('[data-courriel]');
+  for(var j=0;j<els.length;j++){
+    if(courriel){ poser(els[j], courriel, courriel, courriel); }
+    else{
+      poser(els[j],
+        'Adresse non lue depuis cet appareil.',
+        'Dirección no leída desde este aparato.',
+        'Address not read from this device.');
+    }
+  }
+
+  chrome.appliquerLangue(chrome.langue(), document);
+})();
+</script>
+</body>
+</html>

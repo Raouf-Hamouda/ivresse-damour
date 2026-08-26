@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Gabarit. Ivresse d'Amour, Toloache Legitimo</title>
+
+<!-- La feuille unique. Aucune page n'ecrit de <style>. -->
+<link rel="stylesheet" href="assets/css/site.css">
+
+<!-- Les quatre scripts, dans cet ordre, dans le <head>. -->
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+</head>
+
+<!-- data-page : botella | historia | palenque | mito | registro | ritual | eventos
+     data-titre-fr / data-titre-es : le titre du document dans les deux langues. -->
+<body data-page=""
+      data-titre-fr="Gabarit. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="Plantilla. Ivresse d'Amour, Toloache Legitimo">
+
+<!-- L'entete, le menu et le pied de page sont poses par site.js.
+     Ne les recopiez pas ici, ils changeraient d'une page a l'autre. -->
+
+<main class="page">
+
+  <!-- ===================================================================
+       1. ENTETE DE PAGE. Kicker, titre, chapo. Une seule par page.
+       =================================================================== -->
+  <section class="entete-page">
+    <div class="boite">
+      <p class="kicker" data-fr="Page zéro · Le gabarit" data-es="Página cero · La plantilla"></p>
+      <h1 data-fr="Le Gabarit" data-es="La Plantilla"></h1>
+      <p class="chapo" data-fr="Un exemplaire de chaque bloc que la maison autorise. On copie ce fichier, on efface ce qu'on n'utilise pas, on remplit le reste dans les deux langues."
+         data-es="Un ejemplar de cada bloque que la casa autoriza. Se copia este archivo, se borra lo que no se usa, se llena el resto en los dos idiomas."></p>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       2. IMAGE PLEINE LARGEUR. Aucun texte sur l'image. La legende est dessous.
+       .bloc-image--haut : 72 vh au bureau, 56 vh au telephone.
+       data-parallaxe : deplacement maximal en pixels, plafond 60.
+       Remplacez le <svg> par <img src="assets/img/xxx.jpg" alt="">
+       =================================================================== -->
+  <figure class="bloc-image bloc-image--haut fondu">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <rect width="1600" height="900" fill="#C9C48D"/>
+      <circle cx="1180" cy="250" r="120" fill="#D89A2E"/>
+      <path d="M0 640 Q 300 480 640 620 Q 980 760 1600 560 L1600 900 L0 900 Z" fill="#A2A768"/>
+      <path d="M0 760 Q 420 660 820 760 Q 1220 860 1600 740 L1600 900 L0 900 Z" fill="#8F9035"/>
+    </svg>
+  </figure>
+  <p class="legende" data-fr="Image pleine largeur · Villa Sola de Vega, Sierra Madre del Sur"
+     data-es="Imagen a todo ancho · Villa Sola de Vega, Sierra Madre del Sur"></p>
+
+  <!-- ===================================================================
+       3. UNE SEULE PHRASE. Le silence autour d'elle fait le bloc.
+       Vingt six signes de large au maximum. Jamais deux phrases ici.
+       =================================================================== -->
+  <section class="bloc-phrase fondu">
+    <p data-fr="La foudre frappe l'agave, il en sort le mezcal."
+       data-es="El rayo golpea el agave y nace el mezcal."></p>
+  </section>
+
+  <!-- ===================================================================
+       4. COLONNE DE TEXTE. Soixante deux signes de large.
+       Variante .colonnes-2 pour deux colonnes, jamais trois.
+       Variante .avec-cote pour une colonne laterale collante.
+       =================================================================== -->
+  <section class="section section--filet">
+    <div class="boite">
+      <div class="avec-cote">
+        <div class="avec-cote__cote">
+          <p class="kicker" data-fr="Le récit" data-es="El relato"></p>
+          <span class="embleme embleme--m" data-embleme="mito"></span>
+        </div>
+        <div class="colonne fondu">
+          <h2 data-fr="Un titre de section" data-es="Un título de sección"></h2>
+          <p data-fr="Le texte courant se lit en dix sept pixels sur une colonne de soixante deux signes. La maison documente, archive et alloue. Elle ne vend pas dans ses pages de récit et elle ne solde jamais."
+             data-es="El texto corriente se lee en diecisiete píxeles sobre una columna de sesenta y dos signos. La casa documenta, archiva y asigna. No vende en sus páginas de relato y nunca rebaja."></p>
+          <p data-fr="Deuxième paragraphe. Le rythme vertical est un multiple de huit pixels, partout, sans exception."
+             data-es="Segundo párrafo. El ritmo vertical es un múltiplo de ocho píxeles, en todas partes, sin excepción."></p>
+
+          <!-- contenu riche : les deux langues existent dans le fichier -->
+          <div data-lang="fr">
+            <p>Un paragraphe qui contient un <a class="lien" href="el-registro.html">lien dans le texte</a> passe par le bloc data-lang, jamais par data-fr.</p>
+          </div>
+          <div data-lang="es">
+            <p>Un párrafo que contiene un <a class="lien" href="el-registro.html">enlace dentro del texto</a> pasa por el bloque data-lang, nunca por data-es.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       5. LA TABLE DE FAITS. Ce que porte l'etiquette, lu en clair.
+       .faits--etiquette pose la table sur le papier de l'etiquette.
+       =================================================================== -->
+  <section class="section section--filet">
+    <div class="boite">
+      <p class="kicker" data-fr="Lu sur l'étiquette" data-es="Leído en la etiqueta"></p>
+      <h2 data-fr="Les faits" data-es="Los hechos"></h2>
+      <dl class="faits fondu">
+        <div class="faits__l"><dt class="faits__k">Agave</dt>
+          <dd class="faits__v" data-fr="A. angustifolia, espadín" data-es="A. angustifolia, espadín"></dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="Catégorie" data-es="Categoría"></dt>
+          <dd class="faits__v" data-fr="Mezcal Artesanal, joven, D.O. protégée" data-es="Mezcal Artesanal, joven, D.O. protegida"></dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="Degré" data-es="Graduación"></dt>
+          <dd class="faits__v">50 %</dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="Village" data-es="Pueblo"></dt>
+          <dd class="faits__v">Villa Sola de Vega, Oaxaca</dd></div>
+        <div class="faits__l"><dt class="faits__k">Maestro</dt>
+          <dd class="faits__v">Gilberto Vásquez</dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="Contenant" data-es="Contenido"></dt>
+          <dd class="faits__v">700 ml</dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="Lot" data-es="Lote"></dt>
+          <dd class="faits__v" data-fr="numéro sur total" data-es="número sobre total"></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       6. LE PROCEDE NUMEROTE. Cinq stations au maximum, elles sont nommees.
+       =================================================================== -->
+  <section class="section section--filet">
+    <div class="boite">
+      <p class="kicker" data-fr="Le procédé" data-es="El proceso"></p>
+      <ol class="procede fondu">
+        <li class="procede__e"><span class="procede__n">01</span>
+          <span class="procede__t" data-fr="Semence" data-es="Siembra"></span>
+          <span class="procede__d" data-fr="La plante, son âge, la parcelle." data-es="La planta, su edad, la parcela."></span></li>
+        <li class="procede__e"><span class="procede__n">02</span>
+          <span class="procede__t" data-fr="Récolte" data-es="Cosecha"></span>
+          <span class="procede__d" data-fr="La jima, les pencas, le cœur." data-es="La jima, las pencas, el corazón."></span></li>
+        <li class="procede__e"><span class="procede__n">03</span>
+          <span class="procede__t" data-fr="Four de terre" data-es="Horno de tierra"></span>
+          <span class="procede__d" data-fr="La cuisson, les jours." data-es="La cocción, los días."></span></li>
+        <li class="procede__e"><span class="procede__n">04</span>
+          <span class="procede__t" data-fr="Fermentation" data-es="Fermentación"></span>
+          <span class="procede__d" data-fr="Naturelle, à son rythme." data-es="Natural, a su ritmo."></span></li>
+        <li class="procede__e"><span class="procede__n">05</span>
+          <span class="procede__t" data-fr="Distillation" data-es="Destilación"></span>
+          <span class="procede__d" data-fr="Double, alambic de cuivre." data-es="Doble, alambique de cobre."></span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       7. UNE SECTION SUR UN AUTRE PAPIER. Une seule par page, jamais deux
+       de suite. .section--creme | .section--olive | .section--etiquette
+       =================================================================== -->
+  <section class="section section--creme">
+    <div class="boite">
+      <div class="colonnes-2">
+        <div>
+          <p class="kicker" data-fr="Deux colonnes" data-es="Dos columnas"></p>
+          <p data-fr="Deux colonnes au maximum. Chacune garde la mesure. Au téléphone elles se posent l'une sous l'autre."
+             data-es="Dos columnas como máximo. Cada una guarda su medida. En teléfono se ponen una debajo de la otra."></p>
+        </div>
+        <div>
+          <p class="kicker" data-fr="L'état d'un lot" data-es="El estado de un lote"></p>
+          <p><span class="etat etat--ouvert" data-fr="Ouvert" data-es="Abierto"></span>
+             <span class="etat etat--epuise" data-fr="Épuisé, 2025" data-es="Agotado, 2025"></span></p>
+          <p class="mention" data-fr="Un lot épuisé reste affiché, daté, jamais soldé."
+             data-es="Un lote agotado queda visible, fechado, nunca rebajado."></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       8. LA CITATION. Le dicho, la devise. Pas de guillemets dessines.
+       =================================================================== -->
+  <blockquote class="citation fondu">
+    <p data-fr="Para todo mal, mezcal. Para todo bien, también."
+       data-es="Para todo mal, mezcal. Para todo bien, también."></p>
+    <footer data-fr="Dicho mexicain" data-es="Dicho mexicano"></footer>
+  </blockquote>
+
+  <!-- ===================================================================
+       9. LE LIEN DISCRET. La maison n'a pas de bouton.
+       =================================================================== -->
+  <section class="section section--serre section--filet">
+    <div class="boite centre">
+      <a class="lien-discret" href="index.html" data-fr="La bouteille" data-es="La botella"></a>
+    </div>
+  </section>
+
+</main>
+
+<!-- Une seule ligne de script dans la page. -->
+<script>siteChrome.init();</script>
+</body>
+</html>

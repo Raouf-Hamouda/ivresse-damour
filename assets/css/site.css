@@ -1,0 +1,1973 @@
+/* ============================================================================
+   site.css   Ivresse d'Amour, Toloache Legitimo.
+   La feuille unique du site. Toute page la charge, aucune page n'en ecrit une autre.
+   Les valeurs viennent du cahier de style des emblemes, de la structure envoyee au
+   client le 3 aout 2026 et de la page La Historia. Rien n'est invente ici.
+   Loi complete : CONTRAT_VISUEL.md.  Pas de tiret cadratin dans ce fichier.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+   1. LES VARIABLES. Couleurs, types, mesures, temps.
+   Un constructeur n'ecrit jamais une valeur en dur : il prend la variable.
+   ------------------------------------------------------------------------ */
+:root{
+  /* --- encre et papiers ------------------------------------------------ */
+  --encre:#2B2118;          /* la seule encre du site : texte, sceau, emblemes */
+  --papier:#FEF9F3;         /* le fond par defaut de toute page */
+  --creme:#F5F0DC;          /* second fond, calme : pied de page, cartouches */
+  --papier-olive:#C9C48D;   /* papier olive, une section par page au maximum */
+  --olive-scroll:#ADAD70;   /* le fond de La Historia seulement, nulle part ailleurs */
+  --etiquette:#FED5A3;      /* le papier de l'etiquette : fiche de lot, table de faits */
+
+  /* --- couleurs de dessin ---------------------------------------------- */
+  --vert-agave:#A2A768;     /* la plante dans les illustrations */
+  --olive-etiquette:#8F9035;/* l'olive de l'etiquette, la fleur */
+  --vert-etiquette:#58705A; /* le vert de l'etiquette : etat d'un lot */
+  --ocre:#D89A2E;           /* le soleil, le medaillon de cuivre, illustration seule */
+
+  /* --- accents ---------------------------------------------------------- */
+  --brique:#A63D24;         /* le rouge de la maison : cle de champ, page courante, eclair */
+  --brun:#4E3524;           /* texte secondaire, capitales espacees, filet d'un lien */
+  --filet:#ECEAE5;          /* tous les filets */
+  --turquesa:#00A08A;       /* turquesa profond, releve sur la capture de la famille du 18 juillet
+                               ("pintura plastica"). Le #40E0D0 de leur carte Figma est un bonbon,
+                               refuse par Raouf le 16 aout : trop clair, lit piscine et non Mexique. */
+  --rosa:#C2185B;           /* rosa mexicano assombri. Leur nuancier echantillonne donne #D1217C,
+                               la valeur canonique #E4007C. Les deux virent fluo a l ecran : la maison
+                               garde une valeur sourde, et #D1217C reste la reference d impression. */
+
+  /* --- typographie ------------------------------------------------------ */
+  --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+  --slab:Rockwell,Clarendon,"Roboto Slab",Georgia,serif; /* les capitales du sceau */
+
+  --t-micro:11px;                        /* mention legale, unite d'un champ */
+  --t-petit:13px;                        /* kicker, menu, pied de page */
+  --t-base:17px;                         /* texte courant */
+  --t-lead:clamp(19px,1.5vw,22px);       /* chapo */
+  --t-h3:clamp(19px,1.6vw,24px);
+  --t-h2:clamp(26px,2.6vw,38px);
+  --t-h1:clamp(34px,5.2vw,72px);         /* releve sur La Historia */
+  --t-phrase:clamp(24px,3.4vw,46px);     /* le bloc d'une seule phrase */
+  --t-chiffre:clamp(28px,3vw,44px);      /* un numero de lot, une station */
+
+  --ls-large:.2em;   /* kicker de section */
+  --ls-petit:.14em;  /* menu, pied, capitales courantes */
+  --ls-titre:.02em;  /* les titres serif */
+
+  --mesure:62ch;     /* la colonne de texte */
+  --mesure-max:70ch; /* le plafond du cahier, jamais depasse */
+  --mesure-phrase:26ch;
+
+  /* --- grille et rythme -------------------------------------------------- */
+  --largeur:1180px;  /* la boite de contenu */
+  --marge:8vw;       /* la marge laterale, valeur du cahier */
+  --u:8px;           /* l'unite verticale, tout est un multiple */
+  --section:96px;    /* respiration entre deux sections, bureau */
+  --tete-h:124px;    /* hauteur de l'entete a deux bandes, bureau */
+
+  /* --- mouvement --------------------------------------------------------- */
+  --t-court:180ms;   /* un etat discret : souligne, filet */
+  --t-menu:280ms;    /* le mot devient l'emblème, valeur du cahier */
+  --t-long:520ms;    /* l'apparition d'une section au defilement */
+  --courbe:cubic-bezier(.2,.7,.2,1); /* la seule courbe du site */
+  --lineaire:linear;                 /* pour un fondu pur d'opacite */
+}
+
+/* ---------------------------------------------------------------------------
+   2. REMISE A ZERO. Le strict necessaire.
+   ------------------------------------------------------------------------ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--papier);
+  color:var(--encre);
+  font-family:var(--serif);
+  font-size:var(--t-base);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img,svg,video{display:block;max-width:100%}
+img{height:auto}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+ul,ol{list-style:none}
+table{border-collapse:collapse;width:100%}
+:focus-visible{outline:1px solid var(--brique);outline-offset:3px}
+
+/* ---------------------------------------------------------------------------
+   3. TYPOGRAPHIE. L'echelle, et rien d'autre.
+   ------------------------------------------------------------------------ */
+h1,h2,h3{font-weight:400;letter-spacing:var(--ls-titre);line-height:1.1}
+h1{font-size:var(--t-h1);line-height:1.05}
+h2{font-size:var(--t-h2)}
+h3{font-size:var(--t-h3);line-height:1.2}
+p{margin-bottom:calc(var(--u)*1.5)}
+p:last-child{margin-bottom:0}
+
+/* le kicker : capitales slab espacees, brun. Au dessus d'un titre, jamais seul. */
+.kicker{
+  font-family:var(--slab);
+  font-size:var(--t-petit);
+  letter-spacing:var(--ls-large);
+  text-transform:uppercase;
+  color:var(--brun);
+  margin-bottom:calc(var(--u)*1.5);
+}
+.kicker--brique{color:var(--brique)}
+
+/* le chapo, sous un titre de page */
+.chapo{font-size:var(--t-lead);line-height:1.4;max-width:46ch}
+
+/* la mesure : toute colonne de texte passe par la */
+.mesure{max-width:var(--mesure)}
+.mesure--large{max-width:var(--mesure-max)}
+.centre{margin-left:auto;margin-right:auto;text-align:center}
+
+/* une petite capitale de service (unite, etat, date) */
+.mention{
+  font-family:var(--slab);
+  font-size:var(--t-micro);
+  letter-spacing:var(--ls-large);
+  text-transform:uppercase;
+  color:var(--brun);
+}
+
+/* ---------------------------------------------------------------------------
+   4. LA GRILLE. Une boite, une marge, un rythme.
+   ------------------------------------------------------------------------ */
+.page{display:block}
+.bande{padding-left:var(--marge);padding-right:var(--marge)}
+.boite{max-width:var(--largeur);margin:0 auto}
+
+.section{
+  padding:var(--section) var(--marge);
+}
+.section > .boite > * + *{margin-top:calc(var(--u)*4)}
+.section--filet{border-top:1px solid var(--filet)}
+.section--serre{padding-top:calc(var(--section)/2);padding-bottom:calc(var(--section)/2)}
+.section--creme{background:var(--creme)}
+.section--olive{background:var(--papier-olive)}
+.section--etiquette{background:var(--etiquette)}
+/* un fond olive ou etiquette : une seule section par page, jamais deux de suite */
+
+/* ---------------------------------------------------------------------------
+   5. L'ENTETE. Deux bandes, comme la tete d'un registre.
+   Bande 1 : la marque, la langue.  Bande 2 : le menu.
+   L'entete est injectee par site.js, aucune page ne l'ecrit.
+   ------------------------------------------------------------------------ */
+.tete{
+  position:sticky;top:0;z-index:40;
+  background:var(--papier);
+  border-bottom:1px solid var(--filet);
+}
+.tete__haut{
+  display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*3);
+  padding:calc(var(--u)*2) var(--marge);
+}
+.tete__marque{
+  font-family:var(--slab);
+  font-size:var(--t-petit);
+  letter-spacing:var(--ls-petit);
+  text-transform:uppercase;
+  color:var(--brun);
+  text-decoration:none;
+  white-space:nowrap;
+}
+.tete__marque span{opacity:.55;padding:0 .4em}
+
+/* le sceau minuscule, a gauche de la marque */
+.tete__sceau{width:34px;height:24px;flex:none}
+.tete__gauche{display:flex;align-items:center;gap:calc(var(--u)*1.5)}
+
+/* la bascule de langue */
+.langue{display:flex;align-items:center;gap:calc(var(--u)*1.5)}
+.langue__b{
+  font-family:var(--slab);
+  font-size:var(--t-petit);
+  letter-spacing:var(--ls-petit);
+  color:var(--brun);
+  padding:2px 0;
+  border-bottom:1px solid transparent;
+  transition:border-color var(--t-court) var(--courbe),color var(--t-court) var(--courbe);
+}
+.langue__b[aria-pressed="true"]{border-bottom-color:var(--brun);color:var(--encre)}
+.langue__b:hover{color:var(--encre)}
+
+/* --- le menu ------------------------------------------------------------- */
+.menu{
+  border-top:1px solid var(--filet);
+  padding:0 var(--marge);
+}
+.menu__liste{
+  max-width:var(--largeur);margin:0 auto;
+  display:flex;justify-content:space-between;align-items:stretch;gap:calc(var(--u)*2);
+}
+.menu__lien{
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  height:68px;
+  flex:1 1 0;
+  min-width:0;
+  text-decoration:none;
+  color:var(--encre);
+  text-align:center;
+}
+/* le mot */
+.menu__mot{
+  font-family:var(--slab);
+  font-size:var(--t-petit);
+  letter-spacing:var(--ls-petit);
+  text-transform:uppercase;
+  white-space:nowrap;
+  transition:opacity var(--t-menu) var(--lineaire);
+}
+/* l'emblème, au meme centre, a la meme hauteur optique que le mot, ne pousse rien.
+   Sa taille exacte est calculee par site.js sur l'etendue reelle de son encre :
+   52 px de haut au bureau, 112 px de large au maximum. */
+.menu__embleme{
+  position:absolute;left:50%;top:50%;
+  line-height:0;color:var(--encre);
+  transform:translate(-50%,-50%) scale(.9);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity var(--t-menu) var(--lineaire),transform var(--t-menu) var(--courbe);
+}
+.menu__embleme svg{max-width:none}   /* la taille vient de site.js, pas de la boite */
+/* l'echange : le mot sort, l'emblème entre. Rien d'autre ne bouge. */
+.menu__lien.est-survole .menu__mot{opacity:0}
+.menu__lien.est-survole .menu__embleme{opacity:1;transform:translate(-50%,-50%) scale(1)}
+/* une entree sans emblème garde son mot, toujours */
+.menu__lien:not([data-a-embleme]).est-survole .menu__mot{opacity:1}
+.menu__lien:not([data-a-embleme]):hover .menu__mot{color:var(--brique)}
+/* la page courante */
+.menu__lien[aria-current="page"] .menu__mot{color:var(--brique)}
+.menu__lien[aria-current="page"]::after{
+  content:"";position:absolute;left:50%;bottom:9px;transform:translateX(-50%);
+  width:16px;height:1px;background:var(--brique);
+}
+
+/* le bouton du menu sur telephone, cache au bureau */
+.menu__bascule{display:none}
+
+/* ---------------------------------------------------------------------------
+   6. LES BLOCS DE SECTION. Un constructeur n'utilise que ceux-la.
+   ------------------------------------------------------------------------ */
+
+/* 6.1 l'entete d'une page : kicker, titre, chapo */
+.entete-page{padding:calc(var(--section)*1.1) var(--marge) var(--section)}
+.entete-page .boite{max-width:var(--largeur)}
+.entete-page h1{margin-bottom:calc(var(--u)*2)}
+.entete-page .chapo{color:var(--brun)}
+
+/* 6.2 image pleine largeur. Aucun texte sur l'image. */
+.bloc-image{margin:0;position:relative;background:var(--creme)}
+.bloc-image img,.bloc-image svg,.bloc-image video{width:100%;height:auto;display:block}
+.bloc-image--haut{min-height:72vh;overflow:hidden}
+.bloc-image--haut img,.bloc-image--haut video,.bloc-image--haut svg{height:72vh;object-fit:cover}
+.bloc-image--encadre{margin:0 var(--marge);max-width:var(--largeur)}
+.legende{
+  font-family:var(--slab);
+  font-size:var(--t-micro);
+  letter-spacing:var(--ls-large);
+  text-transform:uppercase;
+  color:var(--brun);
+  padding:calc(var(--u)*1.5) var(--marge) 0;
+}
+
+/* 6.3 une seule phrase. Le silence autour d'elle est le bloc. */
+.bloc-phrase{
+  padding:calc(var(--section)*1.4) var(--marge);
+  text-align:center;
+}
+.bloc-phrase p{
+  font-size:var(--t-phrase);
+  line-height:1.15;
+  letter-spacing:var(--ls-titre);
+  max-width:var(--mesure-phrase);
+  margin:0 auto;
+}
+
+/* 6.4 colonne de texte */
+.colonne{max-width:var(--mesure)}
+.colonne.centre{margin:0 auto}
+.colonne h2,.colonne h3{margin-bottom:calc(var(--u)*2)}
+.colonne h3{margin-top:calc(var(--u)*4)}
+.colonne p + p{margin-top:0}
+/* deux colonnes cote a cote, jamais plus de deux */
+.colonnes-2{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*7)}
+.colonnes-2 > *{max-width:var(--mesure)}
+/* une colonne de texte a cote d'un bloc lateral fixe (le modele de la structure) */
+.avec-cote{display:grid;grid-template-columns:300px 1fr;gap:calc(var(--u)*7);align-items:start}
+.avec-cote__cote{position:sticky;top:calc(var(--tete-h) + var(--u)*3)}
+
+/* 6.5 la table de faits. Ce que porte l'etiquette, lu en clair. */
+.faits{border-top:1px solid var(--filet);max-width:var(--mesure-max)}
+.faits__l{display:grid;grid-template-columns:220px 1fr;border-bottom:1px solid var(--filet);gap:calc(var(--u)*2)}
+.faits__k{
+  font-family:var(--slab);
+  font-size:var(--t-micro);
+  letter-spacing:var(--ls-large);
+  text-transform:uppercase;
+  color:var(--brique);
+  padding:calc(var(--u)*1.5) 0;
+}
+.faits__v{padding:calc(var(--u)*1.5) 0;font-size:15px}
+.faits--etiquette{background:var(--etiquette);border-color:rgba(43,33,24,.16);padding:0 calc(var(--u)*3)}
+.faits--etiquette .faits__l{border-color:rgba(43,33,24,.16)}
+
+/* 6.6 le procede numerote. Cinq stations au maximum, elles sont nommees. */
+.procede{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--filet);border:1px solid var(--filet)}
+.procede__e{background:var(--papier);padding:calc(var(--u)*3)}
+.procede__n{
+  font-family:var(--slab);
+  font-size:var(--t-chiffre);
+  line-height:1;
+  color:var(--brique);
+  display:block;
+  margin-bottom:calc(var(--u)*2);
+}
+.procede__t{
+  font-family:var(--slab);
+  font-size:var(--t-micro);
+  letter-spacing:var(--ls-large);
+  text-transform:uppercase;
+  color:var(--brun);
+  display:block;
+  margin-bottom:var(--u);
+}
+.procede__d{font-size:15px;line-height:1.45}
+
+/* 6.7 la citation. Le dicho, la devise. Jamais de guillemets dessines. */
+.citation{
+  padding:var(--section) var(--marge);
+  text-align:center;
+}
+.citation p{
+  font-size:clamp(22px,2.6vw,34px);
+  line-height:1.25;
+  max-width:30ch;
+  margin:0 auto calc(var(--u)*2);
+}
+.citation footer{
+  font-family:var(--slab);
+  font-size:var(--t-micro);
+  letter-spacing:var(--ls-large);
+  text-transform:uppercase;
+  color:var(--brun);
+}
+
+/* 6.8 le lien discret. La maison ne met pas de bouton. */
+.lien{
+  color:var(--encre);
+  text-decoration:none;
+  border-bottom:1px solid var(--brun);
+  padding-bottom:2px;
+  transition:border-color var(--t-court) var(--courbe),color var(--t-court) var(--courbe);
+}
+.lien:hover{color:var(--brique);border-bottom-color:var(--brique)}
+.lien-discret{
+  display:inline-block;
+  font-family:var(--slab);
+  font-size:var(--t-petit);
+  letter-spacing:var(--ls-petit);
+  text-transform:uppercase;
+  color:var(--brun);
+  text-decoration:none;
+  border-bottom:1px solid var(--filet);
+  padding-bottom:4px;
+  transition:border-color var(--t-court) var(--courbe),color var(--t-court) var(--courbe);
+}
+.lien-discret:hover{color:var(--brique);border-bottom-color:var(--brique)}
+
+/* 6.9 un emblème pose dans la page (hors menu).
+   Trois tailles, pas d'autre. En dessous la gravure se perd, au dessus
+   l'emblème vient concurrencer le titre. */
+/* un bloc, centre, dans le flux : jamais pose sur un texte. 23 px d'air au
+   dessus et au dessous (Raouf, 16 aout au soir). */
+.embleme{display:block;line-height:0;width:104px;height:104px;margin:23px auto}
+.embleme svg{display:block;width:100%;height:100%;position:static;margin:0}
+.embleme--s{width:80px;height:80px}
+.embleme--m{width:104px;height:104px}
+.embleme--l{width:150px;height:150px}
+/* un emblème demande qui n'existe pas (cle inconnue) :
+   la case se cache, le mot reste seul. Jamais de remplacement. Le svg deborde
+   librement pendant sa naissance (l'animation sort un instant du cadre). */
+.embleme[data-vide],[data-embleme][hidden]{display:none}
+.embleme svg,.menu__embleme svg,.pan__em svg,[data-embleme] svg{overflow:visible}
+.pied__accueil{display:inline-block;color:inherit;line-height:0}
+/* la scene qui porte un emblème l'empile au dessus de son texte, dans le flux,
+   au lieu de le poser derriere lui, au meme centre. Classe posee par site.js.
+   23 px entre l'emblème et le texte (Raouf, 16 aout au soir). */
+.scene--empilee{align-content:center}
+.scene--empilee .scene__marque{position:relative;inset:auto;z-index:1;display:block;line-height:0;margin-bottom:23px}
+.scene--empilee .scene__marque svg{display:block;margin:0 auto}
+.scene--empilee .scene__texte{align-self:auto !important;padding-bottom:0 !important;margin-top:0}
+
+/* 6.10 l'etat d'un lot, sur le registre */
+.etat{
+  font-family:var(--slab);font-size:var(--t-micro);letter-spacing:var(--ls-large);
+  text-transform:uppercase;padding:3px 9px;border:1px solid currentColor;
+}
+.etat--ouvert{color:var(--vert-etiquette)}
+.etat--epuise{color:var(--brun);opacity:.75}
+
+/* ---------------------------------------------------------------------------
+   7. LE MOUVEMENT. Fondu, parallaxe legere, rien qui rebondit.
+   ------------------------------------------------------------------------ */
+.fondu{opacity:0;transform:translateY(14px);
+  transition:opacity var(--t-long) var(--lineaire),transform var(--t-long) var(--courbe)}
+.fondu.est-vu{opacity:1;transform:none}
+[data-parallaxe]{will-change:transform}
+
+/* ---------------------------------------------------------------------------
+   8. LE PIED DE PAGE. Le meme sur toutes les pages, injecte par site.js.
+   ------------------------------------------------------------------------ */
+.pied{
+  background:var(--creme);
+  color:var(--brun);
+  padding:calc(var(--section)*.8) var(--marge) calc(var(--section)*.7);
+  border-top:1px solid var(--filet);
+}
+.pied__boite{max-width:var(--largeur);margin:0 auto;display:grid;
+  grid-template-columns:1fr auto;gap:calc(var(--u)*6);align-items:start}
+.pied__sceau{width:96px;height:68px}
+.pied__marque{
+  font-family:var(--slab);font-size:var(--t-petit);letter-spacing:var(--ls-petit);
+  text-transform:uppercase;margin-top:calc(var(--u)*2);color:var(--brun)}
+.pied__nav{display:flex;flex-wrap:wrap;gap:calc(var(--u)*4);justify-content:flex-end}
+.pied__nav a{
+  font-family:var(--slab);font-size:var(--t-petit);letter-spacing:var(--ls-petit);
+  text-transform:uppercase;color:var(--brun);text-decoration:none;
+  border-bottom:1px solid transparent;padding-bottom:3px;
+  transition:border-color var(--t-court) var(--courbe)}
+.pied__nav a:hover{border-bottom-color:var(--brun)}
+.pied__legal{
+  grid-column:1/-1;border-top:1px solid var(--filet);padding-top:calc(var(--u)*3);
+  font-size:var(--t-micro);letter-spacing:.06em;color:var(--brun);
+  display:flex;justify-content:space-between;gap:calc(var(--u)*4);flex-wrap:wrap}
+
+/* ---------------------------------------------------------------------------
+   9. LA PORTE D'AGE. Plein ecran, sobre, une question, deux reponses.
+   ------------------------------------------------------------------------ */
+.porte{
+  position:fixed;inset:0;z-index:100;
+  background:var(--papier);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:calc(var(--u)*5) var(--marge);
+  text-align:center;
+}
+.porte[hidden]{display:none}
+.porte__sceau{width:min(320px,64vw);height:auto;aspect-ratio:842/595;margin-bottom:calc(var(--u)*5)}
+.porte__sceau svg{width:100%;height:100%}
+.porte__q{font-size:clamp(21px,2.4vw,30px);line-height:1.25;max-width:24ch;margin:0 auto calc(var(--u)*5)}
+.porte__reponses{display:flex;gap:calc(var(--u)*5);justify-content:center}
+.porte__b{
+  font-family:var(--slab);font-size:var(--t-petit);letter-spacing:var(--ls-large);
+  text-transform:uppercase;color:var(--encre);
+  border-bottom:1px solid var(--brun);padding:0 2px 5px;
+  transition:color var(--t-court) var(--courbe),border-color var(--t-court) var(--courbe)}
+.porte__b:hover{color:var(--brique);border-bottom-color:var(--brique)}
+.porte__legal{
+  position:absolute;left:0;right:0;bottom:calc(var(--u)*4);
+  font-size:var(--t-micro);letter-spacing:.06em;color:var(--brun);padding:0 var(--marge)}
+/* le refus : la meme page, une phrase, plus de bouton */
+.porte.est-refus .porte__q,.porte.est-refus .porte__reponses{display:none}
+.porte__refus{display:none;font-size:clamp(19px,2vw,26px);line-height:1.3;max-width:26ch}
+.porte.est-refus .porte__refus{display:block}
+/* tant que la porte n'a pas repondu, la page ne defile pas */
+html.porte-ouverte,html.porte-ouverte body{overflow:hidden}
+/* et rien de la page n'apparait avant la question : pas de clignotement */
+html.ida-attente body > *{visibility:hidden}
+html.ida-attente body > .porte{visibility:visible}
+
+/* le sceau du pied et de l'entete prennent l'encre courante */
+.tete__sceau,.pied__sceau{color:var(--encre)}
+.pied__sceau{color:var(--brun);opacity:.8}
+.embleme{color:var(--encre)}
+
+/* ---------------------------------------------------------------------------
+   10. LES LANGUES. Un bloc riche se cache par attribut.
+   ------------------------------------------------------------------------ */
+[data-lang]{display:none}
+[data-lang].est-actif{display:block}
+span[data-lang].est-actif,a[data-lang].est-actif,em[data-lang].est-actif{display:inline}
+
+/* ---------------------------------------------------------------------------
+   11. TELEPHONE ET TABLETTE. Rupture a 860 px, valeur de la structure client.
+   ------------------------------------------------------------------------ */
+@media (max-width:860px){
+  :root{
+    --marge:22px;
+    --section:56px;
+    --t-base:16px;
+    --tete-h:60px;
+    --mesure:100%;
+  }
+  body{font-size:16px}
+
+  .tete__haut{padding:calc(var(--u)*1.5) var(--marge)}
+  .tete__marque{font-size:12px;letter-spacing:.1em;white-space:normal}
+  .tete__sceau{width:28px;height:20px}
+
+  /* le menu du telephone est un tiroir : ses regles vivent en fin de feuille,
+     bloc "LE TIROIR DU TELEPHONE" (16 aout au soir). */
+
+  .colonnes-2{grid-template-columns:1fr;gap:calc(var(--u)*4)}
+  .avec-cote{grid-template-columns:1fr;gap:calc(var(--u)*4)}
+  .avec-cote__cote{position:static}
+  .faits__l{grid-template-columns:1fr;gap:0;padding:calc(var(--u)*1.5) 0}
+  .faits__k{padding-bottom:2px}
+  .faits__v{padding-top:0}
+  .faits--etiquette{padding:0 calc(var(--u)*2)}
+  .procede{grid-template-columns:1fr}
+  .bloc-image--haut{min-height:56vh}
+  .bloc-image--haut img,.bloc-image--haut video,.bloc-image--haut svg{height:56vh}
+  .bloc-image--encadre{margin:0}
+  .bloc-phrase{padding:calc(var(--section)*1.2) var(--marge)}
+  .pied__boite{grid-template-columns:1fr;gap:calc(var(--u)*4)}
+  .pied__nav{justify-content:flex-start;gap:calc(var(--u)*3)}
+  .pied__legal{flex-direction:column;gap:var(--u)}
+  .porte__sceau{width:min(260px,72vw);margin-bottom:calc(var(--u)*4)}
+  .porte__reponses{gap:calc(var(--u)*4)}
+}
+
+@media (max-width:560px){
+  :root{--marge:18px}
+  .entete-page{padding-top:calc(var(--section)*1.1)}
+  /* la bande du haut ne porte qu'un nom : le second vit dans le pied de page */
+  .tete__marque span:nth-child(2),.tete__marque span:nth-child(3){display:none}
+}
+
+/* ---------------------------------------------------------------------------
+   12. MOUVEMENT REDUIT ET IMPRESSION.
+   ------------------------------------------------------------------------ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:1ms !important;animation-duration:1ms !important}
+  .fondu{opacity:1;transform:none}
+}
+@media print{
+  .tete,.pied__nav,.porte{display:none}
+  body{background:#fff}
+  .section{padding:24px 0;break-inside:avoid}
+}
+
+/* ============================================================================
+   FORME PLEINE PAGE, dite "gentle monster". Ajout du 16 aout 2026.
+   Le recit de la maison garde la boite et ses marges. Les pages de bouteille,
+   de jeu et de vente passent en pleine page : des scenes de la hauteur de
+   l ecran, bord a bord, une image muette, une ligne, un lien. Rien d autre.
+   ========================================================================= */
+
+/* La cle de champ d une page. Chaque bouteille signe la sienne :
+   espadin olive, tobala turquesa, coyote rosa mexicano. */
+.page{ --accent: var(--brique); }
+.page[data-accent="espadin"]{ --accent: var(--olive-etiquette); }
+.page[data-accent="tobala"] { --accent: var(--turquesa); }
+.page[data-accent="coyote"] { --accent: var(--rosa); }
+
+/* --- la scene ------------------------------------------------------------ */
+.scene{
+  position:relative; width:100%; min-height:100svh;
+  display:grid; place-items:center; overflow:hidden;
+  background:var(--papier); isolation:isolate;
+}
+.scene--court{ min-height:72svh; }
+.scene--premiere{ min-height:100svh; }
+
+/* le fond : une image, une video, ou un aplat de la maison en attendant */
+.scene__fond{ position:absolute; inset:0; z-index:0; }
+.scene__fond img,.scene__fond video{ width:100%; height:100%; object-fit:cover; display:block; }
+.scene__fond--papier   { background:var(--papier); }
+.scene__fond--creme    { background:var(--creme); }
+.scene__fond--codex    { background:#F5F0DC; }   /* la creme codex d origine, chaude, terre : la scene El Mito de l accueil (Raouf, 17 aout 21h42) */
+.scene__fond--olive    { background:var(--papier-olive); }
+.scene__fond--etiquette{ background:var(--etiquette); }
+.scene__fond--encre    { background:var(--encre); }
+.scene__fond--accent   { background:var(--accent); }
+
+/* le sceau ou l embleme, immense, au centre du fond */
+.scene__marque{ position:absolute; inset:0; display:grid; place-items:center; z-index:0; }
+.scene__marque svg{ width:min(46vmin,520px); height:auto; color:var(--encre); opacity:.9; }
+
+/* le texte de la scene : une ligne, un lien, jamais un paragraphe */
+.scene__texte{ position:relative; z-index:1; text-align:center; padding:0 var(--marge); max-width:34ch; }
+.scene__kicker{
+  font-size:var(--t-micro); letter-spacing:var(--ls-large); text-transform:uppercase;
+  color:var(--brun); margin-bottom:calc(var(--u)*2);
+}
+.scene__titre{ font-size:var(--t-phrase); line-height:1.08; font-weight:400; letter-spacing:var(--ls-titre); }
+.scene__ligne{ font-size:var(--t-lead); color:var(--brun); margin-top:calc(var(--u)*2); }
+
+/* le lien d une scene : le mot, un filet, et le filet prend la couleur au survol */
+.scene__lien{
+  display:inline-block; margin-top:calc(var(--u)*4);
+  font-size:var(--t-petit); letter-spacing:var(--ls-petit); text-transform:uppercase;
+  color:var(--encre); text-decoration:none; padding-bottom:5px;
+  border-bottom:1px solid var(--encre);
+  transition:color var(--t-court) var(--courbe), border-color var(--t-court) var(--courbe);
+}
+.scene__lien:hover,.scene__lien:focus-visible{ color:var(--accent); border-bottom-color:var(--accent); }
+
+/* sur fond encre ou fond accent, l encre s inverse */
+.scene--sombre .scene__titre,.scene--sombre .scene__ligne,
+.scene--sombre .scene__kicker,.scene--sombre .scene__lien{ color:var(--papier); }
+.scene--sombre .scene__lien{ border-bottom-color:var(--papier); }
+.scene--sombre .scene__lien:hover{ color:var(--papier); border-bottom-color:var(--papier); opacity:.7; }
+.scene--sombre .scene__marque svg{ color:var(--papier); }
+
+/* --- la grille des bouteilles -------------------------------------------- */
+.grille{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--filet); }
+.grille__c{
+  background:var(--papier); position:relative; display:flex; flex-direction:column;
+  text-decoration:none; color:inherit; min-height:64svh;
+}
+.grille__media{ flex:1; display:grid; place-items:center; padding:calc(var(--u)*6); position:relative; overflow:hidden; }
+.grille__media svg{ width:min(30vmin,230px); height:auto; color:var(--encre); }
+.grille__media::after{
+  content:""; position:absolute; inset:auto 0 0 0; height:3px; background:var(--accent-c);
+  transform:scaleX(0); transform-origin:left; transition:transform var(--t-menu) var(--courbe);
+}
+.grille__c:hover .grille__media::after,.grille__c:focus-visible .grille__media::after{ transform:scaleX(1); }
+.grille__pied{ padding:calc(var(--u)*3) calc(var(--u)*4) calc(var(--u)*5); border-top:1px solid var(--filet); }
+.grille__nom{ font-size:var(--t-h3); }
+.grille__latin{ font-size:var(--t-petit); color:var(--brun); font-style:italic; margin-top:4px; }
+.grille__etat{
+  display:inline-block; margin-top:calc(var(--u)*2);
+  font-size:var(--t-micro); letter-spacing:var(--ls-petit); text-transform:uppercase;
+  color:var(--accent-c); border:1px solid currentColor; padding:2px 8px;
+}
+
+/* --- le bloc campagne, pour entrer dans le jeu d une bouteille ------------ */
+/* La forme que Raouf a repere chez gentle monster : "decouvrir la campagne".
+   Ici c est l entree du jeu. Pleine page, muet, une ligne, un lien. */
+.campagne{
+  position:relative; min-height:88svh; display:grid; place-items:center;
+  background:var(--encre); overflow:hidden;
+}
+.campagne__fond{ position:absolute; inset:0; z-index:0; opacity:.16; display:grid; place-items:center; }
+.campagne__fond svg{ width:min(80vmin,900px); height:auto; color:var(--accent); }
+.campagne__texte{ position:relative; z-index:1; text-align:center; color:var(--papier); padding:0 var(--marge); }
+.campagne__kicker{
+  font-size:var(--t-micro); letter-spacing:var(--ls-large); text-transform:uppercase;
+  color:var(--accent); margin-bottom:calc(var(--u)*2);
+}
+.campagne__titre{ font-size:clamp(30px,5vw,68px); line-height:1.04; font-weight:400; }
+.campagne__ligne{ font-size:var(--t-lead); margin-top:calc(var(--u)*3); opacity:.8; max-width:38ch; margin-inline:auto; }
+.campagne__lien{
+  display:inline-block; margin-top:calc(var(--u)*5);
+  font-size:var(--t-petit); letter-spacing:var(--ls-petit); text-transform:uppercase;
+  color:var(--encre); background:var(--accent); text-decoration:none;
+  padding:14px 30px; transition:opacity var(--t-court) var(--courbe);
+}
+.campagne__lien:hover,.campagne__lien:focus-visible{ opacity:.82; }
+
+/* --- la vente, tenue a part du recit -------------------------------------- */
+.vente{ display:grid; grid-template-columns:1.1fr .9fr; min-height:100svh; }
+.vente__objet{ background:var(--creme); display:grid; place-items:center; padding:calc(var(--u)*8); }
+.vente__objet svg{ width:min(40vmin,420px); height:auto; color:var(--encre); }
+.vente__fiche{ padding:calc(var(--u)*12) var(--marge); display:flex; flex-direction:column; justify-content:center; }
+.vente__nom{ font-size:var(--t-h1); line-height:1.02; }
+.vente__latin{ font-style:italic; color:var(--brun); margin-top:6px; }
+.vente__prix{ font-size:var(--t-chiffre); margin-top:calc(var(--u)*4); }
+.vente__note{ font-size:var(--t-petit); color:var(--brun); max-width:40ch; margin-top:calc(var(--u)*2); }
+.vente__b{
+  align-self:flex-start; margin-top:calc(var(--u)*5);
+  font:inherit; font-size:var(--t-petit); letter-spacing:var(--ls-petit); text-transform:uppercase;
+  color:var(--papier); background:var(--encre); border:0; padding:15px 34px; cursor:pointer;
+  transition:background var(--t-court) var(--courbe);
+}
+.vente__b:hover{ background:var(--accent); color:var(--encre); }
+.vente__filet{ height:3px; width:64px; background:var(--accent); margin-top:calc(var(--u)*5); }
+
+/* --- la couleur dans le menu ---------------------------------------------- */
+/* Regle du cahier : l embleme passe brievement a la couleur au survol, puis revient. */
+.menu__lien:hover .menu__embleme,
+.menu__lien:focus-visible .menu__embleme{ color:var(--brique); }
+.menu__lien[data-id="mezcales"]:hover .menu__mot{ color:var(--turquesa); }
+
+/* la langue active porte le filet de la maison */
+.langue__b[aria-pressed="true"]{ border-bottom-color:var(--brique); }
+
+@media (max-width:860px){
+  .grille{ grid-template-columns:1fr; }
+  .vente{ grid-template-columns:1fr; }
+  .vente__objet{ min-height:56svh; }
+  .vente__fiche{ padding:calc(var(--u)*8) var(--marge); }
+  .scene__marque svg{ width:min(60vmin,340px); }
+}
+
+/* le sceau de l accueil : la premiere scene, il tient l ecran */
+#sceau-accueil{ width:min(74vmin,880px); height:auto; display:block; color:var(--encre); }
+.scene--premiere .scene__marque svg{ width:min(74vmin,880px); }
+
+/* ============================================================================
+   CORRECTION DU 16 AOUT, apres le regard de Raouf : "on dirait un dessin animé
+   pour enfants". Il a raison, et c est la faute des aplats de couleur en plein
+   ecran. Une maison de ce rang ne remplit jamais un ecran d une couleur : elle
+   le remplit de papier et d un objet. La couleur devient un filet, une marque,
+   jamais une surface.
+   ========================================================================= */
+
+/* Aucun aplat de couleur ne prend plus tout l ecran. Les fonds de scene
+   colores existent encore dans la feuille mais ne sont plus employes : si un
+   jour une scene en reclame un, ce sera une decision, pas un remplissage. */
+.scene__fond--olive,
+.scene__fond--etiquette,
+.scene__fond--accent{ background:var(--papier); }
+
+/* Le papier d etiquette ne sert plus qu a la table des faits, ou il est
+   justifie : c est le papier reel de l etiquette de la maison. */
+.faits--etiquette{ background:var(--etiquette); }
+.section--etiquette{ background:var(--papier); }
+
+/* Plus d air. Une scene se juge au vide autour de l objet, pas a son remplissage. */
+.scene{ min-height:100svh; }
+.scene__texte{ max-width:30ch; }
+.scene__titre{ font-size:clamp(22px,2.6vw,36px); line-height:1.14; }
+.scene__kicker{ margin-bottom:calc(var(--u)*3); }
+.scene__lien{ margin-top:calc(var(--u)*6); font-size:var(--t-micro); }
+.section{ padding-block:calc(var(--section)*1.6); }
+
+/* L emblème d une scene respire, il ne remplit pas. */
+.scene__marque svg{ width:min(26vmin,300px); opacity:1; }
+.scene--premiere .scene__marque svg,#sceau-accueil{ width:min(56vmin,700px); }
+
+/* La grille des bouteilles : du blanc, un filet, rien d autre. La couleur de la
+   bouteille est un trait de 2 px sous son nom, pas un fond. */
+.grille{ background:var(--filet); gap:1px; }
+.grille__c{ min-height:72svh; }
+.grille__media::after{ height:2px; }
+.grille__etat{ border:0; padding:0; color:var(--brun); }
+.grille__c:hover .grille__etat{ color:var(--accent-c); }
+
+/* Le bloc campagne reste sur l encre, qui est sobre, mais la couleur n y est
+   plus qu un mot et un filet. Le bouton plein de couleur est supprime. */
+.campagne__fond{ opacity:.07; }
+.campagne__fond svg{ color:var(--papier); }
+.campagne__lien{
+  background:none; color:var(--papier); border-bottom:1px solid var(--accent);
+  padding:0 0 6px; transition:border-color var(--t-court) var(--courbe);
+}
+.campagne__lien:hover,.campagne__lien:focus-visible{ opacity:1; border-bottom-color:var(--papier); }
+.campagne__titre{ font-size:clamp(26px,3.6vw,52px); }
+
+/* La vente : l objet sur le papier, pas sur de la creme. */
+.vente__objet{ background:var(--papier); border-right:1px solid var(--filet); }
+.vente__filet{ height:2px; width:44px; }
+.vente__b{ background:none; color:var(--encre); border:1px solid var(--encre); }
+.vente__b:hover{ background:var(--encre); color:var(--papier); }
+
+@media (max-width:860px){
+  .vente__objet{ border-right:0; border-bottom:1px solid var(--filet); }
+}
+
+/* ============================================================================
+   RELEVE SUR LE SITE DE GENTLE MONSTER, 16 aout 2026, mesures prises en direct
+   sur gentlemonster.com/int/en et non de memoire.
+   Leur entete : transparente, posee SUR l image, logo centre, 90 px, une seule
+   ligne. Leur corps de texte : 16 px. Leur plus grand titre de page : 24 px.
+   Leur grille produit : deux par rangee, images enormes bord a bord, aucun
+   cadre, nom et prix en petit dessous, un lien souligne minuscule.
+   L inversion est tout leur secret : l image est enorme, la typographie est
+   minuscule. Je l avais a l envers.
+   ========================================================================= */
+
+/* 1. L entete se pose sur la premiere scene au lieu de la pousser vers le bas.
+      Elle redevient opaque des que la page defile. */
+.tete{ position:fixed; top:0; left:0; right:0; z-index:40;
+  background:transparent; border-bottom:1px solid transparent;
+  transition:background var(--t-menu) var(--courbe), border-color var(--t-menu) var(--courbe); }
+.tete.est-posee{ background:var(--papier); border-bottom-color:var(--filet); }
+body{ padding-top:0; }
+.page > .scene:first-child{ margin-top:0; }
+/* les pages sans scene en tete gardent leur air sous l entete fixe */
+.page > .entete-page:first-child,
+.page > .section:first-child,
+.page > .vente:first-child{ padding-top:calc(var(--tete-h) + var(--u)*8); }
+
+/* 2. La typographie redescend. Un titre de page ne hurle pas, c est l image
+      qui porte. */
+.scene__titre{ font-size:clamp(19px,1.7vw,26px); line-height:1.22; letter-spacing:.01em; }
+.scene__ligne{ font-size:15px; }
+.scene__kicker{ font-size:10px; }
+.scene__lien{ font-size:10px; }
+.vente__nom{ font-size:clamp(22px,2vw,30px); }
+.vente__prix{ font-size:19px; }
+.vente__latin{ font-size:14px; }
+.campagne__titre{ font-size:clamp(22px,2.2vw,32px); }
+.campagne__ligne{ font-size:15px; }
+.campagne__kicker{ font-size:10px; }
+.entete-page h1{ font-size:clamp(24px,2.4vw,34px); }
+.entete-page .chapo{ font-size:16px; }
+
+/* 3. La grille produit : deux par rangee, aucun cadre, l image prend tout,
+      le nom et le prix en petit dessous, comme chez eux. */
+.grille{ grid-template-columns:repeat(2,1fr); gap:0; background:var(--papier); }
+.grille__c{ min-height:86svh; }
+.grille__media{ padding:calc(var(--u)*10); }
+.grille__media svg{ width:min(34vmin,300px); }
+.grille__media::after{ display:none; }
+.grille__pied{ border-top:0; padding:calc(var(--u)*2) calc(var(--u)*4) calc(var(--u)*10); }
+.grille__nom{ font-size:15px; }
+.grille__latin{ font-size:13px; margin-top:2px; }
+.grille__etat{ font-size:10px; letter-spacing:var(--ls-petit); margin-top:calc(var(--u)*1.5);
+  border-bottom:1px solid currentColor; padding-bottom:2px; }
+
+@media (max-width:860px){ .grille{ grid-template-columns:1fr; } }
+
+
+/* ============================================================================
+   LA CAMPAGNE. Anatomie relevee en direct le 16 aout 2026 sur
+   gentlemonster.com/int/en/stories/veggie-collection : une page de 14 654 px,
+   18 images, 6 videos, fond gris #F3F4F6 (chez nous ce sera le papier),
+   entete flottante sans fond sur la video d ouverture, un seul grand corps sur
+   toute la page (le nom de la campagne), puis un objet par ecran avec son nom
+   en haut a gauche et une pastille d action en haut a droite.
+   Gabarit : GABARIT_CAMPAGNE.html
+   ========================================================================= */
+.camp{ --accent: var(--brique); background:var(--papier); }
+.camp[data-accent="espadin"]{ --accent: var(--olive-etiquette); }
+.camp[data-accent="tobala"] { --accent: var(--turquesa); }
+.camp[data-accent="coyote"] { --accent: var(--rosa); }
+
+.camp__media{ position:relative; display:grid; place-items:center; overflow:hidden; }
+.camp__media img,.camp__media video{ width:100%; height:100%; object-fit:cover; display:block; }
+.camp__media--plein{ position:absolute; inset:0; }
+.camp__marque{ display:grid; place-items:center; color:var(--encre); }
+.camp__marque svg{ width:min(30vmin,320px); height:auto; }
+
+/* --- 1. l affiche -------------------------------------------------------- */
+.camp__affiche{ position:relative; min-height:100svh; display:grid; place-items:center; overflow:hidden; }
+.camp__affiche .camp__marque svg{ width:min(44vmin,480px); }
+
+/* "cliquez pour voir la campagne entiere", deux lignes centrees, la marque de
+   lecture dessous. Chez eux c est le seul texte pose sur la video. */
+.camp__regarder{
+  position:relative; z-index:2; display:grid; justify-items:center; gap:calc(var(--u)*2);
+  text-decoration:none; color:var(--encre); text-align:center;
+}
+.camp__regarder-l{
+  display:block; font-size:11px; letter-spacing:var(--ls-large); text-transform:uppercase; line-height:1.9;
+}
+.camp__lecture{
+  display:grid; place-items:center; width:52px; height:52px; margin-top:calc(var(--u)*2);
+  border:1px solid currentColor; border-radius:var(--rond-plein); /* 52 x 52 : un bouton rond */
+  transition:background var(--t-court) var(--courbe), color var(--t-court) var(--courbe);
+}
+.camp__lecture svg{ width:18px; height:18px; fill:currentColor; margin-left:2px; }
+.camp__regarder:hover .camp__lecture{ background:var(--encre); color:var(--papier); }
+
+/* --- 2. le nom, le seul grand corps de la page --------------------------- */
+.camp__nom-bande{ padding:calc(var(--section)*1.5) var(--marge); text-align:center; }
+.camp__nom{
+  font-size:clamp(34px,6vw,86px); font-weight:400; line-height:1.02; letter-spacing:.01em;
+}
+.camp__nom--petit{ font-size:clamp(24px,2.6vw,38px); }
+
+/* --- 3. un objet par ecran ----------------------------------------------- */
+.camp__objet{
+  position:relative; min-height:100svh; display:grid; place-items:center;
+  padding:calc(var(--tete-h) + var(--u)*4) var(--marge) calc(var(--u)*8);
+}
+.camp__objet .camp__marque svg{ width:min(40vmin,440px); }
+.camp__objet-nom{
+  position:absolute; top:calc(var(--tete-h) + var(--u)*3); left:var(--marge);
+  font-size:17px; letter-spacing:.01em;
+}
+.camp__pastille{
+  position:absolute; top:calc(var(--tete-h) + var(--u)*2); right:var(--marge);
+  font-size:11px; letter-spacing:var(--ls-petit); text-transform:uppercase;
+  color:var(--encre); text-decoration:none;
+  border:1px solid var(--encre); border-radius:var(--rond-plein); padding:9px 20px;
+  transition:background var(--t-court) var(--courbe), color var(--t-court) var(--courbe);
+}
+.camp__pastille:hover,.camp__pastille:focus-visible{ background:var(--encre); color:var(--papier); }
+.camp__pastille--grande{ position:static; padding:13px 30px; justify-self:center; margin-top:calc(var(--u)*5); }
+
+/* le seul ecran noir de la campagne. Une fois, sinon il ne vaut plus rien. */
+.camp__objet--encre{ background:var(--encre); color:var(--papier); }
+.camp__objet--encre .camp__marque{ color:var(--papier); }
+.camp__objet--encre .camp__pastille{ border-color:var(--papier); color:var(--papier); }
+.camp__objet--encre .camp__pastille:hover{ background:var(--papier); color:var(--encre); }
+
+/* --- 4. l enonce, capitales, centre, court ------------------------------- */
+.camp__enonce-bande{ padding:calc(var(--section)*1.8) var(--marge); }
+.camp__enonce{
+  max-width:44ch; margin-inline:auto; text-align:center;
+  font-size:clamp(13px,1.15vw,16px); letter-spacing:.1em; text-transform:uppercase; line-height:2.1;
+}
+
+/* le chiffre seul */
+.camp__chiffre-bande{ padding:0 var(--marge) calc(var(--section)*1.6); text-align:center; }
+.camp__chiffre{
+  font-size:clamp(70px,14vw,210px); line-height:.86; color:var(--accent);
+  font-variant-numeric:tabular-nums; letter-spacing:-.03em;
+}
+.camp__sous-chiffre{
+  margin-top:calc(var(--u)*2);
+  font-size:10px; letter-spacing:var(--ls-large); text-transform:uppercase; color:var(--brun);
+}
+
+/* --- 5. la planche ------------------------------------------------------- */
+.camp__planche{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+  border-top:1px solid var(--filet); border-bottom:1px solid var(--filet);
+}
+.camp__vignette{
+  display:grid; text-decoration:none; color:inherit; padding:calc(var(--u)*8) calc(var(--u)*3) calc(var(--u)*6);
+  border-right:1px solid var(--filet);
+}
+.camp__vignette:last-child{ border-right:0; }
+.camp__vignette .camp__media{ min-height:26svh; }
+.camp__vignette .camp__marque svg{ width:min(14vmin,140px); }
+.camp__vignette-nom{
+  margin-top:calc(var(--u)*3); text-align:center; font-size:13px; color:var(--brun);
+  transition:color var(--t-court) var(--courbe);
+}
+.camp__vignette:hover .camp__vignette-nom{ color:var(--accent); }
+
+/* --- le film ------------------------------------------------------------- */
+.camp__film{ position:relative; min-height:88svh; }
+.camp__legende{
+  position:absolute; left:var(--marge); bottom:calc(var(--u)*4);
+  font-size:13px; color:var(--brun); max-width:44ch;
+}
+
+/* --- 6. la sortie -------------------------------------------------------- */
+.camp__fin{
+  min-height:66svh; display:grid; place-content:center; text-align:center;
+  padding:0 var(--marge); border-top:1px solid var(--filet);
+}
+.camp__sur{ font-size:10px; letter-spacing:var(--ls-large); text-transform:uppercase; color:var(--brun); margin-bottom:calc(var(--u)*2); }
+
+@media (max-width:860px){
+  .camp__planche{ grid-template-columns:repeat(2,1fr); }
+  .camp__vignette:nth-child(2n){ border-right:0; }
+  .camp__objet-nom,.camp__pastille{ position:static; }
+  .camp__objet{ grid-auto-rows:min-content; place-items:center; gap:calc(var(--u)*2); }
+}
+
+/* Tant qu il n y a pas de film, la marque et l invitation se marchent dessus
+   au centre de l affiche. Avec une video le texte centre fonctionne, comme
+   chez eux. Sans video, on separe : la marque en haut, l invitation en bas. */
+.camp__affiche{ grid-template-rows:1fr auto; place-items:center; }
+.camp__affiche .camp__media--plein{ position:relative; grid-row:1; align-self:center; }
+.camp__affiche .camp__marque{ align-self:center; }
+.camp__regarder{ grid-row:2; padding-bottom:12svh; }
+/* quand la video existe, on rebascule en plein cadre : ajouter la classe
+   camp__affiche--film sur la section. */
+.camp__affiche--film{ grid-template-rows:1fr; }
+.camp__affiche--film .camp__media--plein{ position:absolute; inset:0; grid-row:1; }
+.camp__affiche--film .camp__regarder{ grid-row:1; padding-bottom:0; color:var(--papier); }
+
+/* ============================================================================
+   L ENTETE, refaite le 16 aout 2026 a la structure relevee sur gentlemonster.com
+   et non a celle que j avais imaginee. Chez eux : UNE barre de 90 px, pas deux
+   bandes. Transparente, posee sur la premiere image. Cinq entrees a gauche et
+   pas huit. Le nom de la maison au centre. Les utilitaires a droite. Survoler
+   une entree groupee ouvre un panneau pleine largeur.
+   ========================================================================= */
+:root{ --tete-h:90px; }
+
+.tete{ position:fixed; top:0; left:0; right:0; z-index:60;
+  background:transparent; border-bottom:1px solid transparent;
+  transition:background var(--t-menu) var(--courbe), border-color var(--t-menu) var(--courbe); }
+.tete.est-posee,.tete.a-panneau{ background:var(--papier); border-bottom-color:var(--filet); }
+
+.nav{
+  height:var(--tete-h); display:grid; align-items:center;
+  grid-template-columns:1fr auto 1fr; padding:0 calc(var(--u)*4);
+}
+
+/* gauche : cinq entrees, petites, en linéale de la maison */
+.nav__g{ list-style:none; display:flex; gap:calc(var(--u)*4); margin:0; padding:0; }
+.nav__i{ display:flex; align-items:center; height:var(--tete-h); }
+.nav__lien{
+  font-size:14px; letter-spacing:.01em; color:var(--encre); text-decoration:none;
+  padding:4px 0; border-bottom:1px solid transparent;
+  transition:border-color var(--t-court) var(--courbe), color var(--t-court) var(--courbe);
+}
+.nav__lien:hover,.nav__lien:focus-visible{ border-bottom-color:var(--encre); }
+.nav__lien[aria-current="page"]{ color:var(--brique); border-bottom-color:var(--brique); }
+
+/* centre : le nom de la maison, en capitales espacees, jamais le sceau */
+.nav__marque{
+  justify-self:center; text-decoration:none; color:var(--encre);
+  font-size:17px; letter-spacing:.22em; text-transform:uppercase; white-space:nowrap;
+}
+
+/* droite : la langue, le registre, et le rappel au telephone */
+.nav__d{ justify-self:end; display:flex; align-items:center; gap:calc(var(--u)*3); }
+.nav__u{
+  font-size:11px; letter-spacing:var(--ls-petit); text-transform:uppercase;
+  color:var(--encre); text-decoration:none; border-bottom:1px solid transparent;
+}
+.nav__u:hover{ border-bottom-color:var(--encre); }
+.nav__burger{ display:none; background:none; border:0; padding:6px; cursor:pointer; }
+.nav__burger span{ display:block; width:20px; height:1px; background:var(--encre); margin:4px 0; }
+
+/* le panneau d une entree groupee, pleine largeur sous la barre */
+.pan{
+  position:absolute; left:0; right:0; top:var(--tete-h);
+  background:var(--papier); border-bottom:1px solid var(--filet);
+}
+.pan__in{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  max-width:var(--largeur); margin-inline:auto; padding:calc(var(--u)*5) calc(var(--u)*4) calc(var(--u)*7);
+}
+.pan__c{ display:grid; justify-items:center; gap:calc(var(--u)*2); text-decoration:none; color:inherit; padding:calc(var(--u)*2); }
+.pan__em{ display:grid; place-items:center; height:88px; color:var(--encre); }
+.pan__em svg{ width:auto; height:100%; }
+.pan__n{ font-size:13px; color:var(--brun); transition:color var(--t-court) var(--courbe); }
+.pan__c:hover .pan__n{ color:var(--encre); }
+
+/* l ancienne bande de huit mots ne sert plus qu au telephone */
+.menu{ display:none; }
+.tete__haut,.tete__gauche,.tete__droite,.tete__marque{ display:none !important; }
+
+@media (max-width:1000px){
+  .nav{ grid-template-columns:auto 1fr auto; }
+  .nav__g{ display:none; }
+  .nav__burger{ display:block; }
+  .nav__marque{ justify-self:center; font-size:14px; letter-spacing:.18em; }
+  .nav__u{ display:none; }
+  .menu{ display:block; }
+  .menu[hidden]{ display:none; }
+}
+
+/* ============================================================================
+   LA DROITE DE L ENTETE, 16 aout 2026, sur la remarque de Raouf : le registre
+   devient une icone, les trois langues se condensent en un seul bouton, et le
+   panier apparait, puisque la famille vend depuis le site.
+   Facture relevee chez eux : un dessin au trait de 1 px, 22 px de cote, aucun
+   aplat, le compte inscrit DANS le sac.
+   ========================================================================= */
+
+/* le bouton unique de langue */
+.lang1{ position:relative; }
+.lang1__b{
+  display:flex; align-items:center; gap:5px; background:none; border:0; cursor:pointer;
+  font:inherit; font-size:11px; letter-spacing:var(--ls-petit); color:var(--encre); padding:6px 2px;
+}
+.lang1__f{ width:9px; height:6px; fill:none; stroke:currentColor; stroke-width:1.2; opacity:.6; }
+.lang1__b[aria-expanded="true"] .lang1__f{ transform:rotate(180deg); }
+.lang1__l{
+  position:absolute; top:100%; right:0; display:grid; min-width:64px;
+  background:var(--papier); border:1px solid var(--filet); padding:4px 0; z-index:5;
+}
+.lang1__l[hidden]{ display:none; }
+.lang1__l .langue__b{
+  background:none; border:0; cursor:pointer; font:inherit; font-size:11px;
+  letter-spacing:var(--ls-petit); color:var(--brun); padding:7px 16px; text-align:left;
+}
+.lang1__l .langue__b:hover{ color:var(--encre); }
+.lang1__l .langue__b[aria-pressed="true"]{ color:var(--encre); }
+
+/* les icones : registre et panier */
+.nav__ic{
+  position:relative; display:grid; place-items:center; width:34px; height:34px;
+  color:var(--encre); text-decoration:none;
+}
+.nav__ic svg{ width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.15;
+  stroke-linecap:round; stroke-linejoin:round; }
+.nav__ic:hover{ opacity:.6; }
+
+/* le compte, inscrit dans le sac comme chez eux */
+.nav__compte{
+  position:absolute; left:0; right:0; top:58%; transform:translateY(-50%);
+  text-align:center; font-size:9.5px; letter-spacing:0; line-height:1;
+  font-variant-numeric:tabular-nums; pointer-events:none;
+}
+.nav__sac.est-plein{ color:var(--brique); }
+
+@media (max-width:1000px){
+  .nav__d{ gap:calc(var(--u)*1.5); }
+  .nav__ic{ width:30px; height:30px; }
+}
+
+/* ============================================================================
+   16 aout 2026, demandes de Raouf en regardant gentlemonster.com :
+   le site passe au BLANC, et les champs et boutons prennent des angles arrondis
+   comme les leurs. Chez eux le fond est un gris tres clair #F3F4F6 et les champs
+   sont blancs par dessus ; ici le papier devient blanc et le second fond prend
+   ce gris, ce qui garde le contraste qui fait tenir un formulaire.
+   ========================================================================= */
+:root{
+  --papier:#FFFFFF;      /* le fond de la maison, blanc, decision du 16 aout */
+  --creme:#F3F4F6;       /* le second fond, gris tres clair, releve chez eux */
+  --papier-olive:#F3F4F6;
+  --filet:#E6E7EA;
+  /* L ECHELLE DES RAYONS, mise au clair le 16 aout au soir (Raouf : les
+     ronds, les cercles, la coherence). Quatre rayons nommes, et rien d autre
+     en dur dans cette feuille :
+       --rond-plein  999px  la pastille, le bouton rond, la vignette ronde :
+                            tout ce qui doit etre entierement arrondi
+       --rond         10px  la carte, le champ, la figure, le panneau, la boite
+       --rond-petit    6px  la puce, la petite etiquette, le fond de survol
+                            d une icone, une ligne de menu
+       --rond-net      2px  le bouton de la maison : un angle net, a peine casse
+     Le 50 % ne s ecrit que pour un vrai cercle (un point, le disque du sceau,
+     un conteneur rond d embleme), et un vrai cercle a la meme largeur et la
+     meme hauteur. */
+  --rond-plein:999px;
+  --rond:10px;
+  --rond-petit:6px;
+  --rond-net:2px;
+}
+
+/* champs et boutons : un seul rayon, partout */
+input,textarea,select{
+  font:inherit; color:var(--encre); background:var(--papier);
+  border:1px solid var(--filet); border-radius:var(--rond);
+  padding:15px 16px; width:100%;
+  transition:border-color var(--t-court) var(--courbe);
+}
+input:focus,textarea:focus,select:focus{ outline:none; border-color:var(--encre); }
+input::placeholder,textarea::placeholder{ color:#9A9AA0; }
+
+.vente__b,.camp__fantome{ border-radius:var(--rond); }
+.camp__pastille{ border-radius:var(--rond-plein); }
+.pan{ border-bottom-left-radius:var(--rond); border-bottom-right-radius:var(--rond); }
+.lang1__l{ border-radius:var(--rond); overflow:hidden; }
+
+/* le bouton plein, celui qui engage : encre pleine, angles arrondis */
+.b-plein{
+  display:inline-flex; align-items:center; justify-content:center; width:100%;
+  font:inherit; font-size:12px; letter-spacing:var(--ls-petit); text-transform:uppercase;
+  color:var(--papier); background:var(--encre); border:0; border-radius:var(--rond);
+  padding:18px 24px; cursor:pointer; text-decoration:none;
+  transition:opacity var(--t-court) var(--courbe);
+}
+.b-plein:hover{ opacity:.85; }
+.b-plein[disabled],.b-plein.est-inactif{ background:#8B8B90; cursor:not-allowed; }
+
+.b-vide{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px; width:100%;
+  font:inherit; font-size:12px; letter-spacing:var(--ls-petit); text-transform:uppercase;
+  color:var(--encre); background:var(--papier); border:1px solid var(--filet);
+  border-radius:var(--rond); padding:17px 24px; cursor:pointer; text-decoration:none;
+  transition:border-color var(--t-court) var(--courbe);
+}
+.b-vide:hover{ border-color:var(--encre); }
+.b-ligne{ background:none; border:1px solid #B9BAC0; }
+
+/* --- le passage en caisse, colonne etroite, releve chez eux ---------------- */
+.caisse{ background:var(--creme); min-height:100svh; }
+.caisse__col{
+  max-width:560px; margin-inline:auto;
+  padding:calc(var(--tete-h) + var(--u)*12) var(--marge) calc(var(--u)*16);
+  display:grid; gap:calc(var(--u)*2);
+}
+.caisse__intro{ font-size:17px; line-height:1.5; margin-bottom:calc(var(--u)*2); }
+.caisse__oblig{ font-size:12px; color:#8B8B90; text-align:right; }
+.caisse__f{ display:grid; gap:calc(var(--u)*2); }
+.caisse__l{ display:block; }
+.caisse__ou{ text-align:center; font-size:12px; color:#8B8B90; padding:calc(var(--u)*2) 0; }
+.caisse__suivi{ margin-top:calc(var(--u)*6); }
+.caisse__note{ margin-top:calc(var(--u)*2); }
+.sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+/* Sur l ecran d encre, un emblème ne s inverse pas : ses decoupes internes
+   disparaissent et il devient un aplat blanc. Il se pose sur un carton de
+   papier, encre sur papier comme le veut le cahier, et le noir reste autour. */
+.camp__objet--encre .camp__marque{
+  color:var(--encre); background:var(--papier);
+  padding:calc(var(--u)*7) calc(var(--u)*9); border-radius:var(--rond);
+}
+
+/* ============================================================================
+   Deux reprises de dessin, 16 aout, sur le regard de Raouf.
+   ========================================================================= */
+
+/* 1. LE MENU DE LANGUE. La premiere version etait une grosse boite arrondie
+   posee de travers sous le bouton : trop grande, trop ronde, mal alignee, les
+   lignes trop espacees. Ici : cale sur le bord droit du bouton, un filet fin,
+   un rayon discret, des lignes serrees, la langue courante marquee par un point
+   et non par une couleur, et un fond au survol. Le detail qui fait la difference
+   est l alignement : la colonne de lettres tombe exactement sous "FR". */
+.lang1__l{
+  top:calc(100% + 6px); right:-10px; min-width:0; width:66px;
+  padding:5px; border:1px solid var(--filet); border-radius:var(--rond-petit);
+  background:var(--papier); box-shadow:0 6px 20px rgba(43,33,24,.07);
+}
+.lang1__l .langue__b{
+  position:relative; display:block; width:100%;
+  padding:8px 10px 8px 20px; border-radius:var(--rond-petit);
+  font-size:11px; letter-spacing:.16em; color:var(--brun); text-align:left;
+  transition:background var(--t-court) var(--courbe), color var(--t-court) var(--courbe);
+}
+.lang1__l .langue__b:hover{ background:var(--creme); color:var(--encre); }
+.lang1__l .langue__b[aria-pressed="true"]{ color:var(--encre); }
+/* le point de la langue courante, a la place d un soulignement */
+.lang1__l .langue__b[aria-pressed="true"]::before{
+  content:""; position:absolute; left:9px; top:50%; width:4px; height:4px;
+  margin-top:-2px; border-radius:50%; background:var(--brique); /* 4 x 4 : un vrai point */
+}
+/* le bouton lui meme : la fleche tourne, et le tout garde la meme chasse
+   quelle que soit la langue, pour que l entete ne bouge pas au changement */
+.lang1__b{ padding:6px 0 6px 2px; }
+.lang1__c{ display:inline-block; min-width:19px; text-align:left; }
+.lang1__f{ transition:transform var(--t-court) var(--courbe); }
+
+/* 2. LE PIED DE PAGE. Le sceau etait trop petit et colle au bord haut.
+   Il monte de 20 px et prend l air qui lui manquait. */
+.pied{ padding-top:calc(var(--u)*11); }
+.pied__sceau{ width:150px; height:106px; opacity:.85; margin-bottom:calc(var(--u)*3); }
+.pied__marque{ margin-top:calc(var(--u)*1); }
+
+/* le menu de langue, resserre : des lignes de 27 px, pas de 31 */
+.lang1__l{ width:62px; padding:4px; }
+.lang1__l .langue__b{ padding:6px 8px 6px 19px; font-size:10.5px; }
+
+/* ============================================================================
+   CORRECTION, 16 aout : une mesure en ch posee sur un bloc qui porte deja la
+   marge laterale. Avec box-sizing border-box la marge se mange la mesure de
+   l interieur : a 1600 px, 284 px de mesure moins 128 px de marge de chaque
+   cote, il restait 28 px de colonne, donc un mot par ligne. La mesure doit
+   compter la marge en plus, jamais dedans.
+   ========================================================================= */
+.scene__texte{ max-width:calc(34ch + 2 * var(--marge)); }
+.camp__titre-bloc{ max-width:calc(34ch + 2 * var(--marge)); }
+.camp__legende{ max-width:calc(52ch + 2 * var(--marge)); }
+.caisse__col{ max-width:calc(560px + 2 * var(--marge)); }
+
+/* ============================================================================
+   LES ICONES, reprise du 16 aout. Raouf : "investis plus d effort dans le
+   dessin". Le premier jeu etait grossier : traits inegaux, masses optiques
+   differentes, un ticket qui bavait. Ici : grille de 24, trait de 1,1 partout,
+   jointures rondes, et surtout la meme MASSE OPTIQUE d une icone a l autre,
+   ce qui se regle en surface d encre et pas en taille de boite.
+   Fonctions retenues, celles dont ce site a reellement besoin :
+   chercher (catalogue + entree par numero de lot), le registre, le compte
+   (la maison garde les donnees de ses clients), le panier.
+   La langue a quitte l entete : elle se choisit a la porte d age.
+   ========================================================================= */
+.nav__d{ gap:2px; }
+.nav__ic{
+  position:relative; display:grid; place-items:center; width:38px; height:38px;
+  color:var(--encre); text-decoration:none; background:none; border:0; padding:0; cursor:pointer;
+  border-radius:var(--rond-petit); transition:background var(--t-court) var(--courbe);
+}
+.nav__ic svg{
+  width:21px; height:21px; fill:none; stroke:currentColor;
+  stroke-width:1.1; stroke-linecap:round; stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+}
+.nav__ic:hover{ background:var(--creme); }
+.nav__ic:focus-visible{ outline:1px solid var(--encre); outline-offset:2px; }
+
+/* le compte du sac, cale optiquement dans le corps du sac */
+.nav__compte{
+  position:absolute; left:0; right:0; top:59%; transform:translateY(-50%);
+  text-align:center; font-size:9px; letter-spacing:0; line-height:1;
+  font-variant-numeric:tabular-nums; pointer-events:none;
+}
+.nav__sac.est-plein{ color:var(--brique); }
+
+/* ============================================================================
+   LA PORTE D AGE porte maintenant le choix de langue. Raouf, 16 aout :
+   la langue se demande une fois, avec la majorite, et pas dans l entete.
+   C est aussi l usage des maisons d alcool : age, pays, langue, au seuil.
+   ========================================================================= */
+.porte__langues{
+  display:flex; gap:2px; margin-bottom:calc(var(--u)*7);
+}
+.porte__l{
+  background:none; border:0; cursor:pointer; font:inherit;
+  font-size:11px; letter-spacing:.18em; color:#9A9AA0;
+  padding:7px 12px; border-radius:var(--rond-petit);
+  transition:color var(--t-court) var(--courbe), background var(--t-court) var(--courbe);
+}
+.porte__l:hover{ color:var(--encre); background:var(--creme); }
+.porte__l[aria-pressed="true"]{ color:var(--encre); }
+.porte__l[aria-pressed="true"]::after{
+  content:""; display:block; height:1px; background:var(--brique); margin-top:5px;
+}
+
+/* ============================================================================
+   LA TABLE DES FAITS, reprise du 16 aout. Le pave abricot etait exactement le
+   defaut que Raouf avait deja signale : un aplat de couleur en grand, qui rend
+   la page enfantine, et en plus il debordait, les filets sortaient du bloc et
+   la derniere ligne etait coupee.
+   Ce que fait une maison a ce rang : PAS de fond. Des filets fins, des
+   intitules minuscules en capitales espacees, des valeurs a l encre, beaucoup
+   d air entre les lignes. Le papier de l etiquette reste la reference des
+   documents imprimes, il n a rien a faire en aplat plein ecran.
+   ========================================================================= */
+.faits,
+.faits--etiquette{
+  background:none; border:0; border-top:1px solid var(--filet);
+  padding:0; max-width:var(--mesure-max); overflow:visible;
+}
+.faits__l,
+.faits--etiquette .faits__l{
+  grid-template-columns:200px 1fr;
+  border-bottom:1px solid var(--filet); border-color:var(--filet);
+  gap:calc(var(--u)*4); align-items:baseline;
+}
+.faits__k{
+  font-family:var(--serif); font-size:10.5px; letter-spacing:.18em;
+  text-transform:uppercase; color:#8B8B90;
+  padding:calc(var(--u)*2.5) 0;
+}
+.faits__v{ padding:calc(var(--u)*2.5) 0; font-size:16px; color:var(--encre); }
+
+@media (max-width:640px){
+  .faits__l,.faits--etiquette .faits__l{ grid-template-columns:1fr; gap:2px; }
+  .faits__k{ padding-bottom:0; }
+  .faits__v{ padding-top:4px; }
+}
+
+/* ============================================================================
+   LES BOUTONS, remis dans la DA de la maison, 16 aout. Raouf : "ils ne
+   ressemblent pas a la DA du site". Il a raison : c etaient des pastilles de
+   logiciel, hautes, molles, arrondies, posees sur une ombre. Rien dans cette
+   maison ne ressemble a cela. La maison, c est l encre sur le papier, des
+   filets fins, des capitales espacees, des angles nets.
+   ========================================================================= */
+.b-plein,.b-vide{
+  border-radius:var(--rond-net); box-shadow:none;
+  min-height:54px; padding:0 22px;
+  font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+}
+.b-plein{
+  background:var(--encre); color:var(--papier); border:1px solid var(--encre);
+  transition:background var(--t-court) var(--courbe), border-color var(--t-court) var(--courbe);
+}
+.b-plein:hover{ opacity:1; background:#3D2F22; border-color:#3D2F22; }
+.b-plein[disabled],.b-plein.est-inactif{
+  background:none; color:#A9A9AE; border-color:var(--filet); cursor:not-allowed;
+}
+
+/* le bouton vide : un filet, du papier, rien d autre. Il se remplit d encre au survol. */
+.b-vide{
+  position:relative; background:var(--papier); color:var(--encre); border:1px solid var(--filet);
+  transition:border-color var(--t-court) var(--courbe), background var(--t-court) var(--courbe),
+             color var(--t-court) var(--courbe);
+}
+.b-vide:hover{ background:var(--encre); border-color:var(--encre); color:var(--papier); }
+.b-ligne{ background:none; border-color:#C4C5C9; }
+
+/* la marque du fournisseur, a gauche, au trait, une seule encre : les couleurs
+   officielles de Google seraient la seule tache de couleur etrangere du site. */
+.b-vide__m{
+  position:absolute; left:22px; top:50%; transform:translateY(-50%);
+  width:17px; height:17px; fill:currentColor;
+}
+
+/* le compte du sac remonte : il tombait sur le fond de l icone */
+.nav__compte{ top:54.5%; }
+/* le G est trace, pas rempli : il garde sa propre regle */
+.b-vide__m--g{ fill:none; }
+
+/* ============================================================================
+   CORRECTION. En passant le site au blanc j ai redeclare .section avec un
+   padding plus large, et comme cette declaration vient APRES dans la feuille
+   elle a tue .section--serre et .section--creme, qui n avaient plus aucun
+   effet. Les variantes doivent toujours etre redeclarees apres la base.
+   Signale par l agent d El Mito, 16 aout.
+   ========================================================================= */
+.section--serre{ padding-block:calc(var(--section)*0.75); }
+.section--creme{ background:var(--creme); }
+.section--filet{ border-top:1px solid var(--filet); }
+.section--olive{ background:var(--creme); }      /* l olive a disparu avec le blanc */
+.section--etiquette{ background:var(--papier); } /* l abricot ne fait plus de pave */
+
+/* ============================================================================
+   ALIGNEMENT. Trois agents ont signale la meme faute le meme soir, donc elle
+   est reelle : un bloc image encadre ne tombait pas sur la colonne de texte.
+   Mesure : a 1600 px la boite commence a 210 et l image a 128, 82 px d ecart ;
+   a 600 px, 22 contre 0. Une image encadree doit partager EXACTEMENT la boite,
+   sinon la page a deux bords gauches et cela se voit sur chaque page.
+   ========================================================================= */
+.bloc-image--encadre{
+  margin-inline:auto;
+  width:calc(100% - 2 * var(--marge));
+  max-width:var(--largeur);
+}
+
+/* La langue au pied de page. Elle se choisit a la porte d age, mais une fois
+   la porte passee il n existait plus aucun moyen d en changer, sur tout le
+   site. Signale par l agent de La Historia le 16 aout. Discrete, en bas. */
+.pied__langue{ display:flex; gap:2px; margin-top:calc(var(--u)*3); }
+.pied__langue .langue__b{
+  background:none; border:0; cursor:pointer; font:inherit;
+  font-size:10px; letter-spacing:.16em; color:#9A9AA0; padding:5px 8px; border-radius:var(--rond-petit);
+  transition:color var(--t-court) var(--courbe), background var(--t-court) var(--courbe);
+}
+.pied__langue .langue__b:hover{ color:var(--encre); background:var(--papier); }
+.pied__langue .langue__b[aria-pressed="true"]{ color:var(--encre); }
+
+/* ============================================================================
+   LES PACKSHOTS, 16 aout au soir. Les trois photographies reelles de la
+   bouteille (assets/img/bouteilles/) arrivent : la photo est sur fond blanc,
+   la page est sur le papier. La figure porte le papier, un filet et le rayon
+   de la maison ; l image se fond dans le papier par un produit (multiply),
+   le blanc de la photo disparait, la bouteille reste. L image n est jamais
+   etiree : le rapport 1999 x 1493 est tenu par ses attributs width / height,
+   et object-fit contain garde la bouteille entiere quoi qu il arrive.
+   ========================================================================= */
+.figure{
+  margin:0; background:var(--papier);
+  border:1px solid var(--filet); border-radius:var(--rond); overflow:hidden;
+}
+.figure img{
+  display:block; width:100%; height:auto; aspect-ratio:1999/1493;
+  object-fit:contain; mix-blend-mode:multiply;
+}
+.figure figcaption{
+  font-family:var(--slab); font-size:var(--t-micro); letter-spacing:var(--ls-large);
+  text-transform:uppercase; color:var(--brun); text-align:center;
+  padding:calc(var(--u)*1.5) calc(var(--u)*2) calc(var(--u)*2);
+  border-top:1px solid var(--filet);
+}
+/* dans une scene pleine page : la bouteille tient l ecran, l entete fixe et la
+   ligne du bas restent libres. La largeur suit la hauteur, jamais l inverse. */
+.figure--scene{ width:min(calc(100% - 2 * var(--marge)), calc(66svh * 1999 / 1493)); }
+/* dans une carte de la grille et dans la vente : toute la largeur de la case */
+.figure--grille{ width:100%; }
+.figure--vente{ width:100%; max-width:600px; }
+/* la rangee de trois : une seule ligne des 700 px, sinon l une sous l autre */
+.figures{ display:grid; grid-template-columns:repeat(3,1fr); gap:calc(var(--u)*3); }
+.figures a{ display:block; text-decoration:none; color:inherit; }
+.figures a:hover .figure,.figures a:focus-visible .figure{ border-color:var(--encre); }
+@media (max-width:699px){ .figures{ grid-template-columns:1fr; } }
+
+/* ============================================================================
+   LES TROIS SUR UNE LIGNE, demande de Raouf le 16 aout au soir : la grille
+   des trois bouteilles (index, les-mezcales) tient sur UNE ligne des 700 px,
+   l embleme ne depasse pas 220 px, il est centre, la legende est juste
+   dessous. En dessous de 700 px, l un sous l autre.
+   ========================================================================= */
+.grille--trois{ grid-template-columns:repeat(3,1fr); }
+.grille--trois .grille__c{ min-height:0; }
+.grille--trois .grille__media{ padding:calc(var(--u)*6) calc(var(--u)*3) calc(var(--u)*2); flex:0 0 auto; }
+.grille--trois .grille__media svg{ width:min(100%,220px); }
+.grille--trois .grille__pied{ text-align:center; padding:0 calc(var(--u)*3) calc(var(--u)*6); }
+@media (max-width:699px){ .grille--trois{ grid-template-columns:1fr; } }
+/* La legende sous une bouteille : trois lignes empilees, jamais une seule.
+   Le nom en serif 20 px, l agave en italique brun 15 px a 4 px dessous, le
+   lien en petites capitales espacees a 14 px dessous, filet fin. Le meme
+   rythme sous un embleme (grille) et sous une photographie (figure). */
+.grille__pied .grille__nom,.grille__pied .grille__latin,.grille__pied .grille__etat,
+.figure__nom,.figure__latin,.figure__lien{ display:block; }
+.grille__pied .grille__nom,.figure__nom{
+  font-family:var(--serif); font-size:20px; line-height:1.2; letter-spacing:var(--ls-titre);
+  text-transform:none; color:var(--encre); margin:0;
+}
+.grille__pied .grille__latin,.figure__latin{
+  font-family:var(--serif); font-size:15px; line-height:1.3; font-style:italic; letter-spacing:0;
+  text-transform:none; color:var(--brun); margin:4px 0 0;
+}
+.grille__pied .grille__etat,.figure__lien{
+  display:inline-block; margin:14px 0 0; font-family:var(--serif); font-size:10px; line-height:1.4;
+  letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun);
+  border-bottom:1px solid currentColor; padding-bottom:2px;
+}
+.grille__c:hover .grille__etat,.figures a:hover .figure__lien{ color:var(--encre); }
+.figure figcaption:has(.figure__nom){ padding:calc(var(--u)*2.5) calc(var(--u)*2) calc(var(--u)*3); }
+.figure__nom{ display:block; }
+
+/* ============================================================================
+   LE TIROIR DU TELEPHONE, 16 aout 2026 au soir, sur les captures de Raouf.
+   Le menu n'est plus une liste nue posee a gauche : c'est un panneau papier,
+   fixe, eleve, qui glisse depuis la droite (pleine largeur sur un telephone,
+   88 vw et 420 px au plus au dela). Sa ligne d'entete reprend celle de la page
+   (la marque au centre, la croix a la place du burger). Les entrees sont des
+   rangs pleine largeur de 64 px : l'emblème dans une case fixe de 44 px, le mot
+   sur la meme ligne, la page courante en brique. Les trois bouteilles suivent,
+   sous un petit kicker. Filets : --filet, pleine largeur, jamais a moitie.
+   Ouverture : translation et opacite, 260 ms, la courbe du site. La page ne
+   defile plus derriere. Le markup est dans site.js.
+   ========================================================================= */
+/* LES TROIS LANGUES, texte nu (Raouf, 16 aout au soir, apres l'essai d'une
+   boite) : capitales du sceau 11 px espacees, encre, la courante en brique
+   sous son filet, serrees a 10 px. Dans l'entete du bureau a 18 px des icones ;
+   au bas du tiroir, alignees a gauche, meme dessin. */
+.nav__langues,.menu__langues{ display:flex; align-items:center; gap:10px; }
+.nav__langues{ margin-left:18px; }
+.nav__langues .langue__b,.menu__langues .langue__b{
+  font-family:var(--slab); font-size:11px; letter-spacing:.14em; text-indent:.14em; line-height:1;
+  color:var(--encre); background:none; border:0; border-bottom:1px solid transparent; border-radius:0;
+  padding:6px 0 3px; margin:0; min-width:0; height:auto; cursor:pointer;
+  transition:color var(--t-court) var(--courbe), border-color var(--t-court) var(--courbe);
+}
+.nav__langues .langue__b:hover,.menu__langues .langue__b:hover{ color:var(--brique); }
+.nav__langues .langue__b[aria-pressed="true"],.menu__langues .langue__b[aria-pressed="true"]{ color:var(--brique); border-bottom-color:var(--brique); }
+@media (max-width:1000px){ .nav__langues{ display:none; } }
+
+/* LE SURVOL MOT VERS EMBLEME sur la barre du bureau (Raouf, 16 aout au soir).
+   Le mot s'efface et monte de 4 px, l'emblème (44 px, encre) parait a sa place
+   et joue ; au depart du curseur le mot revient. 220 ms, la courbe du site.
+   Le mot garde sa largeur : rien ne bouge autour. */
+.nav__lien{ position:relative; display:inline-flex; align-items:center; justify-content:center; }
+.nav__mot{ display:inline-block; transition:opacity 220ms var(--lineaire), transform 220ms var(--courbe); }
+.nav__em{
+  position:absolute; left:50%; top:50%; width:44px; height:44px; line-height:0;
+  display:flex; align-items:center; justify-content:center; color:var(--encre);
+  opacity:0; pointer-events:none;
+  transform:translate(-50%,-50%) translateY(6px);
+  transition:opacity 220ms var(--lineaire), transform 220ms var(--courbe);
+}
+.nav__em svg{ overflow:visible; max-width:44px; max-height:44px; }
+.nav__lien.est-survole .nav__mot{ opacity:0; transform:translateY(-4px); }
+.nav__lien.est-survole .nav__em{ opacity:1; transform:translate(-50%,-50%); }
+.nav__lien.est-survole,.nav__lien.est-survole:hover{ border-bottom-color:transparent; }
+.nav__lien.est-survole[aria-current="page"] .nav__em{ color:var(--brique); }
+@media (prefers-reduced-motion:reduce){ .nav__mot,.nav__em{ transition:none; } }
+
+/* ECRIRE ET INSTAGRAM (Raouf, 17 aout) : deux icones au trait de 24 px, en
+   brun, cibles de 44 px, 12 px entre elles, sous le lieu au pied de page. */
+.pied__reseaux{ display:flex; align-items:center; gap:12px; margin-top:calc(var(--u)*2); margin-left:-10px; }
+.pied__ic,.menu__ic{
+  display:grid; place-items:center; width:44px; height:44px; color:var(--brun); text-decoration:none;
+  border-radius:var(--rond-petit); transition:color var(--t-court) var(--courbe), background var(--t-court) var(--courbe);
+}
+.pied__ic svg,.menu__ic svg{
+  width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.15;
+  stroke-linecap:round; stroke-linejoin:round;
+}
+.pied__ic:hover,.menu__ic:hover{ color:var(--encre); background:var(--creme); }
+
+/* LE PAIEMENT (paiement.html, 17 aout) : deux colonnes sur le fond creme de la
+   caisse, le recapitulatif a gauche, la carte a droite. Une colonne au telephone. */
+.caisse__deux{
+  max-width:calc(1040px + 2 * var(--marge)); margin-inline:auto;
+  padding:calc(var(--tete-h) + var(--u)*12) var(--marge) calc(var(--u)*16);
+  display:grid; grid-template-columns:1fr 1fr; gap:calc(var(--u)*8) calc(var(--u)*10); align-items:start;
+}
+.caisse__recap,.caisse__carte{ display:grid; gap:calc(var(--u)*2); align-content:start; }
+.caisse__titre{ font-size:clamp(24px,2.4vw,34px); margin-bottom:calc(var(--u)*2); }
+.caisse__recap .faits{ max-width:none; }
+.caisse__recap .faits__l{ grid-template-columns:1fr auto; }
+.caisse__recap .faits__v{ text-align:right; }
+.caisse__recap .faits__l:last-child{ grid-template-columns:auto 1fr; }   /* les frais d'envoi : phrase longue, elle prend la place et passe a la ligne */
+.caisse__deux,.caisse__recap,.caisse__carte{ min-width:0; }
+.caisse__qte{ text-transform:none; letter-spacing:0; color:var(--brun); font-family:var(--serif); font-size:14px; }
+.caisse__rang{ display:grid; grid-template-columns:1fr 1fr; gap:calc(var(--u)*2); }
+.caisse__erreur{ font-size:13px; color:var(--brique); margin:0; }
+.caisse__f input.est-vide{ border-color:var(--brique); }
+.caisse__sur{ display:flex; align-items:center; gap:calc(var(--u)*1.5); font-size:13px; color:var(--brun); margin-top:calc(var(--u)*1); }
+.caisse__sur svg{ width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.15; stroke-linecap:round; stroke-linejoin:round; }
+@media (max-width:860px){
+  .caisse__deux{ grid-template-columns:1fr; gap:calc(var(--u)*6); }
+}
+
+html.menu-ouvert,html.menu-ouvert body{ overflow:hidden; }
+@media (max-width:1000px){
+  .menu{
+    display:block; position:fixed; inset:0; z-index:80;
+    background:transparent; border:0; padding:0;
+  }
+  .menu[hidden]{ display:none; }
+  .menu__voile{
+    position:absolute; inset:0; background:rgba(43,33,24,.24);
+    opacity:0; transition:opacity 260ms var(--lineaire);
+  }
+  .menu__panneau{
+    position:absolute; top:0; right:0; bottom:0;
+    width:min(88vw,420px);
+    background:var(--papier);
+    box-shadow:-18px 0 44px rgba(43,33,24,.14);
+    display:flex; flex-direction:column;
+    overflow-y:auto; -webkit-overflow-scrolling:touch;
+    transform:translateX(28px); opacity:0;
+    transition:transform 260ms var(--courbe),opacity 260ms var(--lineaire);
+  }
+  .menu.est-ouvert .menu__voile{ opacity:1; }
+  .menu.est-ouvert .menu__panneau{ transform:none; opacity:1; }
+
+  /* la ligne d'entete du tiroir : meme hauteur, memes marges que la barre */
+  .menu__tete{
+    flex:none; height:var(--tete-h);
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+    padding:0 calc(var(--u)*4);
+    border-bottom:1px solid var(--filet);
+  }
+  .menu__marque{
+    grid-column:2; justify-self:center;
+    font-size:14px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--encre); text-decoration:none; white-space:nowrap;
+  }
+  .menu__fermer{
+    grid-column:3; justify-self:end;
+    width:32px; height:32px; position:relative;
+    background:none; border:0; padding:0; cursor:pointer;
+  }
+  .menu__fermer span{
+    position:absolute; left:6px; top:50%; width:20px; height:1px;
+    background:var(--encre); transform:rotate(45deg);
+  }
+  .menu__fermer span + span{ transform:rotate(-45deg); }
+
+  /* les rangs */
+  .menu__liste{ list-style:none; margin:0; padding:0; display:block; }
+  .menu__liste li{ border-bottom:1px solid var(--filet); }
+  .menu__lien{
+    display:grid; grid-template-columns:44px 1fr; align-items:center;
+    gap:calc(var(--u)*2.5);
+    height:64px; min-height:64px;
+    padding:0 calc(var(--u)*4);
+    text-align:left; text-decoration:none; color:var(--encre);
+    flex:none; min-width:0;
+  }
+  .menu__mot{
+    grid-column:2; grid-row:1;
+    font-family:var(--slab); font-size:var(--t-petit); letter-spacing:var(--ls-petit);
+    text-transform:uppercase; line-height:1; white-space:nowrap;
+    opacity:1; transition:color var(--t-court) var(--courbe);
+  }
+  /* la case de l'emblème : 44 px de cote, fixe, l'emblème centre dedans a sa
+     hauteur optique (site.js : 36 px de haut, 44 de large au plus) */
+  .menu__embleme{
+    grid-column:1; grid-row:1;
+    position:relative; left:auto; top:auto; transform:none; opacity:1; pointer-events:none;
+    width:44px; height:44px; min-width:44px; max-width:44px; flex:none; line-height:0;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--encre); transition:none; overflow:visible;
+  }
+  /* la case borne le svg quoi qu'il arrive : jamais plus de 44 px, meme si la
+     mesure de site.js n'a pas encore eu lieu */
+  .menu__embleme svg{ width:auto; height:auto; max-width:44px !important; max-height:44px !important; display:block; }
+  .menu__embleme svg[data-a-ajuster]{ width:44px; height:44px; }
+  .menu__lien.est-survole .menu__mot{ opacity:1; }
+  .menu__lien.est-survole .menu__embleme{ transform:none; opacity:1; }
+  .menu__lien:hover .menu__embleme,.menu__lien:focus-visible .menu__embleme{ color:var(--encre); }
+  .menu__lien[data-id="mezcales"]:hover .menu__mot{ color:var(--encre); }
+  .menu__lien[aria-current="page"] .menu__mot{ color:var(--brique); }
+  .menu__lien[aria-current="page"]::after{ display:none; }
+  .menu__lien:active .menu__mot{ color:var(--brique); }
+
+  /* les trois bouteilles, sous un kicker */
+  .menu__kicker{
+    margin:0; padding:calc(var(--u)*4) calc(var(--u)*4) calc(var(--u)*1.5);
+    font-size:var(--t-micro); letter-spacing:var(--ls-large); text-transform:uppercase;
+    color:var(--brun);
+  }
+  .menu__liste--sous{ border-top:1px solid var(--filet); }
+  .menu__liste--sous .menu__lien{ height:56px; min-height:56px; }
+  .menu__liste--sous li:last-child{ border-bottom:1px solid var(--filet); }
+
+  /* le pied du tiroir : trois rangs utiles au trait fin, le sceau a droite */
+  .menu__pied{
+    display:grid; grid-template-columns:1fr auto; align-items:center;
+    margin-top:calc(var(--u)*3); border-top:1px solid var(--filet);
+  }
+  .menu__utils{ list-style:none; margin:0; padding:0; }
+  .menu__utils li + li{ border-top:1px solid var(--filet); }
+  .menu__util{
+    display:grid; grid-template-columns:24px 1fr; align-items:center; gap:calc(var(--u)*2);
+    height:56px; padding:0 calc(var(--u)*4);
+    font-family:var(--serif); font-size:17px; color:var(--encre); text-decoration:none;
+  }
+  .menu__util svg{
+    width:24px; height:24px; color:var(--brun);
+    fill:none; stroke:currentColor; stroke-width:1.1; stroke-linecap:round; stroke-linejoin:round;
+  }
+  .menu__cote{
+    display:flex; flex-direction:column; align-items:center; gap:calc(var(--u)*1.5);
+    margin:0 calc(var(--u)*5) 0 calc(var(--u)*2); align-self:center;
+  }
+  .menu__sceau{ display:block; width:112px; line-height:0; color:var(--encre); text-decoration:none; }
+  .menu__sceau svg{ width:112px; height:auto; display:block; }
+  .menu__reseaux{ display:flex; align-items:center; gap:12px; }
+  /* les trois langues, derniere ligne du tiroir, a gauche */
+  .menu__langues{
+    padding:calc(var(--u)*3) calc(var(--u)*4) calc(var(--u)*4);
+    border-top:1px solid var(--filet); margin-top:auto;
+  }
+  .menu__langues .langue__b{ font-size:12px; padding:10px 0 6px; }
+}
+@media (max-width:600px){
+  .menu__panneau{ width:100%; box-shadow:none; }
+  .menu__tete,.menu__lien,.menu__kicker{ padding-left:var(--marge); padding-right:var(--marge); }
+  /* la barre de la page a la meme taille : la marque a GAUCHE, sur la marge de
+     la page, les icones a droite, 16 px d'air au moins, rien ne passe a la ligne */
+  .nav{ padding:0 var(--marge); grid-template-columns:minmax(0,1fr) auto; column-gap:16px; }
+  .nav__marque{ grid-column:1; justify-self:start; font-size:12px; letter-spacing:.12em; white-space:nowrap; overflow:hidden; text-overflow:clip; min-width:0; }
+  .nav__d{ grid-column:2; justify-self:end; gap:4px; flex-wrap:nowrap; }
+  .nav__ic{ width:28px; height:28px; }
+  .nav__ic svg{ width:20px; height:20px; }
+  .menu__marque{ font-size:12px; letter-spacing:.12em; }
+  .menu__util,.menu__langues{ padding-left:var(--marge); padding-right:var(--marge); }
+  .menu__cote{ margin-right:calc(var(--marge) + var(--u)); }
+}
+@media (prefers-reduced-motion:reduce){
+  .menu__voile,.menu__panneau{ transition:none; }
+}
+
+/* ============================================================================
+   LA FICHE DE VENTE, 16 aout au soir, demande de Raouf : la page d achat de
+   chaque bouteille prend la structure d une fiche de piece serieuse (deux
+   colonnes : les images a gauche, la fiche collante a droite, puis des
+   depliants au filet). Structure seulement : la palette, la lettre, les
+   rayons et les filets sont ceux de cette maison.
+   ========================================================================= */
+.fiche{
+  display:grid; grid-template-columns:1fr 440px; gap:calc(var(--u)*8);
+  align-items:start; max-width:var(--largeur); margin-inline:auto;
+  padding:calc(var(--tete-h) + var(--u)*6) var(--marge) calc(var(--u)*10);
+}
+/* la colonne des images : la vue principale, puis le detail */
+.fiche__images{ display:grid; gap:calc(var(--u)*2); position:sticky; top:calc(var(--tete-h) + var(--u)*3); }
+/* les deux colonnes collent : la plus courte attend la plus longue */
+.fiche__detail{ display:grid; grid-template-columns:1fr 1fr; gap:calc(var(--u)*2); }
+/* le detail du medaillon : la meme photo, recadree par la feuille, aucun
+   fichier de plus. Un carre, l image agrandie autour du medaillon. */
+.figure__cadre{ position:relative; aspect-ratio:1/1; overflow:hidden; }
+.figure--zoom .figure__cadre img{
+  width:100%; height:100%; aspect-ratio:auto; object-fit:cover;
+  object-position:50% 60%; transform:scale(2.3); transform-origin:50% 61%;
+}
+.figure--zoom-bas .figure__cadre img{ object-position:50% 78%; transform-origin:50% 78%; }
+/* la fiche collante, a droite */
+.fiche__achat{ position:sticky; top:calc(var(--tete-h) + var(--u)*3); }
+.fiche__achat .vente__nom{ margin-top:calc(var(--u)*1); }
+.fiche__achat .vente__prix{ margin-top:calc(var(--u)*3); }
+.fiche__achat .vente__note{ margin-top:calc(var(--u)*1.5); }
+/* la commande : la quantite et le bouton, sur une ligne */
+.fiche__commande{
+  display:grid; grid-template-columns:auto 1fr; gap:calc(var(--u)*1.5);
+  align-items:stretch; margin-top:calc(var(--u)*4);
+}
+.fiche__qte{ display:grid; gap:4px; }
+.fiche__qte span{ font-size:10px; letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun); }
+.fiche__qte select{ width:auto; min-width:72px; height:54px; padding:0 14px; }
+.fiche__commande .b-plein{ align-self:end; }
+/* les autres bouteilles : deux disques, comme les variations d une piece.
+   De vrais cercles : la meme largeur et la meme hauteur. */
+.fiche__autres{ display:flex; align-items:center; gap:calc(var(--u)*1.5); margin-top:calc(var(--u)*4); }
+.fiche__autres-l{ font-size:10px; letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun); margin-right:calc(var(--u)*1); }
+.fiche__autre{
+  display:block; width:48px; height:48px; border-radius:50%; overflow:hidden; /* 48 x 48 : un vrai cercle */
+  border:1px solid var(--filet); background:var(--papier); flex:none;
+  transition:border-color var(--t-court) var(--courbe);
+}
+.fiche__autre img{ width:100%; height:100%; object-fit:cover; object-position:50% 45%; transform:scale(1.9); transform-origin:50% 52%; mix-blend-mode:multiply; display:block; }
+.fiche__autre:hover,.fiche__autre:focus-visible{ border-color:var(--encre); }
+/* les depliants : un filet, un titre, le chevron de la maison (un trait) */
+.depli{ border-bottom:1px solid var(--filet); }
+.fiche__deplis{ margin-top:calc(var(--u)*5); border-top:1px solid var(--filet); }
+.depli summary{
+  list-style:none; cursor:pointer; padding:calc(var(--u)*2) 0;
+  display:flex; justify-content:space-between; align-items:center; gap:calc(var(--u)*2);
+  font-size:15px; color:var(--encre);
+}
+.depli summary::-webkit-details-marker{ display:none; }
+.depli summary::after{
+  content:""; width:8px; height:8px; flex:none;
+  border-right:1px solid var(--brun); border-bottom:1px solid var(--brun);
+  transform:rotate(45deg) translateY(-2px); transition:transform var(--t-court) var(--courbe);
+}
+.depli[open] summary::after{ transform:rotate(-135deg) translateY(-2px); }
+.depli__corps{ padding:0 0 calc(var(--u)*3); font-size:15px; line-height:1.55; color:var(--encre); }
+.depli__corps p{ margin-bottom:var(--u); }
+.depli__corps .faits{ margin-top:0; }
+.depli__corps .faits__k{ padding:calc(var(--u)*1.25) 0; }
+.depli__corps .faits__v{ padding:calc(var(--u)*1.25) 0; font-size:15px; }
+.depli__corps .faits__l{ grid-template-columns:140px 1fr; gap:calc(var(--u)*2); }
+/* dans une carte de la boutique : la quantite et le bouton, la meme ligne */
+.grille__pied .fiche__commande{ margin-top:calc(var(--u)*3); max-width:40ch; margin-inline:auto; text-align:left; }
+
+@media (max-width:1000px){
+  .fiche{ grid-template-columns:1fr; gap:calc(var(--u)*5); padding-top:calc(var(--tete-h) + var(--u)*3); }
+  .fiche__achat,.fiche__images{ position:static; }
+}
+@media (max-width:640px){
+  .depli__corps .faits__l{ grid-template-columns:1fr; gap:2px; }
+}
+
+/* =========================================================================
+   LA QUANTITE ET LE BOUTON D ACHAT (16 aout soir, Raouf : "les details doivent
+   suivre la ligne du site"). Plus de liste deroulante en boite : un compteur
+   de deux vrais cercles au filet d encre, le nombre entre les deux, et le
+   bouton plein a angles nets, meme hauteur (48 px), meme ligne.
+   ========================================================================= */
+.qte{ display:inline-flex; align-items:center; gap:8px; height:48px; }
+.qte__b{
+  width:32px; height:32px; border-radius:50%; flex:none;      /* un vrai cercle */
+  border:1px solid var(--encre); background:none; color:var(--encre);
+  font:inherit; font-size:18px; line-height:1; padding:0; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center;
+  transition:background var(--t-court) var(--courbe), color var(--t-court) var(--courbe);
+}
+.qte__b:hover,.qte__b:focus-visible{ background:var(--encre); color:var(--papier); outline:none; }
+.qte__b[disabled]{ border-color:var(--filet); color:#A9A9AE; background:none; cursor:default; }
+.qte__v{
+  width:34px; text-align:center; border:0; background:none; padding:0; height:auto;
+  font:inherit; font-size:17px; color:var(--encre); border-radius:0;
+}
+.qte__v:focus{ outline:none; }
+.fiche__qte{ display:grid; gap:6px; }
+.fiche__qte > span{ font-size:10px; letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun); }
+.fiche__commande{ align-items:end; }
+.fiche__commande .b-plein{ min-height:48px; height:48px; border-radius:var(--rond-net); font-size:11px; letter-spacing:.18em; }
+a.figure__lien{ display:block; border:0; margin:0; padding:0; }   /* le lien qui enveloppe une photo (rien a voir avec le petit lien de legende .figure__lien en span) */
+a.figure__lien img{ transition:transform var(--t-court) var(--courbe); }
+a.figure__lien:hover img{ transform:scale(1.015); }
+.grille__liens{ display:flex; justify-content:center; gap:26px; margin-top:calc(var(--u)*2.5); }
+
+/* =========================================================================
+   LES TUILES DE PRODUIT, comme une liste Hermes / Alaya (Raouf, 16 aout,
+   23h50) : pas de cadre, pas de boite, pas de filet qui court sur toute la
+   largeur. La bouteille pose sur le papier dans un carre, le nom dessous,
+   l agave, puis le prix ou le lien ; au survol le nom se souligne. Vaut pour
+   la rangee de photos (.figures), la grille de la boutique et la grille des
+   trois agaves.
+   ========================================================================= */
+.figures .figure, .figure--grille, .figure--vente{
+  border:0; border-radius:0; background:transparent; overflow:visible;
+}
+.figures .figure img{ aspect-ratio:1/1; object-fit:contain; }
+.figures .figure figcaption{ border-top:0; padding:calc(var(--u)*2) 0 0; }
+.figures a:hover .figure{ border-color:transparent; }
+.figures a:hover .figure__nom{ text-decoration:underline; text-underline-offset:5px; text-decoration-thickness:1px; }
+.grille{ gap:calc(var(--u)*4); background:transparent; }
+.grille__c{ min-height:0; }
+.grille__media{ padding:calc(var(--u)*2); }
+.grille__media::after{ display:none; }
+.grille__pied{ border-top:0; text-align:center; padding:calc(var(--u)*2) 0 calc(var(--u)*4); }
+.grille__c:hover .grille__nom{ text-decoration:underline; text-underline-offset:5px; text-decoration-thickness:1px; }
+.grille__pied .fiche__commande{ margin-inline:auto; justify-content:center; }
+.grille .figure--vente{ max-width:none; }
+.grille .figure--vente img{ aspect-ratio:1/1; object-fit:contain; }
+/* aucune photo dans une boite : ni cadre, ni rayon, ni fond, ou que soit la figure (Raouf, 23h55) */
+.figure, .figure--scene, .figure--zoom, .figure__cadre{ border:0 !important; border-radius:0 !important; background:transparent !important; box-shadow:none !important; }
+.figures a:hover .figure, .figures a:focus-visible .figure{ border-color:transparent; }
+
+/* la carte dessinee (points de vente) : encre sur papier, la fleur du sceau comme epingle, une onde lente en brique */
+.carte{ margin:calc(var(--u)*4) 0 0; max-width:1000px; }
+.carte img,.carte svg{ display:block; width:100%; height:auto; border:1px solid var(--filet); }
+.carte figcaption{ font-size:13px; color:var(--brun); margin-top:calc(var(--u)*1.5); }
+.carte__onde{ transform-origin:center; transform-box:fill-box; animation:carte-onde 2.8s ease-out infinite; }
+@keyframes carte-onde{ 0%{ transform:scale(1); opacity:.7 } 100%{ transform:scale(2.2); opacity:0 } }
+@media (prefers-reduced-motion:reduce){ .carte__onde{ animation:none; opacity:0 } }
+
+/* la page d achat, une par bouteille (Raouf, 17 aout 00h40 : chaque bouteille a son espace, pas une variation de pierre).
+   L agave de la bouteille en tete de fiche, un recit propre, le filet a la couleur de la bouteille, trois vues pleines. */
+.fiche__images .figure--pleine img{ aspect-ratio:1999/1493; }
+.fiche__images .fiche__detail .figure img{ aspect-ratio:4/3; }
+.fiche__images .figure figcaption{ border-top:0; padding:8px 0 0; text-align:left; letter-spacing:.14em; }
+.fiche__agave{ width:96px; height:96px; margin:0 0 calc(var(--u)*2); }
+.fiche__agave .embleme{ margin:0; display:block; }
+.vente__recit{ margin-top:calc(var(--u)*2); font-size:16px; line-height:1.6; color:var(--encre); max-width:38ch; }
+.fiche__achat .vente__filet{ height:1px; width:56px; margin-top:calc(var(--u)*2); }
+/* la mention "Dans le panier : n" sous le bouton : petite, calme, alignee sur le bloc de commande, jamais collee au bouton */
+.mention[data-etat]{ display:block; margin:12px 0 0; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--brun); text-align:left; }
+.grille__pied .mention[data-etat]{ max-width:40ch; margin-inline:auto; }
+.mention[data-etat] span+span{ margin-left:4px; color:var(--encre); }
+.grille__pied .mention[data-etat]{ text-align:center; padding:0; }
+.pied__droite{ display:flex; flex-direction:column; align-items:flex-end; gap:calc(var(--u)*2); }
+.pied__droite .pied__reseaux{ margin-left:0; margin-right:-10px; justify-content:flex-end; margin-top:0; }
+@media (max-width:1000px){ .pied__droite{ align-items:flex-start; } .pied__droite .pied__reseaux{ justify-content:flex-start; margin-right:0; margin-left:-10px; } }
+
+/* =========================================================================
+   LE PIED DE PAGE AU TELEPHONE (Raouf, 17 aout 00h45) : serre, aligne, sans
+   trous. Le sceau plus petit, la ligne du lieu, les quatre liens sur une
+   grille de deux colonnes, les deux icones, le filet, la ligne legale.
+   ========================================================================= */
+@media (max-width:700px){
+  .pied{ padding:calc(var(--u)*6) var(--marge) calc(var(--u)*5); }
+  .pied__boite{ grid-template-columns:1fr; gap:calc(var(--u)*3); padding:0; }
+  .pied__sceau{ width:104px; height:74px; margin-bottom:calc(var(--u)*1.5); }
+  .pied__marque{ margin-top:calc(var(--u)*1); font-size:11px; letter-spacing:.14em; }
+  .pied__droite{ align-items:flex-start; gap:calc(var(--u)*2.5); width:100%; }
+  .pied__nav{ display:grid; grid-template-columns:1fr 1fr; gap:calc(var(--u)*1.5) calc(var(--u)*3); width:100%; justify-content:flex-start; }
+  .pied__nav a{ font-size:11px; letter-spacing:.14em; padding-bottom:2px; }
+  .pied__droite .pied__reseaux{ margin:0 0 0 -10px; justify-content:flex-start; }
+  .pied__legal{ padding-top:calc(var(--u)*2.5); font-size:11px; line-height:1.5; gap:6px; }
+}
+
+/* =========================================================================
+   LE PIED DE PAGE, refait le 17 aout (00h50). Cinq colonnes au bureau : le
+   sceau et le lieu, trois listes, le courrier ; dessous le filet et la ligne
+   legale avec les pages de droit. Au telephone : le sceau, puis les listes en
+   deux colonnes, puis le courrier, puis la ligne legale. Une encre brune, la
+   creme, des filets, rien d autre.
+   ========================================================================= */
+.pied{ padding:calc(var(--u)*9) var(--marge) calc(var(--u)*5); }
+.pied__boite{ grid-template-columns:1.3fr 1fr 1fr 1.1fr 1fr; gap:calc(var(--u)*4) calc(var(--u)*5); align-items:start; }
+.pied__gauche .pied__sceau{ width:112px; height:79px; margin-bottom:calc(var(--u)*2); }
+.pied__marque{ font-size:11px; letter-spacing:.14em; margin-top:0; }
+.pied__titre{ font-family:var(--slab); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--brun); opacity:.75; margin:0 0 calc(var(--u)*1.5); }
+.pied__liste{ display:grid; gap:9px; }
+.pied__liste a{ font-family:var(--serif); font-size:14px; letter-spacing:0; text-transform:none; color:var(--encre); text-decoration:none; border-bottom:1px solid transparent; width:max-content; transition:border-color var(--t-court) var(--courbe); }
+.pied__liste a:hover{ border-bottom-color:var(--encre); }
+.pied__col--suivre .pied__reseaux{ margin:0 0 calc(var(--u)*1.5) -10px; justify-content:flex-start; }
+.pied__adresse{ font-family:var(--serif); font-size:13px; line-height:1.5; color:var(--brun); }
+.pied__legal{ grid-column:1/-1; display:flex; justify-content:space-between; gap:calc(var(--u)*3); border-top:1px solid var(--filet); padding-top:calc(var(--u)*2.5); margin-top:calc(var(--u)*2); font-size:11px; letter-spacing:.04em; }
+.pied__droit{ display:flex; flex-wrap:wrap; gap:calc(var(--u)*2.5); }
+.pied__droit a{ color:var(--brun); text-decoration:none; border-bottom:1px solid transparent; }
+.pied__droit a:hover{ border-bottom-color:var(--brun); }
+.pied__nav{ display:none; }
+@media (max-width:1000px){
+  .pied__boite{ grid-template-columns:1fr 1fr; }
+  .pied__gauche{ grid-column:1/-1; }
+  .pied__col--suivre{ grid-column:1/-1; }
+}
+@media (max-width:700px){
+  .pied{ padding:calc(var(--u)*6) var(--marge) calc(var(--u)*4); }
+  .pied__boite{ grid-template-columns:1fr 1fr; gap:calc(var(--u)*3.5) calc(var(--u)*3); }
+  .pied__gauche{ grid-column:1/-1; display:flex; align-items:center; gap:calc(var(--u)*2); }
+  .pied__gauche .pied__sceau{ width:84px; height:59px; margin:0; }
+  .pied__col--suivre{ grid-column:1/-1; display:flex; align-items:center; gap:calc(var(--u)*2); flex-wrap:wrap; }
+  .pied__col--suivre .pied__titre{ margin:0; }
+  .pied__col--suivre .pied__reseaux{ margin:0; }
+  .pied__adresse{ width:100%; }
+  .pied__legal{ flex-direction:column; gap:calc(var(--u)*1.5); }
+}
+
+/* le pied allege (17 aout 00h55) : trois colonnes, sceau + lieu / une ligne de liens / le courrier */
+.pied__boite--simple{ grid-template-columns:auto 1fr auto; gap:calc(var(--u)*4) calc(var(--u)*6); align-items:center; }
+.pied__boite--simple .pied__nav{ display:flex; flex-wrap:wrap; justify-content:center; gap:calc(var(--u)*2) calc(var(--u)*4); }
+.pied__boite--simple .pied__nav a{ font-family:var(--slab); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--brun); }
+.pied__boite--simple .pied__reseaux{ margin:0; justify-content:flex-end; }
+.pied__boite--simple .pied__gauche{ display:flex; align-items:center; gap:calc(var(--u)*2.5); }
+.pied__boite--simple .pied__sceau{ width:88px; height:62px; margin:0; }
+.pied__boite--simple .pied__marque{ margin:0; }
+@media (max-width:1000px){
+  .pied__boite--simple{ grid-template-columns:1fr; gap:calc(var(--u)*3); align-items:start; }
+  .pied__boite--simple .pied__nav{ justify-content:flex-start; display:grid; grid-template-columns:1fr 1fr; gap:calc(var(--u)*1.5) calc(var(--u)*3); }
+  .pied__boite--simple .pied__reseaux{ justify-content:flex-start; margin-left:-10px; }
+}
+
+/* =========================================================================
+   RETOUR AU PREMIER PIED DE PAGE (Raouf, 17 aout 01h05). Ces regles annulent
+   les essais de la nuit : deux colonnes, le sceau grand a gauche, les quatre
+   liens a droite sur une ligne avec le courrier dessous, le filet, la ligne
+   legale et les pages de droit.
+   ========================================================================= */
+.pied{ padding:calc(var(--section)*.8) var(--marge) calc(var(--section)*.7); }
+.pied__boite{ grid-template-columns:1fr auto; gap:calc(var(--u)*6); align-items:start; }
+.pied__boite > div:first-child .pied__sceau, .pied__sceau{ width:150px; height:106px; opacity:.85; margin-bottom:calc(var(--u)*3); }
+.pied__marque{ font-size:var(--t-petit); letter-spacing:var(--ls-petit); margin-top:calc(var(--u)*1); }
+.pied__nav{ display:flex; flex-wrap:wrap; gap:calc(var(--u)*4); justify-content:flex-end; }
+.pied__nav a{ font-family:var(--slab); font-size:var(--t-petit); letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun); }
+.pied__droite{ display:flex; flex-direction:column; align-items:flex-end; gap:calc(var(--u)*2); }
+.pied__droite .pied__reseaux{ margin:0 -10px 0 0; justify-content:flex-end; }
+.pied__legal{ grid-column:1/-1; display:flex; justify-content:space-between; gap:calc(var(--u)*3); border-top:1px solid var(--filet); padding-top:calc(var(--u)*3); margin-top:0; font-size:var(--t-micro); letter-spacing:.06em; }
+@media (max-width:1000px){
+  .pied{ padding:calc(var(--u)*6) var(--marge) calc(var(--u)*5); }
+  .pied__boite{ grid-template-columns:1fr; gap:calc(var(--u)*4); }
+  .pied__sceau{ width:104px; height:74px; margin-bottom:calc(var(--u)*1.5); }
+  .pied__droite{ align-items:flex-start; }
+  .pied__nav{ justify-content:flex-start; gap:calc(var(--u)*1.5) calc(var(--u)*3); }
+  .pied__droite .pied__reseaux{ margin:0 0 0 -10px; justify-content:flex-start; }
+  .pied__legal{ flex-direction:column; gap:calc(var(--u)*1.5); }
+}
+
+/* la galerie de la page d achat (17 aout 01h10) : la grande vue, deux vignettes que l on presse pour changer la vue, puis les deux autres bouteilles a choisir */
+.galerie img.galerie__grande{ aspect-ratio:4/3; object-fit:contain; }
+.galerie__vignettes{ display:flex; gap:calc(var(--u)*2); margin-top:calc(var(--u)*1); }
+.galerie__v{ width:96px; height:72px; padding:0; border:1px solid var(--filet); background:#fff; cursor:pointer; border-radius:var(--rond-net); overflow:hidden; transition:border-color var(--t-court) var(--courbe); }
+.galerie__v img{ width:100%; height:100%; object-fit:contain; display:block; }
+.galerie__v:hover,.galerie__v.est-active{ border-color:var(--encre); }
+.fiche__autres2{ margin-top:calc(var(--u)*5); border-top:1px solid var(--filet); padding-top:calc(var(--u)*3); }
+.fiche__autres2-l{ display:grid; grid-template-columns:1fr 1fr; gap:calc(var(--u)*3); max-width:420px; }
+.autre{ display:block; text-decoration:none; color:inherit; text-align:center; }
+.autre img{ width:100%; aspect-ratio:4/3; object-fit:contain; display:block; mix-blend-mode:multiply; }
+.autre__nom{ display:block; font-family:var(--serif); font-size:16px; margin-top:8px; color:var(--encre); }
+.autre__latin{ display:block; font-family:var(--serif); font-style:italic; font-size:13px; color:var(--brun); margin-top:2px; }
+.autre:hover .autre__nom{ text-decoration:underline; text-underline-offset:4px; }
+.mention[data-etat][hidden]{ display:none; }

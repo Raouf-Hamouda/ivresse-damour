@@ -1,0 +1,38 @@
+{
+  "caractere": "V",
+  "code": 86,
+  "nom_unicode": "LATIN CAPITAL LETTER V",
+  "d": "M201.9 273.4C203.7 249.1 191.6 294.8 199.6 272.7L250 91.8C254.1 71.6 247.8 54.4 243.3 35.1C241.2 26 237.8 8.4 243.1 0L461.7 0C466.5 18.4 457.6 42.2 453.9 59.9C451.6 70.9 450.1 82.7 452.5 93.6L502.9 275C506.9 289.1 490.4 302.8 497.2 327.2C503.9 351.1 524.9 354.2 528.8 368L604.6 640.7C613.2 655 641.1 673.9 635.6 691.9C630.9 699 621.6 700 613.9 700L460.9 700C447 699.7 424.6 701.2 417 686.8C418.6 676.1 424.9 667.4 430 658.1C436.1 647.2 445.9 633.6 446.6 621L356.5 297.1C348.5 298.1 340.6 311.9 338.9 318.8C333.1 342.3 328.1 365.9 321.4 389.3L258.9 613.9C258.2 629.5 266.2 644.6 273.6 658.1C278.5 667 287.3 677.5 285.9 688.2C277.4 702 252.3 699.6 238.2 700L116.7 700C102.2 700.3 80.4 703.8 68.8 693.2C63.7 683.9 70.5 673.2 75.8 665.4C90.2 644.1 102.2 623.4 111.3 599.1L175.6 368C179.4 354.2 200.5 351.1 207.2 327.2C214 302.8 197.5 289.1 201.5 275L201.9 273.4Z",
+  "avance": 703,
+  "bornes": [
+    67.0,
+    0.0,
+    636.3,
+    700.8
+  ],
+  "noeuds": {
+    "contours": 1,
+    "segments": 32,
+    "droites": 10
+  },
+  "largeur_de_fut": {
+    "mediane": 151.72,
+    "min": 151.54,
+    "max": 151.74,
+    "etendue": 0.2,
+    "mesures": 30
+  },
+  "garde": [
+    "renflement de mi-hauteur, sommet y=322, 19.5 unites vers l'exterieur, sur les deux obliques exterieures",
+    "pied en dalle, une seule face plate posee sur y=0, l'apex n'est pas pointu",
+    "les deux empattements du haut sont coupes en biais vers l'interieur",
+    "l'oblique gauche est plus couchee que l'oblique droite dans le sceau : l'ecart de 1.3 degre a ete corrige, la lettre est symetrique"
+  ],
+  "notes": "V du sceau, IVRESSE de l'arc. Nettoye selon CONTRAT_NETTOYAGE.md du 16 aout 2026. Quatre obliques redressees a l'angle mesure, faces d'empattement plates et posees, axe vertical retabli, renflement de mi-hauteur repose proprement. 53 segments -> 32, 56 inversions de courbure -> 24, fut de 151.6 (etendue 3.4) -> 151.7 (etendue 0.2).",
+  "repere": {
+    "upm": 1000,
+    "cap": 700,
+    "pied": 0,
+    "y": "vers le haut"
+  }
+}

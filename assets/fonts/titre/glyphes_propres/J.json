@@ -1,0 +1,40 @@
+{
+  "caractere": "J",
+  "code": 74,
+  "nom_unicode": "LATIN CAPITAL LETTER J",
+  "d": "M365.7 700C346.1 700 334.3 699.5 334.3 689C334.3 656 368.6 681.8 368.6 530L368.6 368C368.6 354.2 349.1 345.9 349.1 322C349.1 297.6 368.6 289.1 368.6 275L368.6 178C368.6 171.5 353.2 141.8 298.7 141.8C244.2 141.8 228.8 171.5 228.8 178L228.8 212.8C228.8 215.4 226.3 217.3 223.8 216.7C182 193.2 137.1 181.3 89.2 181C82.6 179.2 78 173.3 78 166.5C78 134.9 126.6 -9 298.7 -9C470.8 -9 519.4 144.3 519.4 178L519.4 275C519.4 289.1 538.9 297.6 538.9 322C538.9 345.9 519.4 354.2 519.4 368L519.4 530C519.4 681.8 553.7 656 553.7 689C553.7 699.5 541.9 700 522.3 700L365.7 700Z",
+  "avance": 660,
+  "bornes": [
+    78.0,
+    -9.0,
+    553.7,
+    700.0
+  ],
+  "noeuds": {
+    "contours": 1,
+    "segments": 21,
+    "droites": 6
+  },
+  "largeur_de_fut": {
+    "mediane": 150.8,
+    "min": 150.8,
+    "max": 150.8,
+    "etendue": 0.0,
+    "mesures": 41
+  },
+  "garde": [
+    "le crochet vient du bas du U : meme quart de ronde, meme aplatissement du fond, le J n'a pas de queue courte",
+    "la terminaison du crochet reste coupee en biais, montante vers l'interieur, avec son bec : coin exterieur arrondi de 15, pointe interieure de 4, cut a 20 degres",
+    "le creux de cette coupe, 9 unites de concavite : il valait 20 dans le trace d'origine, au dessus du seuil de bruit, c'est un geste de la main, il est refait propre et non supprime",
+    "le cran de mi-hauteur, refait au canon de la famille, sur les deux bords du fut",
+    "le bas du crochet descend a -9 comme toutes les rondes, le haut se pose a plat sur 700",
+    "le crochet reste dissymetrique par rapport au fut : son axe est a x=298.7, celui du fut a x=444"
+  ],
+  "notes": "J dessine a la main d'apres le sceau, crochet pris au bas du U. Nettoye selon CONTRAT_NETTOYAGE.md du 16 aout 2026. Trois defauts de fabrication enleves : les deux marches en escalier laissees par le decoupage du U, l'une sur le bord droit a y=196 (25 unites), l'autre sur le bord gauche a y=252 (26 unites) ; et l'ecrasement horizontal du J, qui etait un U reduit de 11 pour cent en largeur seulement et donnait un fut de 130.9, sous le minimum de 145 du chapitre 2.1. Le fut est remis au poids du U dont le J vient, 150.8, en rentrant le bord interieur : l'enveloppe exterieure et la chasse ne bougent pas, largeur 475.9 -> 475.7, avance 660. L'empattement du haut est exactement celui du I, dalle absolue de 219.4, face plate posee sur 700. Les deux quarts de ronde du crochet ont ete ajustes sur le flanc gauche mesure du J d'origine (k1=0.78, k2=0.18, ecart type 0.40 unite) ; le contrepoincon est le meme quart rentre de l'epaisseur du trait, ce qui tient le crochet entre 143.6 et 150.8 d'epaisseur perpendiculaire, dans la respiration de 8 unites admise pour les rondes. 32 segments et 28 inversions de courbure deviennent 21 et 10, le fut passe de 130.9 avec 32 unites de variation a 150.8 avec 0.0. Bornes -9 en bas, ou le J est rond, et 700 en haut, ou il est plat : verifier() n'a qu'un seul drapeau plat/rond et signale donc le sommet, c'est le chapitre 1 qui tranche, pas le drapeau.",
+  "repere": {
+    "upm": 1000,
+    "cap": 700,
+    "pied": 0,
+    "y": "vers le haut"
+  }
+}

@@ -1,0 +1,260 @@
+IVRESSE TITRE
+La capitale de titre de la maison IVRESSE D'AMOUR / TOLOACHE LEGITIMO
+Dossier : assets/fonts/titre/            Etat au 16 aout 2026
+
+
+CE QUE C'EST
+============
+
+Le sceau que la famille a dessine porte trente lettres : IVRESSE D'AMOUR sur
+l'arc, TOLOACHE et LEGITIMO en dessous. Quinze lettres differentes, plus
+l'apostrophe. Ce dossier prend ces contours tels quels et complete l'alphabet
+autour d'eux, dans la meme main, jusqu'a en faire une police utilisable pour
+le nom de la maison, les titres de page, les noms de bouteille et le menu.
+
+La source unique est assets/js/logo.js, le trace vectoriel du fichier de la
+famille. Aucun autre fichier du site n'est lu ni modifie. Rien n'est ecrit
+hors de ce dossier.
+
+
+LES FICHIERS
+============
+
+  SPECIMEN.html               la planche. Double clic, elle s'ouvre.
+  alphabet_titre.js           les glyphes en chemins SVG + le calage d'une
+                              chaine. Le site peut composer un titre
+                              aujourd'hui, sans aucun fichier de police.
+  IvresseTitre-Regular.otf    la police, 167 glyphes, CFF, crenage en GPOS.
+  IvresseTitre-Regular.woff2  la meme, pour le web.
+  build_font.py               le script qui fabrique tout. Relancable.
+  compile_otf.py              l'assemblage du fichier de police.
+  LISEZ_MOI.txt               ce fichier.
+
+
+LE REPERE
+=========
+
+  cadratin              1000
+  hauteur de capitale    700   (relevee : 40.0 unites natives dans TOLOACHE
+                                et LEGITIMO, 45.9 dans l'arc)
+  ligne de pied            0
+  debord des rondes        9   (le O du sceau descend de 0.5 unite native)
+  jambages                -190 (virgule, parentheses, queue du Q)
+  sommet des accents     900
+  pas de bas de casse. Les codes minuscules renvoient a la capitale.
+
+Poids releves au scan sur les quinze lettres du sceau, en unites de police :
+
+  fut vertical           152   (E 159, L 155, T 153, R 152, M 151, H 149)
+  renflement a mi-fut    175
+  empattement, largeur   216   (I 209, A 211, M 171)
+  empattement, pointe    112   (l'extremite meme est retrecie : c'est un coin,
+                                pas un rectangle)
+  traverse fine          118   (H 116, A 118)
+  bras du E              158   (releve 152 a 176)
+  bras median du E       112   (releve 102)
+  flanc d'une ronde      178   (O : 176 et 179)
+  haut d'une ronde       154   (O : 155 et 156)
+  oblique                164   (V 165, A 158)
+
+Approches. Les blancs entre les lettres du sceau ont ete mesures un par un :
+T|O 178, O|L 206, L|O 169, O|A 153, A|C 156, C|H 219, H|E 207, L|E 207,
+E|G 191, G|I 222, I|T 207, T|I 207, I|M 205, M|O 199. Les approches de la
+police sont calees dessus, c'est pourquoi TOLOACHE et LEGITIMO composes dans
+la police font la meme longueur que dans le sceau.
+
+
+GLYPHE PAR GLYPHE
+=================
+
+LA MAIN DE LA FAMILLE, contour repris tel quel
+----------------------------------------------
+Redressement : mise a l'echelle sur une capitale de 700 et pose sur la ligne
+de pied. Pour les lettres de l'arc, une rotation exacte autour du centre du
+sceau (443, 290) de l'angle de leur position, rien d'autre.
+
+  A   TOLOACHE, 5e chemin
+  C   TOLOACHE, 6e chemin
+  D   arc, le D de D'AMOUR, redresse de 15.7 degres
+  E   TOLOACHE, 8e chemin
+  G   LEGITIMO, 3e chemin
+  H   TOLOACHE, 7e chemin
+  I   LEGITIMO, 4e chemin
+  L   LEGITIMO, 1er chemin
+  M   LEGITIMO, 7e chemin
+  O   TOLOACHE, 2e chemin
+  R   arc, le R d'IVRESSE, redresse de 70.1 degres
+  S   arc, le premier S d'IVRESSE, redresse de 41.7 degres
+  T   LEGITIMO, 5e chemin
+  U   arc, le U d'AMOUR, redresse de 84.6 degres
+  V   arc, le V d'IVRESSE, redresse de 83.3 degres
+  '   arc, l'apostrophe de D'AMOUR (sert aussi a " et a ' typographique)
+
+Variantes du sceau non retenues, gardees dans le script : le 2e S et le 2e E
+de l'arc, le R d'AMOUR (visiblement plus large), le A, le M, le O, le E et le
+I de l'arc, le 2e O et le L de TOLOACHE, le 2e I et le O de LEGITIMO. Le choix
+s'est fait a l'oeil, sur la nettete du trace.
+
+DESSINEES PAR MOI, dans cette main
+-----------------------------------
+Regle suivie : jamais un etirement ni un miroir d'une lettre existante. Quand
+une piece de la famille existe et convient telle quelle (un fut empatte, un
+bras de E, le fond d'un U), elle est reprise ; le reste est dessine au poids
+releve ci-dessus.
+
+  B   fut du I de la famille (avec ses deux empattements) + deux panses
+      dessinees, fermees comme la panse du D.
+  F   le E de la famille, bras du bas retire, soude a mi-fut sur le pied du I
+      de la famille. Bras du haut et bras median : ceux du E, intacts.
+  J   le fond du U de la famille (le crochet), sa remontee gauche rabotee et
+      coupee en biais, monte sur le fut du I de la famille. Ensemble resserre
+      de 10 % en largeur.
+  K   fut du I de la famille + un bras et une jambe dessines, terminaisons en
+      coin au poids de l'empattement.
+  N   deux futs du I de la famille + une diagonale dessinee, epaisseur 182.
+  P   fut du I de la famille + une panse dessinee.
+  Q   le O de la famille + une queue dessinee, terminaison en dalle.
+  W   quatre obliques dessinees + trois empattements en coin. Le sommet du
+      milieu s'arrete sous la capitale, comme le V de la famille s'y arrete.
+  X   deux obliques dessinees + quatre empattements en coin.
+  Y   deux obliques dessinees + la partie basse du fut du I de la famille,
+      avec son pied.
+  Z   deux bras dessines avec leur ergot + une diagonale dessinee.
+
+CHIFFRES 0 a 9
+--------------
+Tous dessines. Alignes sur la capitale, tous de meme chasse (700), pour que
+les numeros de lot et de bouteille du registre s'alignent en colonne. Les
+rondes portent la meme irregularite de contour que les rondes du sceau, les
+terminaisons sont coupees net comme les bras du E, le 1 et le 4 se posent sur
+le fut du I de la famille.
+
+PONCTUATION
+-----------
+Tous dessines, sauf l'apostrophe et les guillemets droits, qui sont
+l'apostrophe de la famille. Sont fournis :
+  . , : ; ! ? un point d'exclamation et un point d'interrogation renverses
+  pour l'espagnol, - trait d'union, tiret demi-cadratin, tiret cadratin,
+  souligne, parentheses, crochets, barre oblique, barre inverse, barre
+  verticale, apostrophe, guillemets droits, guillemets courbes simples et
+  doubles, guillemets francais, chevrons simples, points de suspension, puce,
+  point median, degre, pour cent, pour mille, asterisque, plus, moins, egal,
+  inferieur, superieur, multiplie, diese, esperluette, arobase, dollar, euro,
+  livre, copyright, marque deposee.
+
+ACCENTS
+-------
+Tous dessines : grave, aigu, circonflexe, trema, tilde, rond en chef,
+cedille. Composes sur les capitales dont le site a besoin en francais, en
+espagnol et en anglais : A A A A A A, C cedille, E E E E, I I I I, N tilde,
+O O O O O, U U U U, Y aigu.
+
+
+CE QUE J'AI CORRIGE, ET POURQUOI
+================================
+
+Trois choses seulement, toutes de calage, aucune de dessin.
+
+1. Deux tailles dans le sceau. Les mots du bas sont dessines a une capitale de
+   40.0 unites natives, l'arc a 45.9. Toutes les lettres ont ete ramenees a une
+   seule capitale de 700. Sans cela un mot melangeant les deux origines aurait
+   deux hauteurs.
+
+2. Des lignes de pied qui bougent. Dans le sceau les pieds varient d'environ
+   1.5 % d'une lettre a l'autre. Toutes sont posees sur une seule ligne, avec
+   un debord unique de 9 unites pour les rondes.
+
+3. La rotation de l'arc. Chaque lettre de l'arc a ete tournee de l'angle exact
+   de sa position, ce qui est une operation reversible : la forme n'est pas
+   touchee.
+
+CE QUE JE N'AI PAS CORRIGE, VOLONTAIREMENT
+   Le petit ergot a mi-fut du I. L'ergot du bas de panse du D. L'encoche dans
+   le bras median du E. Le contre du O legerement decentre. Les contours qui
+   tremblent. Ce sont les traces de la main de la famille : les enlever ferait
+   une autre police. Le D et le R de l'arc sont sensiblement plus larges que
+   leurs voisins des mots plats ; c'est leur dessin, il reste.
+
+
+L'ETAT DU FICHIER DE POLICE, HONNETEMENT
+========================================
+
+IvresseTitre-Regular.otf se compile proprement et s'affiche dans un navigateur :
+167 glyphes, table cmap complete, crenage en GPOS pour les paires evidentes
+(AV, VA, AT, TA, LT, LV, LY, TO, TC, TG, PA, FA, RY, KO, T. V. W. Y. et les
+paires de chiffres). Il a ete verifie a l'ecran en @font-face, capitales,
+accents, ponctuation, bas de casse renvoye aux capitales, de 64 px a 14 px.
+
+Ce qui manque avant de le declarer fini :
+  - aucun hinting. En dessous de 14 px sous Windows le rendu n'a pas ete vu.
+  - aucune fonctionnalite OpenType a part le crenage. Pas de chiffres
+    alternatifs, pas de ligatures, pas de variantes contextuelles alors que le
+    sceau contient deux S, trois O et trois E differents qui feraient de bonnes
+    variantes.
+  - pas de bas de casse. C'est un choix : le sceau n'en a pas, et en inventer
+    vingt-six reviendrait a inventer plus de la moitie d'une police et a
+    l'attribuer a la famille. Les codes minuscules renvoient a la capitale,
+    donc n'importe quel texte tape se compose.
+  - le crenage n'est pas complet, il couvre les paires evidentes.
+  - les metriques verticales n'ont pas ete verifiees dans un logiciel de mise
+    en page, seulement dans un navigateur.
+
+Tant que ces points ne sont pas faits, la voie sure pour le site est
+alphabet_titre.js, qui donne exactement les memes contours sans dependre d'un
+fichier de police.
+
+
+COMMENT S'EN SERVIR
+===================
+
+En JavaScript, sans fichier de police :
+
+    <script src="assets/fonts/titre/alphabet_titre.js"></script>
+    <svg viewBox="0 0 900 120">
+      <script>document.write(titreTexte({text:"IVRESSE D'AMOUR",
+                                         size:80, x:0, y:100}));</script>
+    </svg>
+
+    window.alphabetTitre()  -> { metrics, glyphs, kern }
+    window.titreTexte({text, x, y, size, color, tracking, align, id})
+    window.titreLargeur(text, size, tracking)
+
+    size = hauteur de capitale en pixels. (x, y) = origine sur la ligne de
+    pied. tracking = interlettrage en unites de police (1000 = un cadratin).
+
+
+A COLLER LE JOUR OU RAOUF DECIDE DE BASCULER
+============================================
+
+Ecrit ici, PAS applique. assets/css/site.css n'a pas ete touche.
+
+1. La regle @font-face, a mettre en haut de assets/css/site.css :
+
+@font-face{
+  font-family:'Ivresse Titre';
+  src:url('assets/fonts/titre/IvresseTitre-Regular.woff2') format('woff2'),
+      url('assets/fonts/titre/IvresseTitre-Regular.otf') format('opentype');
+  font-weight:400; font-style:normal; font-display:swap;
+}
+
+2. La ligne unique qui fait basculer la maison dessus :
+
+:root{ --font-titre:'Ivresse Titre', Georgia, serif; }
+
+C'est tout. Rien d'autre a changer dans site.css.
+
+
+CE QUI RESTE FAIBLE
+===================
+
+  - Le D vient de l'arc et porte un ergot au bas de la panse plus un contre
+    penche. C'est le seul D que la famille ait dessine, donc il reste, mais
+    dans un mot comme ESPADIN il se voit.
+  - Le W est la lettre la moins sure. Le sceau n'a pas de W et n'a qu'un seul
+    V pour servir de reference.
+  - Le Q a une queue dessinee sans modele : c'est une invention raisonnee, pas
+    un releve.
+  - Les chiffres sont plus reguliers que les lettres. C'est voulu pour le
+    registre, mais un oeil exerce peut le voir.
+  - L'esperluette et l'asterisque sont les deux signes les plus arbitraires.
+  - Le crenage manque de paires autour des lettres dessinees (K, W, X, Y, Z).

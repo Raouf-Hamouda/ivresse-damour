@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Panier. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+</head>
+
+<!-- ============================================================================
+     LE PANIER. Les lignes, les quantites, le retrait d une ligne, le sous
+     total, et la route vers commande.html. Vide, il le dit calmement et
+     renvoie aux trois bouteilles.
+
+     LE PANIER N EST PAS REECRIT ICI. Il vit dans site.js, sous ida.panier :
+     window.siteChrome.panier.lire / ajouter / nombre / vider. Le compte du sac
+     dans l entete se met a jour tout seul quand le panier change, parce que
+     panier.ajouter appelle majPanier.
+
+     CE QUI N EST PAS DANS CETTE PAGE, ET POURQUOI.
+     Pas de champ de code de reduction : la remise de 20 % gagnee aux jeux est
+     un desaccord de fond non tranche, un constructeur ne l implemente pas et
+     ne l evoque pas. Pas de prix barre, pas de "plus que deux", pas de compte
+     a rebours, pas de seuil de livraison offerte. Le prix monte avec le temps.
+     Pas de total avec les frais d envoi : le bareme n existe pas encore, et
+     un total invente serait un mensonge. On affiche le sous total, et on dit
+     que l envoi manque.
+     ========================================================================= -->
+
+<body data-page=""
+      data-titre-fr="Panier. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="Carrito. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-en="Bag. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page">
+
+  <section class="entete-page">
+    <div class="boite">
+      <p class="kicker" data-fr="La vente" data-es="La venta" data-en="Sales"></p>
+      <h1 data-fr="Panier" data-es="Carrito" data-en="Bag"></h1>
+      <p class="chapo"
+         data-fr="Ce que vous avez mis de côté. Rien n'est réservé tant que la commande n'est pas passée."
+         data-es="Lo que ha puesto aparte. Nada queda reservado mientras el pedido no se haya hecho."
+         data-en="What you have set aside. Nothing is held until the order is placed."></p>
+    </div>
+  </section>
+
+  <!-- 02. LE PANIER PLEIN. Les lignes sont ecrites par le script du bas. -->
+  <section class="section section--filet" id="panier-plein" hidden>
+    <div class="boite">
+      <p class="kicker" data-fr="Les lignes" data-es="Las líneas" data-en="The lines"></p>
+
+      <!-- Une seule table, comme une page de registre : les lignes du panier
+           d abord, ecrites par le script, puis le compte. Deux tables l une
+           sous l autre donnaient deux filets colles, ce qui se voyait. -->
+      <dl class="faits" id="lignes">
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Sous-total" data-es="Subtotal" data-en="Subtotal"></dt>
+          <dd class="faits__v" id="sous-total"></dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Frais d'envoi" data-es="Gastos de envío" data-en="Shipping"></dt>
+          <dd class="faits__v"
+              data-fr="Selon le pays et le nombre de bouteilles. Barème : à confirmer."
+              data-es="Según el país y el número de botellas. Tarifa: por confirmar."
+              data-en="By country and number of bottles. Scale: to be confirmed."></dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Retrait" data-es="Recogida" data-en="Pickup"></dt>
+          <dd class="faits__v"
+              data-fr="Possible au restaurant de la famille, Toloache, à Paris. Le choix se fait à l'étape suivante."
+              data-es="Posible en el restaurante de la familia, Toloache, en París. La elección se hace en el paso siguiente."
+              data-en="Possible at the family restaurant, Toloache, in Paris. The choice is made at the next step."></dd>
+        </div>
+      </dl>
+
+      <p style="max-width:40ch">
+        <a class="b-plein" href="commande.html"
+           data-fr="Continuer la commande" data-es="Continuar el pedido" data-en="Continue to checkout"></a>
+      </p>
+
+      <p>
+        <button class="lien-discret" type="button" id="vider"
+                data-fr="Vider le panier" data-es="Vaciar el carrito" data-en="Empty the bag"></button>
+      </p>
+    </div>
+  </section>
+
+  <!-- 03. LE PANIER VIDE. Une phrase calme, et le chemin du retour. -->
+  <section class="section section--filet" id="panier-vide" hidden>
+    <div class="boite">
+      <div class="colonne">
+        <h2 data-fr="Le panier est vide" data-es="El carrito está vacío" data-en="The bag is empty"></h2>
+        <p data-fr="Rien n'y est encore. L'espadín se commande dès aujourd'hui. Le tobalá et le coyote sortent quand la plante le permet, et n'ont pas de prix arrêté."
+           data-es="Todavía no hay nada. El espadín se pide desde hoy. El tobalá y el coyote salen cuando la planta lo permite, y no tienen precio fijado."
+           data-en="Nothing is in it yet. Espadín can be ordered today. Tobalá and coyote appear when the plant allows it, and have no price set."></p>
+        <p>
+          <a class="lien-discret" href="les-mezcales.html"
+             data-fr="Les trois bouteilles" data-es="Las tres botellas" data-en="The three bottles"></a>
+        </p>
+        <p style="margin-top:calc(var(--u)*2)">
+          <a class="lien-discret" href="boutique.html"
+             data-fr="La boutique" data-es="La tienda" data-en="The shop"></a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04. Ce qu il faut savoir avant de continuer. Une seule section sur un
+       autre papier dans la page. -->
+  <section class="section section--creme">
+    <div class="boite">
+      <div class="colonnes-2">
+        <div>
+          <p class="kicker" data-fr="La loi" data-es="La ley" data-en="The law"></p>
+          <p data-fr="Vente réservée aux personnes ayant l'âge légal de consommer de l'alcool dans leur pays. L'expédition n'est possible que vers les pays qui l'autorisent."
+             data-es="Venta reservada a las personas con la edad legal para consumir alcohol en su país. El envío solo es posible hacia los países que lo autorizan."
+             data-en="Sale restricted to those of legal drinking age in their country. Shipping is only possible to countries that allow it."></p><!-- liste des pays a confirmer par la maison -->
+        </div>
+        <div>
+          <p class="kicker" data-fr="Le paiement" data-es="El pago" data-en="Payment"></p>
+          <!-- route technique non tranchee : site statique plus Stripe Checkout, ou plateforme -->
+          <p data-fr="Le paiement en ligne n'est pas encore ouvert. Ce panier reste dans votre navigateur et n'est envoyé nulle part."
+             data-es="El pago en línea todavía no está abierto. Este carrito se queda en su navegador y no se envía a ninguna parte."
+             data-en="Online payment is not open yet. This bag stays in your browser and is sent nowhere."></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--serre section--filet">
+    <div class="boite centre">
+      <p><a class="lien-discret" href="boutique.html" data-fr="La boutique" data-es="La tienda" data-en="The shop"></a></p>
+      <p><a class="lien-discret" href="el-registro.html" data-fr="El Registro" data-es="El Registro" data-en="El Registro"></a></p>
+      <p><a class="lien-discret" href="livraison-et-retours.html" data-fr="Livraison et retours" data-es="Envío y devoluciones" data-en="Shipping and returns"></a></p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+siteChrome.init();
+
+/* LE COMPTE DU SAC, AU CHARGEMENT.
+   site.js appelle majPanier() avant d avoir insere l entete dans le document :
+   au chargement d une page le sac affiche donc 0, meme quand le panier
+   contient deux bouteilles. On ne reecrit pas le panier pour autant, on
+   rappelle la fonction de la maison : ajouter zero ne change rien et remet le
+   compte a jour. A corriger un jour dans site.js, en deplacant l appel a
+   majPanier apres insertBefore. */
+(function(){
+  var c = window.siteChrome;
+  if(c && c.panier && c.bouteilles && c.bouteilles.length){
+    c.panier.ajouter(c.bouteilles[0].id, 0);
+  }
+})();
+</script>
+<script>
+/* ---------------------------------------------------------------------------
+   LES LIGNES DU PANIER.
+   Le panier de site.js ne garde qu un identifiant et une quantite. Le nom, le
+   latin et le prix vivent ici, une seule fois, dans l ordre de la maison.
+   Le prix de l espadin, 140 euros, est celui de acheter-espadin.html. Le
+   tobala et le coyote n en ont pas : on ne leur en invente pas un, et une
+   ligne sans prix ne compte pas dans le sous total, elle le dit.
+   ------------------------------------------------------------------------ */
+(function(){
+  var chrome = window.siteChrome;
+  if(!chrome || !chrome.panier) return;
+  var panier = chrome.panier;
+
+  var PRIX = { espadin:140, tobala:null, coyote:null };
+  var CONTENANCE = '700 ml';
+
+  var LIGNES = {
+    plein:  document.getElementById('panier-plein'),
+    vide:   document.getElementById('panier-vide'),
+    liste:  document.getElementById('lignes'),
+    total:  document.getElementById('sous-total')
+  };
+
+  /* 1 400 et non 1400 : l espace fine insecable, comme sur une facture. */
+  function euros(n){
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+  }
+
+  function bouteille(id){
+    var b = chrome.bouteilles || [];
+    for(var i=0;i<b.length;i++){ if(b[i].id === id) return b[i]; }
+    return null;
+  }
+
+  function options(q){
+    var max = Math.max(9, q), s = '', i;
+    for(i=1;i<=max;i++){
+      s += '<option value="' + i + '"' + (i === q ? ' selected' : '') + '>' + i + '</option>';
+    }
+    return s;
+  }
+
+  function ligne(id, q){
+    var b = bouteille(id);
+    if(!b) return '';
+    var prix = PRIX[id];
+    var nom = b.fr;   /* Espadín, Tobalá, Coyote : le meme mot dans les trois langues */
+
+    var droite, note = '';
+    if(prix === null || prix === undefined){
+      /* Une bouteille sans prix ne peut pas etre commandee. On ne la chiffre
+         pas, on ne la cache pas non plus : on dit pourquoi elle est la et
+         pourquoi elle ne pese pas dans le sous total. */
+      droite =
+        '<span data-fr="Prix non fixé" data-es="Precio no fijado" data-en="Price not set"></span>';
+      note =
+        '<p class="vente__note" style="margin-top:calc(var(--u)*1.5)" ' +
+          'data-fr="Sans prix arrêté, cette bouteille ne se commande pas et ne compte pas dans le sous-total." ' +
+          'data-es="Sin precio fijado, esta botella no se pide y no cuenta en el subtotal." ' +
+          'data-en="With no price set, this bottle cannot be ordered and does not count in the subtotal."></p>';
+    } else {
+      droite =
+        '<label class="sr" for="q-' + id + '" data-fr="Quantité" data-es="Cantidad" data-en="Quantity"></label>' +
+        '<select id="q-' + id + '" data-q="' + id + '" style="width:auto">' + options(q) + '</select>' +
+        '<span style="min-width:7ch;text-align:right">' + euros(prix * q) + '</span>';
+    }
+
+    return '' +
+      '<div class="faits__l" data-ligne="1">' +
+        '<dt class="faits__k">' + nom + '</dt>' +
+        '<dd class="faits__v">' +
+          '<div style="display:flex;flex-wrap:wrap;gap:calc(var(--u)*3);align-items:center;justify-content:space-between">' +
+            '<span>' +
+              '<span style="font-style:italic">' + b.latin + '</span>, ' + CONTENANCE +
+              (prix === null || prix === undefined ? '' :
+                ' · ' + euros(prix) + ' <span data-fr="l\'unité" data-es="la unidad" data-en="each"></span>') +
+            '</span>' +
+            '<span style="display:flex;gap:calc(var(--u)*2);align-items:center">' + droite + '</span>' +
+          '</div>' + note +
+          '<p style="margin-top:calc(var(--u)*1.5)">' +
+            '<button class="lien-discret" type="button" data-retirer="' + id + '" ' +
+              'data-fr="Retirer" data-es="Quitar" data-en="Remove"></button>' +
+          '</p>' +
+        '</dd>' +
+      '</div>';
+  }
+
+  function dessiner(){
+    var p = panier.lire();
+    var ordre = (chrome.bouteilles || []).map(function(b){ return b.id; });
+    var html = '', total = 0, n = 0, i, id, q;
+
+    for(i=0;i<ordre.length;i++){
+      id = ordre[i];
+      q = p[id] | 0;
+      if(q < 1) continue;
+      n += q;
+      if(typeof PRIX[id] === 'number') total += PRIX[id] * q;
+      html += ligne(id, q);
+    }
+
+    /* on n efface que les lignes du panier, le compte reste ecrit dans la page */
+    var vieilles = LIGNES.liste.querySelectorAll('[data-ligne]');
+    for(i=0;i<vieilles.length;i++){ vieilles[i].parentNode.removeChild(vieilles[i]); }
+    LIGNES.liste.insertAdjacentHTML('afterbegin', html);
+
+    LIGNES.total.textContent = euros(total);
+    LIGNES.plein.hidden = n < 1;
+    LIGNES.vide.hidden  = n > 0;
+
+    /* le HTML vient d etre injecte : on lui applique la langue courante */
+    chrome.appliquerLangue(chrome.langue(), LIGNES.plein);
+    brancher();
+  }
+
+  function brancher(){
+    var s = LIGNES.liste.querySelectorAll('[data-q]');
+    for(var i=0;i<s.length;i++){
+      s[i].addEventListener('change', function(){
+        var id = this.getAttribute('data-q');
+        var q = parseInt(this.value, 10) || 1;
+        var actuel = panier.lire()[id] | 0;
+        panier.ajouter(id, q - actuel);   /* le compte de l entete suit tout seul */
+        dessiner();
+      });
+    }
+    var r = LIGNES.liste.querySelectorAll('[data-retirer]');
+    for(var j=0;j<r.length;j++){
+      r[j].addEventListener('click', function(){
+        var id = this.getAttribute('data-retirer');
+        panier.ajouter(id, -(panier.lire()[id] | 0));
+        dessiner();
+      });
+    }
+  }
+
+  var v = document.getElementById('vider');
+  if(v) v.addEventListener('click', function(){ panier.vider(); dessiner(); });
+
+  dessiner();
+})();
+</script>
+</body>
+</html>

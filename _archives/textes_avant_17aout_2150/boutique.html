@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Boutique. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+</head>
+
+<!-- ============================================================================
+     LA BOUTIQUE. Le catalogue de la maison, demande par la famille au devis
+     (rubrique 3 et rubrique 5) et ferme par Raouf a l appel du 27 juillet,
+     lignes 74 a 78 : l achat se fait dans le site.
+
+     CE QUE CETTE PAGE NE FAIT PAS, ET POURQUOI.
+     Pas de champ de code de reduction : la remise de 20 % gagnee aux jeux est
+     un desaccord de fond non tranche, un constructeur ne l implemente pas.
+     Pas de prix barre, pas de pourcentage, pas de compte a rebours, pas de
+     "il n en reste que deux". Le prix monte avec le temps, jamais l inverse,
+     et un lot epuise reste affiche et date. Cela vient de la doctrine de la
+     maison, pas d un gout.
+     Pas de prix invente pour le tobala ni pour le coyote : ils n en ont pas.
+     Une bouteille sans prix ne va pas au panier, on ne commande pas ce qui
+     n est pas chiffre.
+     Le stock et l etat des lots ne sont pas recopies ici : ils vivent au
+     registre, et une verite recopiee finit par diverger.
+
+     LE PANIER est celui de site.js, garde par le navigateur sous ida.panier.
+     Rien n est envoye nulle part tant que la route technique n est pas
+     tranchee : statique plus Stripe Checkout, ou plateforme.
+     ========================================================================= -->
+
+<body data-page=""
+      data-titre-fr="Boutique. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="Tienda. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-en="Shop. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page">
+
+  <section class="entete-page">
+    <div class="boite">
+      <p class="kicker" data-fr="La vente" data-es="La venta" data-en="Sales"></p>
+      <h1 data-fr="Boutique" data-es="Tienda" data-en="Shop"></h1>
+      <p class="chapo"
+         data-fr="Le catalogue de la maison. L'espadín a son prix. Le tobalá et le coyote n'en ont pas encore."
+         data-es="El catálogo de la casa. El espadín tiene su precio. El tobalá y el coyote todavía no lo tienen."
+         data-en="The house catalogue. Espadín has its price. Tobalá and coyote do not have one yet."></p>
+    </div>
+  </section>
+
+  <!-- 02. Une ligne de service, sobre. Le texte de doctrine sur le prix vit dans El Registro, pas dans la boutique (Raouf, 16 aout soir). -->
+  <section class="section section--filet">
+    <div class="boite">
+      <div class="colonne">
+        <p data-fr="Trois mezcals, 700 ml, 50 % vol. Livraison en France et en Europe, détails sur la page livraison. Chaque bouteille porte son numéro écrit à la main, à retrouver dans El Registro."
+           data-es="Tres mezcales, 700 ml, 50 % vol. Envío a Francia y Europa, detalles en la página de envíos. Cada botella lleva su número escrito a mano, que se consulta en El Registro."
+           data-en="Three mezcals, 700 ml, 50 % vol. Shipping to France and Europe, details on the shipping page. Each bottle carries its handwritten number, to be looked up in El Registro."></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03. LE CATALOGUE. Trois articles. La couleur de chaque bouteille est
+       portee par --accent-c et ne parait qu au survol : jamais deux accents
+       vifs sur le meme ecran. -->
+  <div class="grille grille--trois">
+
+    <!-- ESPADIN. La seule des trois qui a un prix. -->
+    <div class="grille__c" style="--accent-c:var(--olive-etiquette)">
+      <div class="grille__media"><figure class="figure figure--grille">
+        <a href="acheter-espadin.html" class="figure__lien"><img src="assets/img/bouteilles/espadin_600.jpg" srcset="assets/img/bouteilles/espadin_600.jpg 600w, assets/img/bouteilles/espadin_1200.jpg 1200w, assets/img/bouteilles/espadin_2000.jpg 2000w" sizes="(max-width: 700px) 100vw, 33vw" loading="lazy" alt="" data-fr-alt="La bouteille d'espadín, verre vert taillé en piña, médaillon de cuivre, bouchon en cœur de feuilles." data-es-alt="La botella de espadín, vidrio verde tallado en piña, medallón de cobre, tapón en corazón de hojas." data-en-alt="The espadín bottle, green glass cut as a piña, copper medallion, stopper shaped as a heart of leaves." width="1999" height="1493"></a>
+      </figure></div>
+      <div class="grille__pied">
+        <div class="grille__nom">Espadín</div>
+        <div class="grille__latin">A. angustifolia</div>
+        <p class="vente__prix">140 €</p>
+        <p class="vente__note"
+           data-fr="700 ml. Prix de la maison, hors frais d'envoi."
+           data-es="700 ml. Precio de la casa, sin gastos de envío."
+           data-en="700 ml. House price, shipping not included."></p>
+        <div class="fiche__commande">
+          <div class="fiche__qte" data-for="qte-espadin">
+            <span data-fr="Quantité" data-es="Cantidad" data-en="Quantity"></span>
+            <div class="qte" role="group" aria-label="Quantité"><button type="button" class="qte__b" data-moins aria-label="Moins">&minus;</button><input class="qte__v" id="qte-espadin" data-qte="espadin" type="text" inputmode="numeric" value="1" readonly><button type="button" class="qte__b" data-plus aria-label="Plus">+</button></div></div>
+          <button class="b-plein" type="button" data-ajouter="espadin"
+                  data-fr="Ajouter au panier" data-es="Añadir al carrito" data-en="Add to bag"></button>
+        </div>
+        <p class="mention" data-etat="espadin" hidden>
+          <span data-fr="Dans le panier :" data-es="En el carrito:" data-en="In the bag:"></span>
+          <span data-nombre="espadin">0</span>
+        </p>
+        <p class="grille__liens"><a class="lien-discret" href="espadin.html" data-fr="La bouteille" data-es="La botella" data-en="The bottle"></a><a class="lien-discret" href="acheter-espadin.html" data-fr="Acheter" data-es="Comprar" data-en="Buy"></a></p>
+      </div>
+    </div>
+
+    <!-- TOBALA. Pas de prix, donc pas de panier. -->
+    <div class="grille__c" style="--accent-c:var(--turquesa)">
+      <div class="grille__media"><figure class="figure figure--grille">
+        <a href="acheter-tobala.html" class="figure__lien"><img src="assets/img/bouteilles/tobala_600.jpg" srcset="assets/img/bouteilles/tobala_600.jpg 600w, assets/img/bouteilles/tobala_1200.jpg 1200w, assets/img/bouteilles/tobala_2000.jpg 2000w" sizes="(max-width: 700px) 100vw, 33vw" loading="lazy" alt="" data-fr-alt="La bouteille de tobalá, verre vert taillé en piña, médaillon de cuivre, bouchon en cœur de feuilles." data-es-alt="La botella de tobalá, vidrio verde tallado en piña, medallón de cobre, tapón en corazón de hojas." data-en-alt="The tobalá bottle, green glass cut as a piña, copper medallion, stopper shaped as a heart of leaves." width="1999" height="1493"></a>
+      </figure></div>
+      <div class="grille__pied">
+        <div class="grille__nom">Tobalá</div>
+        <div class="grille__latin">A. potatorum</div>
+        <p class="vente__prix" data-fr="Prix à venir" data-es="Precio por venir" data-en="Price to come"></p>
+        <p class="vente__note"
+           data-fr="700 ml. Prix de la maison, hors frais d'envoi."
+           data-es="700 ml. Precio de la casa, sin gastos de envío."
+           data-en="700 ml. House price, shipping not included."></p>
+        <div class="fiche__commande">
+          <div class="fiche__qte" data-for="qte-tobala">
+            <span data-fr="Quantité" data-es="Cantidad" data-en="Quantity"></span>
+            <div class="qte" role="group" aria-label="Quantité"><button type="button" class="qte__b" data-moins aria-label="Moins">&minus;</button><input class="qte__v" id="qte-tobala" data-qte="tobala" type="text" inputmode="numeric" value="1" readonly><button type="button" class="qte__b" data-plus aria-label="Plus">+</button></div>
+          </div>
+          <button class="b-plein" type="button" data-ajouter="tobala"
+                  data-fr="Ajouter au panier" data-es="Añadir al carrito" data-en="Add to bag"></button>
+        </div>
+        <p class="mention" data-etat="tobala" hidden>
+          <span data-fr="Dans le panier :" data-es="En el carrito:" data-en="In the bag:"></span>
+          <span data-nombre="tobala">0</span>
+        </p>
+        <p class="grille__liens"><a class="lien-discret" href="tobala.html" data-fr="La bouteille" data-es="La botella" data-en="The bottle"></a><a class="lien-discret" href="acheter-tobala.html" data-fr="Acheter" data-es="Comprar" data-en="Buy"></a></p>
+      </div>
+    </div>
+
+    <!-- COYOTE. Pas de prix, donc pas de panier. -->
+    <div class="grille__c" style="--accent-c:var(--rosa)">
+      <div class="grille__media"><figure class="figure figure--grille">
+        <a href="acheter-coyote.html" class="figure__lien"><img src="assets/img/bouteilles/coyote_600.jpg" srcset="assets/img/bouteilles/coyote_600.jpg 600w, assets/img/bouteilles/coyote_1200.jpg 1200w, assets/img/bouteilles/coyote_2000.jpg 2000w" sizes="(max-width: 700px) 100vw, 33vw" loading="lazy" alt="" data-fr-alt="La bouteille de coyote, verre vert taillé en piña, médaillon de cuivre, bouchon en cœur de feuilles." data-es-alt="La botella de coyote, vidrio verde tallado en piña, medallón de cobre, tapón en corazón de hojas." data-en-alt="The coyote bottle, green glass cut as a piña, copper medallion, stopper shaped as a heart of leaves." width="1999" height="1493"></a>
+      </figure></div>
+      <div class="grille__pied">
+        <div class="grille__nom">Coyote</div>
+        <div class="grille__latin">A. americana</div>
+        <p class="vente__prix" data-fr="Prix à venir" data-es="Precio por venir" data-en="Price to come"></p>
+        <p class="vente__note"
+           data-fr="700 ml. Prix de la maison, hors frais d'envoi."
+           data-es="700 ml. Precio de la casa, sin gastos de envío."
+           data-en="700 ml. House price, shipping not included."></p>
+        <div class="fiche__commande">
+          <div class="fiche__qte" data-for="qte-coyote">
+            <span data-fr="Quantité" data-es="Cantidad" data-en="Quantity"></span>
+            <div class="qte" role="group" aria-label="Quantité"><button type="button" class="qte__b" data-moins aria-label="Moins">&minus;</button><input class="qte__v" id="qte-coyote" data-qte="coyote" type="text" inputmode="numeric" value="1" readonly><button type="button" class="qte__b" data-plus aria-label="Plus">+</button></div>
+          </div>
+          <button class="b-plein" type="button" data-ajouter="coyote"
+                  data-fr="Ajouter au panier" data-es="Añadir al carrito" data-en="Add to bag"></button>
+        </div>
+        <p class="mention" data-etat="coyote" hidden>
+          <span data-fr="Dans le panier :" data-es="En el carrito:" data-en="In the bag:"></span>
+          <span data-nombre="coyote">0</span>
+        </p>
+        <p class="grille__liens"><a class="lien-discret" href="coyote.html" data-fr="La bouteille" data-es="La botella" data-en="The bottle"></a><a class="lien-discret" href="acheter-coyote.html" data-fr="Acheter" data-es="Comprar" data-en="Buy"></a></p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 04. Ce qui est su, ce qui est attendu. Une seule section sur un autre
+       papier dans la page. Les rubriques 5, 6, 7, 8 et 9 du devis de la
+       famille, repondues quand la reponse existe, marquees attendues sinon. -->
+  <section class="section section--creme">
+    <div class="boite">
+      <p class="kicker" data-fr="La vente, en clair" data-es="La venta, en claro" data-en="The sale, plainly"></p>
+      <h2 data-fr="Les conditions"
+          data-es="Las condiciones"
+          data-en="The terms"></h2>
+
+      <dl class="faits">
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Âge" data-es="Edad" data-en="Age"></dt>
+          <dd class="faits__v"
+              data-fr="Vente réservée aux personnes ayant l'âge légal de consommer de l'alcool dans leur pays."
+              data-es="Venta reservada a las personas con la edad legal para consumir alcohol en su país."
+              data-en="Sale restricted to those of legal drinking age in their country."></dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Livraison" data-es="Envío" data-en="Shipping"></dt>
+          <dd class="faits__v"
+              data-fr="France, Union européenne, international, vers les seuls pays où l'expédition d'alcool est autorisée."
+              data-es="Francia, Unión Europea, internacional, solo hacia los países donde se autoriza el envío de alcohol."
+              data-en="France, European Union, international, to the countries where shipping alcohol is allowed only."></dd><!-- liste des pays a etablir avec la maison, a confirmer -->
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Retrait" data-es="Recogida" data-en="Pickup"></dt>
+          <dd class="faits__v"
+              data-fr="Au restaurant de la famille, Toloache, à Paris. Adresse et horaires : à confirmer."
+              data-es="En el restaurante de la familia, Toloache, en París. Dirección y horarios: por confirmar."
+              data-en="At the family restaurant, Toloache, in Paris. Address and hours: to be confirmed."></dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Frais d'envoi" data-es="Gastos de envío" data-en="Shipping cost"></dt>
+          <dd class="faits__v"
+              data-fr="Calculés au nombre de bouteilles, au poids et au pays. Barème : à confirmer."
+              data-es="Calculados por número de botellas, peso y país. Tarifa: por confirmar."
+              data-en="Calculated by number of bottles, weight and country. Scale: to be confirmed."></dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Paiement" data-es="Pago" data-en="Payment"></dt>
+          <dd class="faits__v"
+              data-fr="Le paiement en ligne n'est pas encore ouvert. Aucune commande n'est prise pour l'instant."
+              data-es="El pago en línea todavía no está abierto. Por ahora no se toma ningún pedido."
+              data-en="Online payment is not open yet. No order is taken for now."></dd><!-- route technique non tranchee : site statique plus Stripe Checkout, ou plateforme -->
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Facture" data-es="Factura" data-en="Invoice"></dt>
+          <dd class="faits__v"
+              data-fr="Numérotée, envoyée par courriel. TVA et droits d'accise selon le pays de livraison."
+              data-es="Numerada, enviada por correo. IVA e impuestos especiales según el país de entrega."
+              data-en="Numbered, sent by email. VAT and excise duties depend on the delivery country."></dd><!-- TVA et accises a cadrer avant l ouverture -->
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Lots et stock" data-es="Lotes y existencias" data-en="Lots and stock"></dt>
+          <dd class="faits__v">
+            <span data-lang="fr">L'état d'un lot, l'année et le nombre de bouteilles se lisent dans <a class="lien" href="el-registro.html">El Registro</a>.</span>
+            <span data-lang="es">El estado de un lote, el año y el número de botellas se leen en <a class="lien" href="el-registro.html">El Registro</a>.</span>
+            <span data-lang="en">The state of a lot, the year and the number of bottles are read in <a class="lien" href="el-registro.html">El Registro</a>.</span>
+          </dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Retours" data-es="Devoluciones" data-en="Returns"></dt>
+          <dd class="faits__v"
+              data-fr="Délai et conditions : voir les conditions générales de vente."
+              data-es="Plazo y condiciones: ver las condiciones generales de venta."
+              data-en="Period and conditions: see the terms of sale."></dd><!-- delai et conditions de retour a confirmer -->
+        </div>
+      </dl>
+
+      <p class="vente__note"
+         data-fr="Aucun code de réduction n'est demandé ni accepté sur ce site."
+         data-es="No se pide ni se acepta ningún código de descuento en este sitio."
+         data-en="No discount code is asked for or accepted on this site."></p><!-- la recompense des jeux n est pas tranchee, elle ne s evoque pas dans une page -->
+    </div>
+  </section>
+
+
+</main>
+
+<script>
+siteChrome.init();
+
+/* LE COMPTE DU SAC, AU CHARGEMENT.
+   site.js appelle majPanier() avant d avoir insere l entete dans le document :
+   au chargement d une page le sac affiche donc 0, meme quand le panier
+   contient deux bouteilles. On ne reecrit pas le panier pour autant, on
+   rappelle la fonction de la maison : ajouter zero ne change rien et remet le
+   compte a jour. A corriger un jour dans site.js, en deplacant l appel a
+   majPanier apres insertBefore. */
+(function(){
+  var c = window.siteChrome;
+  if(c && c.panier && c.bouteilles && c.bouteilles.length){
+    c.panier.ajouter(c.bouteilles[0].id, 0);
+  }
+})();
+</script>
+<script>
+/* Les emblemes poses dans les cartes de cette page. */
+(function(){
+  var els = document.querySelectorAll('[data-embleme]');
+  for(var i=0;i<els.length;i++){
+    if(els[i].firstElementChild) continue;
+    var f = window['embleme_' + els[i].getAttribute('data-embleme')];
+    if(typeof f === 'function'){
+      els[i].innerHTML = '<svg viewBox="-120 -120 240 240" aria-hidden="true">' + f({color:'currentColor'}) + '</svg>';
+    }
+  }
+})();
+
+/* LE PANIER. On appelle celui de site.js, on n en ecrit pas un second.
+   Le compte de l entete se met a jour tout seul : panier.ajouter le fait. */
+(function(){
+  var panier = window.siteChrome && window.siteChrome.panier;
+  if(!panier) return;
+
+  function etat(){
+    var p = panier.lire();
+    var els = document.querySelectorAll('[data-etat]');
+    for(var i=0;i<els.length;i++){
+      var id = els[i].getAttribute('data-etat');
+      var n = p[id] | 0;
+      els[i].hidden = n < 1;
+      var c = els[i].querySelector('[data-nombre="' + id + '"]');
+      if(c) c.textContent = String(n);
+    }
+  }
+
+  var b = document.querySelectorAll('[data-ajouter]');
+  for(var i=0;i<b.length;i++){
+    b[i].addEventListener('click', function(){
+      var id = this.getAttribute('data-ajouter');
+      var s = document.querySelector('[data-qte="' + id + '"]');
+      var q = s ? (parseInt(s.value, 10) || 1) : 1;
+      panier.ajouter(id, q);
+      etat();
+    });
+  }
+  etat();
+})();
+</script>
+</body>
+</html>

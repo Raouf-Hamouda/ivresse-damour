@@ -1,0 +1,329 @@
+IVRESSE D'AMOUR / TOLOACHE LEGITIMO. Le site. Etat au 16 aout 2026.
+
+OUVRIR PLAN_DU_SITE.html EN PREMIER : c'est la carte, toutes les pages, leur etat, ce qui manque.
+
+CE QUE CONTIENT CE DOSSIER
+
+  PLAN_DU_SITE.html      la carte du site, page par page, avec la palette et les trous connus
+  CONTRAT_VISUEL.md      la loi visuelle : palette, echelle typo, grille, mouvement, ton, liste de refus
+  GABARIT.html           un exemplaire de chaque bloc autorise. On copie ce fichier pour construire une page
+  30 pages .html         l'architecture complete, vide, avec l'entete, le menu et le pied de page en place
+  assets/css/site.css    la feuille unique, aucune page n'ecrit de style
+  assets/js/site.js      porte d'age, menu, survol mot vers embleme, langues FR et ES, pied de page
+  assets/js/logo.js      le sceau de la famille trace au vecteur exact, en neuf parties
+  assets/js/sceau_anime.js  l'animation du sceau retenue le 16 aout, 3,1 s, reutilisable
+  assets/js/emblemes.js  botella, mito, registro, ritual, palenque valides ; eventos provisoire
+  assets/media/logo_anime_1080p.mp4  le film du sceau, 1080p 60 im/s
+
+TOUT S'OUVRE PAR DOUBLE CLIC. Statique, sans framework, sans CDN, sans compilation.
+La porte d'age s'affiche sur chaque page tant qu'on n'a pas repondu oui. La reponse et la langue
+sont gardees par le navigateur (cles ida.age et ida.lang).
+
+CONSTRUIRE UNE PAGE
+
+  1. lire CONTRAT_VISUEL.md
+  2. copier GABARIT.html sur la page a remplir
+  3. garder les blocs utiles, effacer le reste, remplir en francais ET en espagnol (data-fr / data-es)
+  4. regarder le resultat :
+     node /Users/hamouda/Desktop/MEZCAL_IVRESSE_DAMOUR/17_SITE/outils/render.js <page.html> <prefixe>
+  5. ne jamais modifier site.css ni site.js depuis une page
+
+SOURCE DE VERITE, EN LECTURE SEULE
+  /Users/hamouda/Desktop/MEZCAL_IVRESSE_DAMOUR/
+  dont 01_CERVEAU_PROJET/STRUCTURE_SITE_version_envoyee_2026-08-03.html, le squelette valide par le client,
+  et 17_SITE/ ou vivent les sources du logo, des emblemes et de la page Historia.
+
+CE QUI MANQUE, DIT FRANCHEMENT
+  quatre emblemes sur dix (historia, espadin, tobala, coyote), eventos provisoire
+  la police n'est pas achetee, tout est compose dans une pile de secours
+  aucune photographie
+  la bouteille en 360 degres n'a ni sequence ni modele
+  l'anglais est demande, le mecanisme le prend, les textes n'existent pas
+  la vente : choix technique non tranche, et le code de 20 % des jeux non tranche non plus
+
+CHANTIER DU 16 AOUT AU SOIR (demande de Raouf) : verification complete du site.
+  - assets/img/bouteilles/ : les 3 packshots reels (espadin, tobala, coyote) en 2000 / 1200 / 600 px (recus le 16 aout au soir ; originaux dans 05_BOUTEILLE_ET_PACKSHOTS/PACKSHOT_*.jpg)
+  - assets/img/favicon.svg + favicon-16/32/180/512.png + favicon.ico (la fleur du sceau dans un disque papier)
+  - assets/js/emblemes_parts.js + emblemes_anime.js + embleme_mito.js : les emblemes retenus et animes (source 17_SITE/front)
+  - en cours : textes relus (plus de ton IA), sceau_anime re-porte, survol du menu anime, porte d'age a chaque visite (demo), favicon sur chaque page, structure verifiee.
+
+RELECTURE DES TEXTES, 16 aout soir
+  Regle appliquee : registre de maison, phrases courtes, faits, pas de tiret cadratin, pas de « ce n'est pas X c'est Y »,
+  pas de note de chantier visible. Chaque note retiree de la vue est gardee en commentaire HTML a sa place.
+  Les faits manquants sont marques « A confirmer » ou « A venir » (FR ES EN), avec un commentaire HTML disant quoi confirmer.
+  la-historia.html, GABARIT.html, GABARIT_CAMPAGNE.html, PLAN_DU_SITE.html : pas touches. site.js (porte d'age, pied) : pas touche.
+
+  index.html                 notes « sequence 360 a photographier » et « photographie attendue » en commentaire ; « une lettre, pas un panier » reformule
+  espadin / tobala / coyote  « numero grave » corrige en « ecrit a la main » ; degre 50 % (etiquette) ; note photo en commentaire ; « Decouvrir » -> « Voir la campagne »
+  campagne-espadin/tobala/coyote  note « film a tourner » en commentaire
+  jeu-espadin/tobala/coyote  chemins de fichiers et code 20 % retires de la vue ; ligne neutre « jeu en preparation »
+  acheter-espadin/tobala/coyote   note « choix technique non tranche » en commentaire ; « Prix : a venir » pour tobala et coyote
+  les-mezcales.html          phrase meta « cette page presente les agaves » supprimee
+  el-palenque.html           kicker « Page 3 » ; « procede montre tel qu'il est » ; mentions photo / age / jours attendus en commentaire ; « attendu de la maison » -> « A confirmer »
+  el-mito.html               chapo sans « pas en proprietaire » ; legendes sans « Image pleine largeur » / « Emplacement » ; notes aplat en commentaire ; toloache resserre
+  el-registro.html           kicker « Page 5 »
+  el-ritual.html             kicker « Page 6 » ; chapo ; « ne se joue pas seulement » ; notes photo / kikara / 27 juillet en commentaire ; dicho ecrit « mundo, liquido » (graphie famille en commentaire, a confirmer)
+  eventos.html               section « arbitrage » reecrite en description du journal, notes de chantier en commentaire ; entrees vides -> « Premiere entree a venir » ; le fait Toloache Paris et le plan photo garde
+  boutique.html              bloc « Ce qui est su, ce qui est attendu » -> « Les conditions », valeurs neutres ; mention du code des jeux retiree (contrat)
+  panier.html                « L'etat du site / route technique » -> « Le paiement n'est pas encore ouvert »
+  commande.html              note route technique -> « paiement pas encore ouvert »
+  confirmation.html          facture / envoi reformules, note route technique en commentaire
+  contact.html               chapo, texte « formulaire relie a rien » -> « envoi pas encore ouvert » ; coordonnees « A confirmer »
+  distribution.html          « attendu » -> « A venir » ; « a ecrire par un conseil » en commentaire
+  points-de-vente.html       « structure vide plutot qu'une liste inventee » supprime ; « A confirmer / A venir »
+  presse.html                fondateurs « a venir » ; pieces du dossier « A venir » ; date lancement « a confirmer »
+  professionnels.html        conditions « sur demande » ; formulaire « envoi pas encore ouvert »
+  faq.html                   chapo ; reponse service sans « la maison n'en a pas dit plus »
+  livraison-et-retours.html  grille « sera publiee ici » ; retrait, remise, retours sans « a ecrire par un conseil » (en commentaire)
+  mentions-legales.html      avertissement de chantier en commentaire, remplace par « Page en cours de redaction » ; toutes les valeurs « A venir »
+  cgv.html                   « Texte en cours de redaction » ; « Terrain de conseil » retire
+  confidentialite-et-cookies.html  chapo ; « La politique de donnees », texte en cours de redaction
+  Verifie apres coup : les 33 pages s'ouvrent sans erreur JS en FR et en ES, aucun tiret cadratin, aucun point d'exclamation.
+
+INTEGRATION DU 16 AOUT SOIR (js)
+  Ce qui a change, fichier par fichier. Aucune page .html n'a ete touchee par ce chantier.
+
+  assets/js/sceau_anime.js
+    re-porte tel quel depuis 17_SITE/front/logo_anime.html : meme construction, meme ligne de
+    temps, meme mouvement des mains, et le tri des lettres de l'arc par angle (le R final de
+    D'AMOUR arrive en dernier). Meme interface : sceauAnime(svg,{autoplay,duree,color}) ->
+    {play, stop, set(t)}. Commentaires en francais.
+
+  assets/js/emblemes_parts.js, embleme_mito.js, emblemes_anime.js
+    les emblemes retenus et animes, copies de 17_SITE/front, jamais modifies ici.
+    site.js les charge lui meme si une page ne les a pas (dans cet ordre), et emblemes.js
+    les ecrit dans le <head> pendant l'analyse pour que les scripts des pages les trouvent.
+
+  assets/js/emblemes.js (REMPLACE)
+    ne dessine plus rien. Deux roles : charger les trois fichiers ci dessus de maniere
+    synchrone, et garder window.embleme_<cle>({color}) pour les pages qui l'appellent dans
+    leur propre <script> (index, boutique, espadin...) : la chaine SVG de l'embleme COMPLET.
+    Cles : botella, historia (= le livre), palenque, mito3, registro, ritual (= le couple),
+    eventos (= le brindis), espadin, tobala, coyote. "mito" appartient a embleme_mito.js (le buisson brut) : pour
+    El Mito fini, demander mito3. L'ancien eventos (table dressee) est RETIRE, refuse par Raouf.
+    site.js ne depend plus de ce fichier.
+
+  assets/js/site.js
+    - table EMBLEMES : cle -> nom anime. botella, historia->libro (le livre ouvert), palenque,
+      mito->mito3, registro, ritual->ritual_couple, espadin, tobala, coyote, fleur (la fleur
+      du sceau, tiree de logo.js, pour Les Mezcals), eventos->brindis (deux copitas qui trinquent).
+    - montage lazy des emblemes animes (EMBLEMES_ANIME.mount) : au repos complet ; naissance
+      une fois ; la bouteille rejoue seulement son bouchon au survol (playCrown) et prend le
+      nom du mezcal via data-label ; les autres rejouent leur naissance.
+    - tiroir du telephone (burger, jusqu'a 1000 px) : panneau papier a droite, sa ligne
+      d'entete, 8 rangs de 64 px avec case d'embleme de 44 px, kicker "Les trois bouteilles"
+      + espadin, tobala, coyote. Voile, Echap, croix, focus retenu, page bloquee derriere.
+    - panneaux du bureau : les emblemes naissent a l'ouverture, rejouent au survol des cartes.
+    - barre du bureau : le survol mot vers embleme sur les cinq entrees (Les Mezcals et La
+      Maison = la fleur du sceau, El Registro = le ticket, El Ritual = le couple, Eventos = le
+      brindis) : le mot s'efface et monte de 4 px, l'embleme de 44 px parait a sa place et
+      joue, 220 ms, la courbe du site ; le mot revient au depart du curseur ; largeur reservee,
+      rien ne bouge ; le panneau des entrees groupees s'ouvre toujours.
+    - emblemes en page : tout [data-embleme] hors entete. Montage a l'entree dans l'ecran,
+      naissance a 40 % visible (IntersectionObserver), rejeu au survol, rien ne joue tant que
+      la porte d'age est la. Un .embleme est un bloc centre, 23 px au dessus et au dessous.
+      Une scene (.scene__marque[data-embleme]) empile l'embleme AU DESSUS du texte, plus
+      derriere lui (classe scene--empilee). Une cle inconnue (eventos) : la case se vide et se
+      cache. (eventos a fini par recevoir le brindis, il n'est plus un cas a part.)
+    - porte d'age, demo : var PORTE_A_CHAQUE_VISITE = true en tete de fichier. Une fois par
+      session (sessionStorage ida.age.session), de nouveau a chaque rechargement (F5) et dans
+      un nouvel onglet. Pas revue en passant de page en page. La langue reste gardee (ida.lang).
+      A false : comportement d'origine (une fois, ida.age dans localStorage).
+    - favicon injecte par init() si la page n'a pas de <link rel="icon">.
+    - le sceau du pied de page est un lien vers index.html.
+    - siteChrome expose en plus : emblemes, monterEmbleme, jouerEmbleme, quandEmblemesPrets.
+
+  assets/css/site.css (ajouts seulement)
+    .embleme en bloc centre avec 23 px de marge ; .embleme[data-vide] cache ; svg overflow
+    visible pendant les naissances ; .scene--empilee ; .pied__accueil ; le bloc "LE TIROIR DU
+    TELEPHONE" en fin de feuille (remplace les anciennes regles du menu telephone) et une
+    petite mise au pas de la barre a 600 px (marque au centre, icones a droite).
+
+  Verifie avec 17_SITE/outils/render.js et un script playwright (porte, oui, survols, tiroir,
+  session, rechargement, nouvel onglet) : aucune erreur console sur index, el-mito, el-ritual,
+  espadin, boutique, la-historia, les-mezcales, eventos, el-palenque, el-registro, tobala,
+  coyote, campagne-tobala, acheter-espadin, panier, contact. Aucun lien casse trouve.
+  Rien ne redirige vers les-mezcales.html : l'entree en haut a gauche de la barre du bureau
+  s'appelle "Les Mezcals", mais la page d'arrivee est bien index.html (La Botella).
+
+BOUTEILLES, FAVICON, STRUCTURE (16 aout soir)
+  Favicon : les trois <link> (svg, png 32, apple-touch 180) dans le <head> des 37 pages, juste apres la meta viewport.
+  Packshots (assets/img/bouteilles/*_600/1200/2000.jpg, 1999 x 1493) poses avec le bloc .figure de site.css :
+    figure sur le papier, filet 1 px, rayon --rond ; l image en multiply, jamais etiree (width/height + object-fit contain).
+    index.html          scene 02 : le packshot espadin, premiere image de la page (pas de lazy), alt FR ES EN
+    espadin/tobala/coyote.html   scene 01 : le packshot de la bouteille, avant la table des faits
+    les-mezcales.html   rangee de trois packshots (.figures) sous l entete, chacune ouvre sa fiche, legende en trois lignes
+                        (nom serif 20 px, agave italique brun 15 px, lien petites capitales) ; la grille des emblemes botella
+                        garde data-label="Espadín / Tobalá / Coyote" (le nom ecrit dans le ticket par site.js)
+    boutique.html       les trois cartes avec le packshot 600 ; espadin : quantite + bouton plein ; lien vers la page d achat
+    acheter-espadin/tobala/coyote.html   REFAITES sur la structure d une fiche de piece (demande de Raouf) : deux colonnes,
+                        images a gauche (packshot entier + medaillon et etiquette recadres par la feuille, aucun fichier cree),
+                        fiche collante a droite (nom, agave, prix ou « Prix : a venir », quantite, bouton, les deux autres
+                        bouteilles en disques, depliants Le liquide / Le service / La livraison / L allocation). Aucun prix invente.
+    campagne-*.html     les emplacements video restent tels quels (en commentaire, assets/media/xxx.mp4)
+  Grille des trois (index, les-mezcales, boutique) : classe .grille--trois, une ligne des 700 px, embleme 220 px au plus.
+  Structure : campagne-espadin.html, dernier lien -> jeu-espadin.html (pointait sur jeu-tobala) ; index.html et commande.html
+    recoivent un h1 (classe .sr, lu par les lecteurs d ecran) ; index.html : la grille des trois appelait siteChrome.langue()
+    qui ne fait que lire, corrige en appliquerLangue (les noms n apparaissaient pas).
+  El Ritual : le dicho « Para todo mal, mezcal. Para todo bien, tambien. » ajoute a la suite de la devise (Dicho, Oaxaca).
+    Il reste aussi sur El Mito.
+  Rayons : echelle documentee dans :root de site.css (--rond-plein 999, --rond 10, --rond-petit 6, --rond-net 2 ; 50 % pour
+    les vrais cercles seulement). Plus aucun rayon en dur.
+  Verifie : les 37 pages ont un <title>, un seul h1 (sauf PLAN_DU_SITE, la-historia : pas touchees), siteChrome.init(),
+    les quatre scripts dans l ordre. Tous les href/src pointent sur un fichier existant, sauf le href du gabarit JS de la
+    grille sur index.html (normal). Restent en commentaire : assets/img/foudre.jpg (El Mito, l aplat SVG tient la place),
+    assets/media/xxx.mp4 et assets/img/xxx.jpg (campagnes). Rendus sans erreur console : index, les-mezcales, espadin,
+    tobala, coyote, boutique, acheter-*, el-ritual, el-mito, panier, campagne-espadin, a 1600 et a 390.
+  Complements du meme soir (site.js / site.css) :
+    - la langue est de retour dans l'entete du bureau (a droite des icones, 18 px) et au bas du
+      tiroir (a gauche) : trois boutons texte FR ES EN, capitales du sceau 11 px espacees, encre,
+      la courante en brique sous son filet, serres a 10 px (une boite a ete essayee et refusee) ;
+      meme siteChrome.changerLangue, meme cle ida.lang ; entete, tiroir, pied et porte d'age
+      restent synchronises. La porte garde sa ligne de trois.
+    - emblemes en page : naissance UNE fois, a 40 % visible, et plus rien (pas de rejeu au
+      survol ni au doigt, decision de Raouf) ; le survol n'anime que la barre du bureau, les
+      panneaux et le tiroir. Les emblemes que la page insere elle meme via
+      window.embleme_<cle> (grille de l'accueil, boutique) sont adoptes et animes comme les
+      autres (marque data-embleme-statique posee par emblemes.js, poserEmblemes rappele apres
+      les scripts de la page, au chargement, et a chaque insertion vue par MutationObserver).
+    - barre du telephone (600 px et moins) : la marque a gauche sur la marge de la page, les
+      icones a droite, 16 px d'air au moins, une seule ligne (verifie a 390 et 360).
+    - pied du tiroir : trois rangs de 56 px au trait fin (Points de vente, Compte, Nous
+      contacter -> points-de-vente.html, commande.html, contact.html), le sceau de la famille
+      a droite (64 px, lien vers index.html), puis la ligne des langues.
+
+LA HISTORIA, 16 aout soir
+  Verdict de Raouf : la page rame, des choses inachevees, pas assez fluide, couleur a revoir, doit passer sur telephone.
+  Source de la page : 17_SITE/src_historia/la_historia_src.html + les modules (agave, foudre, lettres, flammes, bouteille,
+    medaillon, mains, bords). Reconstruire : node 17_SITE/src_historia/build_site.js  (ecrit la-historia.html ici et garde
+    les <link rel="icon"> en place). dieux.js (le serpent) n est plus embarque : la scene de l elixir des dieux se tient
+    au soleil et au verre leve, on emploie la formule, on ne la source pas.
+  Ce qui faisait ramer : UN seul svg plein ecran redessine par innerHTML a chaque cran (agaves 40 paliers, verre 40,
+    mains 40, sol 30...), donc a chaque image le navigateur repeignait tout le cadre avec 25 a 45 filtres d ombre
+    (une ombre par feuille), a 2x sur un ecran Retina ; le dessin etait meme recalcule quand la clef n avait pas change.
+  Ce qui a change : une pile de 14 svg independants (.couche), un par element de papier ; chaque couche est construite
+    une fois par etat discret puis deplacee par transform / opacity CSS (compositeur, will-change sur les couches vivantes),
+    aucun filtre par image ; le defilement lit scrollY dans un requestAnimationFrame, aucune mesure de mise en page dans
+    la boucle (mesures dans cadrer(), au chargement et au redimensionnement) ; les dessins ne sont calcules que si la
+    clef d etat change ; les mains sont deux couches (mains.js accepte part / fixe) ; les grands agaves du titre montent
+    en deux plans (bords.js accepte plan / x0 / x1) ; prefers-reduced-motion : pas de grain, pas de clignotement, legendes
+    en fondu court ; contain:strict sur la scene ; 100svh pour la barre du telephone.
+  Mesure (Chrome headless, defilement de 400 crans, 1600 x 900 a 2x) : fil principal 9.1 -> 4.7 ms par cran,
+    GPU 3.4 -> 1.4, SwapBuffers 3.2 -> 0.4 ; cout JS de render 0.87 -> 0.12 ms en moyenne (p95 2.1 -> 0.4).
+    Le headless ne mesure pas le vrai GPU d un portable : la baisse reelle est plus grande (plus aucune repeinte
+    plein cadre par image).
+  Telephone (390 x 844) : en portrait le moteur cadre une bande verticale de 700 unites (x 450..1150, bas a y 1000) et
+    prend une mise en page portrait (MISE) : agaves rapproches et reduits, eclair 1.2, verre 1.45, mains et bouteille
+    0.78, mot metl + ixcalli a 0.78, soleil au centre. Legendes en clamp(), aucun debordement horizontal, liens de fin
+    a 44 px de haut, langue au tiroir et au pied (site.js). Defilement natif, aucun detournement.
+  Inacheve, termine : le nom Ivresse d Amour restait allume jusqu au bout (il s eteignait a p = 1) ; le sol, les
+    flaques et le verre glissent avec les agaves ; rien d invente dans les textes (memes legendes FR ES EN qu avant).
+  Couleur du fond : --historia-fond dans le <style> de la page. Deux essais rendus (bureau et 390) :
+    #9C9C60 plus profond : les collines lointaines (#9a9b62) disparaissent dans le fond, la page pese ;
+    #C9C48D papier olive du contrat (--papier-olive) : l encre #2B2118 et les papiers lisent le mieux, plus calme. RETENU.
+    Ancienne valeur : var(--olive-scroll) #ADAD70, notee en commentaire a cote pour revenir en arriere.
+    Le quadrillage du fond a ete adouci (hs_grille, 0.16) pour le papier plus clair.
+  Reste ouvert : le poids memoire de 14 couches plein ecran sur un vieil iPhone (a essayer sur appareil) ; la couleur
+    a confirmer par Raouf ; le grain (feTurbulence) coute une fois au chargement sur telephone.
+
+LA HISTORIA, tour 2 (17 aout, Raouf)
+  Entete : sur cette page seule, la barre prend le fond #C9C48D a 90 % (surcharge dans le <style> de la page, site.css intact).
+  Feu : les montagnes rouges dessinees sont parties ; cinq bandes de flammes en papier (assets/img/historia/flammes_1..5.webp)
+    en trois plans qui montent a des vitesses differentes (fond : 2 langues fines ; milieu : 5 theatre + un accent 4 ;
+    devant : 1 + un accent 4 + les braises 3 tout devant). Bandes plus larges que le cadre en portrait (1300 pour 700 visibles).
+  Copita (copita_papier.webp) dans le disque dore et devant l agave frappe ; bouteille (botella_papier.webp) entre les mains
+    et a la fin. Le voile clair en haut de copita_papier.webp a ete efface (original : 17_SITE/src_historia/img_orig/).
+  Texte : « L'élixir des dieux, dit-on. » / « El elixir de los dioses, dicen. » / « The elixir of the gods, they say. »
+  Fin : titre de cloture serif clamp(24px,3vw,40px), quatre cartes (embleme 72 px en encre, nom en capitales, filet,
+    survol = l embleme joue et le nom passe a la brique), 2 x 2 sur telephone. Classes hcarte (carte est prise par site.css).
+  Fluidite (Chrome headless, 300 crans, 1600 x 900 a 2x) : RasterTask 4.97 -> 1.79 ms par cran, JS render 0.11 -> 0.04 ms
+    (p95 0.4 -> 0.2). Ce qui a change : plus de couche de fond (papier + grille + grain en fond CSS de la scene, grain =
+    tuile canvas de 160 px), l agave frappe est une couche a part (L_eclat) dont l opacite clignote (plus de redessin des
+    trois agaves), le sol se dessine une fois et monte par transform, flaques et copita a part avec moins de paliers, mot
+    a 16 paliers, ombres des tuiles du mot sans filtre, plus de will-change sur les legendes, rien ne se dessine tant que la
+    porte d age est levee (html.porte-ouverte). Source : 17_SITE/src_historia/la_historia_src.html + modules, node build_site.js.
+
+404.html (16 aout, 23h30) : la page introuvable, la seule composee avec les deux polices de la maison (assets/fonts/titre + texte, tirees du sceau), sceau anime, trois langues, quatre liens de retour. A declarer comme page d erreur chez l hebergeur.
+
+BOUTIQUE ET PAGES D ACHAT (16 aout, 23h45, Raouf) : plus de liste deroulante en boite, un compteur de deux cercles au filet et le bouton plein a angles nets, meme hauteur ; une seule ligne de liens par carte ; les photos de bouteille menent a la page d achat ; le texte de doctrine sur le prix a quitte la boutique (il vit dans El Registro).
+
+POINTS DE VENTE (17 aout 00h30) : le restaurant Toloache, 49 rue de Clignancourt, Paris 18 (toloacheparis.com, +33 7 84 60 09 11, horaires du site du restaurant) = le lieu principal de vente a Paris, autres adresses bientot ; un plan de quartier dessine (SVG en ligne, encre sur papier, la fleur du sceau comme epingle, onde en brique) + lien Google Maps ; meme mention dans distribution.html.
+CARTE (17 aout 00h35) : assets/img/carte_toloache.svg = plan reel du quartier tire du releve OpenStreetMap (requete Overpass, rues, parcs, Sacre-Coeur), redessine encre sur papier, noms le long des rues, fleur du sceau en epingle avec onde, N et echelle 200 m ; source du generateur dans le scratchpad de la session (carte_osm.svg, osm_montmartre.json).
+PAGES D ACHAT (17 aout 00h45) : chaque bouteille a son espace : l agave anime en tete, un kicker et un recit propres (village / cru sauvage / cru de la Sierra), le filet a la couleur de la bouteille, trois vues (packshot reel + vue de trois quarts + copita et jicara ; les deux dernieres sont des images de demonstration generees a partir du packshot reel, a remplacer par la seance photo), plus de vignettes "les autres".
+
+  Ajouts du 17 aout (site.js / site.css / pages) :
+    - pied de page : sous "Villa Sola de Vega...", deux icones au trait en brun (44 px, 12 px
+      d'ecart) : l'enveloppe vers contact.html, le glyphe Instagram vers
+      https://www.instagram.com/toloacheparis/ (compte du restaurant de la famille, A CONFIRMER,
+      _blank noopener). Les memes sous le sceau du tiroir.
+    - paiement.html (NOUVELLE PAGE, DEMO) : deuxieme marche de la caisse, deux colonnes ; a
+      gauche le recapitulatif lu dans ida.panier (espadin 140 euros, tobala et coyote "prix a
+      venir", total, frais d'envoi selon le pays, bareme a confirmer) ; a droite le formulaire de
+      carte (nom, numero, expiration, CVC), le bouton plein Payer, "paiement securise" au cadenas,
+      la ligne legale. Verifie seulement que les champs sont remplis, puis confirmation.html.
+      AUCUN PAIEMENT N'EST ENCAISSE : Stripe Checkout ou un autre prestataire remplacera ce
+      formulaire. commande.html envoie desormais vers paiement.html (une seule ligne changee).
+      Flux verifie : boutique -> panier -> commande -> paiement -> confirmation, a 1600 et 390.
+
+PIED DE PAGE (17 aout 00h55) : refait : sceau + lieu, trois colonnes (La maison / Les mezcals / Service), Nous ecrire (courrier, Instagram, adresse Toloache), filet, ligne legale + Mentions / CGV / Confidentialite ; telephone en deux colonnes.
+
+RESTRUCTURATION (17 aout 01h05, Raouf) : el-mito.html = la page a defilement du mythe (ex la-historia, monde papier, feu abaisse, bouteille papier remontee) ; el-mito_variante_vecteur.html = la meme avec l ancien feu et l ancienne bouteille dessines, pour comparer ; la-historia.html = NOUVELLE page, l histoire de la maison elle-meme (village, coup de foudre, nom, sceau, restaurant Toloache) ; anciens fichiers dans _archives/ ; pied de page allege (sceau + lieu, six liens, courrier, filet, droit) ; le dicho "Para todo mal" sur l accueil.
+
+ETAT DU 17 AOUT 2026, 01h15 (fin de la session du soir avec Raouf) :
+  - 40 pages (dont 404.html, paiement.html, el-mito_variante_vecteur.html), zero erreur console, tout ouvre en double clic.
+  - El Mito = le mythe a defilement (monde papier, feu papier abaisse, copita et bouteille papier) ; La Historia = l histoire de la maison ; menu La Maison : El Mito, La Historia, El Palenque.
+  - Boutique : tuiles nues a la Hermes, compteur de quantite en cercles, meme bloc sur les trois ; pages d achat : l agave, un recit propre, galerie a vignettes (bouteille / copita et jicara), les deux autres bouteilles dessous ; paiement de demonstration.
+  - Pied de page : la premiere version (sceau, lieu, quatre liens, courrier + Instagram, filet, legal + droit).
+  - Points de vente : Toloache 49 rue de Clignancourt + carte reelle du quartier redessinee.
+  - Ce qui reste : paiement reel, back-office du registre, jeux finaux, textes juridiques, police a acheter, photos (une seule par bouteille ; les vues copita sont des images generees a remplacer), tests sur telephones reels.
+
+17 aout 2026, 21h25. EL MITO, tour 3 (Raouf, session du soir), version retenue en place de l ancienne.
+  Ce qui a change dans el-mito.html : legendes en Ivresse Titre (la lettre du sceau), blanc papier,
+  a la marge gauche ou droite, fondu ecrit par le moteur depuis le defilement (plus de transition CSS) ;
+  titre d ouverture centre ; cloture = les mots du sceau (logo.js : arc IVRESSE D'AMOUR, TOLOACHE,
+  LEGITIMO) avec la bouteille a la place de la fleur, puis Villa Sola de Vega / Maestro mezcalero /
+  les trois agaves ; eclair long dessine une fois, il vient du bord haut de la fenetre et descend en
+  continu par clip-path (miroir en portrait) ; disque du soleil en papier etiquette #FED5A3 ; bouteille
+  centree entre les mains qui s ecartent ; legende "Il frappe deux personnes" supprimee ; phrase de
+  cloture "Le mythe se raconte ici. Le reste de la maison est dans ces quatre pages." ; pied de page
+  couleur des collines sur cette page seulement ; defilement 1500vh, legendes qui se chevauchent.
+  Moteur : chaque couche a la taille de son dessin (getBBox du groupe racine, marge 48, max-width
+  neutralise), les couches ne sont plus jamais videes (cacher = 0,4 % d opacite, texture gardee),
+  prechauffage de toutes les scenes apres la porte, copita continue par clip-path, mode leger
+  (4 coeurs / 4 Go ou moins : filtres d ombre coupes). Mesure sur le Mac M2, GPU, Retina, molette :
+  pire image 18 a 20 ms, zero image au dessus de 25 ms (avant : accrocs de 40 a 390 ms).
+  Sauvegardes : _archives/el-mito_avant_17aout_soir.html (avant le tour 3),
+  _archives/el-mito_avant_optim_17aout_2117.html (tour 3 sans le moteur optimise).
+  Outils de mesure : ~/Desktop/MEZCAL_IVRESSE_DAMOUR/17_SITE/outils/render_mito.js (captures a un
+  progres donne, W H MOBILE), gpu_mito.js (defilement reel, temps d image), trace_mito.js, perf_mito.js.
+
+17 aout 2026, 22h05. PASSE DE TEXTE + CARESSE (Raouf, soir).
+  - Sortie "Ensuite / Next" retiree des cinq pages qui la portaient (boutique, les-mezcales, acheter-*).
+  - Plus aucune phrase de chantier visible ("a venir", "a confirmer", "pas encore ouvert", "sera publie") :
+    reecrites en langage fini dans les trois langues (livraison calculee a la commande, retrait chez
+    Toloache 49 rue de Clignancourt, paiement securise, "sur allocation" pour tobala et coyote, journal
+    avec ses cinq rubriques titrees, points de vente, presse, FAQ, professionnels, CGV, confidentialite).
+    Les lignes de faits que seule la maison connait (raison sociale, siege, TVA, hebergeur, importateurs,
+    horaires, poids, transporteurs, kit presse, annees de metier, telephone, courriel) sont mises en
+    commentaire HTML "A REMPLIR PAR LA MAISON" a leur place : elles reviennent en decommentant.
+  - Cadrage corrige partout : plus de "couple", des associes ; la maison part de Villa Sola de Vega vers
+    le monde, Toloache Paris est sa table et son point de vente, pas son origine (la-historia, presse,
+    points-de-vente, faq).
+  - Le plan du quartier (assets/img/carte_toloache.svg) est aussi sur boutique.html et distribution.html.
+  - index.html : scene "El Mito / La foudre frappe un agave. Il en sort le mezcal. / Decouvrir le mythe",
+    fond creme codex #F5F0DC (classe scene__fond--codex ajoutee dans site.css).
+  - site.js : caresserEmbleme, la caresse au survol des emblemes de page (les pieces proches du pointeur
+    glissent de quelques unites, le dessin s'incline d'un degre, retour au repos a la sortie).
+  - Sauvegarde des 40 pages avant la passe : _archives/textes_avant_17aout_2150/.
+
+17 aout 2026, 22h20. LA CARESSE, version retenue (site.js, caresserEmbleme + CARESSABLES ; emblemes_anime.js, data-caresse).
+  - Emblemes qui repondent au pointeur : botella (le bord a 100 %, le corps a 45 %, le medaillon a 15 %),
+    espadin, tobala, coyote, palenque, et sur ritual_couple seules les deux copitas. Tous les autres gardent
+    leur comportement d avant (naissance a l apparition, rejeu au survol dans le menu).
+  - Menu Boutique : les emblemes naissent a l ouverture et restent ; les caressables ne rejouent plus au survol.
+  - Mecanique : aucune transition CSS, aucun calque par piece ; une boucle rAF par embleme, chaque piece glisse
+    vers sa cible d un cinquieme par image (LISSAGE 0.16), amplitude max 3,4 unites (AMPLI), portee 190,
+    inclinaison 0,7 degre, montee douce sur 700 ms a l entree, retour au repos a la sortie ; centres des pieces
+    calcules avec leur transform propre ; preparation une image apres le montage. Souris et doigt (pointerdown /
+    pointermove / pointerup), le defilement reste libre ; coupe si prefers-reduced-motion.
+  - El Mito : l eclair de l embleme eclairci de 20 % au lieu de 40 % (plus sombre).

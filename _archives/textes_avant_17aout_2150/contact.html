@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Contact. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+</head>
+
+<!-- ============================================================================
+     CONTACT. Une des quatre pages appelees par le pied de page de chaque page
+     du site, donc une des plus visitees quoi qu il arrive.
+     Elle vient du point 3 du brief de la famille du 14 aout (liste des pages).
+
+     LA FORME est celle de commande.html : les memes champs blancs a angles
+     presque droits, la meme mention des champs obligatoires alignee a droite,
+     le meme bouton plein. La mise en page reste la boite editoriale du GABARIT,
+     parce que cette page se lit avant de se remplir.
+
+     CE QUI EST VRAI ICI : les champs, le comportement du bouton, et le fait que
+     rien n est envoye. CE QUI EST ATTENDU : l adresse electronique de la maison,
+     l adresse du restaurant a Paris, et la route technique du formulaire.
+     Aucune adresse n est inventee : une fausse adresse sur une page de contact
+     est la pire chose qu on puisse poser sur un site.
+     ========================================================================= -->
+
+<body data-page=""
+      data-titre-fr="Contact. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="Contacto. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-en="Contact. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page">
+
+  <section class="entete-page">
+    <div class="boite">
+      <p class="kicker" data-fr="La maison" data-es="La casa" data-en="The house"></p>
+      <h1 data-fr="Contact" data-es="Contacto" data-en="Contact"></h1>
+      <p class="chapo"
+         data-fr="Écrire à la maison. Une question sur un lot, une demande d'un caviste, d'un restaurant ou d'un journaliste."
+         data-es="Escribir a la casa. Una pregunta sobre un lote, una petición de una tienda, de un restaurante o de un periodista."
+         data-en="Write to the house. A question about a lot, a request from a wine merchant, a restaurant or a journalist."></p><!-- le formulaire n envoie rien pour l instant : la route technique n est pas tranchee -->
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       LA LETTRE. Nom, adresse, pays, sujet, message. Rien de plus : chaque
+       champ ajoute est un lecteur perdu.
+       =================================================================== -->
+  <section class="section section--filet">
+    <div class="boite">
+      <p class="kicker" data-fr="La lettre" data-es="La carta" data-en="The letter"></p>
+      <div class="colonne">
+        <h2 data-fr="Écrire" data-es="Escribir" data-en="Write"></h2>
+        <p data-fr="La maison lit les lettres une par une. Dites d'où vous écrivez : le pays décide de ce que la maison a le droit d'expédier."
+           data-es="La casa lee las cartas una por una. Diga desde dónde escribe: el país decide lo que la casa tiene derecho a enviar."
+           data-en="The house reads letters one by one. Say where you are writing from: the country decides what the house is allowed to ship."></p>
+
+        <p class="caisse__oblig" data-fr="* Champs obligatoires" data-es="* Campos obligatorios" data-en="* Required fields"></p>
+
+        <form class="caisse__f" id="f-contact" novalidate>
+          <label class="caisse__l" for="nom">
+            <span class="kicker" data-fr="Nom *" data-es="Nombre *" data-en="Name *"></span>
+            <input id="nom" name="nom" type="text" autocomplete="name" required
+                   data-fr-placeholder="Votre nom" data-es-placeholder="Su nombre" data-en-placeholder="Your name">
+          </label>
+
+          <label class="caisse__l" for="courriel">
+            <span class="kicker" data-fr="Adresse électronique *" data-es="Correo electrónico *" data-en="Email address *"></span>
+            <input id="courriel" name="courriel" type="email" autocomplete="email" required
+                   data-fr-placeholder="nom@exemple.fr" data-es-placeholder="nombre@ejemplo.es" data-en-placeholder="name@example.com">
+          </label>
+
+          <label class="caisse__l" for="pays">
+            <span class="kicker" data-fr="Pays *" data-es="País *" data-en="Country *"></span>
+            <input id="pays" name="pays" type="text" autocomplete="country-name" required
+                   data-fr-placeholder="France" data-es-placeholder="España" data-en-placeholder="United Kingdom">
+          </label>
+
+          <label class="caisse__l" for="sujet">
+            <span class="kicker" data-fr="Sujet" data-es="Asunto" data-en="Subject"></span>
+            <select id="sujet" name="sujet">
+              <option value="bouteille" data-fr="Une bouteille, un lot" data-es="Una botella, un lote" data-en="A bottle, a lot"></option>
+              <option value="registre" data-fr="Le registre" data-es="El registro" data-en="The register"></option>
+              <option value="pro" data-fr="Caviste, restaurant, importateur" data-es="Tienda, restaurante, importador" data-en="Wine merchant, restaurant, importer"></option>
+              <option value="presse" data-fr="Presse" data-es="Prensa" data-en="Press"></option>
+              <option value="autre" data-fr="Autre" data-es="Otro" data-en="Other"></option>
+            </select>
+          </label>
+
+          <label class="caisse__l" for="message">
+            <span class="kicker" data-fr="Message *" data-es="Mensaje *" data-en="Message *"></span>
+            <textarea id="message" name="message" rows="7" required
+                      data-fr-placeholder="Votre lettre" data-es-placeholder="Su carta" data-en-placeholder="Your letter"></textarea>
+          </label>
+
+          <button class="b-plein est-inactif" id="envoyer" type="submit" disabled
+                  data-fr="Envoyer" data-es="Enviar" data-en="Send"></button>
+        </form>
+
+        <p class="mention" id="reponse" hidden
+           data-fr="L'envoi n'est pas encore ouvert. Votre lettre n'a pas été transmise."
+           data-es="El envío todavía no está abierto. Su carta no se ha transmitido."
+           data-en="Sending is not open yet. Your letter has not been transmitted."></p>
+
+        <!-- Note de chantier, retiree de la vue : ce formulaire n est relie a rien, ni serveur ni boite aux lettres. La route technique du site,
+             statique plus Stripe ou plateforme, n est pas tranchee ; le jour ou elle le sera, cette page enverra vraiment. -->
+        <p data-fr="L'envoi depuis cette page n'est pas encore ouvert. Ce que vous écrivez reste dans votre navigateur."
+           data-es="El envío desde esta página todavía no está abierto. Lo que escribe se queda en su navegador."
+           data-en="Sending from this page is not open yet. What you write stays in your browser."></p>
+
+        <div data-lang="fr">
+          <p>Ce que le site garde dans votre navigateur est écrit en clair dans la page
+            <a class="lien" href="confidentialite-et-cookies.html">confidentialité et cookies</a>.</p>
+        </div>
+        <div data-lang="es">
+          <p>Lo que el sitio guarda en su navegador está escrito en claro en la página
+            <a class="lien" href="confidentialite-et-cookies.html">confidencialidad y cookies</a>.</p>
+        </div>
+        <div data-lang="en">
+          <p>What the site keeps in your browser is written out in the page
+            <a class="lien" href="confidentialite-et-cookies.html">privacy and cookies</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       OU EST LA MAISON. Deux lieux vrais, Villa Sola de Vega et le
+       restaurant de la famille a Paris. Les coordonnees sont attendues.
+       =================================================================== -->
+  <section class="section section--filet">
+    <div class="boite">
+      <p class="kicker" data-fr="Où elle est" data-es="Dónde está" data-en="Where it is"></p>
+      <dl class="faits fondu">
+        <div class="faits__l"><dt class="faits__k" data-fr="Le palenque" data-es="El palenque" data-en="The palenque"></dt>
+          <dd class="faits__v">Villa Sola de Vega, Oaxaca</dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="À Paris" data-es="En París" data-en="In Paris"></dt>
+          <dd class="faits__v">Toloache, <span class="mention" data-fr="adresse à confirmer" data-es="dirección por confirmar" data-en="address to be confirmed"></span></dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="Adresse électronique" data-es="Correo electrónico" data-en="Email address"></dt>
+          <dd class="faits__v"><span class="mention" data-fr="À confirmer" data-es="Por confirmar" data-en="To be confirmed"></span></dd></div><!-- adresse electronique a confirmer par la maison -->
+        <div class="faits__l"><dt class="faits__k" data-fr="Téléphone" data-es="Teléfono" data-en="Telephone"></dt>
+          <dd class="faits__v"><span class="mention" data-fr="À confirmer" data-es="Por confirmar" data-en="To be confirmed"></span></dd></div><!-- telephone a confirmer par la maison -->
+        <div class="faits__l"><dt class="faits__k" data-fr="Société" data-es="Sociedad" data-en="Company"></dt>
+          <dd class="faits__v" data-fr="En création, permis d'importation en cours"
+              data-es="En creación, permiso de importación en trámite"
+              data-en="Being set up, import licence under way"></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       LES AUTRES PORTES. Trois demandes ont leur propre page : ne pas les
+       laisser arriver ici pour les renvoyer ensuite.
+       =================================================================== -->
+  <section class="section section--creme">
+    <div class="boite">
+      <p class="kicker" data-fr="Ailleurs sur le site" data-es="En otra parte del sitio" data-en="Elsewhere on the site"></p>
+      <h2 data-fr="Les autres portes" data-es="Las otras puertas" data-en="The other doors"></h2>
+      <div class="colonnes-2">
+        <div>
+          <p class="kicker" data-fr="Cavistes, restaurants, importateurs" data-es="Tiendas, restaurantes, importadores" data-en="Merchants, restaurants, importers"></p>
+          <p data-fr="La demande professionnelle se fait par lettre, sur sa propre page."
+             data-es="La petición profesional se hace por carta, en su propia página."
+             data-en="The trade request is made by letter, on its own page."></p>
+          <p><a class="lien-discret" href="professionnels.html" data-fr="Professionnels" data-es="Profesionales" data-en="Trade"></a></p>
+        </div>
+        <div>
+          <p class="kicker" data-fr="Presse" data-es="Prensa" data-en="Press"></p>
+          <p data-fr="Les faits, le dossier et les images de la maison sont réunis pour les journalistes."
+             data-es="Los hechos, el dossier y las imágenes de la casa están reunidos para los periodistas."
+             data-en="The facts, the kit and the images of the house are gathered for journalists."></p>
+          <p><a class="lien-discret" href="presse.html" data-fr="Le dossier de presse" data-es="El dossier de prensa" data-en="The press kit"></a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--serre section--filet">
+    <div class="boite centre">
+      <a class="lien-discret" href="faq.html"
+         data-fr="La réponse est peut être déjà dans la FAQ"
+         data-es="La respuesta quizá ya esté en las preguntas frecuentes"
+         data-en="The answer may already be in the FAQ"></a>
+    </div>
+  </section>
+
+</main>
+
+<script>siteChrome.init();</script>
+<script>
+/* Le bouton reste inactif tant que les quatre champs obligatoires ne sont pas
+   remplis et que l adresse n a pas la forme d une adresse. Meme regle qu a la
+   caisse, meme classe est-inactif. A l envoi : rien ne part, et la page le dit
+   au lieu de faire semblant. */
+(function(){
+  var f = document.getElementById('f-contact');
+  if(!f) return;
+  var b = document.getElementById('envoyer');
+  var r = document.getElementById('reponse');
+  var champs = ['nom','courriel','pays','message'].map(function(i){ return document.getElementById(i); });
+
+  function adresseValide(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); }
+  function complet(){
+    for(var i=0;i<champs.length;i++){ if(!champs[i] || !champs[i].value.trim()) return false; }
+    return adresseValide(document.getElementById('courriel').value);
+  }
+  function maj(){
+    var ok = complet();
+    b.disabled = !ok;
+    b.classList.toggle('est-inactif', !ok);
+  }
+  for(var i=0;i<champs.length;i++){ if(champs[i]) champs[i].addEventListener('input', maj); }
+  maj();
+
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!complet()) return;
+    r.hidden = false;
+  });
+})();
+</script>
+</body>
+</html>

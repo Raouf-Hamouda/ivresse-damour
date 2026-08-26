@@ -1,0 +1,142 @@
+{
+  "_lisez_moi": "Ce fichier EST le registre. La page el-registro.html ne fait que le lire. Pour publier un lot, on ajoute un bloc dans la liste lots, on enregistre, on met le fichier en ligne. Le mode d emploi complet, ecrit pour quelqu un qui n est pas developpeur, est dans PUBLIER_UN_LOT.md a la racine du site. Ne changez pas les noms des champs, seulement ce qui est entre guillemets apres les deux points.",
+
+  "version": 1,
+  "mis_a_jour": "2026-08-16",
+
+  "_valeurs_communes": "Ce qui ne change pas d un lot a l autre s ecrit une seule fois ici. Un lot qui differe reecrit la ligne chez lui, et c est la sienne qui gagne.",
+  "valeurs_communes": {
+    "maestro": "Gilberto Vásquez",
+    "village": "Villa Sola de Vega, Oaxaca",
+    "degre": "50 %",
+    "contenant": "700 ml",
+    "categorie": {
+      "fr": "Mezcal Artesanal, joven, D.O. protégée",
+      "es": "Mezcal Artesanal, joven, D.O. protegida",
+      "en": "Mezcal Artesanal, joven, protected D.O."
+    }
+  },
+
+  "_crus": "Les trois agaves de la maison. L espadin est le seul qui donne chaque annee. Le tobala et le coyote donnent quand la plante decide. On ne retire jamais un cru de cette liste : une annee sans lot se dit dans annees_sans_lot.",
+  "crus": [
+    {
+      "id": "espadin",
+      "nom": "Espadín",
+      "espece": "A. angustifolia",
+      "rythme": "chaque_annee",
+      "page": "espadin.html"
+    },
+    {
+      "id": "tobala",
+      "nom": "Tobalá",
+      "espece": "A. potatorum",
+      "rythme": "quand_la_plante_decide",
+      "page": "tobala.html"
+    },
+    {
+      "id": "coyote",
+      "nom": "Coyote",
+      "espece": "A. americana",
+      "rythme": "quand_la_plante_decide",
+      "page": "coyote.html"
+    }
+  ],
+
+  "_annees_sans_lot": "Une annee sans lot se declare ici, avec sa raison. Le registre l affiche. Un cru absent n est jamais remplace par un autre.",
+  "annees_sans_lot": [
+    {
+      "exemple": true,
+      "cru": "tobala",
+      "annee": 2025,
+      "raison": {
+        "fr": "La plante n'a pas donné.",
+        "es": "La planta no dio.",
+        "en": "The plant did not give."
+      }
+    }
+  ],
+
+  "_lots": "Un bloc par lot, du plus recent au plus ancien. exemple vaut true tant que le lot est un lot de demonstration : le registre l affiche alors comme une place tenue et non comme une bouteille reelle. Le jour ou la maison publie son premier vrai lot, elle ecrit exemple: false, ou elle efface la ligne exemple.",
+  "lots": [
+    {
+      "exemple": true,
+      "reference": "ESP-2025-01",
+      "cru": "espadin",
+      "annee": 2025,
+      "parcelle": "Parcela A",
+      "sol": {
+        "fr": "Argile rouge, pente exposée au sud",
+        "es": "Arcilla roja, ladera expuesta al sur",
+        "en": "Red clay, slope facing south"
+      },
+      "annee_plantation": 2018,
+      "litres": 288,
+      "bouteilles": 412,
+      "date_distillation": "2025-11-14",
+      "etat": "ouvert",
+      "date_epuisement": "",
+      "note": {
+        "fr": "Emplacement d'une note libre. La maison écrit ici ce qui n'entre dans aucune autre ligne.",
+        "es": "Lugar de una nota libre. La casa escribe aquí lo que no cabe en ninguna otra línea.",
+        "en": "Room for a free note. The house writes here whatever fits in no other line."
+      }
+    },
+    {
+      "exemple": true,
+      "reference": "COY-2025-01",
+      "cru": "coyote",
+      "annee": 2025,
+      "parcelle": "Parcela C",
+      "sol": {
+        "fr": "Terre noire, replat de fond de vallée",
+        "es": "Tierra negra, llano de fondo de valle",
+        "en": "Black earth, flat valley floor"
+      },
+      "annee_plantation": 2012,
+      "litres": 108,
+      "bouteilles": 154,
+      "date_distillation": "2025-12-02",
+      "etat": "ouvert",
+      "date_epuisement": "",
+      "note": ""
+    },
+    {
+      "exemple": true,
+      "reference": "ESP-2024-01",
+      "cru": "espadin",
+      "annee": 2024,
+      "parcelle": "Parcela A",
+      "sol": {
+        "fr": "Argile rouge, pente exposée au sud",
+        "es": "Arcilla roja, ladera expuesta al sur",
+        "en": "Red clay, slope facing south"
+      },
+      "annee_plantation": 2017,
+      "litres": 271,
+      "bouteilles": 388,
+      "date_distillation": "2024-10-29",
+      "etat": "epuise",
+      "date_epuisement": "2026-01-18",
+      "note": ""
+    },
+    {
+      "exemple": true,
+      "reference": "TOB-2024-01",
+      "cru": "tobala",
+      "annee": 2024,
+      "parcelle": "Parcela B",
+      "sol": {
+        "fr": "Pierre calcaire, hauteur",
+        "es": "Piedra caliza, altura",
+        "en": "Limestone, high ground"
+      },
+      "annee_plantation": 2015,
+      "litres": 67,
+      "bouteilles": 96,
+      "date_distillation": "2024-11-21",
+      "etat": "epuise",
+      "date_epuisement": "2025-09-30",
+      "note": ""
+    }
+  ]
+}

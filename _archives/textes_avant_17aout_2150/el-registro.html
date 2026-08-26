@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>El Registro. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/registre.js"></script>
+</head>
+
+<!-- ============================================================================
+     EL REGISTRO, page 5 de la structure envoyee au client le 3 aout 2026.
+     La page la plus importante du site : "le site est le registre de la maison".
+     Mise en page : la boite editoriale du GABARIT, comme el-palenque.html.
+     Aucune scene pleine page, aucun prix, aucun panier, aucun bouton d achat.
+
+     CE QUE CETTE PAGE FAIT
+       1. l entree par le numero de bouteille, deux nombres, sans rechargement
+       2. la fiche d un lot, tout ce que porte l etiquette
+       3. les crus : l espadin chaque annee, le tobala et le coyote quand la
+          plante decide, et une annee sans lot est DITE
+       4. l archive : un lot epuise reste affiche, epuise et date, jamais solde
+
+     LA CORRECTION DE L APPEL, lignes 855 a 866 du 27 juillet 2026 :
+       "ce ne sera pas grave, ce sera note. Imprime. Ca va etre fait a la main."
+     Le numero n est donc PAS grave. Il est ecrit a la main sur l etiquette
+     imprimee. La structure du 3 aout dit "grave", elle a tort, l appel corrige.
+
+     LES DONNEES
+     Tout ce qui s affiche ici vient de assets/data/lots.json. La page ne porte
+     aucune donnee de lot en dur, sauf la copie de secours en bas de ce fichier,
+     qui ne sert qu au double clic. Le mode d emploi de la famille est dans
+     PUBLIER_UN_LOT.md.
+
+     LES LOTS AFFICHES SONT DES EXEMPLES. Ils portent exemple: true dans le
+     fichier, la page les marque un par un, et le dit en tete de l archive.
+     Aucun d eux n est une bouteille reelle de la maison.
+     ========================================================================= -->
+
+<body data-page="registro"
+      data-titre-fr="El Registro. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="El Registro. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-en="El Registro. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page">
+
+  <!-- ===================================================================
+       1. ENTETE DE PAGE.
+       =================================================================== -->
+  <section class="entete-page">
+    <div class="boite">
+      <p class="kicker" data-fr="Le registre" data-es="El registro" data-en="The register"></p>
+      <h1 data-fr="El Registro" data-es="El Registro" data-en="El Registro"></h1>
+      <p class="chapo"
+         data-fr="Chaque lot a sa page. Le visiteur entre par le numéro écrit à la main sur sa bouteille et trouve l'histoire exacte de ce qu'il tient. L'archive ne se vide jamais."
+         data-es="Cada lote tiene su página. El visitante entra por el número escrito a mano en su botella y encuentra la historia exacta de lo que tiene. El archivo nunca se vacía."
+         data-en="Every lot has its page. The visitor enters by the number written by hand on the bottle and finds the exact history of what is in their hands. The archive never empties."></p>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       2. L ENTREE. Deux nombres, ceux qui sont ecrits a la main sur
+       l etiquette. La fiche s ouvre en place, la page ne se recharge pas.
+       Un numero inconnu recoit une phrase, jamais une erreur rouge.
+       =================================================================== -->
+  <section class="section section--filet">
+    <div class="boite">
+      <div class="avec-cote">
+        <div class="avec-cote__cote">
+          <p class="kicker" data-fr="L'entrée" data-es="La entrada" data-en="The way in"></p>
+          <!-- Le ticket de la maison. Il est large et plat : a 104 px de boite
+               il ne fait plus que 50 px de haut et la gravure se perd. On lui
+               donne la boite de 150, la plus grande que le contrat autorise. -->
+          <span class="embleme embleme--l" data-embleme="registro"></span>
+        </div>
+        <div class="colonne">
+          <h2 data-fr="Le numéro de votre bouteille"
+              data-es="El número de su botella"
+              data-en="The number on your bottle"></h2>
+          <p data-fr="Le numéro n'est pas gravé. Il est écrit à la main sur l'étiquette imprimée, bouteille par bouteille. Deux nombres : celui de votre bouteille, puis le tirage du lot."
+             data-es="El número no está grabado. Está escrito a mano en la etiqueta impresa, botella por botella. Dos números: el de su botella, y luego el tiraje del lote."
+             data-en="The number is not engraved. It is written by hand on the printed label, bottle by bottle. Two numbers: your bottle, then the size of the lot."></p>
+
+          <form id="reg-form" novalidate autocomplete="off">
+            <div class="colonnes-2">
+              <p>
+                <label class="kicker" for="reg-numero" style="display:block"
+                       data-fr="N°" data-es="N°" data-en="No."></label>
+                <input id="reg-numero" name="numero" type="text" inputmode="numeric"
+                       placeholder="___" autocomplete="off" style="max-width:210px"
+                       data-fr-aria-label="Le numéro de votre bouteille"
+                       data-es-aria-label="El número de su botella"
+                       data-en-aria-label="The number on your bottle">
+              </p>
+              <p>
+                <label class="kicker" for="reg-total" style="display:block"
+                       data-fr="Sur" data-es="De" data-en="Of"></label>
+                <input id="reg-total" name="total" type="text" inputmode="numeric"
+                       placeholder="___" autocomplete="off" style="max-width:210px"
+                       data-fr-aria-label="Le tirage du lot"
+                       data-es-aria-label="El tiraje del lote"
+                       data-en-aria-label="The size of the lot">
+              </p>
+            </div>
+            <p style="margin-top:24px">
+              <button class="b-vide" type="submit" style="max-width:300px"
+                      data-fr="Ouvrir la fiche" data-es="Abrir la ficha" data-en="Open the sheet"></button>
+            </p>
+          </form>
+
+          <!-- La reponse a la recherche. Jamais de rouge, jamais le mot erreur :
+               une phrase, dans la voix de la maison. -->
+          <div id="reg-reponse" role="status" aria-live="polite" style="margin-top:24px"></div>
+
+          <p style="margin-top:24px"
+             data-fr="Sans bouteille sous la main, l'archive plus bas ouvre n'importe quel lot."
+             data-es="Sin botella a mano, el archivo de más abajo abre cualquier lote."
+             data-en="With no bottle at hand, the archive below opens any lot."></p>
+
+          <div id="reg-source" style="margin-top:24px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       3. LA FICHE DE LOT. Vide tant qu on n a pas demande un lot.
+       Ecrite par registre.js, dans les trois langues, depuis lots.json.
+       =================================================================== -->
+  <section class="section section--filet" id="reg-fiche" hidden>
+    <div class="boite">
+      <p class="kicker" data-fr="La fiche de lot" data-es="La ficha de lote" data-en="The lot sheet"></p>
+      <div id="reg-fiche-corps"></div>
+      <p data-fr="Ce que porte l'étiquette, en entier. Le registre n'affiche pas de prix."
+         data-es="Lo que lleva la etiqueta, completo. El registro no muestra precios."
+         data-en="What the label carries, in full. The register shows no price."></p>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       4. LEUR PHRASE. Une seule, vingt six signes de mesure.
+       Dite par la maison le 27 juillet, lignes 868 a 875.
+       =================================================================== -->
+  <section class="bloc-phrase fondu">
+    <p data-fr="L'archive ne se vide jamais, elle s'allonge."
+       data-es="El archivo nunca se vacía, se alarga."
+       data-en="The archive never empties, it lengthens."></p>
+  </section>
+
+  <!-- ===================================================================
+       5. LES CRUS. L espadin chaque annee. Le tobala et le coyote quand la
+       plante decide. Une annee sans lot est DITE, jamais remplacee.
+       Le contenu de la table vient de lots.json.
+       =================================================================== -->
+  <section class="section section--filet">
+    <div class="boite">
+      <p class="kicker" data-fr="Les crus" data-es="Los crus" data-en="The crus"></p>
+      <div class="colonne">
+        <h2 data-fr="Ce que la plante donne" data-es="Lo que da la planta" data-en="What the plant gives"></h2>
+        <p data-fr="L'espadín donne chaque année. Le tobalá et le coyote donnent quand la plante décide. S'il n'y a pas de tobalá cette année, le registre le dit. Un cru absent n'est jamais remplacé par un autre."
+           data-es="El espadín da cada año. El tobalá y el coyote dan cuando la planta decide. Si no hay tobalá este año, el registro lo dice. Un cru ausente nunca se reemplaza por otro."
+           data-en="Espadín gives every year. Tobalá and coyote give when the plant decides. If there is no tobalá this year, the register says so. An absent cru is never replaced by another."></p>
+      </div>
+      <div id="reg-crus" class="fondu"></div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       6. L ARCHIVE. Un lot epuise reste affiche, epuise et date.
+       Jamais solde, le prix monte avec le temps et jamais l inverse.
+       Cette page ne porte aucun prix : la regle est dite, le chiffre non.
+       Une seule section sur un autre papier dans la page, c est celle ci.
+       =================================================================== -->
+  <section class="section section--creme">
+    <div class="boite">
+      <p class="kicker" data-fr="L'archive" data-es="El archivo" data-en="The archive"></p>
+      <div class="colonne">
+        <h2 data-fr="Les lots passés restent" data-es="Los lotes pasados quedan" data-en="Past lots remain"></h2>
+        <p data-fr="Un lot épuisé ne disparaît pas du registre : il reste affiché, épuisé et daté. Il n'est jamais soldé. "
+           data-es="Un lote agotado no desaparece del registro: queda visible, agotado y fechado. Nunca se rebaja. "
+           data-en="A sold out lot does not vanish from the register: it stays, sold out and dated. It is never discounted. "></p>
+        <p data-fr="Les lots ci dessous sont des exemples. Ils montrent la forme du registre. La maison n'a pas encore publié les siens."
+           data-es="Los lotes de abajo son ejemplos. Muestran la forma del registro. La casa todavía no ha publicado los suyos."
+           data-en="The lots below are examples. They show the shape of the register. The house has not published its own yet."></p>
+      </div>
+      <div id="reg-archive" class="fondu"></div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       7. LA SORTIE. La maison n a pas de bouton.
+       =================================================================== -->
+  <section class="section section--serre section--filet">
+    <div class="boite centre">
+      <a class="lien-discret" href="el-palenque.html"
+         data-fr="Comment il est fait" data-es="Cómo se hace" data-en="How it is made"></a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================================
+     COPIE DE SECOURS DES DONNEES.
+
+     A quoi elle sert : un navigateur ouvert en double clic (file://) refuse de
+     lire assets/data/lots.json, chaque fichier local etant sa propre origine.
+     La page lit alors ce bloc, et elle le dit a l ecran.
+
+     En ligne (http:// ou https://), ce bloc n est jamais lu : c est
+     assets/data/lots.json qui gagne, toujours.
+
+     Donc : la famille edite assets/data/lots.json. Si elle veut aussi verifier
+     en double clic avant la mise en ligne, elle colle le meme texte ici.
+     C est ecrit en toutes lettres dans PUBLIER_UN_LOT.md.
+     ========================================================================= -->
+<script type="application/json" id="reg-secours">
+{
+  "_lisez_moi": "Ce fichier EST le registre. La page el-registro.html ne fait que le lire. Pour publier un lot, on ajoute un bloc dans la liste lots, on enregistre, on met le fichier en ligne. Le mode d emploi complet, ecrit pour quelqu un qui n est pas developpeur, est dans PUBLIER_UN_LOT.md a la racine du site. Ne changez pas les noms des champs, seulement ce qui est entre guillemets apres les deux points.",
+
+  "version": 1,
+  "mis_a_jour": "2026-08-16",
+
+  "_valeurs_communes": "Ce qui ne change pas d un lot a l autre s ecrit une seule fois ici. Un lot qui differe reecrit la ligne chez lui, et c est la sienne qui gagne.",
+  "valeurs_communes": {
+    "maestro": "Gilberto Vásquez",
+    "village": "Villa Sola de Vega, Oaxaca",
+    "degre": "50 %",
+    "contenant": "700 ml",
+    "categorie": {
+      "fr": "Mezcal Artesanal, joven, D.O. protégée",
+      "es": "Mezcal Artesanal, joven, D.O. protegida",
+      "en": "Mezcal Artesanal, joven, protected D.O."
+    }
+  },
+
+  "_crus": "Les trois agaves de la maison. L espadin est le seul qui donne chaque annee. Le tobala et le coyote donnent quand la plante decide. On ne retire jamais un cru de cette liste : une annee sans lot se dit dans annees_sans_lot.",
+  "crus": [
+    {
+      "id": "espadin",
+      "nom": "Espadín",
+      "espece": "A. angustifolia",
+      "rythme": "chaque_annee",
+      "page": "espadin.html"
+    },
+    {
+      "id": "tobala",
+      "nom": "Tobalá",
+      "espece": "A. potatorum",
+      "rythme": "quand_la_plante_decide",
+      "page": "tobala.html"
+    },
+    {
+      "id": "coyote",
+      "nom": "Coyote",
+      "espece": "A. americana",
+      "rythme": "quand_la_plante_decide",
+      "page": "coyote.html"
+    }
+  ],
+
+  "_annees_sans_lot": "Une annee sans lot se declare ici, avec sa raison. Le registre l affiche. Un cru absent n est jamais remplace par un autre.",
+  "annees_sans_lot": [
+    {
+      "exemple": true,
+      "cru": "tobala",
+      "annee": 2025,
+      "raison": {
+        "fr": "La plante n'a pas donné.",
+        "es": "La planta no dio.",
+        "en": "The plant did not give."
+      }
+    }
+  ],
+
+  "_lots": "Un bloc par lot, du plus recent au plus ancien. exemple vaut true tant que le lot est un lot de demonstration : le registre l affiche alors comme une place tenue et non comme une bouteille reelle. Le jour ou la maison publie son premier vrai lot, elle ecrit exemple: false, ou elle efface la ligne exemple.",
+  "lots": [
+    {
+      "exemple": true,
+      "reference": "ESP-2025-01",
+      "cru": "espadin",
+      "annee": 2025,
+      "parcelle": "Parcela A",
+      "sol": {
+        "fr": "Argile rouge, pente exposée au sud",
+        "es": "Arcilla roja, ladera expuesta al sur",
+        "en": "Red clay, slope facing south"
+      },
+      "annee_plantation": 2018,
+      "litres": 288,
+      "bouteilles": 412,
+      "date_distillation": "2025-11-14",
+      "etat": "ouvert",
+      "date_epuisement": "",
+      "note": {
+        "fr": "Emplacement d'une note libre. La maison écrit ici ce qui n'entre dans aucune autre ligne.",
+        "es": "Lugar de una nota libre. La casa escribe aquí lo que no cabe en ninguna otra línea.",
+        "en": "Room for a free note. The house writes here whatever fits in no other line."
+      }
+    },
+    {
+      "exemple": true,
+      "reference": "COY-2025-01",
+      "cru": "coyote",
+      "annee": 2025,
+      "parcelle": "Parcela C",
+      "sol": {
+        "fr": "Terre noire, replat de fond de vallée",
+        "es": "Tierra negra, llano de fondo de valle",
+        "en": "Black earth, flat valley floor"
+      },
+      "annee_plantation": 2012,
+      "litres": 108,
+      "bouteilles": 154,
+      "date_distillation": "2025-12-02",
+      "etat": "ouvert",
+      "date_epuisement": "",
+      "note": ""
+    },
+    {
+      "exemple": true,
+      "reference": "ESP-2024-01",
+      "cru": "espadin",
+      "annee": 2024,
+      "parcelle": "Parcela A",
+      "sol": {
+        "fr": "Argile rouge, pente exposée au sud",
+        "es": "Arcilla roja, ladera expuesta al sur",
+        "en": "Red clay, slope facing south"
+      },
+      "annee_plantation": 2017,
+      "litres": 271,
+      "bouteilles": 388,
+      "date_distillation": "2024-10-29",
+      "etat": "epuise",
+      "date_epuisement": "2026-01-18",
+      "note": ""
+    },
+    {
+      "exemple": true,
+      "reference": "TOB-2024-01",
+      "cru": "tobala",
+      "annee": 2024,
+      "parcelle": "Parcela B",
+      "sol": {
+        "fr": "Pierre calcaire, hauteur",
+        "es": "Piedra caliza, altura",
+        "en": "Limestone, high ground"
+      },
+      "annee_plantation": 2015,
+      "litres": 67,
+      "bouteilles": 96,
+      "date_distillation": "2024-11-21",
+      "etat": "epuise",
+      "date_epuisement": "2025-09-30",
+      "note": ""
+    }
+  ]
+}
+</script>
+
+<script>siteChrome.init(); registre.init();</script>
+</body>
+</html>
