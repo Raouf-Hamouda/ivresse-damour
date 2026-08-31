@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Acheter Tobalá. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+</head>
+
+<!-- ============================================================================
+     LA PAGE D ACHAT. Refaite le 16 aout au soir a la demande de Raouf, sur la
+     structure d une fiche de piece : a gauche les images (le packshot entier,
+     puis le medaillon en detail, recadre par la feuille sur la meme photo), a
+     droite la fiche collante : le nom, l agave, le prix, la quantite, le
+     bouton, puis les depliants (le liquide, le service, la livraison,
+     l allocation). Aucun prix invente : l espadin est a 140 euros, le tobala et
+     le coyote n ont pas de prix arrete et ne se commandent pas. Le panier est
+     celui de site.js (ida.panier). Le paiement n est pas encore ouvert.
+     ========================================================================= -->
+
+<body data-page=""
+      data-titre-fr="Acheter Tobalá. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="Comprar Tobalá. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-en="Buy Tobalá. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page" data-accent="tobala">
+
+  <section class="fiche">
+
+    <!-- 01. Les images. Le packshot entier, jamais recadre, puis le detail. -->
+    <div class="fiche__images">
+      <figure class="figure figure--pleine galerie">
+        <img class="galerie__grande" src="assets/img/bouteilles/tobala_2000.jpg" srcset="assets/img/bouteilles/tobala_600.jpg 600w, assets/img/bouteilles/tobala_1200.jpg 1200w, assets/img/bouteilles/tobala_2000.jpg 2000w" sizes="(max-width: 1000px) 100vw, 50vw" alt="" data-fr-alt="La bouteille" data-es-alt="La botella" data-en-alt="The bottle" width="1999" height="1493">
+        <figcaption class="galerie__legende" data-fr="La bouteille" data-es="La botella" data-en="The bottle"></figcaption>
+      </figure>
+      <div class="galerie__vignettes" role="tablist" aria-label="Vues">
+        <button type="button" class="galerie__v est-active" role="tab" aria-selected="true"
+                data-src="assets/img/bouteilles/tobala_2000.jpg" data-srcset="assets/img/bouteilles/tobala_600.jpg 600w, assets/img/bouteilles/tobala_1200.jpg 1200w, assets/img/bouteilles/tobala_2000.jpg 2000w"
+                data-fr="La bouteille" data-es="La botella" data-en="The bottle"><img src="assets/img/bouteilles/tobala_600.jpg" alt="" width="600" height="448"></button>
+        <button type="button" class="galerie__v" role="tab" aria-selected="false"
+                data-src="assets/img/bouteilles/tobala_copita_1200.jpg" data-srcset="assets/img/bouteilles/tobala_copita_600.jpg 600w, assets/img/bouteilles/tobala_copita_1200.jpg 1200w"
+                data-fr="La copita et la jícara" data-es="La copita y la jícara" data-en="The copita and the jícara"><img src="assets/img/bouteilles/tobala_copita_600.jpg" alt="" width="600" height="450"></button>
+      </div>
+      <!-- la vue copita est une image de demonstration generee a partir du packshot reel (17 aout) ; a remplacer par la seance photo -->
+      <div class="fiche__autres2">
+        <p class="kicker" data-fr="Les autres bouteilles" data-es="Las otras botellas" data-en="The other bottles"></p>
+        <div class="fiche__autres2-l">
+          <a class="autre" href="acheter-espadin.html"><img src="assets/img/bouteilles/espadin_600.jpg" alt="" width="600" height="448"><span class="autre__nom">Espadín</span><span class="autre__latin">A. angustifolia</span></a>
+          <a class="autre" href="acheter-coyote.html"><img src="assets/img/bouteilles/coyote_600.jpg" alt="" width="600" height="448"><span class="autre__nom">Coyote</span><span class="autre__latin">A. americana</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02. La fiche, collante au bureau. -->
+    <div class="fiche__achat">
+      <div class="fiche__agave"><span class="embleme" data-embleme="tobala" style="width:96px;height:96px"></span></div>
+      <p class="kicker" data-fr="Le cru sauvage" data-es="El cru silvestre" data-en="The wild cru"></p>
+      <h1 class="vente__nom">Tobalá</h1>
+      <p class="vente__latin">A. potatorum</p>
+      <div class="vente__filet" style="background:var(--turquesa)"></div>
+      <p class="vente__recit" data-fr="Le tobalá pousse seul dans la roche, ne se multiplie que par graine, met plus de dix ans à mûrir. La maison n'en tire une bouteille que l'année où la plante le permet ; sinon le registre l'écrit." data-es="El tobalá crece solo en la roca, se multiplica solo por semilla, tarda más de diez años en madurar. La casa saca una botella solo el año en que la planta lo permite; si no, el registro lo escribe." data-en="Tobalá grows alone in the rock, multiplies only by seed, takes more than ten years to ripen. The house makes a bottle only the year the plant allows it; otherwise the register says so."></p>
+      <p class="vente__prix" data-fr="Prix à venir" data-es="Precio por venir" data-en="Price to come"></p><!-- prix non arrete par la maison, a confirmer -->
+      <p class="vente__note" data-fr="Le prix sera fixé à la sortie du lot. Le registre dira le lot et le nombre." data-es="El precio se fijará a la salida del lote. El registro dirá el lote y el número." data-en="The price will be set when the lot is released. The register will state the lot and the number."></p>
+
+      <div class="fiche__commande">
+        <div class="fiche__qte" data-for="qte-tobala">
+          <span data-fr="Quantité" data-es="Cantidad" data-en="Quantity"></span>
+          <div class="qte" role="group" aria-label="Quantité"><button type="button" class="qte__b" data-moins aria-label="Moins">&minus;</button><input class="qte__v" id="qte-tobala" data-qte="tobala" type="text" inputmode="numeric" value="1" readonly><button type="button" class="qte__b" data-plus aria-label="Plus">+</button></div></div>
+        <button class="b-plein" type="button" data-ajouter="tobala" data-fr="Ajouter au panier" data-es="Añadir al carrito" data-en="Add to bag"></button>
+      </div>
+      <p class="vente__note" data-fr="Le prix est fixé à la sortie du lot ; la commande est confirmée à ce moment." data-es="El precio se fija cuando sale el lote; el pedido se confirma en ese momento." data-en="The price is set when the lot is released; the order is confirmed at that point."></p>
+
+
+      <!-- 03. Les depliants. Ce qui est dit ici se lit ailleurs sur le site :
+           les faits sur l etiquette, le service dans El Ritual, la livraison
+           dans la boutique et les conditions. -->
+      <div class="fiche__deplis">
+        <details class="depli" open>
+          <summary data-fr="Le liquide" data-es="El líquido" data-en="The liquid"></summary>
+          <div class="depli__corps">
+            <dl class="faits">
+              <div class="faits__l"><dt class="faits__k">Agave</dt><dd class="faits__v">A. potatorum, tobalá</dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Catégorie" data-es="Categoría" data-en="Category"></dt><dd class="faits__v">Mezcal Artesanal, joven, D.O.</dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Degré" data-es="Graduación" data-en="Strength"></dt><dd class="faits__v">50 %</dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Village" data-es="Pueblo" data-en="Village"></dt><dd class="faits__v">Villa Sola de Vega, Oaxaca</dd></div>
+              <div class="faits__l"><dt class="faits__k">Maestro</dt><dd class="faits__v">Gilberto Vásquez</dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Contenant" data-es="Contenido" data-en="Volume"></dt><dd class="faits__v">700 ml</dd></div>
+            </dl>
+          </div>
+        </details>
+        <details class="depli">
+          <summary data-fr="Le service" data-es="El servicio" data-en="Serving"></summary>
+          <div class="depli__corps">
+            <p data-fr="On le boit pur, dans la copita, à température ambiante. Rien de froid, rien de coupé, rien par dessus." data-es="Se bebe solo, en la copita, a temperatura ambiente. Nada frío, nada rebajado, nada encima." data-en="It is drunk neat, in the copita, at room temperature. Nothing cold, nothing cut, nothing on top."></p>
+            <p data-fr="Avec un comté douze mois. C'est l'accord que la maison cite en premier." data-es="Con un comté de doce meses. Es el maridaje que la casa cita primero." data-en="With a twelve month comté. It is the pairing the house names first."></p>
+            <p><a class="lien-discret" href="el-ritual.html" data-fr="Voir El Ritual" data-es="Ver El Ritual" data-en="See El Ritual"></a></p>
+          </div>
+        </details>
+        <details class="depli">
+          <summary data-fr="La livraison" data-es="El envío" data-en="Shipping"></summary>
+          <div class="depli__corps">
+            <p data-fr="France, Union européenne, international, vers les seuls pays où l'expédition d'alcool est autorisée." data-es="Francia, Unión Europea, internacional, solo hacia los países donde se autoriza el envío de alcohol." data-en="France, European Union, international, to the countries where shipping alcohol is allowed only."></p>
+            <p data-fr="Frais calculés au nombre de bouteilles, au poids et au pays. Barème : à confirmer." data-es="Gastos calculados por número de botellas, peso y país. Tarifa: por confirmar." data-en="Cost calculated by number of bottles, weight and country. Scale: to be confirmed."></p>
+            <p data-fr="Retrait au restaurant de la famille, Toloache, à Paris. Adresse et horaires : à confirmer." data-es="Recogida en el restaurante de la familia, Toloache, en París. Dirección y horarios: por confirmar." data-en="Pickup at the family restaurant, Toloache, in Paris. Address and hours: to be confirmed."></p>
+            <p><a class="lien-discret" href="livraison-et-retours.html" data-fr="Livraison et retours" data-es="Envío y devoluciones" data-en="Shipping and returns"></a></p>
+          </div>
+        </details>
+        <details class="depli">
+          <summary data-fr="L'allocation" data-es="La asignación" data-en="Allocation"></summary>
+          <div class="depli__corps">
+            <p data-fr="Le site documente et alloue. La transaction se fait avec la maison ou l'importateur, hors du site. On écrit, on est alloué ou non." data-es="El sitio documenta y asigna. La transacción se hace con la casa o el importador, fuera del sitio. Se escribe, se es asignado o no." data-en="The site documents and allocates. The transaction happens with the house or the importer, off the site. You write, you are allocated or not."></p>
+            <!-- Note de chantier, retiree de la vue : choix technique non tranche (front statique plus Stripe, ou plateforme). Le paiement n envoie rien pour l instant. -->
+            <p data-fr="Le paiement en ligne n'est pas encore ouvert." data-es="El pago en línea todavía no está abierto." data-en="Online payment is not open yet."></p>
+            <p><a class="lien-discret" href="contact.html" data-fr="Écrire à la maison" data-es="Escribir a la casa" data-en="Write to the house"></a></p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+
+</main>
+
+
+<script>
+siteChrome.init();
+
+/* LE COMPTE DU SAC, AU CHARGEMENT. Meme geste que dans la boutique : ajouter
+   zero remet le compte de l entete a jour. */
+(function(){
+  var c = window.siteChrome;
+  if(c && c.panier && c.bouteilles && c.bouteilles.length){
+    c.panier.ajouter(c.bouteilles[0].id, 0);
+  }
+})();
+
+/* LE PANIER. Celui de site.js, on n en ecrit pas un second. La quantite
+   choisie s ajoute d un coup. */
+(function(){
+  var panier = window.siteChrome && window.siteChrome.panier;
+  if(!panier) return;
+  function etat(){
+    var p = panier.lire();
+    var els = document.querySelectorAll('[data-etat]');
+    for(var i=0;i<els.length;i++){
+      var id = els[i].getAttribute('data-etat');
+      var n = p[id] | 0;
+      els[i].hidden = n < 1;
+      var c = els[i].querySelector('[data-nombre="' + id + '"]');
+      if(c) c.textContent = String(n);
+    }
+  }
+  var b = document.querySelectorAll('[data-ajouter]');
+  for(var i=0;i<b.length;i++){
+    b[i].addEventListener('click', function(){
+      var id = this.getAttribute('data-ajouter');
+      var s = document.querySelector('[data-qte="' + id + '"]');
+      var q = s ? (parseInt(s.value, 10) || 1) : 1;
+      panier.ajouter(id, q);
+      etat();
+    });
+  }
+  etat();
+})();
+</script>
+</body>
+</html>

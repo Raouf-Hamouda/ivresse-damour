@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Plan du site. Ivresse d'Amour, Toloache Legitimo</title>
+<style>
+  :root{
+    --encre:#2B2118; --papier:#FEF9F3; --creme:#F5F0DC; --filet:#ECEAE5;
+    --brun:#4E3524; --brique:#A63D24; --olive:#8F9035; --vert:#58705A;
+    --turquesa:#40E0D0; --rosa:#E4007C; --etiquette:#FED5A3;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--papier);color:var(--encre);font-family:var(--serif);font-size:16px;line-height:1.55}
+  .boite{max-width:1180px;margin:0 auto;padding:0 8vw}
+  header{padding:64px 0 28px;border-bottom:1px solid var(--filet)}
+  .kicker{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--brun)}
+  h1{font-weight:400;font-size:clamp(34px,5vw,64px);line-height:1.05;margin:12px 0 10px}
+  .chapo{font-size:19px;max-width:56ch;color:var(--brun)}
+  section{padding:44px 0;border-bottom:1px solid var(--filet)}
+  h2{font-weight:400;font-size:26px;margin-bottom:4px}
+  h2 .n{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--brun);display:block;margin-bottom:8px}
+  .note{font-size:14px;color:var(--brun);max-width:70ch;margin-bottom:20px}
+
+  ul.arbre{list-style:none;margin-top:14px}
+  ul.arbre li{border-top:1px solid var(--filet);display:flex;gap:18px;align-items:baseline;padding:9px 0;flex-wrap:wrap}
+  ul.arbre li:last-child{border-bottom:1px solid var(--filet)}
+  .f{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;min-width:250px;color:var(--encre)}
+  .f a{color:inherit;text-decoration:none;border-bottom:1px solid var(--filet)}
+  .f a:hover{border-bottom-color:var(--encre)}
+  .n2{flex:1;min-width:180px}
+  .d{font-size:13.5px;color:var(--brun);flex:2;min-width:240px}
+  .etat{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;padding:2px 8px;border:1px solid currentColor;white-space:nowrap}
+  .fait{color:var(--vert)}
+  .encours{color:var(--olive)}
+  .vide{color:var(--brun);opacity:.65}
+  .bloque{color:var(--brique)}
+
+  .flux{background:var(--creme);border:1px solid var(--filet);padding:24px;margin-top:18px;font-size:14px;line-height:2}
+  .flux b{font-weight:400;letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:var(--brun);display:block;margin-bottom:8px}
+  .fleche{color:var(--brun)}
+
+  table{border-collapse:collapse;font-size:14px;margin-top:14px;width:100%}
+  td,th{border-bottom:1px solid var(--filet);padding:8px 14px 8px 0;text-align:left;vertical-align:top}
+  th{font-weight:400;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--brun)}
+  .sw{display:inline-block;width:13px;height:13px;border:1px solid var(--filet);vertical-align:-2px;margin-right:8px}
+  footer{padding:40px 0 80px;font-size:13px;color:var(--brun)}
+  @media (max-width:860px){ .f{min-width:100%} .d{min-width:100%} }
+</style>
+</head>
+<body>
+
+<header><div class="boite">
+  <p class="kicker">Ivresse d'Amour · Toloache Legitimo · 16 août 2026</p>
+  <h1>Plan du site</h1>
+  <p class="chapo">L'architecture complète, fichier par fichier. Trois langues, FR ES EN. Le récit garde ses marges ; les bouteilles, les jeux et la vente passent en pleine page, forme repérée chez Gentle Monster.</p>
+</div></header>
+
+<section><div class="boite">
+  <h2><span class="n">Le parcours</span>Comment on entre</h2>
+  <div class="flux">
+    <b>La porte, puis le récit, puis la vente</b>
+    Porte d'âge <span class="fleche">→</span> La Botella (accueil et produit) <span class="fleche">→</span> le menu ouvre les six autres pages du récit<br>
+    La Botella <span class="fleche">→</span> Les mezcals <span class="fleche">→</span> une fiche bouteille <span class="fleche">→</span> son jeu <span class="fleche">→</span> le registre du lot<br>
+    Une fiche bouteille <span class="fleche">→</span> Boutique <span class="fleche">→</span> panier <span class="fleche">→</span> commande <span class="fleche">→</span> confirmation<br>
+    Le pied de page, sur toutes les pages <span class="fleche">→</span> mentions légales, contact, distribution, presse
+  </div>
+  <p class="note" style="margin-top:18px">La porte d'âge n'est pas une page : elle est posée par <code>assets/js/site.js</code> sur chaque page, et la réponse est gardée dans le navigateur. Le récit ne vend pas. La vente vit dans sa propre branche, à part, et n'entre jamais dans une page de récit.</p>
+</div></section>
+
+<section><div class="boite">
+  <h2><span class="n">Niveau 1</span>Le récit, les sept entrées du menu</h2>
+  <p class="note">Le squelette validé par le client le 3 août, plus Eventos que la famille a demandé après.</p>
+  <ul class="arbre">
+    <li><span class="f"><a href="index.html">index.html</a></span><span class="n2">La Botella</span><span class="d">Scènes pleine page : le sceau animé, la bouteille, le liquide, les faits, les trois bouteilles, le service, la lettre</span><span class="etat fait">construite</span></li>
+    <li><span class="f"><a href="la-historia.html">la-historia.html</a></span><span class="n2">La Historia</span><span class="d">Le coup de foudre, le couple, le milagro. Page construite et validée</span><span class="etat fait">construite</span></li>
+    <li><span class="f"><a href="el-palenque.html">el-palenque.html</a></span><span class="n2">El Palenque</span><span class="d">Villa Sola de Vega, le maestro Gilberto Vásquez, les quatre étapes</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="el-mito.html">el-mito.html</a></span><span class="n2">El Mito</span><span class="d">La foudre, le toloache, metl et ixcalli, el dicho</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="el-registro.html">el-registro.html</a></span><span class="n2">El Registro</span><span class="d">Entrée par le numéro de la bouteille, fiche de lot, crus, épuisés</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="el-ritual.html">el-ritual.html</a></span><span class="n2">El Ritual</span><span class="d">Le verre, la température, la table, la devise</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="eventos.html">eventos.html</a></span><span class="n2">Eventos</span><span class="d">Le journal de la maison, les tables et les artistes</span><span class="etat vide">vide</span></li>
+  </ul>
+</div></section>
+
+<section><div class="boite">
+  <h2><span class="n">Niveau 2</span>Les trois bouteilles</h2>
+  <p class="note">Espadín chaque année, tobalá et coyote quand la plante décide. Un lot absent est dit sur le registre, jamais remplacé.</p>
+  <ul class="arbre">
+    <li><span class="f"><a href="les-mezcales.html">les-mezcales.html</a></span><span class="n2">Les mezcals</span><span class="d">La présentation commune. La grille des trois, chacune sa couleur</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="espadin.html">espadin.html</a></span><span class="n2">Espadín</span><span class="d">A. angustifolia. Page pleine page, faits de l'étiquette, entrée du jeu, entrée de la vente</span><span class="etat fait">construite</span></li>
+    <li><span class="f"><a href="tobala.html">tobala.html</a></span><span class="n2">Tobalá</span><span class="d">A. potatorum. Signée turquesa #40E0D0</span><span class="etat fait">construite</span></li>
+    <li><span class="f"><a href="coyote.html">coyote.html</a></span><span class="n2">Coyote</span><span class="d">A. americana. Signée rosa mexicano #E4007C</span><span class="etat fait">construite</span></li>
+  </ul>
+</div></section>
+
+<section><div class="boite">
+  <h2><span class="n">Niveau 3</span>Les jeux, un par bouteille</h2>
+  <p class="note">Chaque bouteille ouvre son jeu par un bloc pleine page, la forme « découvrir la campagne » repérée chez Gentle Monster : muet, une ligne, un bouton. Deux jeux existent déjà hors du site, <code>JEU_ESPADIN.html</code> et <code>JEU_TOBALA.html</code>, à intégrer et non à réécrire. Le code de remise de 20 % reste non tranché, il n'est implémenté nulle part.</p>
+  <ul class="arbre">
+    <li><span class="f"><a href="jeu-espadin.html">jeu-espadin.html</a></span><span class="n2">Le jeu de l'espadín</span><span class="d">Page d'entrée construite, jeu à embarquer</span><span class="etat encours">à embarquer</span></li>
+    <li><span class="f"><a href="jeu-tobala.html">jeu-tobala.html</a></span><span class="n2">Le jeu du tobalá</span><span class="d">Page d'entrée construite, jeu à embarquer</span><span class="etat encours">à embarquer</span></li>
+    <li><span class="f"><a href="jeu-coyote.html">jeu-coyote.html</a></span><span class="n2">Le jeu du coyote</span><span class="d">Page d'entrée construite, jeu inexistant</span><span class="etat vide">jeu à écrire</span></li>
+  </ul>
+</div></section>
+
+<section><div class="boite">
+  <h2><span class="n">Niveau 4</span>La vente</h2>
+  <p class="note">Demandée par la famille au devis, absente du squelette du 3 août qui dit que le site ne vend pas. La contradiction n'est pas tranchée, et le choix technique non plus : front statique plus Stripe Checkout avec un petit back-office, ou plateforme. Ces quatre pages existent pour tenir la place, rien de plus.</p>
+  <ul class="arbre">
+    <li><span class="f"><a href="acheter-espadin.html">acheter-espadin.html</a></span><span class="n2">Acheter l'Espadín</span><span class="d">Page d'allocation pleine page, 140 €, aucun panier</span><span class="etat fait">construite</span></li>
+    <li><span class="f"><a href="acheter-tobala.html">acheter-tobala.html</a></span><span class="n2">Acheter le Tobalá</span><span class="d">Prix non arrêté</span><span class="etat fait">construite</span></li>
+    <li><span class="f"><a href="acheter-coyote.html">acheter-coyote.html</a></span><span class="n2">Acheter le Coyote</span><span class="d">Prix non arrêté</span><span class="etat fait">construite</span></li>
+    <li><span class="f"><a href="boutique.html">boutique.html</a></span><span class="n2">Boutique</span><span class="d">Catalogue des trois produits, stock, lots</span><span class="etat bloque">à trancher</span></li>
+    <li><span class="f"><a href="panier.html">panier.html</a></span><span class="n2">Panier</span><span class="d">N'existe que si la boutique existe</span><span class="etat bloque">à trancher</span></li>
+    <li><span class="f"><a href="commande.html">commande.html</a></span><span class="n2">Commande</span><span class="d">Achat sans compte, adresse, transporteur, paiement</span><span class="etat bloque">à trancher</span></li>
+    <li><span class="f"><a href="confirmation.html">confirmation.html</a></span><span class="n2">Confirmation</span><span class="d">Facture numérotée, courriel</span><span class="etat bloque">à trancher</span></li>
+  </ul>
+</div></section>
+
+<section><div class="boite">
+  <h2><span class="n">Niveau 5</span>La maison, le service</h2>
+  <ul class="arbre">
+    <li><span class="f"><a href="points-de-vente.html">points-de-vente.html</a></span><span class="n2">Points de vente</span><span class="d">Le restaurant Toloache, les importateurs</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="professionnels.html">professionnels.html</a></span><span class="n2">Professionnels</span><span class="d">Cavistes, restaurants, importateurs</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="contact.html">contact.html</a></span><span class="n2">Contact</span><span class="d">Écrire à la maison. Lien du pied de page</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="distribution.html">distribution.html</a></span><span class="n2">Distribution</span><span class="d">Pays servis, importateurs. Lien du pied de page</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="presse.html">presse.html</a></span><span class="n2">Presse</span><span class="d">Dossier, images, contact. Lien du pied de page</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="faq.html">faq.html</a></span><span class="n2">Questions</span><span class="d">Réponses courtes, factuelles</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="livraison-et-retours.html">livraison-et-retours.html</a></span><span class="n2">Livraison et retours</span><span class="d">France, UE, international, retrait au restaurant</span><span class="etat vide">vide</span></li>
+  </ul>
+</div></section>
+
+<section><div class="boite">
+  <h2><span class="n">Niveau 6</span>Le droit</h2>
+  <p class="note">Textes à faire écrire ou valider par un juriste, nous intégrons. Loi Évin, avertissements sanitaires, pays autorisés, accises, TVA par pays.</p>
+  <ul class="arbre">
+    <li><span class="f"><a href="mentions-legales.html">mentions-legales.html</a></span><span class="n2">Mentions légales</span><span class="d">Éditeur, hébergeur, propriété. Lien du pied de page</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="cgv.html">cgv.html</a></span><span class="n2">Conditions générales de vente</span><span class="d">N'existent que si le site vend</span><span class="etat vide">vide</span></li>
+    <li><span class="f"><a href="confidentialite-et-cookies.html">confidentialite-et-cookies.html</a></span><span class="n2">Confidentialité et cookies</span><span class="d">RGPD, mesure d'audience, consentement</span><span class="etat vide">vide</span></li>
+  </ul>
+</div></section>
+
+<section><div class="boite">
+  <h2><span class="n">La charpente</span>Ce sur quoi toutes les pages reposent</h2>
+  <ul class="arbre">
+    <li><span class="f"><a href="CONTRAT_VISUEL.md">CONTRAT_VISUEL.md</a></span><span class="n2">Le contrat visuel</span><span class="d">Palette, échelle typographique, grille, loi du mouvement, loi du ton, liste de refus</span><span class="etat fait">écrit</span></li>
+    <li><span class="f"><a href="GABARIT.html">GABARIT.html</a></span><span class="n2">Le gabarit</span><span class="d">Un exemplaire de chaque bloc autorisé. On copie ce fichier pour construire une page</span><span class="etat fait">écrit</span></li>
+    <li><span class="f">assets/css/site.css</span><span class="n2">La feuille unique</span><span class="d">Aucune page n'écrit de style</span><span class="etat fait">écrit</span></li>
+    <li><span class="f">assets/js/site.js</span><span class="n2">La charpente</span><span class="d">Porte d'âge, menu, survol mot vers emblème, langues FR et ES, pied de page</span><span class="etat fait">écrit</span></li>
+    <li><span class="f">assets/js/logo.js</span><span class="n2">Le sceau</span><span class="d">Le logo de la famille tracé au vecteur exact, en neuf parties</span><span class="etat fait">écrit</span></li>
+    <li><span class="f">assets/js/sceau_anime.js</span><span class="n2">L'animation du sceau</span><span class="d">La version retenue le 16 août, 3,1 s, réutilisable sur n'importe quelle page</span><span class="etat fait">écrit</span></li>
+    <li><span class="f">assets/js/emblemes.js</span><span class="n2">Les emblèmes</span><span class="d">Botella, mito, registro, ritual, palenque validés ; eventos provisoire</span><span class="etat encours">six sur dix</span></li>
+    <li><span class="f">assets/media/logo_anime_1080p.mp4</span><span class="n2">Le film du sceau</span><span class="d">1080p, 60 images par seconde</span><span class="etat fait">écrit</span></li>
+  </ul>
+</div></section>
+
+<section><div class="boite">
+  <h2><span class="n">La palette</span>Les couleurs de la maison</h2>
+  <table>
+    <tr><th>Nom</th><th>Code</th><th>Métier</th></tr>
+    <tr><td><span class="sw" style="background:#2B2118"></span>Encre</td><td>#2B2118</td><td>La seule encre : texte, sceau, emblèmes</td></tr>
+    <tr><td><span class="sw" style="background:#FEF9F3"></span>Papier</td><td>#FEF9F3</td><td>Le fond par défaut</td></tr>
+    <tr><td><span class="sw" style="background:#F5F0DC"></span>Crème</td><td>#F5F0DC</td><td>Second fond, pied de page</td></tr>
+    <tr><td><span class="sw" style="background:#C9C48D"></span>Papier olive</td><td>#C9C48D</td><td>Le fond d'une section, une par page</td></tr>
+    <tr><td><span class="sw" style="background:#FED5A3"></span>Étiquette</td><td>#FED5A3</td><td>Fiche de lot, table de faits</td></tr>
+    <tr><td><span class="sw" style="background:#8F9035"></span>Olive</td><td>#8F9035</td><td>La fleur, l'accent végétal</td></tr>
+    <tr><td><span class="sw" style="background:#58705A"></span>Vert</td><td>#58705A</td><td>État d'un lot ouvert</td></tr>
+    <tr><td><span class="sw" style="background:#A63D24"></span>Rouge brique</td><td>#A63D24</td><td>Page courante, éclair, jamais une surface</td></tr>
+    <tr><td><span class="sw" style="background:#4E3524"></span>Brun</td><td>#4E3524</td><td>Texte secondaire, capitales</td></tr>
+    <tr><td><span class="sw" style="background:#40E0D0"></span>Turquesa</td><td>#40E0D0</td><td>Accent vif, un seul par écran, jamais un fond</td></tr>
+    <tr><td><span class="sw" style="background:#E4007C"></span>Rosa mexicano</td><td>#E4007C</td><td>Idem, et jamais en même temps que le turquesa</td></tr>
+  </table>
+  <p class="note" style="margin-top:16px">Règle du cahier : les emblèmes sont dessinés en encre sur papier, toujours. La couleur n'entre jamais dans le dessin. Elle sert autour : l'état survolé d'une entrée de menu, le fond d'une fiche, un filet.</p>
+</div></section>
+
+<section><div class="boite">
+  <h2><span class="n">Ce qui manque</span>Les trous connus, dits franchement</h2>
+  <ul class="arbre">
+    <li><span class="f">Quatre emblèmes</span><span class="n2">historia, espadín, tobalá, coyote</span><span class="d">Non dessinés. Eventos est provisoire. La Historia et les trois fiches bouteille n'ont pas de marque propre</span><span class="etat bloque">manque</span></li>
+    <li><span class="f">La typographie</span><span class="n2">Police non achetée</span><span class="d">Tout est composé dans une pile de secours. Le jour de l'achat, une variable change et la maison change de visage</span><span class="etat bloque">manque</span></li>
+    <li><span class="f">Les photographies</span><span class="n2">Aucune</span><span class="d">Les blocs image existent, leur contenu non. Le site ne peut pas être jugé avant les images du Mexique</span><span class="etat bloque">manque</span></li>
+    <li><span class="f">La bouteille en 360°</span><span class="n2">Pièce maîtresse de l'accueil</span><span class="d">Ni séquence photo, ni modèle</span><span class="etat bloque">manque</span></li>
+    <li><span class="f">Les trois langues</span><span class="n2">FR, ES, EN dans cet ordre</span><span class="d">Le mécanisme est en place et le site ouvre en français. Les textes des pages non construites restent à écrire</span><span class="etat encours">en place</span></li>
+    <li><span class="f">La vente</span><span class="n2">Choix technique</span><span class="d">Statique plus Stripe, ou plateforme. Non tranché</span><span class="etat bloque">à trancher</span></li>
+  </ul>
+</div></section>
+
+<footer><div class="boite">
+  Le site est le registre de la maison : il documente, il archive, il alloue par lettre. Il ne vend pas dans ses pages de récit, et il ne solde jamais.
+</div></footer>
+
+</body>
+</html>

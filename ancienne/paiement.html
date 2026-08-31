@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Paiement. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+</head>
+
+<!-- DEMO : aucun paiement n'est encaisse ; le vrai prestataire (Stripe Checkout ou autre) remplacera ce formulaire -->
+<!-- ============================================================================
+     LE PASSAGE EN CAISSE, seconde marche : le paiement (17 aout, Raouf : "ou est
+     le paiement ?"). Deux colonnes : a gauche le recapitulatif lu dans le panier
+     du navigateur (ida.panier via siteChrome.panier.lire), a droite le formulaire
+     de carte dans la facture des champs du site, le bouton plein "Payer", une
+     mention "paiement securise" au cadenas, une ligne legale discrete.
+     Le prix de l espadin, 140 euros, est celui de acheter-espadin.html. Le
+     tobala et le coyote n en ont pas encore : "prix a venir", ils ne comptent
+     pas dans le total. Les frais d envoi suivent le mot du panier : selon le
+     pays et le nombre de bouteilles, bareme a confirmer.
+     Le formulaire verifie seulement que les champs sont remplis, puis passe a
+     confirmation.html. Rien n est envoye nulle part.
+     ========================================================================= -->
+
+<body data-page=""
+      data-titre-fr="Paiement. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="Pago. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-en="Payment. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page caisse">
+
+  <div class="caisse__deux">
+
+    <!-- 01. LE RECAPITULATIF -->
+    <section class="caisse__recap">
+      <p class="kicker" data-fr="Votre commande" data-es="Su pedido" data-en="Your order"></p>
+      <h1 class="caisse__titre" data-fr="Paiement" data-es="Pago" data-en="Payment"></h1>
+
+      <dl class="faits" id="recap">
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Total" data-es="Total" data-en="Total"></dt>
+          <dd class="faits__v" id="recap-total"></dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Frais d'envoi" data-es="Gastos de envío" data-en="Shipping"></dt>
+          <dd class="faits__v"
+              data-fr="Selon le pays et le nombre de bouteilles, affichés avant le paiement."
+              data-es="Según el país y el número de botellas, mostrados antes del pago."
+              data-en="By country and number of bottles, shown before payment."></dd>
+        </div>
+      </dl>
+
+      <p id="recap-vide" hidden>
+        <span data-fr="Le panier est vide. " data-es="El carrito está vacío. " data-en="The bag is empty. "></span>
+        <a class="lien" href="boutique.html" data-fr="Voir la boutique" data-es="Ver la tienda" data-en="See the shop"></a>
+      </p>
+
+      <p class="mention caisse__note"
+         data-fr="Le retrait au restaurant de la famille, Toloache, à Paris, se choisit dans le courriel de confirmation."
+         data-es="La recogida en el restaurante de la familia, Toloache, en París, se elige en el correo de confirmación."
+         data-en="Pickup at the family restaurant, Toloache, in Paris, is chosen in the confirmation email."></p>
+    </section>
+
+    <!-- 02. LA CARTE -->
+    <section class="caisse__carte">
+      <p class="kicker" data-fr="Carte bancaire" data-es="Tarjeta bancaria" data-en="Card"></p>
+      <p class="caisse__oblig" data-fr="* Champs obligatoires" data-es="* Campos obligatorios" data-en="* Required fields"></p>
+
+      <form class="caisse__f" id="f-carte" novalidate>
+        <label class="caisse__l" for="nom">
+          <span class="sr" data-fr="Nom sur la carte" data-es="Nombre en la tarjeta" data-en="Name on card"></span>
+          <input id="nom" name="nom" type="text" autocomplete="cc-name" required
+                 data-fr-placeholder="Nom sur la carte *" data-es-placeholder="Nombre en la tarjeta *" data-en-placeholder="Name on card *">
+        </label>
+        <label class="caisse__l" for="numero">
+          <span class="sr" data-fr="Numéro de carte" data-es="Número de tarjeta" data-en="Card number"></span>
+          <input id="numero" name="numero" type="text" inputmode="numeric" autocomplete="cc-number" required
+                 data-fr-placeholder="Numéro de carte *" data-es-placeholder="Número de tarjeta *" data-en-placeholder="Card number *">
+        </label>
+        <div class="caisse__rang">
+          <label class="caisse__l" for="expiration">
+            <span class="sr" data-fr="Date d'expiration" data-es="Fecha de caducidad" data-en="Expiry date"></span>
+            <input id="expiration" name="expiration" type="text" inputmode="numeric" autocomplete="cc-exp" required
+                   data-fr-placeholder="MM / AA *" data-es-placeholder="MM / AA *" data-en-placeholder="MM / YY *">
+          </label>
+          <label class="caisse__l" for="cvc">
+            <span class="sr" data-fr="Cryptogramme" data-es="Criptograma" data-en="Security code"></span>
+            <input id="cvc" name="cvc" type="text" inputmode="numeric" autocomplete="cc-csc" required
+                   data-fr-placeholder="CVC *" data-es-placeholder="CVC *" data-en-placeholder="CVC *">
+          </label>
+        </div>
+
+        <p class="caisse__erreur" id="erreur" hidden
+           data-fr="Merci de remplir tous les champs." data-es="Complete todos los campos, por favor." data-en="Please fill in every field."></p>
+
+        <button class="b-plein" id="payer" type="submit"
+                data-fr="Payer" data-es="Pagar" data-en="Pay"></button>
+      </form>
+
+      <p class="caisse__sur">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="5" y="10.5" width="14" height="9.5" rx="1.6"/>
+          <path d="M8.2 10.5V7.9a3.8 3.8 0 0 1 7.6 0v2.6"/>
+        </svg>
+        <span data-fr="Paiement sécurisé" data-es="Pago seguro" data-en="Secure payment"></span>
+      </p>
+
+      <p class="mention caisse__note"
+         data-fr="Vente réservée aux personnes ayant l'âge légal. Les données de la carte ne sont ni lues ni conservées par le site : le prestataire de paiement les reçoit directement."
+         data-es="Venta reservada a personas en edad legal. Los datos de la tarjeta no los lee ni los guarda el sitio: el proveedor de pago los recibe directamente."
+         data-en="Sale restricted to those of legal age. Card details are neither read nor stored by the site: the payment provider receives them directly."></p>
+    </section>
+
+  </div>
+
+</main>
+
+<script>siteChrome.init();</script>
+<script>
+/* Le recapitulatif, lu dans le panier du navigateur, et le formulaire. */
+(function(){
+  var chrome = window.siteChrome;
+  var PRIX = { espadin:140, tobala:null, coyote:null };
+  function euros(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €'; }
+  function bouteille(id){
+    var b = (chrome && chrome.bouteilles) || [];
+    for(var i=0;i<b.length;i++){ if(b[i].id === id) return b[i]; }
+    return null;
+  }
+
+  var recap = document.getElementById('recap');
+  var total = document.getElementById('recap-total');
+  var vide = document.getElementById('recap-vide');
+  var payer = document.getElementById('payer');
+  var panier = (chrome && chrome.panier) ? chrome.panier.lire() : {};
+  /* le compte du sac dans l entete, meme geste que les autres pages : ajouter zero */
+  if(chrome && chrome.panier && chrome.bouteilles && chrome.bouteilles.length) chrome.panier.ajouter(chrome.bouteilles[0].id, 0);
+  var somme = 0, n = 0, html = '';
+
+  for(var id in panier){
+    if(!Object.prototype.hasOwnProperty.call(panier, id)) continue;
+    var q = panier[id] | 0; if(q < 1) continue;
+    var b = bouteille(id); if(!b) continue;
+    n += q;
+    var prix = PRIX[id];
+    var montant = (prix === null || prix === undefined)
+      ? '<span data-fr="Sur allocation" data-es="Por asignación" data-en="By allocation"></span>'
+      : euros(prix * q);
+    if(prix) somme += prix * q;
+    html += '<div class="faits__l">' +
+      '<dt class="faits__k">' +
+        '<span data-fr="' + b.fr + '" data-es="' + b.es + '" data-en="' + b.en + '"></span>' +
+        ' <span class="caisse__qte">× ' + q + '</span>' +
+        (prix ? ' <span class="caisse__qte">· ' + euros(prix) + ' <span data-fr="l\'unité" data-es="la unidad" data-en="each"></span></span>' : '') +
+      '</dt>' +
+      '<dd class="faits__v">' + montant + '</dd></div>';
+  }
+  if(recap && html) recap.insertAdjacentHTML('afterbegin', html);
+  if(total) total.textContent = euros(somme);
+  if(!n){
+    if(vide) vide.hidden = false;
+    if(payer){ payer.disabled = true; payer.classList.add('est-inactif'); }
+  }
+  if(chrome && chrome.appliquerLangue) chrome.appliquerLangue(chrome.langueCourante(), document.querySelector('.caisse'));
+
+  var f = document.getElementById('f-carte');
+  var erreur = document.getElementById('erreur');
+  if(!f) return;
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!n) return;
+    var champs = f.querySelectorAll('input[required]'), ok = true;
+    for(var i=0;i<champs.length;i++){
+      var plein = champs[i].value.trim().length > 0;
+      champs[i].classList.toggle('est-vide', !plein);
+      if(!plein) ok = false;
+    }
+    if(erreur) erreur.hidden = ok;
+    if(!ok) return;
+    /* DEMO : rien n est encaisse, rien n est envoye. Le vrai prestataire prend
+       la main ici. */
+    window.location.href = 'confirmation.html';
+  });
+})();
+</script>
+</body>
+</html>

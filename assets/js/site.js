@@ -92,6 +92,7 @@ var CLE_LANG = 'ida.lang';  /* 'fr' ou 'es' */
 var MENU = [
   { id:'botella',  href:'index.html',         embleme:'botella',  fr:'La Botella',  es:'La Botella',  en:'La Botella'  },
   { id:'mezcales', href:'les-mezcales.html',  embleme:'fleur',    fr:'Les Mezcals', es:'Los Mezcales',en:'The Mezcals' },
+  { id:'boutique', href:'boutique.html',      embleme:'ofrenda',  fr:'La Boutique', es:'La Tienda',   en:'The Shop'    },
   { id:'historia', href:'la-historia.html',   embleme:'historia', fr:'La Historia', es:'La Historia', en:'La Historia' },
   { id:'palenque', href:'el-palenque.html',   embleme:'palenque', fr:'El Palenque', es:'El Palenque', en:'El Palenque' },
   { id:'mito',     href:'el-mito.html',       embleme:'mito',     fr:'El Mito',     es:'El Mito',     en:'El Mito'     },
@@ -511,6 +512,13 @@ function caresserEmbleme(hote, svg, nom){
 function jouerEmbleme(hote){
   var c = hote.__embleme;
   if(!c || reduitMouvement) return;
+  /* 31 aout, Raouf : un emblème de FOND (le filigrane de la campagne) ne joue
+     jamais sa construction : le bas arrivait d'un bloc, puis le reste. Un
+     fond est la, complet, des le premier regard ; seul le fondu de la feuille
+     l'amene. Regle generale : tout hote dans un fond. */
+  if(hote.closest && hote.closest('.campagne__fond,.scene__fond')){ hote.__joue = true; return; }
+  /* 1er sept, 00h35 : la naissance de la bouteille REJOUE (Raouf y tient) ;
+     le defaut du bas-en-un-bloc se corrige dans le moteur, pas en la coupant. */
   if(hote.__joue && typeof c.playCrown === 'function'){ c.playCrown(); return; }
   hote.__joue = true;
   if(typeof c.play === 'function') c.play();
@@ -609,8 +617,17 @@ function embleme(cle){
    chaque emblème sur son encre, puis on lui donne la meme HAUTEUR optique.
    C'est ce que veut dire "a la hauteur du mot". */
 function ajusterEmbleme(svg, hauteur, largeurMax){
+  /* 31 aout, refonte apres la casse vue par Raouf (fleur et tobala en carre
+     d'encre) : la mesure ne se prend qu'UNE fois, au repos, puis se fige.
+     Avant, chaque survol et chaque minuterie remesuraient ; si une naissance
+     jouait a cet instant, la boite se refermait sur une image transitoire et
+     l'emblème explosait dans sa case. Une fois fige, plus rien ne le touche. */
+  if(svg.hasAttribute('data-fige')) return;
   var g = svg.querySelector('.embleme__encre');
   if(!g) return;
+  /* jamais de mesure pendant qu'une naissance joue : l'hote marque __joue
+     au premier jeu ; s'il joue et que la boite est deja posee, on fige. */
+  var hote = svg.parentNode;
   var b;
   try{ b = g.getBBox(); }catch(e){ b = null; }
   if(!b || !b.width || !b.height){
@@ -631,8 +648,18 @@ function ajusterEmbleme(svg, hauteur, largeurMax){
   if(!hauteur) return;
   var w = b.width + 2*m, h = b.height + 2*m;
   var k = Math.min(hauteur / h, largeurMax / w);
+  /* egalite optique : la case borne la hauteur et la largeur, mais un emblème
+     large (la fleur, le billet) y gagne pres du double d'encre qu'un emblème
+     etroit (la bouteille). On plafonne donc l'AIRE apparente : jamais plus
+     que celle d'un carre de la hauteur demandee. Regle generale, aucun
+     emblème n'est nomme. */
+  var aire = (w * k) * (h * k), plafond = hauteur * hauteur;
+  if(aire > plafond) k *= Math.sqrt(plafond / aire);
   svg.style.width  = Math.round(w * k) + 'px';
   svg.style.height = Math.round(h * k) + 'px';
+  /* la boite est posee au repos : elle se fige, aucun survol, aucune
+     minuterie, aucun defilement ne la remesurera */
+  svg.setAttribute('data-fige', '1');
 }
 
 /* pose les emblèmes demandes dans le corps de la page :
@@ -991,8 +1018,14 @@ function brancherTiroir(t, b){
     /* deuxieme passe apres la mise en page : un emblème monte trop tot garde
        sinon une taille provisoire (Raouf a vu un tobala demesure) */
     requestAnimationFrame(function(){ ajusterMenu(t); });
-    var f = focusables();
-    if(f.length) f[0].focus();
+    /* 31 aout : un agave mesure en plein montage recoit une viewBox partielle
+       et deborde, geant, sur les mots (revu ce soir). On repasse la mesure
+       apres que tout s'est pose : deux rappels suffisent aux montages lents. */
+    setTimeout(function(){ ajusterMenu(t); }, 150);
+    setTimeout(function(){ ajusterMenu(t); }, 450);
+    /* le focus va au panneau, pas au premier lien : sinon l'anneau de focus
+       encadre la marque a chaque ouverture (vu au rendu du 31 aout) */
+    panneau.focus();
     document.addEventListener('keydown', clavier);
   }
   function fermer(){
@@ -1166,7 +1199,7 @@ function construireEntete(pageCourante){
        sur les captures de Raouf. */
     '<nav class="menu" id="menu-maison" aria-label="Menu" hidden>' +
       '<div class="menu__voile"></div>' +
-      '<div class="menu__panneau" role="dialog" aria-modal="true" aria-label="Menu">' +
+      '<div class="menu__panneau" role="dialog" aria-modal="true" aria-label="Menu" tabindex="-1">' +
         '<div class="menu__tete">' +
           '<a class="menu__marque" href="index.html">' +
             '<span data-fr="' + TEXTES.marque.fr + '" data-es="' + TEXTES.marque.es + '" data-en="' + TEXTES.marque.en + '"></span>' +
@@ -1527,6 +1560,26 @@ function init(opt){
     }).observe(document.body, { childList:true, subtree:true });
   }
   construirePied();
+  /* les sceaux animes des pages (heros de vente, 31 aout) : tout svg marque
+     js-sceau-anime joue une fois, comme le sceau de l'accueil ; en mouvement
+     reduit il se pose complet, immobile */
+  (function(){
+    var sceaux = document.querySelectorAll('svg.js-sceau-anime');
+    if(!sceaux.length) return;
+    var reduit = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    for(var i=0;i<sceaux.length;i++){
+      /* un sceau de moins de 100 px est un cachet : son dessin de 3 s est
+         illisible a cette taille, il se pose complet. L'animation retenue
+         vit la ou on peut la regarder (accueil bureau, porte d'age). */
+      var large = sceaux[i].getBoundingClientRect().width >= 100;
+      if(typeof window.sceauAnime === 'function' && !reduit && large){
+        /* 1er sept, Raouf : l'animation part une seconde plus tard */
+        (function(sv){ setTimeout(function(){ window.sceauAnime(sv); }, 1000); })(sceaux[i]);
+      } else if(typeof window.logoIvresse === 'function'){
+        sceaux[i].innerHTML = window.logoIvresse({ x:443, y:290, scale:1, anime:false, color:'currentColor' });
+      }
+    }
+  })();
   appliquerLangue(langueDepart());
   brancherFondu();
   brancherParallaxe();
@@ -1607,3 +1660,72 @@ document.addEventListener('click', function(ev){
   if(moins) moins.disabled = (n <= 1); if(plus) plus.disabled = (n >= 6);
   v.dispatchEvent(new Event('change', { bubbles:true }));
 });
+
+/* ---------------------------------------------------------------------------
+   LA GALERIE DES PAGES D'ACHAT (31 aout). Les vignettes etaient des boutons
+   morts : elles changent maintenant la grande vue. La grande image reprend
+   la source de la vignette en haute definition, la legende suit la vignette.
+   ------------------------------------------------------------------------ */
+(function(){
+  function brancherGaleries(){
+    var galeries = document.querySelectorAll('.galerie');
+    for(var g=0; g<galeries.length; g++){
+      (function(gal){
+        var grande = gal.querySelector('.galerie__grande');
+        var legende = gal.querySelector('.galerie__legende');
+        var parent = gal.parentNode;
+        var vignettes = (parent ? parent.querySelectorAll('.galerie__vignettes .galerie__v') : []);
+        if(!grande || !vignettes.length) return;
+        for(var i=0;i<vignettes.length;i++){
+          (function(v){
+            if(v.__branchee) return; v.__branchee = true;
+            v.addEventListener('click', function(){
+              /* la vignette porte deja sa haute definition en data-src et
+                 data-srcset (poses le 17 aout, jamais branches jusqu'ici) */
+              var im = v.querySelector('img');
+              var src = v.getAttribute('data-src') || (im && im.getAttribute('src'));
+              if(!src) return;
+              grande.setAttribute('src', src);
+              var jeu = v.getAttribute('data-srcset');
+              if(jeu) grande.setAttribute('srcset', jeu); else grande.removeAttribute('srcset');
+              for(var l=0;l<vignettes.length;l++){
+                vignettes[l].classList.toggle('est-active', vignettes[l]===v);
+                vignettes[l].setAttribute('aria-selected', vignettes[l]===v ? 'true':'false');
+              }
+              if(legende){
+                var langues = ['fr','es','en'];
+                for(var k=0;k<langues.length;k++){
+                  var t = v.getAttribute('data-'+langues[k]);
+                  if(t !== null) legende.setAttribute('data-'+langues[k], t);
+                }
+                var courante = (window.siteChrome && siteChrome.langue) ? siteChrome.langue() :
+                               (document.documentElement.getAttribute('lang')||'fr');
+                legende.textContent = v.getAttribute('data-'+courante) || v.getAttribute('data-fr') || '';
+              }
+            });
+          })(vignettes[i]);
+        }
+      })(galeries[g]);
+    }
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', brancherGaleries);
+  else brancherGaleries();
+})();
+
+/* ---------------------------------------------------------------------------
+   LE PASSAGE D'UNE BOUTEILLE A L'AUTRE (31 aout, demande de Raouf : "quand on
+   presse, la bouteille prend la place de l'autre, en douceur"). Transitions
+   de vue entre documents : la carte pressee recoit le nom de vue de la grande
+   image, le navigateur fait glisser l'une vers l'autre. Sans support, la
+   navigation reste la navigation : rien ne casse.
+   ------------------------------------------------------------------------ */
+(function(){
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a.autre') : null;
+    if(!a) return;
+    var im = a.querySelector('img');
+    var grande = document.querySelector('.galerie__grande');
+    if(im){ if(grande) grande.style.viewTransitionName = 'none';
+            im.style.viewTransitionName = 'bouteille-vedette'; }
+  }, true);
+})();

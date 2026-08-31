@@ -167,7 +167,8 @@
     side.sort(function(a,b){ return b.__it.cy-a.__it.cy; }); sh.sort(function(a,b){ return Math.abs(a.__it.cx)-Math.abs(b.__it.cx); }); crown.sort(function(a,b){ return Math.abs(a.__it.cx)-Math.abs(b.__it.cx); });
     /* le nom de la bouteille ecrit dans l espace du ticket (o.label), une seule ligne, capitales espacees, encre */
     var tk=(function(){ var bx=base[0].firstChild.getBBox(); return null; })();
-    if(o.label){ var lab=el('text',{x:0,y:0,'text-anchor':'middle','dominant-baseline':'central','font-family':o.font||'Georgia, "Times New Roman", serif','font-size':'7.2','letter-spacing':'0.9',fill:c},root); lab.textContent=String(o.label).toUpperCase();
+    var lab=null;
+    if(o.label){ lab=el('text',{x:0,y:0,'text-anchor':'middle','dominant-baseline':'central','font-family':o.font||'Georgia, "Times New Roman", serif','font-size':'7.2','letter-spacing':'0.9',fill:c},root); lab.textContent=String(o.label).toUpperCase();
       /* l espace du ticket : le trou de la piece base ; on le trouve par le centre du corps (x=0) et le haut de la base */
       var bb0=base[0].firstChild.getBBox(); lab.setAttribute('x',0); lab.setAttribute('y',(bb0.y+bb0.height*0.36).toFixed(2)); }
     var crownState={t0:-1};
@@ -175,7 +176,11 @@
       renderCrown:function(ms){ /* le bouchon seul : les feuilles se referment vers l axe puis se rouvrent avec un petit ressort, comme une plante */
         crown.forEach(function(g,i){ var a=Math.atan2(g.__it.cx,-(g.__it.cy+63))*180/Math.PI; var k1=io(seg(ms,0,380)), k2=back(seg(ms,380,1100)); var closeAmt=k1*(1-k2); T(g,about(0,-63,'rotate('+(-a*0.85*closeAmt).toFixed(2)+') scale('+(1-0.35*closeAmt).toFixed(3)+' '+(1-0.15*closeAmt).toFixed(3)+')')); O(g,1); }); },
       render:function(ms){
-      var k=co(seg(ms,0,350)); base.forEach(function(g){ T(g,'translate(0 '+(8*(1-k)).toFixed(2)+')'); O(g,k); });
+      /* 1er sept (Raouf) : le bas ne tombe plus d un bloc : chaque piece de la
+         base se developpe (montee + leger grandissement), l encre du ticket suit */
+      base.forEach(function(g,i){ var st=60+i*150; var kk=co(seg(ms,st,st+420));
+        T(g,about(g.__it.cx,g.__it.cy,'translate(0 '+(10*(1-kk)).toFixed(2)+') scale('+(0.9+0.1*kk).toFixed(3)+')')); O(g,kk); });
+      if(lab) O(lab,co(seg(ms,320,760)));
       var kb=co(seg(ms,150,750)); rect.setAttribute('y',(bb.y+bb.height*(1-kb)).toFixed(2)); rect.setAttribute('height',(bb.height*kb+1).toFixed(2)); O(body[0],kb>0?1:0);
       side.forEach(function(g,i){ var st=250+i*40; var kk=co(seg(ms,st,st+250)); O(g,kk); });
       sh.forEach(function(g,i){ var st=550+i*25; var kk=pop(seg(ms,st,st+300)); T(g,about(g.__it.cx,g.__it.cy,'scale('+kk.toFixed(3)+')')); O(g,kk>0?1:0); });

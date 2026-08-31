@@ -731,7 +731,9 @@ span[data-lang].est-actif,a[data-lang].est-actif,em[data-lang].est-actif{display
 
 /* L emblème d une scene respire, il ne remplit pas. */
 .scene__marque svg{ width:min(26vmin,300px); opacity:1; }
-.scene--premiere .scene__marque svg,#sceau-accueil{ width:min(56vmin,700px); }
+/* 31 aout, Raouf : le sceau seul au milieu du vide etait trop petit. Il
+   reprend l'ecran, comme au premier jour. */
+.scene--premiere .scene__marque svg,#sceau-accueil{ width:min(74vmin,880px); }
 
 /* La grille des bouteilles : du blanc, un filet, rien d autre. La couleur de la
    bouteille est un trait de 2 px sous son nom, pas un fond. */
@@ -1601,20 +1603,23 @@ html.menu-ouvert,html.menu-ouvert body{ overflow:hidden; }
   }
   .menu__fermer span + span{ transform:rotate(-45deg); }
 
-  /* les rangs */
-  .menu__liste{ list-style:none; margin:0; padding:0; display:block; }
-  .menu__liste li{ border-bottom:1px solid var(--filet); }
+  /* les rangs. Tour menu (31 aout) : les filets entre chaque rang alourdissaient
+     le tiroir (Gentle Monster n'en a aucun) ; le filet ne marque plus que les
+     bandes. Rangs a 56 px (cible tactile 48 px et plus, Material/HIG), le mot
+     des grandes entrees monte a 15 px. */
+  .menu__liste{ list-style:none; margin:0; padding:calc(var(--u)*1) 0; display:block; }
+  .menu__liste li{ border-bottom:0; }
   .menu__lien{
     display:grid; grid-template-columns:44px 1fr; align-items:center;
     gap:calc(var(--u)*2.5);
-    height:64px; min-height:64px;
+    height:56px; min-height:56px;
     padding:0 calc(var(--u)*4);
     text-align:left; text-decoration:none; color:var(--encre);
     flex:none; min-width:0;
   }
   .menu__mot{
     grid-column:2; grid-row:1;
-    font-family:var(--slab); font-size:var(--t-petit); letter-spacing:var(--ls-petit);
+    font-family:var(--slab); font-size:15px; letter-spacing:var(--ls-petit);
     text-transform:uppercase; line-height:1; white-space:nowrap;
     opacity:1; transition:color var(--t-court) var(--courbe);
   }
@@ -1639,15 +1644,17 @@ html.menu-ouvert,html.menu-ouvert body{ overflow:hidden; }
   .menu__lien[aria-current="page"]::after{ display:none; }
   .menu__lien:active .menu__mot{ color:var(--brique); }
 
-  /* les trois bouteilles, sous un kicker */
+  /* les trois bouteilles, sous un kicker : la bande se marque par un filet
+     au-dessus du kicker, plus aucun filet dans la liste elle-meme */
   .menu__kicker{
-    margin:0; padding:calc(var(--u)*4) calc(var(--u)*4) calc(var(--u)*1.5);
+    margin:calc(var(--u)*2) 0 0; border-top:1px solid var(--filet);
+    padding:calc(var(--u)*3) calc(var(--u)*4) calc(var(--u)*1);
     font-size:var(--t-micro); letter-spacing:var(--ls-large); text-transform:uppercase;
     color:var(--brun);
   }
-  .menu__liste--sous{ border-top:1px solid var(--filet); }
-  .menu__liste--sous .menu__lien{ height:56px; min-height:56px; }
-  .menu__liste--sous li:last-child{ border-bottom:1px solid var(--filet); }
+  .menu__liste--sous{ border-top:0; }
+  .menu__liste--sous .menu__lien{ height:48px; min-height:48px; }
+  .menu__liste--sous .menu__mot{ font-size:var(--t-petit); }
 
   /* le pied du tiroir : trois rangs utiles au trait fin, le sceau a droite */
   .menu__pied{
@@ -1971,3 +1978,524 @@ a.figure__lien:hover img{ transform:scale(1.015); }
 .autre__latin{ display:block; font-family:var(--serif); font-style:italic; font-size:13px; color:var(--brun); margin-top:2px; }
 .autre:hover .autre__nom{ text-decoration:underline; text-underline-offset:4px; }
 .mention[data-etat][hidden]{ display:none; }
+
+/* ============================================================================
+   CORRECTION DU 31 AOUT — LES MARGES DU TELEPHONE.
+   Raouf : trop de vide sur telephone, des rangs enormes, un pied mal dessine.
+   La regle vient des systemes publies (Material, HIG d'Apple, Carbon, Polaris,
+   Tailwind) : gouttiere fixe de 16 a 24 px sous 600 px, echelle 4/8 pour tout
+   vide vertical, 48 a 64 px entre deux sections (la MOITIE du bureau, jamais
+   le meme vide), cible tactile de 44 a 48 px, 100svh et jamais 100vh, et
+   l'encoche du bas se paie en env(safe-area-inset-bottom).
+   ========================================================================= */
+@media (max-width:860px){
+  /* les sections : le x1.6 du 16 aout etait un reglage de bureau. Sur
+     telephone il posait 90 px de vide de CHAQUE cote de CHAQUE section. */
+  .section{ padding-block:var(--section); }
+  .section--serre{ padding-block:calc(var(--section)/2); }
+  .section > .boite > * + *{ margin-top:calc(var(--u)*3); }
+  .section > .boite > :last-child{ margin-bottom:0; }
+
+  /* une scene sans objet n'impose plus l'ecran entier ; seule la premiere
+     (le sceau de l'accueil) garde l'ecran, et son sceau grandit : en
+     portrait, vmin le reduisait a un timbre au milieu du vide. */
+  .scene--court{ min-height:52svh; }
+  .scene--premiere .scene__marque svg,#sceau-accueil{ width:min(80vw,700px); }
+  .scene__marque svg{ width:min(44vw,300px); }
+
+  /* la grille des bouteilles, une colonne : la hauteur vient du contenu,
+     plus d'un minimum d'ecran par carte (les grands vides vus au telephone). */
+  .grille__c{ min-height:0; padding-block:calc(var(--u)*5); }
+
+  /* la table des faits : des rangs a l'echelle 8, l'etiquette au-dessus de
+     sa valeur, serres comme sur une etiquette reelle. */
+  .faits__l{ padding:calc(var(--u)*1.25) 0; }
+  .faits__k{ padding:0 0 2px; }
+  .faits__v{ padding:0; }
+
+  /* le pied : moins d'air mort, tout sur l'echelle, l'encoche payee. */
+  .pied{ padding-top:calc(var(--u)*6);
+         padding-bottom:max(calc(var(--u)*4), env(safe-area-inset-bottom)); }
+  .pied__sceau{ width:104px; height:74px; margin-bottom:calc(var(--u)*2); }
+  .pied__boite{ gap:calc(var(--u)*3); }
+  .pied__nav{ gap:calc(var(--u)*2) calc(var(--u)*3); }
+  .pied__nav a{ padding-block:6px; }
+  .pied__legal{ padding-top:calc(var(--u)*2); gap:var(--u); }
+}
+@media (max-width:560px){
+  :root{ --section:48px; }
+}
+/* le panneau du menu recoit le focus a l'ouverture : aucun anneau dessus */
+.menu__panneau:focus{ outline:0; }
+
+/* ============================================================================
+   AJOUT DU 31 AOUT — LE HEROS DE VENTE DES PAGES BOUTEILLE.
+   Raouf : "on trouve direct dans le principal, acheter simple" ; le modele est
+   la page produit Johnnie Walker (fr-ca) : l'objet a gauche sur le papier nu,
+   a droite le sceau, le nom, une ligne de provenance, la ligne contenance et
+   degre, et UN bouton d'achat. Aucun prix invente : seul l'espadin a un prix.
+   La bouteille n'est jamais recadree (regle du 16 aout) : object-fit contain.
+   ========================================================================= */
+.heros-vente__deux{
+  position:relative; z-index:1; width:100%; max-width:var(--largeur);
+  margin:0 auto; padding:calc(var(--u)*4) var(--marge) calc(var(--u)*6);
+  display:grid; grid-template-columns:1.1fr .9fr; align-items:center;
+  gap:calc(var(--u)*6);
+}
+.heros-vente__objet{ margin:0; }
+.heros-vente__objet img{
+  width:100%; max-height:76svh; object-fit:contain; display:block;
+  mix-blend-mode:multiply;
+}
+.heros-vente__droite{
+  display:grid; justify-items:start; text-align:left; gap:calc(var(--u)*1);
+}
+.heros-vente__sceau{
+  width:min(190px,34vmin); height:auto; color:var(--encre); opacity:.92;
+  margin-bottom:calc(var(--u)*2);
+}
+.heros-vente__droite .scene__titre{ font-size:clamp(30px,3.4vw,44px); margin:0; }
+.heros-vente__desc{
+  font-family:var(--serif); font-size:14px; line-height:1.55;
+  color:var(--encre); max-width:44ch; margin:calc(var(--u)*1) 0 0;
+}
+.heros-vente__contenance{
+  font-family:var(--serif); font-size:16px; color:var(--brun);
+  margin:calc(var(--u)*1) 0 0;
+}
+.heros-vente__acheter{
+  display:inline-flex; align-items:center; justify-content:center;
+  text-decoration:none; margin-top:calc(var(--u)*3); min-width:210px;
+}
+@media (max-width:860px){
+  .heros-vente__deux{
+    grid-template-columns:1fr; gap:calc(var(--u)*3);
+    padding-top:calc(var(--u)*2); padding-bottom:calc(var(--u)*5);
+  }
+  .heros-vente__objet img{ max-height:48svh; }
+  .heros-vente__sceau{ width:130px; margin-bottom:var(--u); }
+  .heros-vente__acheter{ width:100%; }
+}
+
+/* ============================================================================
+   CORRECTIONS DU 31 AOUT AU SOIR, apres le regard de Raouf sur le heros.
+   1. Bureau : la bouteille etait trop petite et trop centree ; elle grandit
+      et vient a gauche (le heros prend toute la largeur, comme Johnnie
+      Walker), le sceau grandit.
+   2. Telephone : le sceau du heros etait trop grand, il descend de moitie.
+   3. Les scenes de texte gardent l'ecran au bureau (Raouf garde ces
+      elements) mais au telephone la hauteur vient du contenu.
+   ========================================================================= */
+.heros-vente__deux{
+  max-width:none;
+  grid-template-columns:1.15fr .85fr;
+  gap:calc(var(--u)*8);
+}
+.heros-vente__objet{ justify-self:start; width:100%; }
+.heros-vente__objet img{ max-height:86svh; }
+.heros-vente__sceau{ width:min(260px,40vmin); }
+@media (min-width:861px){
+  .heros-vente__deux{ padding-left:calc(var(--marge)*.5); }
+  .heros-vente__droite{ padding-right:var(--marge); }
+}
+@media (max-width:860px){
+  .heros-vente__sceau{ width:66px; }
+  .scene:not(.scene--premiere){ min-height:0; padding-block:calc(var(--u)*7); }
+  .scene--court{ min-height:0; }
+}
+
+/* l'entree du heros de vente : rien ne surgit, tout se pose. L'objet d'abord,
+   puis la colonne, element par element. Jamais en mouvement reduit. */
+@media (prefers-reduced-motion:no-preference){
+  .heros-vente__objet{ animation:heros-nait .7s var(--courbe) both; }
+  .heros-vente__droite > *{ animation:heros-nait .55s var(--courbe) both; }
+  .heros-vente__droite > :nth-child(1){ animation-delay:.12s; }
+  .heros-vente__droite > :nth-child(2){ animation-delay:.2s; }
+  .heros-vente__droite > :nth-child(3){ animation-delay:.28s; }
+  .heros-vente__droite > :nth-child(4){ animation-delay:.36s; }
+  .heros-vente__droite > :nth-child(5){ animation-delay:.44s; }
+  .heros-vente__droite > :nth-child(6){ animation-delay:.52s; }
+}
+@keyframes heros-nait{
+  from{ opacity:0; transform:translateY(14px); }
+  to{ opacity:1; transform:none; }
+}
+/* le filigrane de la campagne arrive complet, par un fondu lent */
+.campagne__fond{ transition:opacity 900ms var(--lineaire); }
+
+/* le passage d'une bouteille a l'autre : transition de vue entre documents.
+   La grande image porte le nom ; la carte pressee le reprend au clic
+   (site.js), et le navigateur fait le voyage. 500 ms, la courbe de la
+   maison. Sans support navigateur : simple navigation, rien ne casse. */
+@view-transition{ navigation:auto; }
+.galerie__grande{ view-transition-name:bouteille-vedette; }
+@media (prefers-reduced-motion:no-preference){
+  ::view-transition-old(bouteille-vedette),
+  ::view-transition-new(bouteille-vedette){ animation-duration:500ms; }
+}
+/* les autres bouteilles se decouvrent en descendant (fondu de la maison) */
+.fiche__autres2.fondu{ opacity:0; transform:translateY(18px);
+  transition:opacity .6s var(--lineaire), transform .6s var(--courbe); }
+.fiche__autres2.fondu.est-vu{ opacity:1; transform:none; }
+
+/* 31 aout, 23h : le packshot est un fichier PAYSAGE ou la bouteille n'occupe
+   que le tiers central ; dans une colonne il devenait minuscule, noye dans
+   ses marges blanches invisibles. Le cadre 3/4 recadre le BLANC, jamais la
+   bouteille (regle du 16 aout respectee : l'objet reste entier). */
+@media (min-width:861px){
+  .heros-vente__objet img{
+    aspect-ratio:3/4; object-fit:cover; width:100%; max-height:86svh;
+  }
+}
+@media (max-width:860px){
+  .heros-vente__objet img{
+    aspect-ratio:4/5; object-fit:cover; width:100%; max-height:56svh;
+  }
+}
+
+/* ============================================================================
+   LA PORTE D'AGE AU TELEPHONE (31 aout, Raouf : "mal organisee").
+   Trois etages nets : la langue en haut, le groupe sceau-question-reponses
+   au centre exact, la ligne legale au bas, encoche payee. Les reponses
+   deviennent de vrais boutons de la maison : un filet, 48 px, cote a cote.
+   ========================================================================= */
+@media (max-width:700px){
+  .porte{ justify-content:space-between; padding-top:max(calc(var(--u)*3), env(safe-area-inset-top)); }
+  .porte__langues{ margin:0; }
+  /* le groupe central se centre dans l'espace restant */
+  .porte__sceau{ width:min(240px,58vw); margin:auto auto calc(var(--u)*3); }
+  .porte__q{ margin-bottom:calc(var(--u)*4); }
+  .porte__reponses{ gap:calc(var(--u)*2); width:100%; max-width:340px; margin:0 auto auto; }
+  .porte__b{
+    flex:1; min-height:48px; display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid var(--brun); border-bottom-width:1px; padding:0 18px;
+    border-radius:var(--rond-net);
+  }
+  .porte__b:active{ background:var(--encre); color:var(--papier); }
+  .porte__legal{
+    position:static; margin-top:calc(var(--u)*4);
+    padding-bottom:max(calc(var(--u)*3), env(safe-area-inset-bottom));
+  }
+}
+
+/* 31 aout, 23h20 : la ceinture ET les bretelles. Quoi qu'il arrive a la
+   mesure (montage lent, vieux script en cache), l'encre d'un emblème du
+   tiroir ne sort JAMAIS de sa case de 44 px : la case coupe. Bien mesure,
+   rien n'est coupe ; mal mesure, il se rogne au lieu de couvrir les mots. */
+@media (max-width:1000px){
+  .menu__panneau .menu__embleme{ overflow:hidden; }
+  .menu__panneau .menu__embleme svg{ overflow:hidden !important; }
+}
+
+/* ============================================================================
+   REPRISE DU 31 AOUT, 23h25 — LES PROPORTIONS DU HEROS ET L'ORDRE DE LA
+   PAGE D'ACHAT (Raouf, mot pour mot : la bouteille entre les deux tailles,
+   le sceau plus petit, le mot du bouton plus grand et plus gras, et une
+   page de paiement dans le BON ordre : l'objet, le nom, le prix, l'achat,
+   puis seulement les vues et les autres bouteilles).
+   ========================================================================= */
+/* 1. Le heros : l'ecran moyen (fenetre coupee, 861-1000 px) empile comme le
+   telephone au lieu d'ecraser deux colonnes. */
+@media (max-width:1000px){
+  .heros-vente__deux{
+    grid-template-columns:1fr; gap:calc(var(--u)*3);
+    padding:calc(var(--u)*2) var(--marge) calc(var(--u)*5);
+  }
+  .heros-vente__objet{ justify-self:center; }
+  .heros-vente__objet img{ aspect-ratio:4/5; object-fit:cover; max-height:52svh; }
+  .heros-vente__sceau{ width:96px; }
+  .heros-vente__acheter{ width:100%; }
+  .heros-vente__droite{ padding-right:0; }
+}
+@media (max-width:700px){
+  .heros-vente__sceau{ width:66px; }
+}
+/* 2. Le grand ecran : la bouteille entre les deux tailles, le sceau ramene
+   a une proportion de cartouche, pas d'affiche. */
+@media (min-width:1001px){
+  .heros-vente__objet img{ aspect-ratio:3/4; object-fit:cover; max-height:68svh; width:auto; max-width:100%; }
+  .heros-vente__objet{ justify-self:center; }
+  .heros-vente__sceau{ width:170px; margin-bottom:calc(var(--u)*2); }
+}
+/* 3. Le mot du bouton : lisible, gras, sans crier. */
+.heros-vente__acheter{ font-size:13px; font-weight:600; letter-spacing:.18em; }
+.fiche__commande .b-plein{ font-size:13px; font-weight:600; }
+
+/* 4. La page d'achat au telephone : l'ordre d'une vraie page de vente.
+   L'objet, puis le nom et le prix et l'achat, puis les vues, puis les
+   autres bouteilles. display:contents defait la colonne, l'ordre refait
+   la page. Au bureau, rien ne change. */
+@media (max-width:1000px){
+  .fiche__images{ display:contents; }
+  .fiche__images > *{ order:4; min-width:0; }
+  .fiche__images > .galerie{ order:1; }
+  /* les vues pressables JUSTE sous la grande image, puis le nom, le prix,
+     l'achat et ses depliants, puis les autres bouteilles. Avant, les vues
+     tombaient apres les depliants, orphelines (vu par Raouf, 23h37). */
+  .fiche__images > .galerie__vignettes{ order:2; }
+  .fiche > .fiche__achat{ order:3; }
+  .fiche__images > .fiche__autres2{ order:9; }
+}
+
+/* ============================================================================
+   REPRISE DU 31 AOUT, 23h35 — LA BANDE 861-1000 px ET LES SCENES EMPILEES.
+   Les regles de telephone s'arretaient a 860 px : la fenetre coupee de Raouf
+   (900-960 px) tombait dans un trou ou l'ancien bureau s'appliquait :
+   scenes d'un ecran entier, cartes de 86svh, paddings de 80 px. Le trou se
+   ferme : SOUS 1000 px, une seule grammaire, celle du telephone.
+   Et une scene a hauteur de contenu ne superpose plus jamais son image et
+   son texte : la marque s'empile en flux, comme la regle du 16 aout.
+   ========================================================================= */
+@media (max-width:1000px){
+  /* les scenes : hauteur de contenu, respiration de 48, jamais un ecran vide */
+  .scene:not(.scene--premiere){ min-height:0; padding-block:calc(var(--u)*6); }
+  .scene--court{ min-height:0; }
+  /* la marque d'une scene s'empile au-dessus du texte, en flux : plus de
+     texte pose sur l'image (vu ce soir : THE BOTTLE en travers du col) */
+  .scene:not(.heros-vente) .scene__marque{
+    position:relative; inset:auto; z-index:1; display:block; line-height:0;
+    margin-bottom:23px;
+  }
+  .scene:not(.heros-vente) .scene__marque svg{ display:block; margin:0 auto; }
+  .scene:not(.heros-vente){ display:grid; place-items:center; align-content:center; }
+  .scene .figure--scene{ width:auto; max-width:calc(100% - 2*var(--marge)); margin:0 auto; }
+  .scene .figure--scene img{ max-height:44svh; width:auto; max-width:100%; object-fit:contain; }
+  /* les sections et la table des faits : la meme echelle que le telephone */
+  .section{ padding-block:var(--section); }
+  .section--serre{ padding-block:calc(var(--section)/2); }
+  .faits__l{ padding:calc(var(--u)*1.25) 0; }
+  .faits__k{ padding:0 0 2px; }
+  .faits__v{ padding:0; }
+  /* la grille des bouteilles : cartes a hauteur de contenu, paddings de 24,
+     plus jamais 86svh ni 80 px sous 1000 px */
+  .grille__c{ min-height:0; }
+  .grille__media{ padding:calc(var(--u)*3); }
+  .grille__media svg{ width:min(40vmin,180px); }
+  .grille__pied{ padding:calc(var(--u)*1) calc(var(--u)*2) calc(var(--u)*3); }
+}
+
+/* le sceau de l'accueil vit desormais DANS le heros : la vieille regle
+   plein-ecran (74vmin) ne doit plus le toucher. L'identifiant + la classe
+   gagnent sur l'identifiant seul. */
+#sceau-accueil.heros-vente__sceau{ width:195px; }
+@media (max-width:1000px){ #sceau-accueil.heros-vente__sceau{ width:96px; } }
+@media (max-width:700px){ #sceau-accueil.heros-vente__sceau{ width:66px; } }
+
+/* le pied au telephone, resserre une bonne fois : petit sceau, lieu en
+   etiquette, rangs de liens compacts, legale en 11. Rien d'ajoute, rien
+   d'enleve : la meme matiere, mieux tassee. */
+@media (max-width:1000px){
+  .pied__sceau{ width:88px; height:62px; margin-bottom:var(--u); }
+  .pied__boite{ gap:calc(var(--u)*2); }
+  .pied__marque{ font-size:var(--t-petit); letter-spacing:var(--ls-petit); margin-top:var(--u); }
+  .pied__nav{ gap:var(--u) calc(var(--u)*3); }
+  .pied__nav a{ font-size:12px; padding-block:4px; }
+  .pied__reseaux{ margin-top:calc(var(--u)*1.5); }
+  .pied__legal{ font-size:var(--t-micro); gap:calc(var(--u)*0.5) calc(var(--u)*3); }
+}
+
+/* ============================================================================
+   REPRISE DU 31 AOUT, 23h40 — LES PROPORTIONS DU HEROS AU BUREAU, au regard
+   de Raouf sur la capture : le canyon central se ferme (les deux moities
+   deviennent UNE composition centree, gouttiere fixe), la colonne tient une
+   seule mesure, le bouton epouse son mot au lieu de barrer la colonne, et
+   chaque vide retombe sur l'echelle de 8.
+   ========================================================================= */
+@media (min-width:1001px){
+  .heros-vente__deux{
+    grid-template-columns:auto auto; justify-content:center; align-items:center;
+    gap:calc(var(--u)*15);            /* 120 px de gouttiere, fixe */
+    padding-left:var(--marge); padding-right:var(--marge);
+  }
+  .heros-vente__objet{ justify-self:end; }
+  .heros-vente__objet img{ max-height:70svh; }
+  .heros-vente__droite{
+    max-width:44ch; gap:0; justify-items:start; align-content:center;
+  }
+  .heros-vente__sceau{ width:195px; margin:0 0 calc(var(--u)*3); }   /* x1,3 (Raouf, 23h44) */
+  .heros-vente__droite .scene__kicker{ margin:0 0 calc(var(--u)*2); }
+  .heros-vente__droite .scene__titre{ margin:0 0 calc(var(--u)*1); }
+  .heros-vente__droite .scene__ligne{ margin:0; }
+  .heros-vente__desc{ margin:calc(var(--u)*2) 0 0; }
+  .heros-vente__contenance{ margin:calc(var(--u)*2) 0 0; }
+  .heros-vente__acheter{
+    width:auto; min-width:280px; padding:0 calc(var(--u)*5);
+    margin-top:calc(var(--u)*4);
+  }
+}
+
+/* le heros au telephone, l'air remis d'equerre (regard de Raouf, 23h33) :
+   la couronne ne touche plus l'entete, le sceau cesse d'etre un timbre
+   perdu (84 px, lie au kicker), et chaque vide retombe sur l'echelle. */
+@media (max-width:1000px){
+  .heros-vente__deux{ padding-top:calc(var(--u)*10); }
+  .heros-vente__sceau{ width:84px; margin:0 0 var(--u); }
+  .heros-vente__droite .scene__kicker{ margin:0 0 calc(var(--u)*2); }
+  .heros-vente__droite .scene__titre{ margin:0 0 var(--u); }
+  .heros-vente__desc{ margin:calc(var(--u)*2) 0 0; }
+  .heros-vente__contenance{ margin:calc(var(--u)*2) 0 0; }
+  .heros-vente__acheter{ margin-top:calc(var(--u)*3); }
+}
+@media (max-width:700px){
+  .heros-vente__sceau{ width:84px; }
+}
+
+/* la legende sous la grande vue d'achat : redondante au telephone (l'image
+   parle, les vignettes portent leurs noms). Elle reste au bureau. */
+@media (max-width:1000px){
+  .fiche .galerie__legende{ display:none; }
+  .fiche .galerie{ margin-bottom:0; }
+}
+
+/* 31 aout, 23h40, regard de Raouf sur le cachet de 84 px : illisible, donc
+   superflu. En pile (telephone et fenetre coupee), l'entete porte deja le
+   nom de la maison : le sceau du heros ne vit qu'au bureau, a 150 px, ou
+   il se lit. */
+@media (max-width:1000px){
+  .heros-vente__sceau{ display:none; }
+}
+
+/* 31 aout, 23h45 : le bouton d'achat fait partie du premier ecran a
+   l'ouverture (Raouf : "c'etait bien quand on ouvre"). La bouteille cede
+   un cran, l'echelle se resserre, ACHETER entre dans le premier regard. */
+@media (max-width:700px){
+  .heros-vente__deux{ padding-top:calc(var(--u)*8); gap:calc(var(--u)*2); }
+  .heros-vente__objet img{ max-height:40svh; }
+  .heros-vente__droite .scene__titre{ font-size:26px; }
+  .heros-vente__desc{ font-size:13px; line-height:1.5; }
+  .heros-vente__contenance{ font-size:14px; margin-top:var(--u); }
+  .heros-vente__acheter{ margin-top:calc(var(--u)*2); }
+}
+
+/* 31 aout, 23h52, Raouf : le sceau REVIENT au telephone, mais grand et a sa
+   place : centre au-dessus du bloc, 120 px, un vrai cachet de maison entre
+   l'objet et le nom. (Il etait cache ; avant cela, timbre perdu de 66 px.) */
+@media (max-width:1000px){
+  .heros-vente__sceau{
+    display:block; width:120px; justify-self:center;
+    margin:calc(var(--u)*1) 0 calc(var(--u)*2);
+  }
+}
+
+/* 31 aout, 23h51 puis 23h55, Raouf : "les fixes, c'est la version telephone,
+   pas le PC". Le sceau du heros disparait donc en PILE seulement (il a son
+   ecran d'ouverture sur l'accueil) ; au bureau, les pages bouteille gardent
+   leur sceau de 195 px, comme demande plus tot. */
+@media (max-width:1000px){
+  .heros-vente__sceau{ display:none; }
+}
+
+/* ============================================================================
+   RETOUR DU 31 AOUT, 23h53 — LES SCENES REPRENNENT LEUR AIR (Raouf : les
+   ecrans pleins etaient "spaced and well designed", ma densification les a
+   tues). La respiration pleine page revient PARTOUT pour les scenes de
+   recit ; la densite ne reste que la ou elle etait demandee : l'etiquette,
+   le pied, la grille, le heros. La porte d'age reprend sa forme d'origine
+   (OUI / NON soulignes, le sceau grand, le calme), sans les boites.
+   ========================================================================= */
+@media (max-width:1000px){
+  .scene:not(.heros-vente){ min-height:100svh; padding-block:0; }
+  .scene--court{ min-height:88svh; }
+  .citation.fondu{ padding-block:calc(var(--u)*10); }
+}
+/* la porte : retour a la version d'origine, l'encoche du bas reste payee */
+@media (max-width:700px){
+  .porte{ justify-content:center; padding-top:calc(var(--u)*5); }
+  .porte__sceau{ width:min(320px,64vw); margin:0 0 calc(var(--u)*5); }
+  .porte__q{ margin-bottom:calc(var(--u)*5); }
+  .porte__reponses{ width:auto; max-width:none; margin:0; gap:calc(var(--u)*5); }
+  .porte__b{
+    flex:none; min-height:0; display:inline-block;
+    border:0; border-bottom:1px solid var(--brun); border-radius:0;
+    padding:0 2px 5px; background:none;
+  }
+  .porte__b:active{ background:none; color:var(--brique); border-bottom-color:var(--brique); }
+  .porte__legal{
+    position:absolute; left:0; right:0;
+    bottom:max(calc(var(--u)*4), env(safe-area-inset-bottom));
+    margin:0; padding:0 var(--marge);
+  }
+}
+
+/* 31 aout, 23h58, Raouf : en pile, la bouteille du heros monte de 33 px. */
+@media (max-width:1000px){
+  .heros-vente__objet{ margin-top:-33px; }
+}
+
+/* 1er sept 00h06, Raouf : sur l'accueil telephone, trop de blanc entre
+   l'ecran du sceau et la bouteille. Quand le heros SUIT l'ecran du sceau
+   (accueil seulement), il colle a lui : hauteur au contenu, petit rebord. */
+@media (max-width:1000px){
+  .scene--premiere + .scene--premiere.heros-vente{ min-height:0; }
+  .scene--premiere + .scene--premiere.heros-vente .heros-vente__deux{ padding-top:calc(var(--u)*2); }
+}
+
+/* 1er sept 00h08 : le reste du blanc venait de l'ecran du sceau lui-meme
+   (plein ecran, sceau au centre, moitie basse vide). Au telephone il se
+   resserre : le sceau garde son moment, la bouteille pointe juste dessous. */
+@media (max-width:1000px){
+  .page > .scene--premiere:first-child:not(.heros-vente){ min-height:72svh; }
+}
+
+/* 1er sept 00h12, Raouf : au bureau, l'ecran du sceau seul disparait (le
+   sceau vit dans le heros, 1,2 fois plus grand) ; au telephone, l'ouverture
+   sceau-d'abord reste telle quelle. */
+@media (min-width:1001px){
+  .page > .scene--premiere:first-child:not(.heros-vente){ display:none; }
+  .heros-vente__sceau{ width:234px; }
+  #sceau-accueil.heros-vente__sceau{ width:234px; }
+}
+
+/* 1er sept 00h13, Raouf : au bureau, toute la structure du heros descend
+   de 20 px. */
+@media (min-width:1001px){
+  .heros-vente__deux{ margin-top:20px; }
+}
+
+/* 1er sept 00h14, Raouf : le dicho apparait avec de la classe. Le fondu
+   general reste ; ici il devient une entree de citation : lente, un leger
+   souleve, un voile qui se dissipe, puis la signature qui suit, seule,
+   un demi-temps plus tard. Jamais en mouvement reduit. */
+@media (prefers-reduced-motion:no-preference){
+  .citation.fondu{ transition:none; opacity:1; transform:none; }
+  .citation.fondu p, .citation.fondu footer{
+    opacity:0; transform:translateY(22px); filter:blur(6px);
+    transition:opacity 1.1s var(--lineaire), transform 1.1s var(--courbe), filter 1.1s var(--lineaire);
+  }
+  .citation.fondu footer{ transition-delay:.45s; }
+  .citation.fondu.est-vu p, .citation.fondu.est-vu footer{
+    opacity:1; transform:none; filter:blur(0);
+  }
+}
+
+/* 1er sept 00h16, Raouf.
+   1. La grille des trois bouteilles : le grand vide sous SEE THE BOTTLE
+      disparait aussi au bureau : hauteur au contenu, respirations de 48.
+   2. Le pied de page : le lieu et les liens ne font plus un seul bloc.
+      Le lieu devient une ligne d'etiquette, discrete ; les liens gardent
+      l'encre et prennent leur propre etage. Deux voix, plus un chunk. */
+@media (min-width:1001px){
+  .grille__c{ min-height:0; }
+  .grille__media{ padding:calc(var(--u)*6); }
+  .grille__pied{ padding-bottom:calc(var(--u)*6); }
+}
+.pied__marque{
+  font-size:12px; letter-spacing:.22em; color:var(--brun); opacity:.8;
+  margin-top:calc(var(--u)*1.5);
+}
+.pied__nav{ margin-top:calc(var(--u)*2); }
+.pied__nav a{ color:var(--encre); }
+.pied__reseaux{ margin-top:calc(var(--u)*2); }
+
+/* 1er sept 00h18, Raouf : au bureau aussi, la distance entre la grille et
+   la scene suivante se coupe de moitie et un peu plus : les scenes courtes
+   prennent la hauteur de leur contenu, respiration de 56. */
+@media (min-width:1001px){
+  .scene--court{ min-height:0; padding-block:calc(var(--u)*7); }
+}
+
+
+/* 1er sept 00h30, Raouf : le filigrane de la campagne n'etait pas vu. Il
+   attend 3 s une fois la scene sous les yeux, puis se revele lentement. */
+.campagne__fond.fondu{ opacity:0; transform:none; transition:opacity 1s var(--lineaire) 2s; }   /* 3 s en tout (Raouf) */
+.campagne__fond.fondu.est-vu{ opacity:.07; transform:none; }

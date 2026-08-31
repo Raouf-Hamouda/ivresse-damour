@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Commande. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+</head>
+
+<!-- ============================================================================
+     LE PASSAGE EN CAISSE, premiere marche : l identification.
+     Forme relevee sur gentlemonster.com le 16 aout 2026 : une colonne etroite,
+     une phrase qui explique, la mention des champs obligatoires alignee a
+     droite, un champ blanc a angles arrondis, un bouton plein inactif tant que
+     le champ est vide, un "ou", les deux fournisseurs, puis le suivi de commande
+     detache en bas.
+
+     LA DONNEE. Raouf veut les donnees des clients. Cette page est l endroit ou
+     elles entrent : l adresse est demandee AVANT le paiement, exactement pour
+     cela, et la case d inscription est cochable, jamais cochee d avance.
+     Ce que le site collecte doit etre annonce ici et repris dans
+     confidentialite-et-cookies.html. Rien n est envoyé nulle part tant que la
+     route technique n est pas tranchee : statique plus Stripe, ou plateforme.
+     ========================================================================= -->
+
+<body data-page=""
+      data-titre-fr="Commande. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="Pedido. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-en="Checkout. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page caisse">
+
+  <section class="caisse__col">
+
+    <p class="kicker" data-fr="Commande" data-es="Pedido" data-en="Checkout"></p>
+    <h1 class="sr" data-fr="Commande" data-es="Pedido" data-en="Checkout"></h1>
+
+    <p class="caisse__intro"
+       data-fr="Entrez votre adresse électronique, nous vérifions si un compte existe déjà. Vous pouvez aussi continuer en invité."
+       data-es="Introduzca su correo electrónico, comprobamos si ya existe una cuenta. También puede continuar como invitado."
+       data-en="Enter your email address and we will check whether an account already exists. You may also continue as a guest."></p>
+
+    <p class="caisse__oblig" data-fr="* Champs obligatoires" data-es="* Campos obligatorios" data-en="* Required fields"></p>
+
+    <form class="caisse__f" id="f-identite" novalidate>
+      <label class="caisse__l" for="courriel">
+        <span class="sr" data-fr="Adresse électronique" data-es="Correo electrónico" data-en="Email address"></span>
+        <input id="courriel" name="courriel" type="email" autocomplete="email" required
+               data-fr-placeholder="Adresse électronique *"
+               data-es-placeholder="Correo electrónico *"
+               data-en-placeholder="Email address *">
+      </label>
+
+      <button class="b-plein est-inactif" id="continuer" type="submit" disabled
+              data-fr="Continuer" data-es="Continuar" data-en="Continue"></button>
+    </form>
+
+    <p class="caisse__ou"><span data-fr="ou" data-es="o" data-en="or"></span></p>
+
+    <!-- Les marques des fournisseurs sont dessinees au trait, une seule encre,
+         comme tout le reste de la maison. Leurs couleurs officielles casseraient
+         la page : c est le seul endroit du site ou une couleur etrangere pourrait
+         entrer, et on la refuse. -->
+    <button class="b-vide" type="button" data-fournisseur="google"
+            data-fr-aria-label="Continuer avec Google" data-es-aria-label="Continuar con Google" data-en-aria-label="Continue with Google">
+      <svg class="b-vide__m b-vide__m--g" viewBox="0 0 24 24" aria-hidden="true">
+        <!-- Le G au trait, une seule encre. Le G officiel est fait de quatre
+             chemins pour quatre couleurs : fondus en une seule encre ils se
+             recouvrent et disparaissent. Ici, un seul trace. -->
+        <path d="M12.2 10.9v2.5h4.9a4.4 4.4 0 0 1-4.9 3.5 4.9 4.9 0 1 1 3.2-8.6"
+              fill="none" stroke="currentColor" stroke-width="1.9"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span data-fr="Continuer avec Google" data-es="Continuar con Google" data-en="Continue with Google"></span>
+    </button>
+    <button class="b-vide" type="button" data-fournisseur="apple"
+            data-fr-aria-label="Continuer avec Apple" data-es-aria-label="Continuar con Apple" data-en-aria-label="Continue with Apple">
+      <svg class="b-vide__m" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M16.4 12.6c0-2.1 1.7-3.1 1.8-3.2-1-1.45-2.5-1.65-3.05-1.67-1.3-.13-2.53.76-3.19.76-.65 0-1.67-.74-2.74-.72-1.41.02-2.71.82-3.43 2.08-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.85-2.21-3.29z"/>
+        <path d="M14.35 6.1c.58-.7.97-1.67.86-2.64-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.87 2.56.93.07 1.87-.47 2.45-1.17z"/>
+      </svg>
+      <span data-fr="Continuer avec Apple" data-es="Continuar con Apple" data-en="Continue with Apple"></span>
+    </button>
+
+    <a class="b-vide b-ligne caisse__suivi" href="contact.html"
+       data-fr="Suivre ma commande" data-es="Seguir mi pedido" data-en="Track my order"></a>
+
+    <p class="mention caisse__note"
+       data-fr="Vente réservée aux personnes ayant l'âge légal. L'adresse sert à la commande, à la facture et au suivi. L'inscription à la lettre de la maison est facultative et se coche à l'étape suivante, jamais d'avance."
+       data-es="Venta reservada a personas en edad legal. La dirección sirve para el pedido, la factura y el seguimiento. La suscripción a la carta de la casa es opcional y se marca en el paso siguiente, nunca de antemano."
+       data-en="Sale restricted to those of legal age. The address is used for the order, the invoice and tracking. Subscribing to the house letter is optional and is ticked at the next step, never in advance."></p>
+
+    <!-- route technique non tranchee : statique plus Stripe, ou plateforme -->
+    <p class="mention caisse__note"
+       data-fr="Le paiement en ligne n'est pas encore ouvert. Aucune commande n'est prise pour l'instant."
+       data-es="El pago en línea todavía no está abierto. Por ahora no se toma ningún pedido."
+       data-en="Online payment is not open yet. No order is taken for now."></p>
+
+  </section>
+
+</main>
+
+<script>siteChrome.init();</script>
+<script>
+/* Le bouton reste inactif tant que l adresse n a pas la forme d une adresse,
+   comme chez eux ou "Continue" est gris tant que le champ est vide. */
+(function(){
+  var c = document.getElementById('courriel');
+  var b = document.getElementById('continuer');
+  var f = document.getElementById('f-identite');
+  if(!c || !b || !f) return;
+
+  function valide(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); }
+  function maj(){
+    var ok = valide(c.value);
+    b.disabled = !ok;
+    b.classList.toggle('est-inactif', !ok);
+  }
+  c.addEventListener('input', maj);
+  maj();
+
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!valide(c.value)) return;
+    /* Rien n est envoye tant que la route technique n est pas tranchee.
+       On garde l adresse dans le navigateur pour ne pas la redemander. */
+    try{ localStorage.setItem('ida.courriel', c.value.trim()); }catch(err){}
+    window.location.href = 'paiement.html';
+  });
+})();
+</script>
+</body>
+</html>

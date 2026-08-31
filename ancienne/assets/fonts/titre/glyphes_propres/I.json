@@ -1,0 +1,38 @@
+{
+  "caractere": "I",
+  "code": 73,
+  "nom_unicode": "LATIN CAPITAL LETTER I",
+  "d": "M137.7 0L294.3 0C313.9 0 325.7 0.5 325.7 11C325.7 44 289.2 18.2 289.2 170L289.2 275C289.2 289.1 308.7 297.6 308.7 322C308.7 345.9 289.2 354.2 289.2 368L289.2 530C289.2 681.8 325.7 656 325.7 689C325.7 699.5 313.9 700 294.3 700L137.7 700C118.1 700 106.3 699.5 106.3 689C106.3 656 142.8 681.8 142.8 530L142.8 368C142.8 354.2 123.3 345.9 123.3 322C123.3 297.6 142.8 289.1 142.8 275L142.8 170C142.8 18.2 106.3 44 106.3 11C106.3 0.5 118.1 0 137.7 0Z",
+  "avance": 432,
+  "bornes": [
+    106.3,
+    0.0,
+    325.7,
+    700.0
+  ],
+  "noeuds": {
+    "contours": 1,
+    "segments": 18,
+    "droites": 6
+  },
+  "largeur_de_fut": {
+    "mediane": 146.4,
+    "min": 146.4,
+    "max": 146.4,
+    "etendue": 0.0,
+    "mesures": 45
+  },
+  "garde": [
+    "le cran de mi-hauteur, refait au canon de la famille : sommet y=322, 19.5 unites vers l'exterieur, de y=275 a y=368, deux cubiques, sur les deux futs",
+    "le I reste la lettre la plus maigre de la famille : fut 146.4 quand la mediane est 153.2, l'ecart avec le H est dans le sceau",
+    "les deux angles exterieurs de chaque face d'empattement restent casses, pas droits : la face nette fait 156.6, encadree de deux arrondis",
+    "la gorge d'empattement garde son profil dissymetrique, chute rapide jusqu'a 50 puis approche longue et lente du fut jusqu'a 170"
+  ],
+  "notes": "I du sceau, main de la famille. Nettoye selon CONTRAT_NETTOYAGE.md du 16 aout 2026. Le I porte le profil d'empattement du chapitre 3, il en est la lettre de reference : les deux cubiques de chaque quart (arrondi d'angle puis gorge) ont ete ajustees au moindre carre sur les demi-largeurs relevees, ecart 0.1 unite a l'angle et 0.8 dans la gorge. Face plate posee sur 0 et sur 700, largeur maximale 219.4 a 11 unites de la face, gorge finie a 170, debord 36.7 de chaque cote. Les deux futs sont deux droites. Renflement de mi-hauteur repose au canon du chapitre 4. Symetrie imposee par construction. 21 segments et 22 inversions de courbure deviennent 18 et 8, le fut passe de 146.3 avec 10.5 unites de variation a 146.4 avec 0.0, le defaut de symetrie de 1.5 a 0.0. Chasse inchangee : largeur 219.7 -> 219.4, avance 432.",
+  "repere": {
+    "upm": 1000,
+    "cap": 700,
+    "pied": 0,
+    "y": "vers le haut"
+  }
+}

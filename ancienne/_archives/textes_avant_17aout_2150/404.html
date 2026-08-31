@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Page introuvable. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+<style>
+/* la page 404 : la seule page qui compose avec les deux polices de la maison, tirees du sceau
+   (assets/fonts/titre : les capitales du sceau ; assets/fonts/texte : le texte). Une encre, le papier. */
+@font-face{ font-family:"Ivresse Titre"; src:url("assets/fonts/titre/IvresseTitre-Regular.woff2") format("woff2"), url("assets/fonts/titre/IvresseTitre-Regular.otf") format("opentype"); font-display:swap; }
+@font-face{ font-family:"Ivresse Texte"; src:url("assets/fonts/texte/IvresseTexte-Regular.woff2") format("woff2"), url("assets/fonts/texte/IvresseTexte-Regular.otf") format("opentype"); font-display:swap; }
+.perdu{ min-height:calc(100vh - 160px); display:grid; place-items:center; text-align:center; padding:8vh 24px 12vh; }
+.perdu__int{ max-width:640px; }
+.perdu__sceau{ width:min(46vw,260px); margin:0 auto 34px; }
+.perdu__sceau svg{ width:100%; height:auto; display:block; }
+.perdu__code{ font-family:"Ivresse Titre",var(--slab); font-size:clamp(64px,12vw,120px); line-height:1; letter-spacing:.06em; color:var(--encre); margin:0 0 18px; }
+.perdu__titre{ font-family:"Ivresse Titre",var(--slab); font-size:clamp(15px,2vw,19px); letter-spacing:.22em; text-transform:uppercase; color:var(--brun); margin:0 0 22px; }
+.perdu__texte{ font-family:"Ivresse Texte",var(--serif); font-size:clamp(17px,2vw,20px); line-height:1.6; color:var(--encre); margin:0 auto 34px; max-width:34em; }
+.perdu__liens{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; }
+.perdu__liens a{ font-family:"Ivresse Titre",var(--slab); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--encre); text-decoration:none; padding:12px 0 8px; border-bottom:1px solid var(--encre); min-height:44px; box-sizing:border-box; }
+.perdu__liens a:hover{ color:var(--brique); border-color:var(--brique); }
+</style>
+</head>
+<body data-page="" data-titre-fr="Page introuvable. Ivresse d'Amour, Toloache Legitimo" data-titre-es="Página no encontrada. Ivresse d'Amour, Toloache Legitimo" data-titre-en="Page not found. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page">
+  <section class="perdu">
+    <div class="perdu__int">
+      <div class="perdu__sceau"><svg id="sceau-404" viewBox="0 0 842 595" aria-label="Ivresse d'Amour, Toloache Legitimo"></svg></div>
+      <p class="perdu__code" aria-hidden="true">404</p>
+      <h1 class="perdu__titre" data-fr="Cette page n'existe pas" data-es="Esta página no existe" data-en="This page does not exist"></h1>
+      <p class="perdu__texte" data-fr="Le chemin s'est perdu quelque part entre le palenque et la bouteille. Ce que vous cherchez est peut-être sur l'une de ces pages." data-es="El camino se perdió en algún lugar entre el palenque y la botella. Lo que busca puede estar en una de estas páginas." data-en="The path got lost somewhere between the palenque and the bottle. What you are looking for may be on one of these pages."></p>
+      <nav class="perdu__liens" aria-label="Retour">
+        <a href="index.html" data-fr="La Botella" data-es="La Botella" data-en="La Botella"></a>
+        <a href="les-mezcales.html" data-fr="Les Mezcals" data-es="Los Mezcales" data-en="The Mezcals"></a>
+        <a href="la-historia.html" data-fr="La Historia" data-es="La Historia" data-en="La Historia"></a>
+        <a href="contact.html" data-fr="Contact" data-es="Contacto" data-en="Contact"></a>
+      </nav>
+    </div>
+  </section>
+</main>
+
+<script>
+siteChrome.init();
+(function(){
+  var svg=document.getElementById('sceau-404');
+  if(svg && typeof window.sceauAnime==='function'){ window.sceauAnime(svg,{autoplay:true,color:'#2B2118'}); }
+})();
+</script>
+</body>
+</html>

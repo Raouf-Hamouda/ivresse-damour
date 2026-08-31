@@ -1,0 +1,249 @@
+IVRESSE TEXTE
+Le caractere de labeur de la maison Ivresse d'Amour, Toloache Legitimo.
+Dossier assets/fonts/texte/. Version 0.1, 16 aout 2026.
+
+
+CE QU'IL Y A DANS LE DOSSIER
+
+  SPECIMEN.html                l'epreuve. Le livrable a regarder. Autonome,
+                               s'ouvre en double cliquant, aucune dependance.
+  alphabet_texte.js            les 136 signes en donnees de chemin SVG, plus
+                               le poseur de texte. window.alphabetTexte().
+                               Meme forme d'interface que assets/js/logo.js.
+  glyphes_texte.py             le DESSIN. Tout vient de la. Chaque mesure y est
+                               une constante nommee et commentee.
+  faire.py                     regenere alphabet_texte.js et SPECIMEN.html.
+  build_font.py                compile la fonte. Marche.
+  IvresseTexte-Regular.otf     la fonte, 136 glyphes.
+  IvresseTexte-Regular.woff2   la meme, pour le web.
+
+  Rien de ce dossier ne touche au site. site.css, site.js, logo.js, les pages
+  et assets/fonts/titre/ n'ont pas ete ouverts en ecriture.
+
+
+LES DEUX DECISIONS, ET LEUR RAISON
+
+1. LINEALE, PAS SERIF.
+
+   Le site tourne aujourd'hui sur une pile de secours serif, Iowan Old Style,
+   Palatino, Georgia. Ce caractere la remplace, et il n'est pas serif.
+
+   La raison n'est pas un gout. A 17 px, l'empattement du sceau mesurerait
+   0.7 px : il ne se voit plus, il ne fait que salir le contour et alourdir le
+   gris de la page. Le sceau est une egyptienne de bois taillee pour 300 px.
+   Ce qui d'une famille survit a la reduction, ce n'est pas son ornement,
+   c'est sa charpente. Donc on jette l'ornement et on ne garde que la
+   charpente. Une lineale est le seul endroit ou la charpente se voit toute
+   seule, sans rien par dessus.
+
+   Consequence assumee : les deux caracteres de la maison ne partagent AUCUN
+   ornement. On doit pouvoir les poser sur la meme page et sentir la meme
+   maison sans pouvoir montrer du doigt un detail commun. C'est le test qui
+   ouvre le specimen : le sceau en haut, celui ci juste dessous.
+
+2. UN VRAI BAS DE CASSE, ET IL EST INVENTE.
+
+   Le sceau n'a pas de bas de casse. Un caractere de labeur en a besoin : une
+   page de capitales est illisible, et le contrat visuel l'interdit deja
+   ("une phrase en capitales est refusee"). Il a donc fallu prolonger la main
+   de la famille la ou elle n'est jamais allee. C'est le point le plus fragile
+   du dossier et il est dit ici en premier.
+
+   La methode : aucune forme n'a ete inventee de zero, chaque piece est prise
+   dans une capitale de la famille.
+     le fut du I du sceau     -> tous les futs, meme largeur relative, meme
+                                 coupe a plat
+     la ronde du O du sceau   -> le o, le c, le e, le b, le d, le p, le q, la
+                                 panse du a et du g : meme dehors quasi
+                                 circulaire, meme contre plus carre que le
+                                 dehors
+     la panse du D et du B    -> l'epaule du n, du m, du h, du r, du u
+     les obliques du A, du V,
+     du M du sceau            -> le v, le w, le x, le y, le k, le z, coupees a
+                                 plat en haut et en bas comme elles
+
+
+CE QUI VIENT DE LA MAIN DE LA FAMILLE, MESURE
+
+Source : assets/js/logo.js, mots TOLOACHE et LEGITIMO, seize lettres, dans
+leur repere natif ou la capitale fait 40 unites. Relevees au balayage, pas a
+l'oeil.
+
+  Largeur d'encre rapportee a la capitale
+    I 0.314   E 0.637   L 0.643   T 0.680   H 0.739   A 0.794
+    C 0.829   G 0.849   O 0.948   M 1.049
+
+  Repris tel quel dans les capitales de ce caractere. C'est l'echelle de la
+  maison : les rondes sont presque des cercles, les carrees sont etroites. Un
+  O qui fait 0.95 de la capitale n'est pas une lineale ordinaire, c'est une
+  lineale geometrique, et c'est le sceau qui l'a decide, pas moi.
+
+  Autres traits releves et gardes, parce que ce sont des proportions et non
+  des ornements :
+    le contre du O est nettement plus carre que son dehors (K_IN 0.600 contre
+      K_OUT 0.5523)
+    le A a un sommet PLAT, largeur 0.62 fut, et non une pointe
+    la traverse du A est BASSE, a 0.265 de la capitale
+    le V central du M s'arrete a mi hauteur au sceau, pose ici a 0.26 de la
+      capitale
+    les futs du M et du N sont verticaux, sans ecartement
+    le G porte une barre droite a mi hauteur
+
+
+CE QUI A ETE REGULARISE, ET POURQUOI
+
+  la graisse       Le sceau : fut 9.0 sur capitale 40, soit 0.225. Ici 0.117,
+                   presque la moitie. A la graisse du sceau, un paragraphe de
+                   62 signes a 17 px est un mur d'encre.
+  le contraste     Le sceau est monolineaire avec un renflement de taille.
+                   Ici le fut vaut 76 et les horizontales 71, soit 1.07 : ce
+                   n'est pas un contraste de dessin, c'est le seul allegement
+                   optique qui fait PARAITRE les horizontales egales aux
+                   verticales.
+  le renflement    Au sceau le fut est plus large au milieu qu'aux quarts
+                   (10.0 contre 8.4). Ici le fut est un rectangle.
+  le tremblement   Le contour du sceau ondule, c'est une taille a la main.
+                   Ici tout est arc d'ellipse ou segment droit.
+  l'empattement    Jete. Voir la decision 1.
+  l'encoche        Le sceau mord la barre a la jonction (E median, traverse du
+                   H, traverse du A). Jetee.
+  le bec en
+  spirale          Le C et le G du sceau finissent en volute. Jetes : les
+                   terminaisons sont coupees perpendiculairement au trait.
+  le contre        Ouvert. Le contre du o passe de serre a 332 sur 387
+                   unites, ce qui est ce qu'il faut pour ne pas se boucher a
+                   17 px.
+  la chasse        Desserree. Blanc de mot 268, approches 74 sur les droites
+                   du bas de casse, 53 sur les rondes.
+
+
+LA SEULE MESURE DU SCEAU QUI A ETE RELACHEE, ET C'EST DIT
+
+Au sceau, une carree vaut 0.68 d'une ronde (E 0.637 contre O 0.948). Transpose
+tel quel au bas de casse, cela donnait un n de 0.68 du o : a 17 px le n se
+fermait. Le n vaut ici 0.93 du o en largeur d'encre. L'echelle etroite/large de la maison est
+donc portee par les CAPITALES, la ou elle a ete mesuree, et adoucie dans le
+bas de casse, qui n'existe pas au sceau et que personne ne peut donc contester
+sur piece. C'est un arbitrage de lisibilite, pas un oubli.
+
+
+LES PROPORTIONS QUI FONT QU'ON LIT A 17 PX
+
+  cadratin              1000
+  capitale              700
+  hauteur d'x           505, soit 0.721 de la capitale
+                        Georgia 0.68, Helvetica 0.73. Assez haute pour tenir a
+                        17 px, pas assez pour ecraser les ascendantes.
+  ascendante            738, a peine au dessus de la capitale
+  descendante           -212
+  fut bas de casse      76, soit 0.150 de la hauteur d'x
+  horizontales          71
+  jonctions des rondes  68
+  contre du o           332 de large sur 387 de haut
+  largeur d'encre       n 452, o 484, rapport n/o 0.93
+  chasse                n 600, o 590, H 621, O 746
+  approches             74 sur les droites, 53 sur les rondes, 28 sur les
+                        obliques
+  blanc de mot          268, soit 0.268 cadratin
+  chiffres              hauteur 672, ALIGNES et TABULAIRES, chasse 556 pour
+                        tous les dix. Le site est un registre : N° 004 / 300 et
+                        N° 298 / 300 doivent s'aligner sans reglage. Le
+                        specimen le montre.
+
+
+LA COUVERTURE, 136 SIGNES
+
+  A a Z, a a z, 0 a 9
+  accents        à â ä á é è ê ë î ï í ì ô ö ó ò ù û ü ú ñ ç
+                 À Â Ä Á É È Ê Ë Î Ï Í Ì Ô Ö Ó Ò Ù Û Ü Ú Ñ Ç
+  ponctuation    . , : ; ’ ‘ “ ” « » - – ! ¡ ? ¿ ( ) / · & % ° º €
+  alias          l'apostrophe droite et le guillemet droit sont mappes sur
+                 leurs formes typographiques, une copie mal saisie se compose
+                 quand meme
+  blancs         mot, insecable, fine insecable (celle de 50 %, 700 ml, 140 €)
+
+  Verification automatique : python3 build_font.py --verifier
+
+
+CE QUE LE SPECIMEN CONTIENT
+
+  1. Le test. Les lettres du sceau, vectorisees depuis logo.js, donc les
+     vraies, et Ivresse Texte juste dessous. C'est la premiere chose qu'on
+     voit et c'est la seule question qui compte.
+  2. Le jeu complet, en grand puis signe par signe.
+  3. L'echelle du contrat visuel, de 11 px a 72 px, aux huit valeurs exactes
+     de --t-micro a --t-h1.
+  4. Le texte courant a 17 px sur 62 signes, la mesure reelle du site, en
+     francais, en espagnol et en anglais.
+  5. La contre epreuve contre Georgia, meme corps, meme mesure. C'est le test
+     que Raouf a demande de tenir a chaque tour.
+  6. La table de faits sur le papier de l'etiquette.
+  7. Les chiffres du site, dont la colonne de lots tabulaire.
+  8. Un bloc compose avec la vraie fonte compilee, pour prouver que le fichier
+     marche.
+  9. Les mesures.
+
+
+CE QUI RESTE FAIBLE, HONNETEMENT
+
+  1. AUCUN CRENAGE. La fonte pose chaque signe a sa chasse, point. Les paires
+     evidentes ne sont pas corrigees : Av, AV, AT, Ta, To, Ya, LT, r., y., F,
+     P, et surtout les paires avec les guillemets francais. A 17 px cela se
+     voit peu, a 46 px et au dessus cela se voit. C'est le premier travail a
+     faire avant un envoi, et c'est plusieurs heures.
+  2. AUCUN HINTING. Sur un vieux Windows en rendu gris, les futs a 17 px vont
+     baver d'un demi pixel. Sur Mac et sur tout ce qui est recent, sans effet.
+  3. LES CONTOURS SE RECOUVRENT. Un H est trois rectangles poses l'un sur
+     l'autre. Les navigateurs et les systemes affichent juste, la regle non
+     nulle est faite pour ca, et le rendu a ete verifie. Mais un editeur de
+     fonte exigeant rale, et une conversion en TTF sans aplatissement peut
+     mal tourner. build_font.py --aplatir tente removeOverlaps si
+     skia-pathops est installe. A faire avant un envoi.
+  4. UNE SEULE GRAISSE. Pas d'italique, pas de gras. Le site n'en demande pas
+     aujourd'hui : le contrat confie les capitales au slab et n'utilise ni
+     italique ni gras. Le jour ou une citation ou un nom d'espece a besoin
+     d'un italique, il faudra le dessiner. Agave potatorum se compose
+     aujourd'hui en romain.
+  5. L'ESPERLUETTE EST LE SIGNE LE PLUS FAIBLE du jeu. Elle se lit, elle n'est
+     pas belle. Le site ne l'emploie nulle part dans les copies connues. A
+     redessiner avant de s'en servir en grand.
+  6. LE 1 N'A PAS DE PIED. Choix de minimalisme. Dans une colonne tabulaire de
+     lots il paraitra plus leger que les autres chiffres. Verifie sur la
+     colonne du specimen, cela tient ; a revoir si un tableau dense arrive.
+  7. LES ACCENTS DE CAPITALE montent a 854 unites, au dessus du cadratin. Les
+     metriques hhea et OS/2 les couvrent, mais une ligne serree de capitales
+     accentuees demandera un interligne un peu plus grand.
+  8. PAS DE LIGATURES, pas de chiffres elzeviriens, pas de petites capitales,
+     pas de fractions, pas de signes mathematiques au dela du pourcent. Aucun
+     n'est demande par le site.
+  9. LE NOM. "Ivresse Texte" est un nom de travail. Si Raouf en veut un autre,
+     il se change dans build_font.py (NOM_FAMILLE, NOM_PS) et dans faire.py.
+
+
+CE QU'IL FAUDRAIT POUR LIVRER UNE VRAIE FONTE
+
+  a. Le crenage. Une table kern ou GPOS, une centaine de paires suffirait pour
+     le francais et l'espagnol.
+  b. L'aplatissement des recouvrements.
+  c. Une relecture a l'oeil de chaque signe a 11 px, 13 px et 17 px sur un
+     ecran non retina, ce qui n'a pas ete fait ici : tout a ete juge sur des
+     rendus a 1600 px de large.
+  d. Un italique, ou la decision ecrite qu'il n'y en aura pas.
+  e. La decision de Raouf sur le nom et sur la licence.
+
+  Le dessin, lui, est complet et coherent. C'est ce qui etait demande.
+
+
+COMMENT S'EN SERVIR AUJOURD'HUI
+
+  Regarder :   double clic sur SPECIMEN.html
+  Regenerer :  python3 faire.py
+  Recompiler : python3 build_font.py
+  Verifier :   python3 build_font.py --verifier
+
+  Le jour ou le site l'adopte, une seule ligne bouge dans site.css :
+    --serif: "Ivresse Texte", "Iowan Old Style", Palatino, Georgia, serif;
+  avec un @font-face pointant sur assets/fonts/texte/IvresseTexte-Regular.woff2.
+  Cette ligne n'a PAS ete ecrite : le contrat visuel dit qu'un constructeur ne
+  reecrit pas site.css, et la decision d'adopter le caractere n'est pas la
+  mienne.

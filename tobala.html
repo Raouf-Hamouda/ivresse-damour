@@ -7,11 +7,11 @@
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
 <title>Tobalá. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css">
-<script src="assets/js/logo.js"></script>
-<script src="assets/js/sceau_anime.js"></script>
-<script src="assets/js/emblemes.js"></script>
-<script src="assets/js/site.js"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20260901j">
+<script src="assets/js/logo.js?v=20260901j"></script>
+<script src="assets/js/sceau_anime.js?v=20260901j"></script>
+<script src="assets/js/emblemes.js?v=20260901j"></script>
+<script src="assets/js/site.js?v=20260901j"></script>
 </head>
 
 <body data-page=""
@@ -20,17 +20,28 @@
       data-titre-en="Tobalá. Ivresse d'Amour, Toloache Legitimo">
 
 <main class="page" data-accent="tobala">
-  <!-- 01. La bouteille, pleine page, muette. -->
-  <section class="scene scene--premiere">
+  <!-- 01. Le heros de vente (31 aout) : l'objet a gauche, le sceau anime a
+       droite, le nom, la provenance, la contenance, le bouton. Modele Johnnie
+       Walker ; la bouteille n'est jamais recadree. Pas de prix arrete pour le
+       tobalá : le bouton mene a la page d'achat, qui explique l'allocation. -->
+  <section class="scene scene--premiere heros-vente">
     <div class="scene__fond scene__fond--papier"></div>
-    <div class="scene__marque">
-      <figure class="figure figure--scene">
+    <div class="heros-vente__deux">
+      <figure class="figure heros-vente__objet">
         <a href="acheter-tobala.html" class="figure__lien"><img src="assets/img/bouteilles/tobala_1200.jpg" srcset="assets/img/bouteilles/tobala_600.jpg 600w, assets/img/bouteilles/tobala_1200.jpg 1200w, assets/img/bouteilles/tobala_2000.jpg 2000w" sizes="(max-width: 700px) 100vw, 50vw" alt="" data-fr-alt="La bouteille de tobalá, verre vert taillé en piña, médaillon de cuivre, bouchon en cœur de feuilles." data-es-alt="La botella de tobalá, vidrio verde tallado en piña, medallón de cobre, tapón en corazón de hojas." data-en-alt="The tobalá bottle, green glass cut as a piña, copper medallion, stopper shaped as a heart of leaves." width="1999" height="1493"></a>
       </figure>
-    </div>
-    <div class="scene__texte" style="align-self:end;padding-bottom:6vh">
-      <h1 class="scene__titre">Tobalá</h1>
-      <p class="scene__ligne" style="font-style:italic">A. potatorum</p>
+      <div class="heros-vente__droite">
+        <svg class="heros-vente__sceau js-sceau-anime" viewBox="0 0 842 595" aria-hidden="true"></svg>
+        <h1 class="scene__titre">Tobalá</h1>
+        <p class="scene__ligne" style="font-style:italic;margin:0">A. potatorum</p>
+        <p class="heros-vente__desc"
+           data-fr="L'agave des hauteurs, petit et rare, récolté quand la plante le décide. Villa Sola de Vega, Oaxaca."
+           data-es="El agave de las alturas, pequeño y raro, cosechado cuando la planta lo decide. Villa Sola de Vega, Oaxaca."
+           data-en="The mountain agave, small and rare, harvested when the plant decides. Villa Sola de Vega, Oaxaca."></p>
+        <p class="heros-vente__contenance">700 ml, 50 %</p>
+        <a class="b-plein heros-vente__acheter" href="acheter-tobala.html"
+           data-fr="Acheter" data-es="Comprar" data-en="Buy"></a>
+      </div>
     </div>
   </section>
 
@@ -66,7 +77,7 @@
   <!-- 04. LE JEU. La forme reperee chez gentle monster, "decouvrir la campagne",
        employee ici comme la porte du jeu de cette bouteille. -->
   <section class="campagne">
-    <div class="campagne__fond" data-embleme="botella"></div>
+    <div class="campagne__fond fondu" data-embleme="botella"></div>
     <div class="campagne__texte">
       <p class="campagne__kicker" data-fr="Le jeu de la bouteille" data-es="El juego de la botella" data-en="The bottle game"></p>
       <h2 class="campagne__titre" data-fr="La pierre à tobalá" data-es="La piedra del tobalá" data-en="The tobalá rock"></h2>

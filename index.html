@@ -7,11 +7,11 @@
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
 <title>La Botella. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css">
-<script src="assets/js/logo.js"></script>
-<script src="assets/js/sceau_anime.js"></script>
-<script src="assets/js/emblemes.js"></script>
-<script src="assets/js/site.js"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20260901j">
+<script src="assets/js/logo.js?v=20260901j"></script>
+<script src="assets/js/sceau_anime.js?v=20260901j"></script>
+<script src="assets/js/emblemes.js?v=20260901j"></script>
+<script src="assets/js/site.js?v=20260901j"></script>
 </head>
 
 <body data-page="botella"
@@ -20,27 +20,44 @@
       data-titre-en="La Botella. Ivresse d'Amour, Toloache Legitimo">
 
 <main class="page">
-  <!-- 01. Le sceau. La premiere chose que l on voit bouger, et la seule. -->
+  <!-- 01. Le sceau, seul, comme au premier jour (Raouf, 31 aout 23h51 : "le
+       logo apparait d'abord dans le blanc, puis on descend"). L'animation
+       retenue du 16 aout joue ici, en grand, une fois. -->
   <section class="scene scene--premiere">
     <div class="scene__fond scene__fond--papier"></div>
-    <!-- le titre de la page, lu par les lecteurs d ecran : a l ecran, c est le sceau qui le dit -->
-    <h1 class="sr" data-fr="Ivresse d'Amour, Toloache Legitimo. La bouteille" data-es="Ivresse d'Amour, Toloache Legitimo. La botella" data-en="Ivresse d'Amour, Toloache Legitimo. The bottle"></h1>
+    <h1 class="sr" data-fr="Ivresse d'Amour, Toloache Legitimo" data-es="Ivresse d'Amour, Toloache Legitimo" data-en="Ivresse d'Amour, Toloache Legitimo"></h1>
     <div class="scene__marque"><svg id="sceau-accueil" viewBox="0 0 842 595" aria-label="Ivresse d'Amour, Toloache Legitimo"></svg></div>
   </section>
 
-  <!-- 02. La bouteille, seule. Le packshot reel, recu le 16 aout au soir. Le 360 attend sa sequence photo. -->
-  <section class="scene">
+  <!-- 02. Le heros de vente, SANS le cachet : le sceau vient d'avoir son
+       ecran, le bloc produit reste pur (Johnnie Walker). -->
+  <section class="scene scene--premiere heros-vente">
     <div class="scene__fond scene__fond--papier"></div>
-    <div class="scene__marque">
-      <figure class="figure figure--scene">
-        <a href="acheter-espadin.html" class="figure__lien" aria-label="Espadín, la page d'achat"><img src="assets/img/bouteilles/espadin_1200.jpg" srcset="assets/img/bouteilles/espadin_600.jpg 600w, assets/img/bouteilles/espadin_1200.jpg 1200w, assets/img/bouteilles/espadin_2000.jpg 2000w" sizes="(max-width: 700px) 100vw, 50vw" alt="" data-fr-alt="La bouteille d'espadín, verre vert taillé en piña, médaillon de cuivre, bouchon en cœur de feuilles." data-es-alt="La botella de espadín, vidrio verde tallado en piña, medallón de cobre, tapón en corazón de hojas." data-en-alt="The espadín bottle, green glass cut as a piña, copper medallion, stopper shaped as a heart of leaves." width="1999" height="1493"></a>
+    <div class="heros-vente__deux">
+      <figure class="figure heros-vente__objet">
+        <a href="acheter-espadin.html" class="figure__lien"><img src="assets/img/bouteilles/espadin_1200.jpg" srcset="assets/img/bouteilles/espadin_600.jpg 600w, assets/img/bouteilles/espadin_1200.jpg 1200w, assets/img/bouteilles/espadin_2000.jpg 2000w" sizes="(max-width: 700px) 100vw, 55vw" alt="" data-fr-alt="La bouteille d'espadín, verre vert taillé en piña, médaillon de cuivre, bouchon en cœur de feuilles." data-es-alt="La botella de espadín, vidrio verde tallado en piña, medallón de cobre, tapón en corazón de hojas." data-en-alt="The espadín bottle, green glass cut as a piña, copper medallion, stopper shaped as a heart of leaves." width="1999" height="1493"></a>
       </figure>
-    </div>
-    <div class="scene__texte" style="align-self:end;padding-bottom:6vh">
-      <!-- Note de chantier, retiree de la vue : la sequence 360 de la bouteille est a photographier au Mexique. -->
-      <p class="scene__kicker" data-fr="La bouteille" data-es="La botella" data-en="The bottle"></p>
+      <div class="heros-vente__droite">
+        <!-- 1er sept 00h09, Raouf : le sceau revient dans le heros de l'accueil,
+             au bureau seulement (la feuille le cache sous 1000 px, le telephone
+             reste tel quel). -->
+        <svg class="heros-vente__sceau js-sceau-anime" viewBox="0 0 842 595" aria-hidden="true"></svg>
+        <p class="scene__kicker" data-fr="La bouteille du village" data-es="La botella del pueblo" data-en="The village bottle"></p>
+        <h2 class="scene__titre">Espadín</h2>
+        <p class="scene__ligne" style="font-style:italic;margin:0">A. angustifolia</p>
+        <p class="heros-vente__desc"
+           data-fr="L'agave du village, cuit au four de terre par Gilberto Vásquez. Villa Sola de Vega, Oaxaca."
+           data-es="El agave del pueblo, cocido en horno de tierra por Gilberto Vásquez. Villa Sola de Vega, Oaxaca."
+           data-en="The village agave, cooked in an earth oven by Gilberto Vásquez. Villa Sola de Vega, Oaxaca."></p>
+        <p class="heros-vente__contenance">700 ml, 50 %</p>
+        <a class="b-plein heros-vente__acheter" href="acheter-espadin.html"
+           data-fr="Acheter" data-es="Comprar" data-en="Buy now"></a>
+      </div>
     </div>
   </section>
+
+  <!-- 02. La bouteille seule : scene retiree le 31 aout (Raouf) : le heros la
+       presente deja, la page ne se repete pas. -->
 
   <!-- le dicho, visible sur l accueil (Raouf, 17 aout 00h50) -->
   <blockquote class="citation fondu">
@@ -83,7 +100,7 @@
     <div class="boite">
       <p class="kicker" data-fr="Lu sur l'étiquette" data-es="Leído en la etiqueta" data-en="Read on the label"></p>
       <dl class="faits faits--etiquette">
-        <div class="faits__l"><dt class="faits__k" data-fr="Agave" data-es="Agave" data-en="Agave"></dt><dd class="faits__v">A. angustifolia, espadín</dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="Agave" data-es="Agave" data-en="Agave"></dt><dd class="faits__v" id="fait-agave">A. angustifolia, espadín</dd></div>
         <div class="faits__l"><dt class="faits__k" data-fr="Catégorie" data-es="Categoría" data-en="Category"></dt><dd class="faits__v">Mezcal Artesanal, joven, D.O.</dd></div>
         <div class="faits__l"><dt class="faits__k" data-fr="Degré" data-es="Graduación" data-en="Strength"></dt><dd class="faits__v">50 %</dd></div>
         <div class="faits__l"><dt class="faits__k" data-fr="Village" data-es="Pueblo" data-en="Village"></dt><dd class="faits__v">Villa Sola de Vega, Oaxaca</dd></div>
@@ -125,12 +142,70 @@
 
 </main>
 
+<script>
+/* 1er sept 00h10, Raouf : a chaque ouverture de l'accueil, l'une des trois
+   bouteilles se presente, au hasard ; le kicker, le nom, le latin, la ligne,
+   l'agave de l'etiquette et le lien d'achat suivent. Pose avant init() pour
+   que la langue s'applique sur la bouteille tiree. */
+(function(){
+  var B = [
+    { id:'espadin', latin:'A. angustifolia', agave:'A. angustifolia, espadín',
+      kicker:{fr:"La bouteille du village", es:"La botella del pueblo", en:"The village bottle"},
+      nom:'Espadín',
+      desc:{fr:"L'agave du village, cuit au four de terre par Gilberto Vásquez. Villa Sola de Vega, Oaxaca.",
+            es:"El agave del pueblo, cocido en horno de tierra por Gilberto Vásquez. Villa Sola de Vega, Oaxaca.",
+            en:"The village agave, cooked in an earth oven by Gilberto Vásquez. Villa Sola de Vega, Oaxaca."} },
+    { id:'tobala', latin:'A. potatorum', agave:'A. potatorum, tobalá',
+      kicker:{fr:"Le cru des hauteurs", es:"El cru de las alturas", en:"The mountain cru"},
+      nom:'Tobalá',
+      desc:{fr:"L'agave des hauteurs, petit et rare, récolté quand la plante le décide. Villa Sola de Vega, Oaxaca.",
+            es:"El agave de las alturas, pequeño y raro, cosechado cuando la planta lo decide. Villa Sola de Vega, Oaxaca.",
+            en:"The mountain agave, small and rare, harvested when the plant decides. Villa Sola de Vega, Oaxaca."} },
+    { id:'coyote', latin:'A. americana', agave:'A. americana, coyote',
+      kicker:{fr:"Le cru aux grandes feuilles", es:"El cru de grandes hojas", en:"The open-leaf cru"},
+      nom:'Coyote',
+      desc:{fr:"L'agave aux grandes feuilles ouvertes, un cru qui ne se remplace pas. Villa Sola de Vega, Oaxaca.",
+            es:"El agave de grandes hojas abiertas, un cru que no se reemplaza. Villa Sola de Vega, Oaxaca.",
+            en:"The agave of great open leaves, a growth never replaced. Villa Sola de Vega, Oaxaca."} },
+  ];
+  var b = B[Math.floor(Math.random()*B.length)];
+  var h = document.querySelector('.heros-vente'); if(!h) return;
+  var img = h.querySelector('.heros-vente__objet img');
+  var lien = h.querySelector('.heros-vente__objet a');
+  var achat = h.querySelector('.heros-vente__acheter');
+  var kick = h.querySelector('.scene__kicker');
+  var nom = h.querySelector('.scene__titre');
+  var lat = h.querySelector('.scene__ligne');
+  var desc = h.querySelector('.heros-vente__desc');
+  var agave = document.getElementById('fait-agave');
+  if(img){
+    img.setAttribute('src','assets/img/bouteilles/'+b.id+'_1200.jpg');
+    img.setAttribute('srcset','assets/img/bouteilles/'+b.id+'_600.jpg 600w, assets/img/bouteilles/'+b.id+'_1200.jpg 1200w, assets/img/bouteilles/'+b.id+'_2000.jpg 2000w');
+  }
+  if(lien) lien.setAttribute('href','acheter-'+b.id+'.html');
+  if(achat) achat.setAttribute('href','acheter-'+b.id+'.html');
+  var langs = ['fr','es','en'];
+  if(kick) for(var i=0;i<3;i++) kick.setAttribute('data-'+langs[i], b.kicker[langs[i]]);
+  if(desc) for(var j=0;j<3;j++) desc.setAttribute('data-'+langs[j], b.desc[langs[j]]);
+  if(nom) nom.textContent = b.nom;
+  if(lat) lat.textContent = b.latin;
+  if(agave) agave.textContent = b.agave;
+})();
+</script>
 <script>siteChrome.init();</script>
 <script>
 /* Le sceau de l accueil : l animation retenue le 16 aout, une fois, au chargement. */
 (function(){
   var svg = document.getElementById('sceau-accueil');
-  if(svg && typeof window.sceauAnime === 'function'){ window.sceauAnime(svg); }
+  /* meme regle que site.js : sous 100 px le sceau se pose complet, le dessin
+     de 3 s ne se lit qu'en grand */
+  if(svg){
+    var grand = svg.getBoundingClientRect().width >= 100;
+    if(typeof window.sceauAnime === 'function' && grand){ window.sceauAnime(svg); }
+    else if(typeof window.logoIvresse === 'function'){
+      svg.innerHTML = window.logoIvresse({ x:443, y:290, scale:1, anime:false, color:'currentColor' });
+    }
+  }
   /* Les emblemes poses dans les scenes. */
   var els = document.querySelectorAll('[data-embleme]');
   for(var i=0;i<els.length;i++){
@@ -156,6 +231,54 @@
     }).join('');
     /* siteChrome.langue() ne fait que lire la langue : c est appliquerLangue qui ecrit les noms dans la grille. */
     siteChrome.appliquerLangue(siteChrome.langueCourante(), g);
+  }
+})();
+</script>
+<script>
+/* 1er sept 00h40, Raouf : les plantes de l'accueil VIVENT au gyroscope.
+   L'iPhone (iOS 13+) ne livre ses capteurs qu'en HTTPS et apres un premier
+   toucher (requestPermission) : le premier tap, n'importe ou, les reveille.
+   Sans capteur (bureau, refus, file://) : la souris fait la parallaxe.
+   Grande sensibilite demandee ; jamais en mouvement reduit. */
+(function(){
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  var cible={x:0,y:0}, doux={x:0,y:0}, actif=false;
+  function plantes(){ return document.querySelectorAll('#grille-bouteilles .grille__media svg'); }
+  function anime(){
+    doux.x += (cible.x-doux.x)*0.14; doux.y += (cible.y-doux.y)*0.14;
+    var ps=plantes();
+    for(var i=0;i<ps.length;i++){
+      var k=[1,1.35,0.8][i%3], r=[1,-1,1][i%3];
+      ps[i].style.transform='translate('+(doux.x*k).toFixed(1)+'px,'+(doux.y*k*0.7).toFixed(1)+'px) rotate('+(doux.x*0.14*r*k).toFixed(2)+'deg)';
+      ps[i].style.willChange='transform';
+    }
+    requestAnimationFrame(anime);
+  }
+  function orientation(e){
+    if(e.gamma==null && e.beta==null) return;
+    /* grande sensibilite : 2,2 px par degre lateral, bornee a +/-34 px */
+    var g=Math.max(-15,Math.min(15,e.gamma||0)), b=Math.max(-15,Math.min(15,(e.beta||0)-40));
+    cible.x=g*2.2; cible.y=b*1.4;
+  }
+  function souris(e){
+    var cx=innerWidth/2, cy=innerHeight/2;
+    cible.x=(e.clientX-cx)/cx*26; cible.y=(e.clientY-cy)/cy*16;
+  }
+  function demarrer(){
+    if(actif) return; actif=true;
+    window.addEventListener('deviceorientation', orientation, true);
+    requestAnimationFrame(anime);
+  }
+  addEventListener('mousemove', function(e){ demarrer(); souris(e); }, {passive:true});
+  if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
+    /* iOS : le premier toucher reveille les capteurs, sans bouton */
+    var une=function(){
+      DeviceOrientationEvent.requestPermission().then(function(rep){ if(rep==='granted') demarrer(); }).catch(function(){});
+      removeEventListener('touchend', une);
+    };
+    addEventListener('touchend', une);
+  } else if('DeviceOrientationEvent' in window){
+    demarrer();   /* Android et anciens iOS : direct */
   }
 })();
 </script>

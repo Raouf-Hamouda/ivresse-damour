@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Le jeu, Espadín. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+</head>
+
+<body data-page=""
+      data-titre-fr="Le jeu, Espadín. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="El juego, Espadín. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-en="The game, Espadín. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page" data-accent="espadin">
+  <section class="campagne" style="min-height:100svh">
+    <div class="campagne__fond" data-embleme="botella"></div>
+    <div class="campagne__texte">
+      <p class="campagne__kicker">Espadín</p>
+      <h1 class="campagne__titre" data-fr="Le champ d'espadín" data-es="El campo de espadín" data-en="The espadín field"></h1>
+      <p class="campagne__ligne" data-fr="Les rangs, la récolte, la piña. Le jeu de la bouteille du village." data-es="Los surcos, la cosecha, la piña. El juego de la botella del pueblo." data-en="The rows, the harvest, the piña. The game of the village bottle."></p>
+      <a class="campagne__lien" href="#jeu" data-fr="Commencer" data-es="Comenzar" data-en="Start"></a>
+    </div>
+  </section>
+
+  <section class="section section--serre" id="jeu">
+    <div class="boite">
+      <!-- Notes de chantier, retirees de la vue :
+           Le jeu existe deja, hors du site : MEZCAL_IVRESSE_DAMOUR/JEU_ESPADIN.html. Il reste a l integrer ici, pas a le reecrire.
+           Le code de remise de 20 % que le jeu donnerait n est pas tranche, il n est implemente nulle part. -->
+      <p class="mention" data-fr="Le jeu de cette bouteille est en préparation." data-es="El juego de esta botella está en preparación." data-en="The game of this bottle is in preparation."></p>
+      <p><a class="lien" href="espadin.html" data-fr="Revenir à la bouteille" data-es="Volver a la botella" data-en="Back to the bottle"></a></p>
+    </div>
+  </section>
+
+</main>
+
+<script>siteChrome.init();</script>
+<script>
+/* Les emblemes poses dans les scenes de cette page. */
+(function(){
+  var els = document.querySelectorAll('[data-embleme]');
+  for(var i=0;i<els.length;i++){
+    var f = window['embleme_' + els[i].getAttribute('data-embleme')];
+    if(typeof f === 'function'){
+      els[i].innerHTML = '<svg viewBox="-120 -120 240 240" aria-hidden="true">' + f({color:'currentColor'}) + '</svg>';
+    }
+  }
+})();
+</script>
+</body>
+</html>

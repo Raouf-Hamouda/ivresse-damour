@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>Gabarit campagne. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+</head>
+
+<!-- ============================================================================
+     LE GABARIT DE CAMPAGNE.
+
+     Anatomie relevee le 16 aout 2026 sur une VRAIE page de campagne de gentle
+     monster, gentlemonster.com/int/en/stories/veggie-collection, mesuree en
+     direct et non de memoire : une seule page de 14 654 px, 18 images et
+     6 videos, et cet ordre exact :
+
+       1. une video plein cadre, l entete flottant dessus sans fond, et au
+          centre "regarder la campagne entiere" avec une marque de lecture
+       2. le nom de la campagne, gros serif, centre, seul sur sa bande.
+          C est le SEUL grand corps de toute la page
+       3. un objet par ecran, repete : le nom en haut a GAUCHE en petit serif,
+          une pastille d action en haut a DROITE, l objet enorme au milieu
+       4. un enonce en capitales, centre, court
+       5. la planche de tous les objets avec leur nom
+       6. une seule sortie
+
+     Une campagne presente UNE chose : un jeu, une histoire, une plante, un lot,
+     un film, une table. Le gabarit est VOLONTAIREMENT OUVERT : les objets ne
+     sont pas numerotes, il n y en a pas un nombre juste. On copie ce fichier,
+     on renomme, on remplit dans les trois langues, on efface le reste.
+
+     data-accent : espadin | tobala | coyote, sinon le rouge de la maison.
+     La couleur ne sert qu au chiffre, au filet et au mot survole. Jamais un fond.
+     ========================================================================= -->
+
+<body data-page=""
+      data-titre-fr="Le titre de la campagne. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="El título de la campaña. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-en="The campaign title. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page camp" data-accent="tobala">
+
+  <!-- 1. L AFFICHE. Une video plein cadre. L entete se pose dessus sans fond.
+          Rien d autre au centre que l invitation a regarder. -->
+  <section class="camp__affiche">
+    <div class="camp__media camp__media--plein">
+      <!-- Remplacer par :
+           <video autoplay muted loop playsinline poster="assets/img/xxx.jpg"><source src="assets/media/xxx.mp4" type="video/mp4"></video>
+           En attendant le Mexique, l emblème sur le papier. -->
+      <div class="camp__marque" data-embleme="botella"></div>
+    </div>
+
+    <a class="camp__regarder" href="#film">
+      <span class="camp__regarder-l" data-fr="Cliquez pour voir" data-es="Haga clic para ver" data-en="Click to watch"></span>
+      <span class="camp__regarder-l" data-fr="la campagne entière" data-es="la campaña completa" data-en="the full campaign"></span>
+      <span class="camp__lecture" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M8 5.5 L18.5 12 L8 18.5 Z"/></svg>
+      </span>
+    </a>
+  </section>
+
+  <!-- 2. LE NOM. Le seul grand corps de la page. Centre, seul sur sa bande. -->
+  <section class="camp__nom-bande">
+    <h1 class="camp__nom" data-fr="Le jeu du tobalá" data-es="El juego del tobalá" data-en="The tobalá game"></h1>
+  </section>
+
+  <!-- 3. UN OBJET PAR ECRAN. Nom en haut a gauche, action en haut a droite,
+          l objet enorme au milieu. Repeter autant de fois qu il y a d objets. -->
+  <section class="camp__objet">
+    <p class="camp__objet-nom">Tobalá</p>
+    <a class="camp__pastille" href="tobala.html" data-fr="Voir la bouteille" data-es="Ver la botella" data-en="See the bottle"></a>
+    <div class="camp__media"><div class="camp__marque" data-embleme="botella"></div></div>
+  </section>
+
+  <section class="camp__objet">
+    <p class="camp__objet-nom" data-fr="La graine" data-es="La semilla" data-en="The seed"></p>
+    <a class="camp__pastille" href="jeu-tobala.html" data-fr="Entrer dans le jeu" data-es="Entrar en el juego" data-en="Enter the game"></a>
+    <div class="camp__media"><div class="camp__marque" data-embleme="mito"></div></div>
+  </section>
+
+  <section class="camp__objet camp__objet--encre">
+    <p class="camp__objet-nom" data-fr="Le lot" data-es="El lote" data-en="The lot"></p>
+    <a class="camp__pastille" href="el-registro.html" data-fr="Voir le registre" data-es="Ver el registro" data-en="See the register"></a>
+    <div class="camp__media"><div class="camp__marque" data-embleme="registro"></div></div>
+  </section>
+
+  <!-- 4. L ENONCE. Capitales, centre, court. Trois lignes au maximum. -->
+  <section class="camp__enonce-bande">
+    <p class="camp__enonce"
+       data-fr="L'agave tobalá ne fait pas de rejets. Il se reproduit par la graine, une seule fois, au bout de neuf ans. C'est la plante qui décide s'il y a un lot cette année."
+       data-es="El agave tobalá no da hijuelos. Se reproduce por semilla, una sola vez, a los nueve años. Es la planta la que decide si hay lote este año."
+       data-en="The tobalá agave puts out no offshoots. It reproduces by seed, once, after nine years. The plant decides whether there is a lot this year."></p>
+  </section>
+
+  <!-- Le chiffre seul. Le seul grand usage de la couleur de la maison, et il
+       tombe sur un chiffre vrai, jamais sur un slogan. Facultatif. -->
+  <section class="camp__chiffre-bande">
+    <p class="camp__chiffre">09</p>
+    <p class="camp__sous-chiffre" data-fr="années avant la fleur" data-es="años antes de la flor" data-en="years before the flower"></p>
+  </section>
+
+  <!-- 5. LA PLANCHE. Tous les objets, petits, avec leur nom sous chacun. -->
+  <section class="camp__planche">
+    <a class="camp__vignette" href="espadin.html">
+      <span class="camp__media"><span class="camp__marque" data-embleme="botella"></span></span>
+      <span class="camp__vignette-nom">Espadín</span>
+    </a>
+    <a class="camp__vignette" href="tobala.html">
+      <span class="camp__media"><span class="camp__marque" data-embleme="botella"></span></span>
+      <span class="camp__vignette-nom">Tobalá</span>
+    </a>
+    <a class="camp__vignette" href="coyote.html">
+      <span class="camp__media"><span class="camp__marque" data-embleme="botella"></span></span>
+      <span class="camp__vignette-nom">Coyote</span>
+    </a>
+    <a class="camp__vignette" href="el-palenque.html">
+      <span class="camp__media"><span class="camp__marque" data-embleme="palenque"></span></span>
+      <span class="camp__vignette-nom">El Palenque</span>
+    </a>
+  </section>
+
+  <!-- Le film, si la campagne en a un. Ancre du lien de l affiche. -->
+  <section class="camp__film" id="film">
+    <div class="camp__media camp__media--plein">
+      <div class="camp__marque" data-embleme="mito"></div>
+    </div>
+    <p class="camp__legende">
+      <span class="mention" data-fr="Film à tourner au Mexique, équipe d'Alejandro Strauss."
+            data-es="Película por rodar en México, equipo de Alejandro Strauss."
+            data-en="Film to be shot in Mexico, Alejandro Strauss team."></span>
+    </p>
+  </section>
+
+  <!-- 6. LA SORTIE. Une seule porte. Jamais deux, jamais un panier. -->
+  <section class="camp__fin">
+    <p class="camp__sur" data-fr="La suite" data-es="Lo que sigue" data-en="What follows"></p>
+    <h2 class="camp__nom camp__nom--petit" data-fr="Le jeu du tobalá" data-es="El juego del tobalá" data-en="The tobalá game"></h2>
+    <a class="camp__pastille camp__pastille--grande" href="jeu-tobala.html"
+       data-fr="Entrer dans le jeu" data-es="Entrar en el juego" data-en="Enter the game"></a>
+  </section>
+
+</main>
+
+<script>siteChrome.init();</script>
+<script>
+/* Les emblèmes tenant lieu de media tant que les photographies du Mexique
+   ne sont pas arrivees. A supprimer le jour ou les images existent. */
+(function(){
+  var els = document.querySelectorAll('[data-embleme]');
+  for(var i=0;i<els.length;i++){
+    var f = window['embleme_' + els[i].getAttribute('data-embleme')];
+    if(typeof f === 'function'){
+      els[i].innerHTML = '<svg viewBox="-120 -120 240 240" aria-hidden="true">' + f({color:'currentColor'}) + '</svg>';
+    }
+  }
+})();
+</script>
+</body>
+</html>

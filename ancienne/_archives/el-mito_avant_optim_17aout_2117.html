@@ -1,0 +1,2595 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<title>El Mito. Ivresse d'Amour, Toloache Legitimo</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/logo.js"></script>
+<script src="assets/js/sceau_anime.js"></script>
+<script src="assets/js/emblemes.js"></script>
+<script src="assets/js/site.js"></script>
+<style>
+  /* -------------------------------------------------------------------------
+     LA HISTORIA. La page a part du contrat visuel : le seul monde de papier
+     du site. Elle prend l entete, le menu, la porte d age, la langue et le
+     pied de la maison comme toutes les autres (site.js). Ce qui reste ici est
+     ce qui n existe nulle part ailleurs : le defilement de onze ecrans, la
+     scene collante, les couches de papier, les legendes qui s allument.
+     Pas de tiret cadratin dans ce fichier.
+
+     MOTEUR (16 aout au soir, refonte pour la fluidite) :
+     la scene n est plus UN svg redessine a chaque cran de defilement, mais
+     une pile de svg independants (.couche), un par element de papier. Chaque
+     couche est construite une fois par etat discret (l agave bleu, l agave
+     violet, l eclair entier...) puis DEPLACEE par transform et opacity CSS,
+     que le compositeur anime sans repeindre. Les filtres d ombre ne coutent
+     donc qu au moment ou une couche change d etat, jamais a chaque image.
+
+     COULEUR DU FOND : --historia-fond. Ancienne valeur : var(--olive-scroll),
+     soit #ADAD70 (contrat visuel, olive reservee a cette page). Raouf a
+     demande de changer la couleur principale : les deux essais rendus le
+     16 aout au soir sont #9C9C60 (plus profond) et #C9C48D (papier olive,
+     plus clair). Pour revenir en arriere, remettre var(--olive-scroll).
+
+     TOUR 2 (17 aout, Raouf) :
+     l entete prend le fond de la page a 90 % (surcharge locale, site.css
+     n est pas touche) ; les montagnes rouges dessinees sont remplacees par
+     cinq bandes de flammes en papier decoupe (assets/img/historia/flammes_1
+     a 5.webp) posees en trois plans de profondeur ; le verre vectoriel est
+     remplace par la copita en papier (copita_papier.webp) dans le disque
+     dore et devant l agave ; la bouteille vectorielle par botella_papier.webp ;
+     la fin du recit devient un titre de cloture et quatre cartes a embleme.
+     Fluidite : plus de couche de fond (le papier, la grille et le grain sont
+     le fond CSS de la scene, le grain est une tuile de 160 px calculee une
+     fois), l agave frappe clignote par l opacite d une couche a part (plus
+     aucun redessin des trois agaves a chaque cran), moins de paliers par
+     dessin, rien ne se dessine tant que la porte d age est levee.
+
+     TOUR 3 (17 aout au soir, Raouf : "plus fluide, les textes dans la police du
+     logo, en blanc, a gauche ou a droite, l eclair qui vient du bord de la fenetre,
+     la bouteille au centre entre les mains, la couleur du disque, le titre de fin") :
+     les legendes passent en Ivresse Titre (assets/fonts/titre, la lettre du sceau),
+     blanc papier #FEF9F3 avec l ombre d encre d une lettre decoupee, posees a la marge
+     du site a gauche (classe g) ou a droite (classe d), le titre d ouverture en bas a
+     gauche, la cloture au tiers gauche avec la bouteille a droite. Leur fondu n est
+     plus une transition CSS : le moteur ecrit opacite et translation depuis la position
+     de defilement (cap(id, a, b)), donc rien ne traine. L eclair est dessine une fois,
+     entier, prolonge jusqu au dessus du bord haut de la fenetre (eclairLong), et
+     descend en continu par clip-path (clipCouche), plus de trois paliers ; en portrait
+     il vient du coin haut droit pour laisser la colonne des legendes libre. Le disque
+     du soleil passe de l ocre de la video au papier etiquette #FED5A3 (couleur relevee
+     sur l etiquette reelle) avec un fin cercle ocre. La bouteille est centree sur la
+     ligne des mains (mn.y), les deux mains s ecartent de bo.ecart pour la tenir, puis
+     a la fin elle glisse a droite et grandit (bo.fin). Sauvegarde de l etat precedent :
+     _archives/el-mito_avant_17aout_soir.html.
+     ---------------------------------------------------------------------- */
+  :root{
+    --historia-fond:#C9C48D;             /* essai clair retenu (= --papier-olive du contrat) ; ancien : var(--olive-scroll) #ADAD70 ; essai sombre : #9C9C60 */
+    --historia-grille:rgba(120,120,70,.16);
+  }
+  html{scroll-behavior:auto}
+  body{background:var(--historia-fond)}
+  /* L ENTETE, sur cette page seulement : la barre de la maison prend le fond
+     de la page a 90 % au lieu du papier blanc, des qu elle se pose (defilement)
+     ou qu un panneau s ouvre. site.css et site.js ne sont pas touches. */
+  body[data-page="mito"] .tete.est-posee,
+  body[data-page="mito"] .tete.a-panneau{background:rgba(201,196,141,.9);border-bottom-color:rgba(43,33,24,.14)}
+  body[data-page="mito"] .pan{background:rgba(201,196,141,.96);border-color:rgba(43,33,24,.14)}   /* le sous-menu de la meme couleur que l entete (Raouf, 17 aout 00h57) */
+  body[data-page="mito"] .pan .pan__c,body[data-page="mito"] .pan__c{border-color:rgba(43,33,24,.14)}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:linear-gradient(var(--historia-grille) 1px,transparent 1px),linear-gradient(90deg,var(--historia-grille) 1px,transparent 1px);
+    background-size:40px 40px}
+  /* le pied de la maison passe au dessus de la grille, comme l ancien pied de la page */
+  .pied{position:relative;z-index:1}
+
+  .historia .scroller{position:relative;height:1100vh;z-index:1}
+  /* 100svh : sur un telephone la barre du navigateur ne cache pas le bas de la scene */
+  .historia .stage{position:sticky;top:0;height:100vh;height:100svh;width:100%;overflow:hidden;contain:strict;
+    /* le papier de la scene : la couleur, le quadrillage (maille 40, comme body::before) et,
+       pose par le moteur, le grain en tuile (background-image complete par JS) */
+    background-color:var(--historia-fond);
+    background-image:linear-gradient(var(--historia-grille) 1px,transparent 1px),linear-gradient(90deg,var(--historia-grille) 1px,transparent 1px);
+    background-size:40px 40px}
+  .historia .couche{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;
+    transform-origin:50% 50%;backface-visibility:hidden}
+  .historia .couche.vive{will-change:transform,opacity}
+  /* tant que la porte d age est levee, aucune couche ne reserve de memoire au compositeur */
+  html.porte-ouverte .historia .couche.vive{will-change:auto}
+  .historia .couche image{image-rendering:auto}
+  .historia .couche.vide{visibility:hidden}
+  .historia .defs{position:absolute;width:0;height:0;overflow:hidden}
+
+  /* LES LEGENDES (tour 3, 17 aout soir, Raouf) : la lettre de la maison, Ivresse Titre,
+     la police tiree du sceau, en blanc papier sur l olive, avec l ombre d encre d une
+     lettre decoupee. Posees a la marge du site, a gauche ou a droite (classes g / d),
+     jamais au centre sur le dessin. Aucune transition CSS : c est le moteur qui ecrit
+     l opacite et la translation a chaque image depuis la position de defilement, donc
+     rien ne traine derriere le doigt ni derriere la molette. */
+  @font-face{ font-family:"Ivresse Titre"; src:url("assets/fonts/titre/IvresseTitre-Regular.woff2") format("woff2"), url("assets/fonts/titre/IvresseTitre-Regular.otf") format("opentype"); font-display:swap; }
+  .historia .cap{position:absolute;top:max(22vh, calc(var(--tete-h) + var(--u)*5));width:min(40vw,520px);opacity:0;pointer-events:none;
+    font-family:"Ivresse Titre",var(--serif);color:#FEF9F3;transform:translate3d(0,14px,0);
+    text-shadow:0 1px 0 rgba(43,33,24,.55),0 2px 0 rgba(43,33,24,.18)}
+  .historia .cap.vive{will-change:transform,opacity}
+  .historia .cap.g{left:var(--marge);text-align:left}
+  .historia .cap.d{right:var(--marge);text-align:right}
+  .historia .cap p{font-family:inherit;font-size:clamp(26px,3.1vw,46px);line-height:1.12;letter-spacing:.01em;margin:0;color:inherit}
+  .historia .cap h1{font-family:inherit;font-weight:400;font-size:clamp(54px,8vw,132px);letter-spacing:.01em;line-height:.95;margin:0;color:inherit}
+  .historia .cap .small{font-family:var(--slab);font-size:clamp(11px,1vw,14px);letter-spacing:.2em;text-transform:uppercase;color:inherit;margin-top:calc(var(--u)*2);max-width:none;
+    text-shadow:0 1px 0 rgba(43,33,24,.5)}
+  .historia .cap .lieu{font-family:var(--serif);font-size:clamp(16px,1.35vw,21px);line-height:1.4;margin-top:calc(var(--u)*2);max-width:34ch;
+    text-shadow:0 1px 0 rgba(43,33,24,.5)}
+  /* le titre d ouverture et la cloture : centres (classe centre), le moteur pose translate(-50%,-50%) */
+  .historia .cap.centre{left:50%;right:auto;text-align:center;transform:translate3d(-50%,calc(-50% + 14px),0)}
+  .historia .cap.titre{top:42%;width:min(90vw,980px)}
+  .historia .cap.titre .small{margin-top:calc(var(--u)*3)}
+  .historia .cap.cloture{top:50%;width:min(88vw,760px)}
+  .historia .cap.cloture .lieu{margin:calc(var(--u)*2) auto 0;max-width:none;font-size:clamp(15px,1.25vw,20px);line-height:1.5}
+  .historia .cap.cloture .lieu+.lieu{margin-top:0}
+  .historia .cap.cloture .small{margin-top:calc(var(--u)*2)}
+  /* les mots du sceau (logo.js, trace exact de la famille) : l arc IVRESSE D'AMOUR puis TOLOACHE et
+     LEGITIMO, en blanc papier avec la meme ombre d encre que les legendes (filtre css leger, une fois) */
+  .historia .sceau-mots{display:block;width:min(56vw,440px);margin:0 auto}
+  .historia .sceau-mots svg{display:block;width:100%;height:auto;overflow:visible;fill:#FEF9F3;filter:drop-shadow(0 1px 0 rgba(43,33,24,.55))}
+  .historia .filet-blanc{width:56px;height:1px;background:rgba(254,249,243,.7);margin:calc(var(--u)*3) auto 0}
+  /* mode leger : machines modestes (peu de coeurs ou de memoire) : plus aucun filtre d ombre
+     dans les couches, ni d ombre sur les lettres ; le papier reste, le mouvement reste */
+  .historia .stage.leger [filter]{filter:none !important}
+  .historia .stage.leger .cap{text-shadow:0 1px 0 rgba(43,33,24,.5)}
+  .historia .stage.leger .sceau-mots svg{filter:none}
+  .historia .hint{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--brun);opacity:.8;z-index:5;transition:opacity .4s var(--lineaire);
+    pointer-events:none}
+  .historia .hint.off{opacity:0}
+  /* La fin du recit (tour 2) : la phrase devient un vrai titre de cloture,
+     puis quatre cartes sur le papier, l embleme de la destination en encre a
+     72 px, le nom en capitales espacees, un filet sous le nom seul. Au survol
+     l embleme joue et le nom passe a la brique. 2 x 2 sur telephone. */
+  .historia__fin{position:relative;z-index:1;color:var(--brun);padding-top:calc(var(--tete-h) + var(--u)*3);contain:layout paint}
+  .historia__cloture{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,40px);line-height:1.2;letter-spacing:0;
+    text-align:center;max-width:22ch;margin:0 auto calc(var(--u)*7);color:var(--encre)}
+  .historia__cartes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:calc(var(--u)*6);max-width:960px;margin:0 auto;padding:0}
+  .hcarte{display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*2);padding:calc(var(--u)*3) calc(var(--u)*1.5) calc(var(--u)*2);
+    color:var(--encre);text-decoration:none;min-height:44px}
+  .hcarte__em{display:block;width:72px;height:72px;color:var(--encre)}
+  .hcarte__em svg{display:block;width:72px;height:72px;overflow:visible}
+  .hcarte__nom{display:inline-block;font-family:var(--slab);font-size:12px;letter-spacing:.2em;text-transform:uppercase;line-height:1;
+    padding:0 2px 8px;border-bottom:1px solid rgba(43,33,24,.35);transition:color .2s var(--lineaire),border-color .2s var(--lineaire)}
+  .hcarte:hover .hcarte__nom,.hcarte:focus-visible .hcarte__nom{color:var(--brique);border-bottom-color:var(--brique)}
+  .hcarte:focus-visible{outline:1px solid var(--brique);outline-offset:6px}
+  @media (max-width:700px){
+    .historia__cartes{grid-template-columns:repeat(2,minmax(0,1fr));gap:calc(var(--u)*6) calc(var(--u)*6)}
+    .historia__cloture{margin-bottom:calc(var(--u)*5)}
+  }
+
+  /* telephone : les legendes gardent la place, la scene est cadree en portrait par le moteur */
+  @media (max-width:700px){
+    .historia .cap,.historia .cap.g,.historia .cap.d{left:var(--marge);right:auto;width:min(66vw,360px);text-align:left;top:max(13vh, calc(var(--tete-h) + var(--u)*3))}
+    .historia .cap p{font-size:clamp(24px,7vw,32px)}
+    .historia .cap h1{font-size:clamp(48px,15vw,72px)}
+    .historia .cap.centre,.historia .cap.titre,.historia .cap.cloture{left:50%;right:auto;text-align:center;width:min(88vw,420px)}
+    .historia .cap.titre{top:38%}
+    .historia .cap.cloture{top:48%}
+    .historia .sceau-mots{width:min(74vw,320px)}
+    .historia .cap .lieu{max-width:26ch}
+  }
+</style>
+</head>
+<body data-page="mito"
+      data-titre-fr="El Mito. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-es="El Mito. Ivresse d'Amour, Toloache Legitimo"
+      data-titre-en="El Mito. Ivresse d'Amour, Toloache Legitimo">
+
+<main class="page historia">
+
+<div class="scroller" id="scroller">
+  <div class="stage" id="stage">
+    <!-- les filtres et motifs, une seule fois ; les couches y font reference par url(#id),
+         ce qui marche entre svg d un meme document -->
+    <svg class="defs" aria-hidden="true" focusable="false"><defs id="defs"></defs></svg>
+    <!-- LES COUCHES, du fond vers l avant. Chacune est un svg entier, cadre par le moteur
+         (viewBox pose sur chacune, paysage 1600 x 900 ou portrait 700 x N). Le papier du fond
+         n est plus une couche : c est le fond CSS de la scene. Les flammes sont trois plans
+         d images (fond, milieu, devant) ; L_eclat porte l agave frappe (violet puis brun) au
+         dessus des trois agaves bleus, et c est son opacite qui clignote. -->
+    <svg class="couche" id="L_collines"       aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_bords_fond"     aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_bords_devant"   aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_sol"            aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_flaques"        aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_agaves"         aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_eclat"          aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_flammes_fond"   aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_flammes_mid"    aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_flammes_devant" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_lettres"        aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_soleil"         aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_soleil_verre"   aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_main_h"         aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_main_b"         aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_bouteille"      aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_foudre"         aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="couche" id="L_verre"          aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"></svg>
+    <!-- LES LEGENDES. Convention de la maison : data-fr, data-es, data-en, sur
+         un element qui ne contient AUCUN element enfant. site.js ecrit dans
+         textContent et effacerait les enfants. Ici chaque h1 et chaque p est
+         une feuille, jamais le .cap qui les porte. -->
+    <div class="cap centre titre" id="c0">
+      <h1 data-fr="El Mito" data-es="El Mito" data-en="El Mito"></h1>
+      <p class="small"
+         data-fr="La légende de la foudre."
+         data-es="La leyenda del rayo."
+         data-en="The legend of the lightning."></p>
+    </div>
+    <div class="cap g" id="c1">
+      <p data-fr="Le mot vient du nahuatl."
+         data-es="La palabra viene del náhuatl."
+         data-en="The word comes from Nahuatl."></p>
+    </div>
+    <div class="cap d" id="c1b">
+      <p data-fr="L'étymologie raconte le four."
+         data-es="La etimología cuenta el horno."
+         data-en="The etymology tells of the oven."></p>
+    </div>
+    <div class="cap g" id="c2">
+      <p data-fr="L'élixir des dieux, dit‑on."
+         data-es="El elixir de los dioses, dicen."
+         data-en="The elixir of the gods, they say."></p>
+    </div>
+    <div class="cap g" id="c3a">
+      <p data-fr="La légende raconte l'éclair."
+         data-es="La leyenda cuenta el rayo."
+         data-en="The legend tells of the lightning."></p>
+    </div>
+    <div class="cap d" id="c3b">
+      <p data-fr="La foudre frappe un agave."
+         data-es="El rayo golpea un agave."
+         data-en="Lightning strikes an agave."></p>
+    </div>
+    <div class="cap g" id="c3c">
+      <p data-fr="Il en sort le mezcal."
+         data-es="De ahí sale el mezcal."
+         data-en="Out of it comes the mezcal."></p>
+    </div>
+    <div class="cap d" id="c4a">
+      <p data-fr="En français, tomber amoureux se dit un coup de foudre."
+         data-es="En francés, enamorarse se dice un coup de foudre: un golpe de rayo."
+         data-en="In French, falling in love is un coup de foudre: a strike of lightning."></p>
+    </div>
+    <div class="cap g" id="c4b">
+      <p data-fr="Le même éclair."
+         data-es="El mismo rayo."
+         data-en="The same lightning."></p>
+    </div>
+    <div class="cap centre cloture" id="c5">
+      <!-- les mots du sceau, poses par le script (logoParts) : IVRESSE D'AMOUR en arc, TOLOACHE, LEGITIMO -->
+      <div class="sceau-mots" id="motsSceau" role="img" aria-label="Ivresse d'Amour, Toloache Legitimo"></div>
+      <div class="filet-blanc" aria-hidden="true"></div>
+      <p class="lieu"
+         data-fr="Villa Sola de Vega, Oaxaca."
+         data-es="Villa Sola de Vega, Oaxaca."
+         data-en="Villa Sola de Vega, Oaxaca."></p>
+      <p class="lieu"
+         data-fr="Maestro mezcalero Gilberto Vasquez."
+         data-es="Maestro mezcalero Gilberto Vasquez."
+         data-en="Maestro mezcalero Gilberto Vasquez."></p>
+      <p class="small"
+         data-fr="Espadín · Tobalá · Coyote"
+         data-es="Espadín · Tobalá · Coyote"
+         data-en="Espadín · Tobalá · Coyote"></p>
+    </div>
+  </div>
+</div>
+<div class="hint" id="hint" data-fr="Faites défiler" data-es="Desplaza" data-en="Scroll"></div>
+
+<!-- La fin du recit (tour 2). La phrase de l ancienne page autonome en titre de
+     cloture, puis quatre cartes vers les pages de la maison, chacune avec son
+     embleme (EMBLEMES_ANIME, monte par le script de la page, joue au survol).
+     Les textes vivent en data-fr / data-es / data-en sur des feuilles sans
+     enfant, comme partout. Le pied de page legal est pose par siteChrome.init(). -->
+<section class="section section--serre historia__fin">
+  <div class="boite centre">
+    <h2 class="historia__cloture"
+        data-fr="Le mythe se raconte ici. Le reste de la maison est dans ces quatre pages."
+        data-es="El mito se cuenta aquí. El resto de la casa está en estas cuatro páginas."
+        data-en="The myth is told here. The rest of the house is in these four pages."></h2>
+    <nav class="historia__cartes" id="cartes" aria-label="Pages de la maison">
+      <a class="hcarte" href="index.html"><span class="hcarte__em" data-em="botella" aria-hidden="true"></span><span class="hcarte__nom" data-fr="La Botella" data-es="La Botella" data-en="La Botella"></span></a>
+      <a class="hcarte" href="el-palenque.html"><span class="hcarte__em" data-em="palenque" aria-hidden="true"></span><span class="hcarte__nom" data-fr="El Palenque" data-es="El Palenque" data-en="El Palenque"></span></a>
+      <a class="hcarte" href="la-historia.html"><span class="hcarte__em" data-em="libro" aria-hidden="true"></span><span class="hcarte__nom" data-fr="La Historia" data-es="La Historia" data-en="La Historia"></span></a>
+      <a class="hcarte" href="el-ritual.html"><span class="hcarte__em" data-em="ritual_couple" aria-hidden="true"></span><span class="hcarte__nom" data-fr="El Ritual" data-es="El Ritual" data-en="El Ritual"></span></a>
+    </nav>
+  </div>
+</section>
+
+</main>
+
+<script>
+/* ===== agave.js ===== */
+/* agave.js : agave papier decoupe, facon video Insider.
+   API globale (pas de dependance) :
+     defsAgave()                         -> chaine <defs> a inserer UNE fois dans le svg
+     agavePaper({x, y, scale, leaves, seed, palette, outline, flicker, shadow}) -> chaine <g>
+     mound({x, y, scale})                -> chaine <g>
+   Coordonnees en unites du viewBox 1600 x 900. (x,y) = point bas d'ou partent les feuilles
+   (centre du sommet du monticule). Hauteur ~260 px, largeur ~340 px a scale 1.
+   palette : 'bleu' | 'violet' | 'brun'.  outline 0..1 : halo blanc epais (violet frappe).
+   flicker 0..1 : melange du violet vers le bleu (0 = violet plein, 1 = bleu).
+   shadow : 'leaf' (defaut, ombre sous chaque feuille) | 'whole' | 'none'.
+   Tout est deterministe a partir de seed. Ids prefixes ag_. */
+
+(function () {
+  'use strict';
+
+  var PALETTES = {
+    bleu: {
+      backLight: ['#9eb19e', '#878c76', '#9eb19e'],
+      backDark: ['#355e64', '#355e64', '#7e9b89'],
+      frontLight: ['#a9b295', '#a9b295', '#9eb19e'],
+      frontDark: ['#7e9b89', '#878c76', '#355e64']
+    },
+    violet: {
+      backLight: ['#726473', '#574a5b', '#726473'],
+      backDark: ['#3f3045', '#3f3045', '#3f3045'],
+      frontLight: ['#726473', '#726473', '#726473'],
+      frontDark: ['#574a5b', '#3f3045', '#574a5b']
+    },
+    brun: {
+      backLight: ['#533823', '#5c432f', '#533823'],
+      backDark: ['#463019', '#463019', '#463019'],
+      frontLight: ['#5c432f', '#5c432f', '#533823'],
+      frontDark: ['#463019', '#533823', '#463019']
+    }
+  };
+
+  function rng(seed) {
+    var a = (seed * 1103515245 + 12345) >>> 0;
+    if (!a) a = 987654321;
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function hexToRgb(h) {
+    return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  }
+  function mix(c1, c2, k) {
+    if (k <= 0) return c1;
+    if (k >= 1) return c2;
+    var a = hexToRgb(c1), b = hexToRgb(c2), o = '#';
+    for (var i = 0; i < 3; i++) {
+      var v = Math.round(a[i] + (b[i] - a[i]) * k);
+      o += (v < 16 ? '0' : '') + v.toString(16);
+    }
+    return o;
+  }
+  function f1(v) { return Math.round(v * 10) / 10; }
+  function pts(arr) {
+    var s = '';
+    for (var i = 0; i < arr.length; i++) s += (i ? ' ' : '') + f1(arr[i][0]) + ',' + f1(arr[i][1]);
+    return s;
+  }
+
+  /* profil de demi largeur le long de la feuille, t 0 (base) .. 1 (pointe) */
+  function widthProfile(t) {
+    var p = 0.47;
+    if (t < p) return 0.36 + 0.64 * Math.sin(Math.PI / 2 * t / p);
+    var u = (t - p) / (1 - p);
+    return 0.45 * (1 - u) + 0.55 * Math.cos(Math.PI / 2 * u);
+  }
+
+  /* construit une feuille : retourne {outline:[..], left:[..], ridge:[..]} en coordonnees locales
+     (base en 0,0 ; y vers le haut = negatif). ang en radians depuis la verticale (droite > 0). */
+  function buildLeaf(ang, L, W, curv, ridgeFrac, bx, by) {
+    var N = 16;
+    var dx = Math.sin(ang), dy = -Math.cos(ang);
+    var px = Math.cos(ang), py = Math.sin(ang);          /* perpendiculaire vers la droite de la direction */
+    var P0 = [bx, by];
+    var P2 = [bx + dx * L, by + dy * L];
+    /* point de controle : bombe la feuille vers l'exterieur haut (la pointe retombe un peu vers l'exterieur) */
+    var side = ang >= 0 ? 1 : -1;
+    var c = curv * L * side;
+    var P1 = [bx + dx * L * 0.5 - px * c, by + dy * L * 0.5 - py * c];
+    var left = [], right = [], ridge = [];
+    for (var i = 0; i <= N; i++) {
+      var t = i / N;
+      var mt = 1 - t;
+      var sx = mt * mt * P0[0] + 2 * mt * t * P1[0] + t * t * P2[0];
+      var sy = mt * mt * P0[1] + 2 * mt * t * P1[1] + t * t * P2[1];
+      var tx = 2 * mt * (P1[0] - P0[0]) + 2 * t * (P2[0] - P1[0]);
+      var ty = 2 * mt * (P1[1] - P0[1]) + 2 * t * (P2[1] - P1[1]);
+      var tl = Math.sqrt(tx * tx + ty * ty) || 1;
+      tx /= tl; ty /= tl;
+      var nx = ty, ny = -tx;                             /* normale a gauche */
+      var w = W * widthProfile(t);
+      var wl = w * 2 * ridgeFrac, wr = w * 2 * (1 - ridgeFrac);
+      left.push([sx + nx * wl, sy + ny * wl]);
+      right.push([sx - nx * wr, sy - ny * wr]);
+      ridge.push([sx, sy]);
+    }
+    var outline = left.slice();
+    for (var j = right.length - 1; j >= 0; j--) outline.push(right[j]);
+    var lightHalf = left.slice();
+    for (var k = ridge.length - 1; k >= 0; k--) lightHalf.push(ridge[k]);
+    return { outline: outline, light: lightHalf, ridge: ridge, tip: P2 };
+  }
+
+  function pick(arr, u) { return arr[Math.min(arr.length - 1, Math.floor(u * arr.length))]; }
+
+  function defsAgave() {
+    return '<filter id="ag_shadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">' +
+      '<feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.25"/></filter>' +
+      '<filter id="ag_shadow_soft" x="-20%" y="-20%" width="140%" height="160%" color-interpolation-filters="sRGB">' +
+      '<feDropShadow dx="2" dy="5" stdDeviation="4" flood-color="#000000" flood-opacity="0.22"/></filter>';
+  }
+
+  function agavePaper(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, s = o.scale || 1;
+    var n = Math.max(5, Math.min(25, Math.round(o.leaves || 13)));
+    var seed = (o.seed === undefined) ? 1 : o.seed;
+    var palName = o.palette || 'bleu';
+    var pal = PALETTES[palName] || PALETTES.bleu;
+    var outline = Math.max(0, Math.min(1, o.outline || 0));
+    var flicker = Math.max(0, Math.min(1, o.flicker || 0));
+    var shadow = o.shadow || 'whole';
+    var R = rng(seed * 7919 + 17);
+
+    var H = 260;                              /* hauteur de la feuille centrale */
+    var nb = (n >> 1) | 1;                    /* rang arriere, impair : une feuille centrale */
+    var nf = n - nb;                          /* rang avant */
+    var amaxB = 74 * Math.PI / 180;
+    var amaxF = 82 * Math.PI / 180;
+
+    function lengthAt(a) {
+      var u = Math.abs(a) / amaxB;
+      return H * (1 - 0.27 * Math.pow(u, 1.6));
+    }
+
+    var leaves = [];
+    var i, a, L, W;
+    /* rang arriere */
+    for (i = 0; i < nb; i++) {
+      a = nb === 1 ? 0 : -amaxB + i * 2 * amaxB / (nb - 1);
+      var central = (i === (nb - 1) / 2);
+      a += (R() - 0.5) * 0.09 * (central ? 0.3 : 1);
+      L = lengthAt(a) * (central ? 1 : 0.84 + R() * 0.18);
+      W = L * (0.095 + 0.035 * Math.abs(a) / amaxB) * (0.9 + R() * 0.2);
+      leaves.push({
+        row: 0, ang: a, L: L, W: W,
+        curv: (0.005 + R() * 0.03) * Math.min(1, Math.abs(a) / amaxB * 1.6),
+        ridge: 0.48 + R() * 0.22,
+        bx: (R() - 0.5) * 5, by: 2 + R() * 3,
+        uL: R(), uD: R()
+      });
+    }
+    /* rang avant, intercale */
+    for (i = 0; i < nf; i++) {
+      a = -amaxF + (i + 0.5) * 2 * amaxF / nf;
+      a += (R() - 0.5) * 0.08;
+      var edge = Math.abs(a) / amaxF;
+      L = lengthAt(a) * (0.74 + R() * 0.18) * (1 - 0.45 * Math.pow(edge, 3));
+      W = L * (0.105 + 0.05 * edge) * (0.9 + R() * 0.2);
+      leaves.push({
+        row: 1, ang: a, L: L, W: W,
+        curv: (0.01 + R() * 0.035) * Math.min(1, edge * 1.4),
+        ridge: 0.48 + R() * 0.22,
+        bx: (R() - 0.5) * 6, by: 3 + R() * 4,
+        uL: R(), uD: R()
+      });
+    }
+
+    /* ordre de dessin : rang arriere de l'exterieur vers le centre, puis rang avant idem */
+    leaves.sort(function (p, q) {
+      if (p.row !== q.row) return p.row - q.row;
+      return Math.abs(q.ang) - Math.abs(p.ang);
+    });
+
+    var geo = [];
+    for (i = 0; i < leaves.length; i++) {
+      var lf = leaves[i];
+      geo.push(buildLeaf(lf.ang, lf.L, lf.W, lf.curv, lf.ridge, lf.bx, lf.by));
+    }
+
+    var out = '<g transform="translate(' + f1(x) + ',' + f1(y) + ') scale(' + s + ')">';
+
+    /* halo blanc (papier decoupe autour de la silhouette) */
+    if (outline > 0.01) {
+      var hw = 2 * (3 + 7 * outline);
+      var haloOp = 1 - 0.7 * flicker;
+      out += '<g filter="url(#ag_shadow_soft)" opacity="' + f1(haloOp) + '"><g fill="#ffffff" stroke="#ffffff" stroke-width="' + f1(hw) + '" stroke-linejoin="round" stroke-linecap="round">';
+      for (i = 0; i < geo.length; i++) out += '<polygon points="' + pts(geo[i].outline) + '"/>';
+      out += '</g></g>';
+    }
+
+    var wrapFilter = shadow === 'whole' ? ' filter="url(#ag_shadow)"' : '';
+    out += '<g' + wrapFilter + '>';
+    var pb = PALETTES.bleu;
+    for (i = 0; i < geo.length; i++) {
+      var lv = leaves[i], g = geo[i];
+      var lightArr = lv.row === 0 ? pal.backLight : pal.frontLight;
+      var darkArr = lv.row === 0 ? pal.backDark : pal.frontDark;
+      var cl = pick(lightArr, lv.uL), cd = pick(darkArr, lv.uD);
+      if (flicker > 0 && palName !== 'bleu') {
+        cl = mix(cl, pick(lv.row === 0 ? pb.backLight : pb.frontLight, lv.uL), flicker);
+        cd = mix(cd, pick(lv.row === 0 ? pb.backDark : pb.frontDark, lv.uD), flicker);
+      }
+      var lfFilter = shadow === 'leaf' ? ' filter="url(#ag_shadow)"' : '';
+      out += '<g' + lfFilter + '>' +
+        '<polygon points="' + pts(g.outline) + '" fill="' + cd + '"/>' +
+        '<polygon points="' + pts(g.light) + '" fill="' + cl + '"/>' +
+        '</g>';
+    }
+    out += '</g></g>';
+    return out;
+  }
+
+  function mound(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, s = o.scale || 1;
+    var w = (o.width || 320) / 2, h = o.height || 36;
+    /* lentille plate : bord superieur bombe, base presque plate */
+    var d = 'M' + (-w) + ',0 Q' + (-w * 0.55) + ',' + (-h) + ' 0,' + (-h) +
+      ' Q' + (w * 0.55) + ',' + (-h) + ' ' + w + ',0' +
+      ' Q' + (w * 0.5) + ',' + (h * 0.42) + ' 0,' + (h * 0.45) +
+      ' Q' + (-w * 0.5) + ',' + (h * 0.42) + ' ' + (-w) + ',0Z';
+    return '<g transform="translate(' + f1(x) + ',' + f1(y) + ') scale(' + s + ')" filter="url(#ag_shadow)">' +
+      '<path transform="translate(0,' + f1(h - 4) + ')" d="' + d + '" fill="' + (o.fill || '#7d7f52') + '"/></g>';
+  }
+
+  window.defsAgave = defsAgave;
+  window.agavePaper = agavePaper;
+  window.mound = mound;
+})();
+
+/* ===== foudre.js ===== */
+/* foudre.js : l'eclair, le verre a shot, les flaques et le sol qui se souleve, en papier decoupe
+   (langage visuel de la video Insider, 1m52 a 1m57).
+   Fonctions globales, aucune dependance, aucun etat global. Chaque fonction retourne une chaine SVG
+   a inserer dans un <g>. Coordonnees en unites du viewBox 1600 x 900. Ids prefixes "fd_".
+   Les <defs> (filtres) sont fournis UNE fois par defsFoudre().
+
+     defsFoudre()
+     bolt({x, y, scale, t, smooth})       (x,y) = pointe de l'eclair (le point touche). Hauteur ~300 a scale 1.
+                                          t : 0 rien, 0.33 la pointe seule, 0.66 la moitie, 1 l'eclair entier.
+                                          Par defaut la revelation est par paliers (comme la video). smooth:true
+                                          fait pousser l'eclair de facon continue entre les paliers (secours).
+     glass({x, y, scale, fill, rise})     (x,y) = milieu du dessous du verre pose au sol. Hauteur ~90 a scale 1.
+                                          fill 0..1 niveau du liquide, rise 0..1 le verre sort du sol (0 = cache).
+     puddles({x, y, scale, t})            (x,y) = pied du verre au sol. Deux flaques qui s'etalent avec t.
+     groundBump({x, y, scale, t})         (x,y) = ligne du sol. Le sol se souleve de ~50 px au dessus de la ligne quand t va
+                                          de 0 a 1 (a t=0 il est ~110 px sous la ligne). Largeur ~1200 a scale 1,
+                                          le corps descend 260 px sous le bord. A dessiner PAR DESSUS le verre
+                                          pour que le verre s'enfonce. */
+
+(function () {
+  'use strict';
+
+  var ORANGE = '#d07735';
+  var BLANC = '#ffffff';
+  var VERRE = '#f4f2ec';
+  var LIQUIDE = '#e5c271';
+  var LIQUIDE_OMBRE = '#c9a75a';
+  var LIQUIDE_CLAIR = '#efd58e';
+  var FLAQUE = '#cabb76';           /* corps de la flaque, releve au centre dans la video */
+  var FLAQUE_BORD = '#babd78';      /* bord / dessous, couleur du contrat */
+  var FLAQUE_CLAIR = '#e0d897';     /* reflet sur le haut */
+  var SOL_HAUT = '#7d7f52';
+  var SOL_BAS = '#9c9e66';
+
+  function n(v) { return Math.round(v * 100) / 100; }
+  function clamp01(v) { v = +v; if (!(v > 0)) return 0; return v > 1 ? 1 : v; }
+  function pts(arr) {
+    var s = '';
+    for (var i = 0; i < arr.length; i++) s += (i ? ' ' : '') + n(arr[i][0]) + ',' + n(arr[i][1]);
+    return s;
+  }
+  function poly(arr, fill, extra) {
+    return '<polygon points="' + pts(arr) + '" fill="' + fill + '"' + (extra || '') + '/>';
+  }
+  function grp(x, y, s, inner, filter) {
+    return '<g transform="translate(' + n(x) + ',' + n(y) + ') scale(' + n(s) + ')"' +
+      (filter ? ' filter="url(#' + filter + ')"' : '') + '>' + inner + '</g>';
+  }
+  function idFrom(prefix, o) {
+    return prefix + (o.id != null ? String(o.id).replace(/[^A-Za-z0-9_-]/g, '') :
+      (Math.round(o.x || 0) + '_' + Math.round(o.y || 0)));
+  }
+
+  function defsFoudre() {
+    return '<filter id="fd_ombre" x="-40%" y="-40%" width="180%" height="180%">' +
+      '<feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.25"/></filter>' +
+      '<filter id="fd_ombre_fine" x="-40%" y="-40%" width="180%" height="180%">' +
+      '<feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.22"/></filter>' +
+      '<filter id="fd_ombre_sol" x="-10%" y="-40%" width="120%" height="180%">' +
+      '<feDropShadow dx="0" dy="-3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/></filter>';
+  }
+
+  /* ---------------- L'ECLAIR ----------------
+     Geometrie relevee pixel par pixel sur la video (112.000 / 112.125 / 112.500), pointe en (0,0),
+     sommet en y=-300. Une barre epaisse inclinee de 12 degres qui descend, un cran vers la droite
+     (bords du cran legerement obliques), puis une pointe plus fine jusqu'au sol. Coeur blanc, bord orange.
+     La revelation de la video est une essuyee en chevron : la pointe seule, puis la barre avec le blanc
+     qui deborde a droite, puis tout. */
+  var BOLT_FULL_OUT = [[-150, -300], [-97.5, -300], [-80, -211], [-17.5, -230], [0, 0], [-40, -165], [-115, -134]];
+  var BOLT_FULL_IN = [[-132, -300], [-113, -300], [-94, -192.5], [-25, -215], [-15, -87.5], [-39, -184], [-104, -152.5]];
+  /* palier 1 : la pointe seule (112.000) : le bout de la barre coupe en chevron */
+  var BOLT_TIP_OUT = [[-150, -300], [-97.5, -300], [-94, -275], [-109, -237.5], [-141, -270]];
+  var BOLT_TIP_IN = [[-132, -300], [-113, -300], [-104, -252.5], [-109, -239], [-120, -249]];
+  /* palier 2 : la moitie (112.125) : la barre entiere, le blanc deborde a droite (debut du cran) et se termine en pointe */
+  var BOLT_HALF_OUT = [[-150, -300], [-97.5, -300], [-82.5, -197.5], [-64, -190], [-96, -162.5], [-117.5, -195]];
+  var BOLT_HALF_IN = [[-132, -300], [-113, -300], [-95, -200], [-82.5, -196], [-64, -190], [-96, -164], [-111, -195]];
+
+  function boltStage(t) {
+    if (t >= 0.99) return 3;
+    if (t >= 0.659) return 2;
+    if (t >= 0.329) return 1;
+    return 0;
+  }
+
+  /* chemin de la pointe du chevron pour la revelation continue (secours) : t -> [x,y] */
+  var APEX_PATH = [[0, -122, -330], [0.33, -109, -237.5], [0.66, -96, -162.5], [0.78, -30, -178], [1, 12, 30]];
+  function apexAt(t) {
+    for (var i = 1; i < APEX_PATH.length; i++) {
+      var a = APEX_PATH[i - 1], b = APEX_PATH[i];
+      if (t <= b[0]) {
+        var k = (t - a[0]) / (b[0] - a[0]);
+        return [a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
+      }
+    }
+    return [APEX_PATH[APEX_PATH.length - 1][1], APEX_PATH[APEX_PATH.length - 1][2]];
+  }
+
+  function bolt(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, s = o.scale || 1, t = clamp01(o.t);
+    if (t <= 0) return '';
+    var stage = boltStage(t);
+    var smooth = !!o.smooth;
+    var body;
+    var exact = !smooth || stage === 3 || Math.abs(t - 0.33) < 0.005 || Math.abs(t - 0.66) < 0.005;
+    if (exact) {
+      if (stage === 1) body = poly(BOLT_TIP_OUT, ORANGE) + poly(BOLT_TIP_IN, BLANC);
+      else if (stage === 2) body = poly(BOLT_HALF_OUT, ORANGE) + poly(BOLT_HALF_IN, BLANC);
+      else if (stage === 3) body = poly(BOLT_FULL_OUT, ORANGE) + poly(BOLT_FULL_IN, BLANC);
+      else return '';
+      return grp(x, y, s, body, 'fd_ombre');
+    }
+    /* secours continu : l'eclair entier decouvert par un chevron (V ouvert a 45 degres) dont la pointe avance */
+    var ap = apexAt(t), ax = ap[0], ay = ap[1];
+    var clipPts = [[-500, -500], [500, -500], [500, ay - (500 - ax)], [ax, ay], [-500, ay - (ax + 500)]];
+    var cid = idFrom('fd_bc_', o);
+    body = '<clipPath id="' + cid + '"><polygon points="' + pts(clipPts) + '"/></clipPath>' +
+      '<g clip-path="url(#' + cid + ')">' + poly(BOLT_FULL_OUT, ORANGE) + poly(BOLT_FULL_IN, BLANC) + '</g>';
+    return grp(x, y, s, body, 'fd_ombre');
+  }
+
+  /* ---------------- LE VERRE A SHOT ----------------
+     Verre droit, 90 de haut a scale 1, 29 de large en haut et 27 en bas (leger fuselage comme dans la video),
+     socle epais (19), liquide ambre, sans citron. (x,y) = milieu du dessous.
+     rise 0..1 : le verre monte hors du sol (tout ce qui est sous y est coupe). */
+  var G_H = 90, G_WTOP = 29, G_WBOT = 27, G_BASE = 19, G_WALL = 2.2, G_RIM = 3;
+
+  function glass(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, s = o.scale || 1;
+    var fill = clamp01(o.fill == null ? 1 : o.fill);
+    var rise = clamp01(o.rise == null ? 1 : o.rise);
+    if (rise <= 0) return '';
+    var ht = G_WTOP / 2, hb = G_WBOT / 2;
+    /* demi largeur exterieure a une hauteur yy (0 en bas, -G_H en haut) */
+    function hw(yy) { return hb + (ht - hb) * (-yy / G_H); }
+    var baseTop = -G_BASE;
+    var liqMax = G_H - G_BASE - G_RIM;
+    var liqH = liqMax * fill;
+    var liqTop = baseTop - liqH;
+    var r = 4; /* arrondi des coins du dessous */
+    var out = '';
+    /* corps du verre, translucide, coins du bas arrondis */
+    out += '<path d="M' + n(-ht) + ',' + n(-G_H) + ' L' + n(ht) + ',' + n(-G_H) + ' L' + n(hb) + ',' + n(-r) +
+      ' Q' + n(hb) + ',0 ' + n(hb - r) + ',0 L' + n(-hb + r) + ',0 Q' + n(-hb) + ',0 ' + n(-hb) + ',' + n(-r) + ' Z" fill="' + VERRE + '" fill-opacity="0.9"/>';
+    /* ombre douce le long des parois interieures (le verre est un cylindre) */
+    out += '<path d="M' + n(-ht + G_WALL) + ',' + n(-G_H + 1) + ' L' + n(-ht + G_WALL + 2.4) + ',' + n(-G_H + 1) + ' L' + n(-hb + G_WALL + 2.4) + ',' + n(baseTop) + ' L' + n(-hb + G_WALL) + ',' + n(baseTop) + ' Z" fill="#8f8a78" fill-opacity="0.16"/>';
+    out += '<path d="M' + n(ht - G_WALL - 2.4) + ',' + n(-G_H + 1) + ' L' + n(ht - G_WALL) + ',' + n(-G_H + 1) + ' L' + n(hb - G_WALL) + ',' + n(baseTop) + ' L' + n(hb - G_WALL - 2.4) + ',' + n(baseTop) + ' Z" fill="#8f8a78" fill-opacity="0.2"/>';
+    /* liquide : trapeze qui suit le fuselage, trois bandes (clair, moyen, ombre au fond) */
+    if (liqH > 0.5) {
+      var lL = -hw(liqTop) + G_WALL, lR = hw(liqTop) - G_WALL;
+      var bL = -hw(baseTop) + G_WALL, bR = hw(baseTop) - G_WALL;
+      function band(yTop, yBot, col) {
+        var tl = -hw(yTop) + G_WALL, tr = hw(yTop) - G_WALL, bl = -hw(yBot) + G_WALL, br = hw(yBot) - G_WALL;
+        return '<path d="M' + n(tl) + ',' + n(yTop) + ' L' + n(tr) + ',' + n(yTop) + ' L' + n(br) + ',' + n(yBot) + ' L' + n(bl) + ',' + n(yBot) + ' Z" fill="' + col + '"/>';
+      }
+      var h2 = Math.min(liqH * 0.34, 24), h3 = Math.min(liqH * 0.13, 9);
+      out += band(liqTop, baseTop, LIQUIDE);
+      out += band(baseTop - h2, baseTop, '#d6b263');
+      out += band(baseTop - h3, baseTop, LIQUIDE_OMBRE);
+      /* surface : fine bande plus claire, legerement bombee */
+      out += '<path d="M' + n(lL) + ',' + n(liqTop + 0.2) + ' Q' + n((lL + lR) / 2) + ',' + n(liqTop - 2.4) + ' ' + n(lR) + ',' + n(liqTop + 0.2) +
+        ' L' + n(lR) + ',' + n(liqTop + 2) + ' Q' + n((lL + lR) / 2) + ',' + n(liqTop + 0.6) + ' ' + n(lL) + ',' + n(liqTop + 2) + ' Z" fill="' + LIQUIDE_CLAIR + '"/>';
+    }
+    /* socle epais, presque opaque, et l'arc sombre du fond du liquide vu au travers */
+    out += '<path d="M' + n(-hw(baseTop)) + ',' + n(baseTop) + ' L' + n(hw(baseTop)) + ',' + n(baseTop) + ' L' + n(hb) + ',' + n(-r) +
+      ' Q' + n(hb) + ',0 ' + n(hb - r) + ',0 L' + n(-hb + r) + ',0 Q' + n(-hb) + ',0 ' + n(-hb) + ',' + n(-r) + ' Z" fill="' + VERRE + '" fill-opacity="0.94"/>';
+    out += '<path d="M' + n(-hw(baseTop) + G_WALL) + ',' + n(baseTop - 0.4) + ' Q0,' + n(baseTop + 4.6) + ' ' + n(hw(baseTop) - G_WALL) + ',' + n(baseTop - 0.4) +
+      ' L' + n(hw(baseTop) - G_WALL) + ',' + n(baseTop + 1) + ' Q0,' + n(baseTop + 6.2) + ' ' + n(-hw(baseTop) + G_WALL) + ',' + n(baseTop + 1) + ' Z" fill="#a9a48f" fill-opacity="0.55"/>';
+    /* bord superieur et parois : filets blancs */
+    out += '<rect x="' + n(-ht) + '" y="' + n(-G_H) + '" width="' + n(G_WTOP) + '" height="1.8" fill="' + BLANC + '" fill-opacity="0.95"/>';
+    out += '<path d="M' + n(-ht) + ',' + n(-G_H) + ' L' + n(-ht + 1.7) + ',' + n(-G_H) + ' L' + n(-hb + 1.7) + ',0 L' + n(-hb) + ',0 Z" fill="' + BLANC + '" fill-opacity="0.9"/>';
+    out += '<path d="M' + n(ht - 1.7) + ',' + n(-G_H) + ' L' + n(ht) + ',' + n(-G_H) + ' L' + n(hb) + ',0 L' + n(hb - 1.7) + ',0 Z" fill="' + BLANC + '" fill-opacity="0.8"/>';
+    /* reflet vertical a gauche */
+    out += '<path d="M' + n(-ht + 5.2) + ',' + n(-G_H + 6) + ' L' + n(-ht + 7.4) + ',' + n(-G_H + 6) + ' L' + n(-hb + 7.2) + ',' + n(baseTop - 4) + ' L' + n(-hb + 5) + ',' + n(baseTop - 4) + ' Z" fill="' + BLANC + '" fill-opacity="0.55"/>';
+
+    var dy = (1 - rise) * G_H;
+    if (rise >= 1) return grp(x, y, s, out, 'fd_ombre');
+    /* le verre sort du sol : ce qui est sous la ligne du sol est coupe */
+    var cid = idFrom('fd_gc_', o);
+    return '<clipPath id="' + cid + '"><rect x="' + n(x - 60 * s) + '" y="' + n(y - 200 * s) + '" width="' + n(120 * s) + '" height="' + n(200 * s) + '"/></clipPath>' +
+      '<g clip-path="url(#' + cid + ')">' + grp(x, y + dy * s, s, out, 'fd_ombre') + '</g>';
+  }
+
+  /* ---------------- LES FLAQUES ----------------
+     Deux flaques ambrees plates de part et d'autre du verre (celle de droite a deux lobes),
+     qui s'etalent avec t. Lentille irreguliere, filet clair sur le bord haut, filet plus sombre dessous. */
+  function blobPath(cx, cy, w, h, ph) {
+    var N = 28, d = '';
+    for (var i = 0; i < N; i++) {
+      var a = i / N * Math.PI * 2;
+      var rr = 1 + 0.07 * Math.sin(3 * a + ph) + 0.04 * Math.sin(5 * a - ph);
+      var px = cx + Math.cos(a) * w / 2 * rr, py = cy + Math.sin(a) * h / 2 * rr;
+      d += (i ? ' L' : 'M') + n(px) + ',' + n(py);
+    }
+    return d + ' Z';
+  }
+  function puddleShape(lobes, k) {
+    /* lobes : liste de [cx, cy, w, h, phase] ; k 0..1 etalement */
+    if (k <= 0.01) return '';
+    var sx = k, sy = 0.55 + 0.45 * k;
+    var dark = '', light = '', main = '';
+    for (var i = 0; i < lobes.length; i++) {
+      var L = lobes[i], cx = L[0] * sx, cy = L[1], w = L[2] * sx, h = L[3] * sy;
+      dark += '<path d="' + blobPath(cx, cy + 1.3, w, h, L[4]) + '" fill="' + FLAQUE_BORD + '"/>';
+      light += '<path d="' + blobPath(cx, cy - 1.2, w * 0.98, h, L[4]) + '" fill="' + FLAQUE_CLAIR + '"/>';
+      main += '<path d="' + blobPath(cx, cy, w, h, L[4]) + '" fill="' + FLAQUE + '"/>';
+    }
+    return dark + light + main;
+  }
+  function easeOut(v) { return 1 - (1 - v) * (1 - v); }
+
+  function puddles(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, s = o.scale || 1, t = clamp01(o.t == null ? 1 : o.t);
+    if (t <= 0) return '';
+    var k1 = easeOut(clamp01(t / 0.85));
+    var k2 = easeOut(clamp01((t - 0.15) / 0.85));
+    var left = puddleShape([[0, 0, 50, 10, 0.4]], k1);
+    var right = puddleShape([[0, 0, 44, 10, 2.1], [17, 2, 34, 8, 4.0]], k2);
+    var inner = '';
+    if (left) inner += '<g transform="translate(-106,12)">' + left + '</g>';
+    if (right) inner += '<g transform="translate(118,14)">' + right + '</g>';
+    if (!inner) return '';
+    return grp(x, y, s, inner, 'fd_ombre_fine');
+  }
+
+  /* ---------------- LE SOL QUI SE SOULEVE ----------------
+     Une grande bande de sol, bord superieur doucement ondule, deux tons (haut sombre, bas plus clair),
+     qui monte de 190 px (scale 1) quand t va de 0 a 1 : de 110 sous la ligne du sol a 80 au dessus. */
+  function wavyEdge(x0, x1, yBase, amp, ph) {
+    /* ligne doucement ondulee (deux sinus), en petits segments */
+    var N = 40, d = '';
+    for (var i = 0; i <= N; i++) {
+      var xx = x0 + (x1 - x0) * i / N, u = i / N * Math.PI * 2;
+      var yy = yBase + amp * (0.6 * Math.sin(u * 1.5 + ph) + 0.4 * Math.sin(u * 3.2 + ph * 2.3 + 1));
+      d += (i ? ' L' : 'M') + n(xx) + ',' + n(yy);
+    }
+    return d;
+  }
+
+  function groundBump(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, s = o.scale || 1, t = clamp01(o.t);
+    var W = o.width || 1200, half = W / 2;
+    var top = 110 - 160 * easeOut(t);       /* y local du bord superieur (0 = ligne du sol) : +110 -> -50 */
+    var depth = 260;                         /* jusqu'ou le corps descend */
+    var bandH = 50;                          /* hauteur du ton sombre */
+    var dTop = wavyEdge(-half, half, top, 5, 0.7);
+    var dBand = wavyEdge(-half, half, top + bandH, 4, 2.9);
+    var haut = dTop + ' L' + n(half) + ',' + n(top + bandH + 20) + ' L' + n(-half) + ',' + n(top + bandH + 20) + ' Z';
+    var bas = dBand + ' L' + n(half) + ',' + n(top + depth) + ' L' + n(-half) + ',' + n(top + depth) + ' Z';
+    return grp(x, y, s,
+      '<path d="' + haut + '" fill="' + SOL_HAUT + '"/>' +
+      '<path d="' + bas + '" fill="' + SOL_BAS + '"/>', 'fd_ombre');
+  }
+
+  window.defsFoudre = defsFoudre;
+  window.bolt = bolt;
+  window.glass = glass;
+  window.puddles = puddles;
+  window.groundBump = groundBump;
+})();
+
+/* ===== lettres.js ===== */
+/* lettres.js : tuiles facon rancon, flammes papier, collines, soleil + verre.
+   Vanilla JS, aucune dependance. Chaque fonction retourne une chaine SVG.
+   Coordonnees en unites du viewBox 1600 x 900. Ids prefixes "lt_". */
+
+(function (global) {
+  'use strict';
+
+  var TILE = '#d9ceba';
+  var RED = '#bc2a13';
+  var FONT_SLAB = "'Clarendon','SuperClarendon','Rockwell','Georgia',serif";
+  var FONT_SANS = "'Helvetica Neue','Helvetica','Arial',sans-serif";
+  var FLAME_COLS = ['#a63515', '#c02e05', '#be2402'];
+  var FLAME_TIP = '#e0562a';
+
+  function clamp01(v) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
+  function ease(v) { v = clamp01(v); return v * v * (3 - 2 * v); }
+  function lerp(a, b, k) { return a + (b - a) * k; }
+  function n2(v) { return Math.round(v * 100) / 100; }
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  /* petit generateur pseudo aleatoire deterministe */
+  function rng(seed) {
+    var s = (seed >>> 0) || 1;
+    return function () {
+      s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0;
+      return (s >>> 0) / 4294967296;
+    };
+  }
+
+  /* ---------------------------------------------------------------- defs */
+  function defsLettres() {
+    return [
+      '<filter id="lt_shadow" x="-20%" y="-20%" width="140%" height="160%">',
+      '<feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/>',
+      '</filter>',
+      '<filter id="lt_shadowSoft" x="-10%" y="-10%" width="120%" height="130%">',
+      '<feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.22"/>',
+      '</filter>',
+      '<filter id="lt_shadowFlame" x="-10%" y="-10%" width="120%" height="130%">',
+      '<feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.2"/>',
+      '</filter>'
+    ].join('');
+  }
+
+  /* ---------------------------------------------------------------- ransom */
+  /* Description des lettres. Chaque entree: ch, phase d'apparition (0: des le depart,
+     1: apparait entre t 0 et 0.5, 2: apparait entre t 0.5 et 1), groupe (1 ou 2). */
+  var LETTERS = [
+    { ch: 'm', ph: 0, g: 1, adv: 96, fs: 1.02, th: 1.42, rot: -2.5, dy: 6 },
+    { ch: 'e', ph: 0, g: 1, adv: 58, fs: 0.94, th: 1.22, rot: 3, dy: -10 },
+    { ch: 't', ph: 1, g: 1, adv: 44, fs: 1.0, th: 1.46, rot: -4, dy: 4 },
+    { ch: 'l', ph: 2, g: 1, adv: 36, fs: 1.04, th: 1.52, rot: 5, dy: -4 },
+    { ch: '+', ph: 1, g: 0, adv: 50, fs: 0.62, th: 0.62, rot: 0, dy: 0 },
+    { ch: 'i', ph: 2, g: 2, adv: 36, fs: 1.02, th: 1.5, rot: -5, dy: 8 },
+    { ch: 'x', ph: 0, g: 2, adv: 66, fs: 1.08, th: 1.3, rot: 2, dy: 12 },
+    { ch: 'c', ph: 0, g: 2, adv: 56, fs: 0.96, th: 1.24, rot: -3, dy: -6 },
+    { ch: 'a', ph: 0, g: 2, adv: 60, fs: 1.0, th: 1.36, rot: 4, dy: 8 },
+    { ch: 'l', ph: 0, g: 2, adv: 36, fs: 1.06, th: 1.54, rot: -6, dy: -4 },
+    { ch: 'l', ph: 0, g: 2, adv: 36, fs: 0.98, th: 1.44, rot: 3, dy: 10 },
+    { ch: 'i', ph: 0, g: 2, adv: 36, fs: 1.04, th: 1.5, rot: -2, dy: -12 }
+  ];
+
+  /* calcule les positions x (centre de tuile) pour une phase donnee: seules les lettres
+     dont ph <= phase sont posees; gap: espace ajoute entre les groupes. */
+  function layout(phase, gap, pad) {
+    var xs = new Array(LETTERS.length);
+    var cursor = 0;
+    var lastG = null;
+    for (var i = 0; i < LETTERS.length; i++) {
+      var L = LETTERS[i];
+      if (L.ph > phase) { xs[i] = null; continue; }
+      if (lastG !== null && L.g !== lastG) cursor += gap;
+      var w = L.adv + pad;
+      xs[i] = cursor + w / 2;
+      cursor += w;
+      lastG = L.g;
+    }
+    return { xs: xs, width: cursor };
+  }
+
+  function ransom(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, s = o.scale || 1;
+    var t = clamp01(o.t == null ? 0 : o.t);
+    var legend1 = o.legend1 || '', legend2 = o.legend2 || '';
+    var FS = 108;              /* taille de base des lettres */
+    var pad = 10;              /* marge de papier autour de la lettre */
+    var over = -12;            /* recouvrement des tuiles serrees */
+
+    var L0 = layout(0, 0, pad + over);
+    var L1 = layout(1, 24, pad + over + 8);
+    var L2 = layout(2, 28, pad + over + 8);
+
+    /* les lettres absentes d'une phase reprennent leur position de la phase suivante */
+    var k1 = ease(t / 0.36);           /* ecartement pendant la premiere moitie */
+    var k2 = ease((t - 0.5) / 0.36);   /* ecartement pendant la seconde moitie */
+    var xs = [], op = [], slide = [];
+    var i;
+    for (i = 0; i < LETTERS.length; i++) {
+      var p0 = L0.xs[i], p1 = L1.xs[i], p2 = L2.xs[i];
+      if (p1 == null) p1 = p2;
+      if (p0 == null) p0 = p1;
+      var c0 = L0.width / 2, c1 = L1.width / 2, c2 = L2.width / 2;
+      var px = t < 0.5 ? lerp(p0 - c0, p1 - c1, k1) : lerp(p1 - c1, p2 - c2, k2);
+      xs[i] = px;
+      var ph = LETTERS[i].ph;
+      var a = 1, sl = 0;
+      if (ph === 1) { a = ease((t - 0.2) / 0.28); sl = (1 - a) * -46; }
+      if (ph === 2) { a = ease((t - 0.68) / 0.28); sl = (1 - a) * (LETTERS[i].g === 1 ? -46 : 46); }
+      op[i] = a; slide[i] = sl;
+    }
+
+    var out = [];
+    out.push('<g transform="translate(' + n2(x) + ',' + n2(y) + ') scale(' + n2(s) + ')" font-family="' + FONT_SLAB + '" font-weight="900">');
+    /* tuiles: on dessine d'abord celles du fond (ordre alterne pour que les recouvrements
+       ressemblent a des papiers poses les uns sur les autres) */
+    var order = [];
+    for (i = 0; i < LETTERS.length; i++) order.push(i);
+    order.sort(function (a, b) {
+      var pa = LETTERS[a].ph > 0 ? 1 : 0, pb = LETTERS[b].ph > 0 ? 1 : 0;
+      return (pa - pb) || ((a % 2) - (b % 2)) || (a - b);
+    });
+
+    for (var oi = 0; oi < order.length; oi++) {
+      i = order[oi];
+      var L = LETTERS[i];
+      if (op[i] <= 0.001) continue;
+      var w = L.adv + pad + 6;
+      var h = FS * L.th * 0.84;
+      var fs = FS * L.fs;
+      var cx = xs[i], cy = L.dy + slide[i];
+      var isPlus = L.ch === '+';
+      if (isPlus) { w = 46; h = 46; }
+      out.push('<g transform="translate(' + n2(cx) + ',' + n2(cy) + ') rotate(' + L.rot + ')" opacity="' + n2(op[i]) + '">');
+      /* l ombre de la tuile : un rectangle decale (2, 4) a 22 %, sans filtre ; le feDropShadow
+         d avant coutait une rasterisation lourde a chacun des paliers du mot (17 aout) */
+      out.push('<rect x="' + n2(-w / 2 + 2) + '" y="' + n2(-h / 2 + 4) + '" width="' + n2(w) + '" height="' + n2(h) + '" fill="#000" fill-opacity="0.22"/>');
+      out.push('<rect x="' + n2(-w / 2) + '" y="' + n2(-h / 2) + '" width="' + n2(w) + '" height="' + n2(h) + '" fill="' + TILE + '"/>');
+      /* legere seconde tuile decalee pour l'effet decoupe (papier double) */
+      /* lettre condensee et etiree (scale 0.84 x 1.12): plus proche du bois de caractere de la video */
+      out.push('<text x="0" y="' + n2(fs * 0.36) + '" text-anchor="middle" font-size="' + n2(fs) + '" fill="' + RED + '" transform="scale(' + (isPlus ? '1,1' : '0.84,1.12') + ')">' + esc(L.ch) + '</text>');
+      out.push('</g>');
+    }
+
+    /* legendes sous chaque groupe */
+    var la = ease((t - 0.74) / 0.26);
+    if (la > 0.001 && (legend1 || legend2)) {
+      var g1min = 1e9, g1max = -1e9, g2min = 1e9, g2max = -1e9;
+      for (i = 0; i < LETTERS.length; i++) {
+        var hw = (LETTERS[i].adv + pad + 6) / 2;
+        if (LETTERS[i].g === 1) { g1min = Math.min(g1min, xs[i] - hw); g1max = Math.max(g1max, xs[i] + hw); }
+        if (LETTERS[i].g === 2) { g2min = Math.min(g2min, xs[i] - hw); g2max = Math.max(g2max, xs[i] + hw); }
+      }
+      var ly = FS * 0.76 + 36;
+      out.push('<g opacity="' + n2(la) + '" font-family="' + FONT_SANS + '" font-weight="600" font-size="34" fill="' + RED + '" text-anchor="middle">');
+      if (legend1) out.push('<text x="' + n2((g1min + g1max) / 2) + '" y="' + n2(ly) + '">' + esc(legend1) + '</text>');
+      if (legend2) out.push('<text x="' + n2((g2min + g2max) / 2) + '" y="' + n2(ly) + '">' + esc(legend2) + '</text>');
+      out.push('</g>');
+    }
+    out.push('</g>');
+    return out.join('');
+  }
+
+  /* ---------------------------------------------------------------- flames */
+  /* une touffe de flammes: base centree en (0,0), largeur w, hauteur max h.
+     2 a 4 aiguilles fines qui partent d'un socle commun, comme dans la video (1m44).
+     Retourne {d: chemin, needles: [{tx,ty,lx,rx,vy}]} pour poser les pointes claires. */
+  function tongue(w, h, r, lean) {
+    var hw = w / 2;
+    var n = 2 + Math.floor(r() * 2);
+    var main = Math.floor(r() * n);
+    var xsL = [-hw];
+    var i;
+    /* vallees entre les aiguilles */
+    for (i = 1; i < n; i++) xsL.push(-hw + (w * i) / n + (r() - 0.5) * (w / n) * 0.4);
+    xsL.push(hw);
+    var d = 'M' + n2(-hw) + ',0';
+    var needles = [];
+    var prevY = 0;
+    for (i = 0; i < n; i++) {
+      var lx = xsL[i], rx = xsL[i + 1];
+      var sh = i === main ? h : h * (0.42 + r() * 0.4);
+      var tx = (lx + rx) / 2 + lean * sh * 0.24 + (r() - 0.5) * (rx - lx) * 0.25;
+      var vy = i === n - 1 ? 0 : -h * (0.14 + r() * 0.2);
+      /* montee: leger ventre vers l'exterieur en bas, puis droit vers l'aiguille */
+      /* cubique en S: ventre en bas, flanc creux vers l'aiguille */
+      d += ' C' + n2(lx - (tx - lx) * 0.2) + ',' + n2(prevY - (sh + prevY) * 0.3) + ' ' + n2(tx - (tx - lx) * 0.22) + ',' + n2(-sh + (sh + prevY) * 0.42) + ' ' + n2(tx) + ',' + n2(-sh);
+      d += ' C' + n2(tx + (rx - tx) * 0.22) + ',' + n2(-sh + (sh + vy) * 0.42) + ' ' + n2(rx + (rx - tx) * 0.2) + ',' + n2(vy - (sh + vy) * 0.3) + ' ' + n2(rx) + ',' + n2(vy);
+      needles.push({ tx: tx, ty: -sh, lx: lx, rx: rx, ly: prevY, ry: vy });
+      prevY = vy;
+    }
+    d += ' Z';
+    return { d: d, needles: needles };
+  }
+
+  function needlePath(N, frac) {
+    /* pointe claire: du sommet jusqu'a frac de la hauteur de l'aiguille */
+    var baseYL = N.ty + (N.ly - N.ty) * frac;
+    var baseYR = N.ty + (N.ry - N.ty) * frac;
+    var lx = N.tx + (N.lx - N.tx) * frac * 0.92;
+    var rx = N.tx + (N.rx - N.tx) * frac * 0.92;
+    var d = 'M' + n2(lx) + ',' + n2(baseYL);
+    d += ' Q' + n2(N.tx - (N.tx - lx) * 0.3) + ',' + n2(N.ty + (baseYL - N.ty) * 0.45) + ' ' + n2(N.tx) + ',' + n2(N.ty);
+    d += ' Q' + n2(N.tx + (rx - N.tx) * 0.3) + ',' + n2(N.ty + (baseYR - N.ty) * 0.45) + ' ' + n2(rx) + ',' + n2(baseYR);
+    /* on referme en descendant un peu pour ne pas laisser de jour au bord */
+    d += ' L' + n2(rx) + ',' + n2(baseYR + 20) + ' L' + n2(lx) + ',' + n2(baseYL + 20) + ' Z';
+    return d;
+  }
+
+  function flames(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, width = o.width || 800;
+    var t = clamp01(o.t == null ? 1 : o.t);
+    var seed = o.seed || 7;
+    var r = rng(seed * 7919 + 13);
+    var out = [];
+    var maxH = o.height || width * 0.4;
+    out.push('<g transform="translate(' + n2(x) + ',' + n2(y) + ')">');
+    /* trois plans, du fond vers l'avant; le fond est plus haut et plus sombre */
+    var nb = Math.max(2, Math.round(width / (maxH * 0.5)));
+    var planes = [
+      { col: FLAME_COLS[0], hk: 1.0, count: nb, tip: 0.0, dyk: 0.0 },
+      { col: FLAME_COLS[1], hk: 0.84, count: nb + 1, tip: 0.8, dyk: 0.05 },
+      { col: FLAME_COLS[2], hk: 0.64, count: nb + 1, tip: 0.85, dyk: 0.10 }
+    ];
+    for (var p = 0; p < planes.length; p++) {
+      var P = planes[p];
+      var rise = (1 - ease(t)) * (maxH * P.hk + 40) + P.dyk * maxH * (1 - t * 0.5);
+      out.push('<g filter="url(#lt_shadowFlame)" transform="translate(0,' + n2(rise) + ')">');
+      /* socle plein sous les touffes, pour que la rangee parte du bord bas */
+      out.push('<rect x="' + n2(-width * 0.02) + '" y="-2" width="' + n2(width * 1.04) + '" height="' + n2(maxH + 80) + '" fill="' + P.col + '"/>');
+      var step = width / P.count;
+      var tips = [];
+      for (var i = 0; i < P.count; i++) {
+        var cx = step * (i + 0.5) + (r() - 0.5) * step * 0.4;
+        var h = maxH * P.hk * (0.62 + r() * 0.42);
+        var w = h * (0.5 + r() * 0.35);
+        var lean = (r() - 0.5) * 2;
+        var T = tongue(w, h, r, lean);
+        out.push('<path d="' + T.d + '" fill="' + P.col + '" transform="translate(' + n2(cx) + ',0)"/>');
+        if (P.tip > 0) tips.push({ cx: cx, needles: T.needles });
+      }
+      out.push('</g>');
+      /* pointes plus claires posees sur les aiguilles */
+      if (P.tip > 0) {
+        out.push('<g transform="translate(0,' + n2(rise) + ')">');
+        for (var j = 0; j < tips.length; j++) {
+          var ns = tips[j].needles;
+          var hmax = 0;
+          for (var q = 0; q < ns.length; q++) if (-ns[q].ty > hmax) hmax = -ns[q].ty;
+          for (q = 0; q < ns.length; q++) {
+            if (-ns[q].ty < hmax * 0.55) continue;   /* seules les grandes aiguilles */
+            var frac = P.tip * (0.9 + r() * 0.2);
+            out.push('<path d="' + needlePath(ns[q], frac) + '" fill="' + FLAME_TIP + '" transform="translate(' + n2(tips[j].cx) + ',0)"/>');
+          }
+        }
+        out.push('</g>');
+      }
+    }
+    out.push('</g>');
+    return out.join('');
+  }
+
+  /* ---------------------------------------------------------------- hills */
+  function hillLayer(base, bumps, col, filt) {
+    var out = ['<g filter="url(#' + filt + ')">'];
+    out.push('<rect x="-40" y="' + n2(base) + '" width="1680" height="' + n2(900 - base + 200) + '" fill="' + col + '"/>');
+    for (var i = 0; i < bumps.length; i++) {
+      var b = bumps[i];
+      out.push('<circle cx="' + n2(b[0]) + '" cy="' + n2(base + b[2]) + '" r="' + n2(b[1]) + '" fill="' + col + '"/>');
+    }
+    out.push('</g>');
+    return out.join('');
+  }
+
+  function hills(o) {
+    o = o || {};
+    var t = clamp01(o.t == null ? 0 : o.t);
+    var k = ease(t);
+    /* couleurs du contrat par defaut; o.far / o.near permettent d'ajuster si le fond
+       est trop proche du plan lointain (#aeae6e sur #adad70 se voit peu) */
+    var farCol = o.far || '#aeae6e';
+    var nearCol = o.near || '#808253';
+    var out = [];
+    /* plan lointain, clair, haut dans le cadre */
+    var farBase = 560 - 60 * k;
+    var farBumps = [
+      [40, 230, 60], [420, 300, 20], [830, 220, 70], [1200, 320, 10], [1560, 240, 60]
+    ];
+    /* plan proche, sombre */
+    var nearBase = 800 - 90 * k;
+    var nearBumps = [
+      [-20, 250, 50], [330, 200, 90], [720, 280, 40], [1110, 230, 90], [1490, 270, 50]
+    ];
+    out.push('<g>');
+    out.push(hillLayer(farBase, farBumps, farCol, 'lt_shadowSoft'));
+    out.push(hillLayer(nearBase, nearBumps, nearCol, 'lt_shadowSoft'));
+    out.push('</g>');
+    return out.join('');
+  }
+
+  /* ---------------------------------------------------------------- sunGlass */
+  function sunGlass(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, s = o.scale || 1;
+    var t = clamp01(o.t == null ? 1 : o.t);
+    var k = ease(t);
+    var out = [];
+    out.push('<g transform="translate(' + n2(x) + ',' + n2(y) + ') scale(' + n2(s) + ')">');
+    out.push('<circle cx="0" cy="0" r="110" fill="#d9a52a" filter="url(#lt_shadow)"/>');
+    /* verre a shot droit, 90 px de haut, leve dans le disque */
+    var gw = 64, gh = 152;
+    var gy = -gh * 0.56 + (1 - k) * 30;
+    out.push('<g opacity="' + n2(k) + '" transform="translate(0,' + n2(gy) + ')" filter="url(#lt_shadow)">');
+    out.push('<path d="M' + n2(-gw / 2) + ',0 L' + n2(gw / 2) + ',0 L' + n2(gw / 2 - 3) + ',' + n2(gh) + ' L' + n2(-gw / 2 + 3) + ',' + n2(gh) + ' Z" fill="#f4f2ec"/>');
+    /* liquide ambre, aux deux tiers */
+    var lt = gh * 0.34;
+    out.push('<path d="M' + n2(-gw / 2 + 4) + ',' + n2(lt) + ' L' + n2(gw / 2 - 4) + ',' + n2(lt) + ' L' + n2(gw / 2 - 6) + ',' + n2(gh - 8) + ' L' + n2(-gw / 2 + 6) + ',' + n2(gh - 8) + ' Z" fill="#e5c271"/>');
+    out.push('<path d="M' + n2(-gw / 2 + 4) + ',' + n2(gh - 20) + ' L' + n2(gw / 2 - 4) + ',' + n2(gh - 20) + ' L' + n2(gw / 2 - 6) + ',' + n2(gh - 8) + ' L' + n2(-gw / 2 + 6) + ',' + n2(gh - 8) + ' Z" fill="#c9a75a"/>');
+    /* reflet: bande claire a gauche */
+    out.push('<rect x="' + n2(-gw / 2 + 6) + '" y="4" width="8" height="' + n2(gh - 14) + '" fill="#ffffff" opacity="0.55"/>');
+    /* fond epais du verre */
+    out.push('<rect x="' + n2(-gw / 2 + 3) + '" y="' + n2(gh - 8) + '" width="' + n2(gw - 6) + '" height="8" fill="#f4f2ec"/>');
+    out.push('</g>');
+    out.push('</g>');
+    return out.join('');
+  }
+
+  global.defsLettres = defsLettres;
+  global.ransom = ransom;
+  global.flames = flames;
+  global.hills = hills;
+  global.sunGlass = sunGlass;
+})(typeof window !== 'undefined' ? window : this);
+
+/* ===== flammes.js ===== */
+/* flammes.js : rangee de flammes en papier decoupe, comme la video Insider (1m43 a 1m44).
+   Vanilla JS, aucune dependance. flames() retourne une chaine SVG a poser dans un <g>.
+   Coordonnees en unites du viewBox 1600 x 900. Ids prefixes "fl_".
+
+   Trois plans de papier, du fond vers l'avant (#a63515, #c02e05, #be2402), chacun une masse
+   pleine surmontee de langues arrondies (ventre rond, pointe douce qui penche a gauche ou a
+   droite), quelques langues de devant coiffees d'une pointe plus claire #e0562a.
+   t dans [0,1] fait monter les plans depuis y (le bas), le plan du fond en premier. */
+
+(function (global) {
+  'use strict';
+
+  var COLS = ['#a63515', '#c02e05', '#be2402'];
+  var CAP = '#e0562a';
+
+  function clamp01(v) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
+  function ease(v) { v = clamp01(v); return v * v * (3 - 2 * v); }
+  function n1(v) { return Math.round(v * 10) / 10; }
+  function rng(seed) {
+    var s = (seed >>> 0) || 1;
+    return function () {
+      s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0;
+      return (s >>> 0) / 4294967296;
+    };
+  }
+
+  /* ---------------------------------------------------------------- defs */
+  function defsFlammes() {
+    return '<filter id="fl_ombre" x="-10%" y="-20%" width="120%" height="140%">' +
+      '<feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/>' +
+      '</filter>';
+  }
+
+  /* ---------------------------------------------------------------- une langue */
+  /* Une langue est decrite par un profil parametrique s dans [0,1] (0 = base, 1 = pointe):
+       axe    c(s)  = lean * h * s^1.8                    (elle penche de plus en plus vers le haut)
+       bords  x(s)  = c(s) +/- hw * f(s), f = ogive en cosinus melangee a un cone
+                      (ventre rond en bas, flanc qui se creuse vers le haut, comme une flamme de bougie)
+     La pointe: les flancs s'arretent a la demi-largeur rt et se rejoignent par une cubique tangente
+     aux deux flancs (pointe douce, jamais d'aiguille ni de boule).
+     La forme est echantillonnee et emise en segments courts, lisses a 1600 px.
+     T = {cx, h, hw, lean, pL, pR, mL, mR, belly, flare, wob, ph, rt, base} */
+  function prof(T, s, side) {
+    /* profil en ogive: ventre convexe en bas, flanc qui se creuse vers le haut (cosinus),
+       melange a un cone leger pour que la pointe converge au lieu de finir en doigt */
+    var pw = side < 0 ? T.pL : T.pR;
+    var m = side < 0 ? T.mL : T.mR;
+    var og = 0.5 * (1 + Math.cos(Math.PI * Math.pow(s, pw)));
+    var q = 1 - s;
+    /* ventre: un renflement dans le tiers bas; evasement du pied: la langue s'elargit en entrant
+       dans la masse, d'ou des vallees en V; au dessus, un long flanc creux jusqu'a la pointe */
+    var sn = Math.sin(Math.PI * s);
+    var belly = 1 + T.belly * sn * sn * q;
+    return ((1 - m) * og + m * q) * belly * (1 + T.flare * q * q * q);
+  }
+  function axis(T, s) {
+    return T.cx + T.lean * T.h * Math.pow(s, 2.0) + T.wob * T.hw * Math.sin(s * 3.6 + T.ph) * s * (1 - s);
+  }
+  function edgeX(T, s, side) { return axis(T, s) + side * T.hw * prof(T, s, side); }
+
+  /* s ou la demi-largeur du bord vaut rt (dichotomie, le profil est decroissant pres du haut) */
+  function tipS(T, side) {
+    var lo = 0.5, hi = 1, mid, i;
+    for (i = 0; i < 24; i++) {
+      mid = (lo + hi) / 2;
+      if (T.hw * prof(T, mid, side) > T.rt) lo = mid; else hi = mid;
+    }
+    return (lo + hi) / 2;
+  }
+
+  /* points du contour de s = from a la pointe, bord gauche montant puis bord droit descendant.
+     La pointe: on s'arrete la ou le bord le plus etroit atteint rt, et on ferme par une cubique
+     tangente aux deux flancs. */
+  function outline(T, from) {
+    var N = 24, i, u, s, pts = [];
+    var st = Math.min(tipS(T, -1), tipS(T, 1));
+    for (i = 0; i <= N; i++) {
+      u = i / N;
+      s = from + (st - from) * (1 - Math.pow(1 - u, 1.5));
+      pts.push([edgeX(T, s, -1), -T.h * s]);
+    }
+    /* pointe douce: cubique tangente aux deux flancs, de la fin du flanc gauche au debut du droit */
+    var pl = pts[pts.length - 1], pl0 = pts[pts.length - 2];
+    var pr = [edgeX(T, st, 1), -T.h * st];
+    var s2 = from + (st - from) * (1 - Math.pow(1 - (N - 1) / N, 1.5));
+    var pr0 = [edgeX(T, s2, 1), -T.h * s2];
+    var tl = [pl[0] - pl0[0], pl[1] - pl0[1]], tr = [pr0[0] - pr[0], pr0[1] - pr[1]];
+    var ll = Math.sqrt(tl[0] * tl[0] + tl[1] * tl[1]) || 1, lr = Math.sqrt(tr[0] * tr[0] + tr[1] * tr[1]) || 1;
+    var dd = (pr[0] - pl[0]) * 0.75;
+    var c1 = [pl[0] + tl[0] / ll * dd, pl[1] + tl[1] / ll * dd];
+    var c2 = [pr[0] - tr[0] / lr * dd, pr[1] - tr[1] / lr * dd];
+    for (i = 1; i < 10; i++) {
+      var q = i / 10, q1 = 1 - q;
+      pts.push([
+        q1 * q1 * q1 * pl[0] + 3 * q1 * q1 * q * c1[0] + 3 * q1 * q * q * c2[0] + q * q * q * pr[0],
+        q1 * q1 * q1 * pl[1] + 3 * q1 * q1 * q * c1[1] + 3 * q1 * q * q * c2[1] + q * q * q * pr[1]
+      ]);
+    }
+    for (i = N; i >= 0; i--) {
+      u = i / N;
+      s = from + (st - from) * (1 - Math.pow(1 - u, 1.5));
+      pts.push([edgeX(T, s, 1), -T.h * s]);
+    }
+    return pts;
+  }
+
+  function ptsToPath(pts) {
+    var d = 'M' + n1(pts[0][0]) + ',' + n1(pts[0][1]);
+    for (var i = 1; i < pts.length; i++) d += 'L' + n1(pts[i][0]) + ',' + n1(pts[i][1]);
+    return d;
+  }
+
+  function tonguePath(T) {
+    var pts = outline(T, 0);
+    var d = ptsToPath(pts);
+    /* on descend sous le haut de la masse pour ne laisser aucun jour */
+    d += 'L' + n1(pts[pts.length - 1][0]) + ',' + n1(T.base) + 'L' + n1(pts[0][0]) + ',' + n1(T.base);
+    return d + 'Z';
+  }
+
+  /* fabrique une langue aleatoire centree en cx, hauteur h, demi-largeur hw a la base */
+  function makeTongue(r, cx, h, hw, base) {
+    var lean = (r() - 0.5) * 2;
+    lean = (lean < 0 ? -1 : 1) * (0.06 + Math.abs(lean) * 0.24);   /* 0.06 .. 0.30 */
+    return {
+      cx: cx, h: h, hw: hw, lean: lean, base: base,
+      pL: 1.15 + r() * 0.3, pR: 1.15 + r() * 0.3,
+      mL: 0.05 + r() * 0.12, mR: 0.05 + r() * 0.12,
+      belly: 0.25 + r() * 0.4,
+      flare: 0.45 + r() * 0.3,
+      wob: r() < 0.6 ? 0 : 0.25 + r() * 0.35, ph: r() * 6.28,
+      rt: Math.max(2.5, Math.min(7, hw * (0.05 + r() * 0.05)))
+    };
+  }
+
+  /* ---------------------------------------------------------------- flames */
+  function flames(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, width = o.width || 800;
+    var t = clamp01(o.t == null ? 1 : o.t);
+    var seed = o.seed || 7;
+    var maxH = o.height || 260;              /* hauteur des plus grandes langues a t = 1 */
+    var r = rng(seed * 104729 + 977);
+    var out = [];
+    out.push('<g transform="translate(' + n1(x) + ',' + n1(y) + ')">');
+
+    /* les trois plans: hauteur maxi de langue, hauteur de la masse, pas entre langues, retard */
+    var planes = [
+      { col: COLS[0], hk: 1.00, mass: 0.34, step: 210, delay: 0.00, caps: 0.0 },
+      { col: COLS[1], hk: 0.78, mass: 0.27, step: 180, delay: 0.08, caps: 0.0 },
+      { col: COLS[2], hk: 0.94, mass: 0.21, step: 190, delay: 0.18, caps: 0.95 }
+    ];
+
+    for (var p = 0; p < planes.length; p++) {
+      var P = planes[p];
+      var Hmax = maxH * P.hk;
+      var mass = maxH * P.mass;
+      var total = Hmax + mass + 12;
+      var k = ease((t - P.delay) / 0.8);
+      var rise = (1 - k) * total;
+      var base = 30;   /* les langues descendent 30 px sous le haut de la masse */
+      out.push('<g transform="translate(0,' + n1(rise) + ')">');
+      /* la masse pleine, au bord superieur legerement ondule (jamais une regle) */
+      var md = 'M-40,' + n1(total) + 'L-40,' + n1(-mass);
+      var ph1 = r() * 6.28, ph2 = r() * 6.28;
+      for (var mx = -40; mx <= width + 40; mx += 20) {
+        var wy = -mass - 8 - 7 * Math.sin(mx / 110 + ph1) - 5 * Math.sin(mx / 47 + ph2);
+        md += 'L' + n1(mx) + ',' + n1(wy);
+      }
+      md += 'L' + n1(width + 40) + ',' + n1(total) + 'Z';
+      out.push('<path d="' + md + '" fill="' + P.col + '"/>');
+      out.push('<g transform="translate(0,' + n1(-mass) + ')">');
+
+      var caps = [];
+      var nb = Math.round(width / P.step) + 1;
+      var step = width / (nb - 1);
+      var offset = (r() - 0.5) * step;
+      var prevH = 0;
+      /* classes de hauteur tirees d'un sac melange (3 grandes, 2 moyennes, 1 petite par six),
+         pour que chaque plan ait toujours ses grandes langues quel que soit le seed */
+      var bag = [0, 0, 0, 1, 1, 2];
+      for (var bi = bag.length - 1; bi > 0; bi--) { var bj = Math.floor(r() * (bi + 1)); var bt = bag[bi]; bag[bi] = bag[bj]; bag[bj] = bt; }
+      for (var i = 0; i < nb; i++) {
+        var cx = step * i + offset + (r() - 0.5) * step * 0.5;
+        if (cx < -step * 0.3) cx = -step * 0.3;
+        if (cx > width + step * 0.3) cx = width + step * 0.3;
+        /* hauteur variee: grandes, moyennes, petites, et jamais deux voisines de meme taille */
+        var hh;
+        var cls = bag[i % 6];
+        if (cls === 0) hh = Hmax * (0.78 + r() * 0.22);
+        else if (cls === 1) hh = Hmax * (0.44 + r() * 0.2);
+        else hh = Hmax * (0.3 + r() * 0.12);
+        if (Math.abs(hh - prevH) < Hmax * 0.1) hh *= 0.82;
+        prevH = hh;
+        var hw = hh * (0.16 + r() * 0.1) + 10;      /* demi-largeur a la base */
+        var T = makeTongue(r, cx, hh, hw, base);
+        var sink = hh * 0.12;   /* le pied de la langue s'enfonce dans la masse: le flanc visible s'evase */
+        var mainPath = '<path d="' + tonguePath(T) + '" transform="translate(0,' + n1(sink) + ')"/>';
+        out.push(mainPath.replace('<path ', '<path fill="' + P.col + '" '));
+        var withCap = P.caps > 0 && hh > Hmax * 0.5 && r() < P.caps;
+        var kc = 0.28 + r() * 0.2;
+        var capParts = [mainPath];
+        /* une petite lechette qui part du flanc a mi-hauteur, du cote oppose au penchant,
+           et se courbe vers l'exterieur, une fois sur deux */
+        if (r() < 0.5) {
+          var side = T.lean > 0 ? -1 : 1;
+          var s0 = 0.16 + r() * 0.2;
+          var h2 = hh * (0.24 + r() * 0.2);
+          var fx = edgeX(T, s0, side) - side * hw * 0.25;
+          var T2 = makeTongue(r, fx, h2, hw * (0.36 + r() * 0.16), base + hh * s0);
+          T2.lean = side * (0.1 + r() * 0.2);
+          var lickPath = '<path d="' + tonguePath(T2) + '" transform="translate(0,' + n1(sink - hh * s0) + ')"/>';
+          out.push(lickPath.replace('<path ', '<path fill="' + P.col + '" '));
+          capParts.push(lickPath);
+        }
+        /* la coiffe: un seul morceau de papier clair qui couvre le haut de la langue et de sa
+           lechette, coupe d'un trait un peu penche; on le decoupe par un clipPath (langue + lechette) */
+        if (withCap) {
+          var cid = 'fl_cp' + seed + 'w' + Math.round(width) + '_' + p + '_' + i;
+          var cutY = sink - kc * hh;
+          var half = hw * 3 + 40;
+          var tilt = T.lean * hw * 0.5;
+          var top = -hh - 40;
+          var cap = 'M' + n1(cx - half) + ',' + n1(top) + 'L' + n1(cx + half) + ',' + n1(top) + 'L' + n1(cx + half) + ',' + n1(cutY - tilt);
+          var wv = hh * (0.03 + r() * 0.04);
+          cap += 'C' + n1(cx + half * 0.5) + ',' + n1(cutY - tilt + wv) + ' ' + n1(cx + hw * 0.6) + ',' + n1(cutY - wv) + ' ' + n1(cx) + ',' + n1(cutY);
+          cap += 'C' + n1(cx - hw * 0.6) + ',' + n1(cutY + wv) + ' ' + n1(cx - half * 0.5) + ',' + n1(cutY + tilt - wv * 0.5) + ' ' + n1(cx - half) + ',' + n1(cutY + tilt) + 'Z';
+          caps.push({ id: cid, parts: capParts.join(''), d: cap });
+        }
+      }
+      out.push('</g></g>');
+
+      /* les coiffes claires: morceaux de papier poses sur les grandes langues de devant */
+      if (caps.length) {
+        out.push('<g transform="translate(0,' + n1(rise - mass) + ')">');
+        out.push('<defs>');
+        for (var j = 0; j < caps.length; j++) out.push('<clipPath id="' + caps[j].id + '">' + caps[j].parts + '</clipPath>');
+        out.push('</defs>');
+        for (j = 0; j < caps.length; j++) {
+          out.push('<path d="' + caps[j].d + '" fill="' + CAP + '" clip-path="url(#' + caps[j].id + ')"/>');
+        }
+        out.push('</g>');
+      }
+    }
+    out.push('</g>');
+    return out.join('');
+  }
+
+  global.defsFlammes = defsFlammes;
+  global.flames = flames;
+})(typeof window !== 'undefined' ? window : this);
+
+/* ===== bouteille.js ===== */
+/* bouteille.js : la bouteille Ivresse d'Amour et les deux mains, en papier decoupe.
+   Fonctions globales, chacune retourne une chaine SVG a inserer dans un <g>.
+   Coordonnees en unites du viewBox 1600 x 900. Aucune dependance, aucun etat global.
+   Ids prefixes "bt_". Les <defs> sont fournis une fois par defsBouteille(). */
+
+(function () {
+  var C = {
+    verreClair: '#4f7a55',
+    verreSombre: '#2f5a3c',
+    verreReflet: '#7fa77f',
+    verreFond: '#3d6b46',
+    cuivre: '#b27309',
+    cuivreSombre: '#7d5108',
+    cuivreClair: '#d0973a',
+    bois: '#a07a4a',
+    boisClair: '#c9a06a',
+    boisSombre: '#7f5f36',
+    papier: '#d9ceba',
+    papierLigne: '#b6a88c'
+  };
+
+  function n(v) { return Math.round(v * 100) / 100; }
+
+  function defsBouteille() {
+    return '<filter id="bt_ombre" x="-30%" y="-30%" width="160%" height="170%">' +
+      '<feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/></filter>' +
+      '<filter id="bt_ombre_fine" x="-30%" y="-30%" width="160%" height="170%">' +
+      '<feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-color="#000" flood-opacity="0.22"/></filter>' +
+      /* silhouette du corps ovoide, base en (0,0), col en (0,-255) : sert de clip aux ecailles */
+      '<clipPath id="bt_clipCorps"><path d="' + corpsPath(5) + '"/></clipPath>';
+  }
+
+  /* demi-largeur du corps ovoide a la hauteur y (base y=0, epaule y=-255, plus large +-97 vers y=-140) */
+  function demiLargeur(y) {
+    if (y < -255) y = -255;
+    if (y > 0) y = 0;
+    if (y <= -140) {
+      var u = (y + 140) / 115;
+      return 30 + 67 * Math.pow(Math.max(0, 1 - u * u), 0.5);
+    }
+    var v = (y + 140) / 140;
+    return 62 + 35 * Math.pow(Math.max(0, 1 - v * v), 0.65);
+  }
+
+  /* trace du corps, avec une dilatation d (0 pour le corps, quelques px pour le clip des ecailles) */
+  function corpsPath(d) {
+    d = d || 0;
+    var pts = [], y;
+    for (y = -255; y <= 0; y += 5) pts.push([-(demiLargeur(y) + d), y]);
+    /* epaule crenelee : les pointes du premier rang d'ecailles depassent de part et d'autre du col */
+    var out = 'M ' + n(-33) + ',' + n(-268 - d) + ' L -14,-248 L 0,-248 L 14,-248 L 33,' + n(-268 - d) + ' L ' + n(30 + d) + ',-255 ';
+    for (var i = 0; i < pts.length; i++) out += 'L ' + n(-pts[i][0]) + ',' + n(pts[i][1]) + ' ';
+    for (i = pts.length - 1; i >= 0; i--) out += 'L ' + n(pts[i][0]) + ',' + n(pts[i][1]) + ' ';
+    out += 'L ' + n(-30 - d) + ',-255 Z';
+    return out;
+  }
+
+  /* une ecaille : pointe en (0,0) vers le haut, base a y=h, largeur w. Deux moities (pli central) et un filet clair a gauche */
+  function ecaille(cx, ty, w, h) {
+    var hw = w / 2;
+    var gauche = 'M ' + n(cx) + ',' + n(ty) + ' C ' + n(cx - hw * 0.7) + ',' + n(ty + h * 0.28) + ' ' + n(cx - hw) + ',' + n(ty + h * 0.6) + ' ' + n(cx - hw) + ',' + n(ty + h) + ' L ' + n(cx) + ',' + n(ty + h) + ' Z';
+    var droite = 'M ' + n(cx) + ',' + n(ty) + ' C ' + n(cx + hw * 0.7) + ',' + n(ty + h * 0.28) + ' ' + n(cx + hw) + ',' + n(ty + h * 0.6) + ' ' + n(cx + hw) + ',' + n(ty + h) + ' L ' + n(cx) + ',' + n(ty + h) + ' Z';
+    var filet = 'M ' + n(cx) + ',' + n(ty) + ' C ' + n(cx - hw * 0.7) + ',' + n(ty + h * 0.28) + ' ' + n(cx - hw) + ',' + n(ty + h * 0.6) + ' ' + n(cx - hw) + ',' + n(ty + h) +
+      ' L ' + n(cx - hw + 5) + ',' + n(ty + h) + ' C ' + n(cx - hw + 5) + ',' + n(ty + h * 0.6) + ' ' + n(cx - hw * 0.65 + 3) + ',' + n(ty + h * 0.31) + ' ' + n(cx + 1) + ',' + n(ty + 7) + ' Z';
+    return '<path d="' + gauche + '" fill="' + C.verreClair + '"/>' +
+      '<path d="' + droite + '" fill="' + C.verreSombre + '"/>' +
+      '<path d="' + filet + '" fill="' + C.verreReflet + '"/>';
+  }
+
+  /* feuille de la couronne : base en (0,0), pointe vers le haut, longueur L, largeur w, moitie claire et moitie sombre */
+  function feuilleBois(L, w) {
+    var hw = w / 2;
+    var g = 'M ' + n(-hw * 0.45) + ',0 C ' + n(-hw * 1.1) + ',' + n(-L * 0.36) + ' ' + n(-hw * 0.75) + ',' + n(-L * 0.72) + ' 0,' + n(-L) + ' L 0,0 Z';
+    var d = 'M ' + n(hw * 0.45) + ',0 C ' + n(hw * 1.1) + ',' + n(-L * 0.36) + ' ' + n(hw * 0.75) + ',' + n(-L * 0.72) + ' 0,' + n(-L) + ' L 0,0 Z';
+    return '<path d="' + g + '" fill="' + C.boisClair + '"/><path d="' + d + '" fill="' + C.bois + '"/>';
+  }
+
+  /* la bouteille. (x,y) = milieu de la base posee au sol. Hauteur ~420 a scale 1. t : 0 invisible, 1 posee. */
+  function pinaBottle(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, s = (o.scale == null ? 1 : o.scale);
+    var t = (o.t == null ? 1 : o.t);
+    if (t <= 0) return '';
+    var lift = (1 - t) * 40;
+    var out = [];
+    out.push('<g transform="translate(' + n(x) + ',' + n(y - lift * s) + ') scale(' + n(s) + ')" opacity="' + n(t) + '">');
+
+    /* col (derriere le corps) */
+    out.push('<g filter="url(#bt_ombre)">');
+    out.push('<path d="M -28,-250 L -28,-320 C -28,-326 -22,-330 -14,-330 L 14,-330 C 22,-330 28,-326 28,-320 L 28,-250 Z" fill="' + C.verreClair + '"/>');
+    out.push('<path d="M 8,-250 L 8,-330 L 14,-330 C 22,-330 28,-326 28,-320 L 28,-250 Z" fill="' + C.verreSombre + '"/>');
+    out.push('<rect x="-23" y="-324" width="5" height="66" rx="2" fill="' + C.verreReflet + '"/>');
+    out.push('</g>');
+
+    /* couronne d'agave sculptee : 9 feuilles en eventail depuis le haut du collier */
+    var feuilles = [
+      { a: -48, L: 44, w: 28 }, { a: -36, L: 56, w: 30 }, { a: -24, L: 68, w: 31 }, { a: -12, L: 79, w: 32 },
+      { a: 0, L: 88, w: 33 },
+      { a: 12, L: 79, w: 32 }, { a: 24, L: 68, w: 31 }, { a: 36, L: 56, w: 30 }, { a: 48, L: 44, w: 28 }
+    ];
+    var ordre = [0, 8, 1, 7, 2, 6, 3, 5, 4];
+    out.push('<g transform="translate(0,-334)">');
+    for (var i = 0; i < ordre.length; i++) {
+      var f = feuilles[ordre[i]];
+      out.push('<g filter="url(#bt_ombre_fine)" transform="rotate(' + f.a + ')">' + feuilleBois(f.L, f.w) + '</g>');
+    }
+    out.push('</g>');
+
+    /* collier bois */
+    out.push('<g filter="url(#bt_ombre)">');
+    out.push('<rect x="-33" y="-346" width="66" height="30" rx="3" fill="' + C.bois + '"/>');
+    out.push('<rect x="12" y="-346" width="21" height="30" rx="3" fill="' + C.boisSombre + '"/>');
+    out.push('<rect x="-33" y="-346" width="66" height="5" rx="2" fill="' + C.boisClair + '"/>');
+    out.push('</g>');
+
+    /* corps : fond vert sombre puis rangs d'ecailles imbriquees, du haut vers le bas */
+    out.push('<g filter="url(#bt_ombre)"><path d="' + corpsPath() + '" fill="' + C.verreFond + '"/></g>');
+    out.push('<g clip-path="url(#bt_clipCorps)">');
+    var W = 66, H = 88, pas = 57;
+    for (var r = 0; r < 6; r++) {
+      var ty = -266 + r * pas;
+      var decal = (r % 2) ? 0 : W / 2;
+      out.push('<g filter="url(#bt_ombre_fine)">');
+      for (var k = -3; k <= 3; k++) {
+        var cx = k * W + decal;
+        if (Math.abs(cx) - W / 2 > demiLargeur(ty + 30) + 4) continue;
+        out.push(ecaille(cx, ty, W, H));
+      }
+      out.push('</g>');
+    }
+    out.push('</g>');
+
+    /* pied : petit socle sous le corps */
+    out.push('<g filter="url(#bt_ombre)"><rect x="-62" y="-6" width="124" height="10" rx="3" fill="' + C.verreSombre + '"/></g>');
+
+    /* medaillon cuivre au haut du ventre : le sceau complet si medaillon.js est charge, sinon la suggestion */
+    if (typeof window !== 'undefined' && typeof window.medaillon === 'function') {
+      out.push(window.medaillon({x:0, y:-146, r:50, t:1}));
+    } else {
+      out.push('<g transform="translate(0,-146)" filter="url(#bt_ombre)">');
+      out.push('<circle r="50" fill="' + C.cuivre + '"/>');
+      out.push('<circle r="41" fill="none" stroke="' + C.cuivreSombre + '" stroke-width="2.5"/>');
+      out.push('</g>');
+    }
+
+    /* etiquette : petit panneau papier bas sur le ventre */
+    out.push('<g filter="url(#bt_ombre)">');
+    out.push('<rect x="-62" y="-76" width="124" height="46" rx="2" fill="' + C.papier + '"/>');
+    out.push('<rect x="-40" y="-68" width="80" height="4" rx="1" fill="' + C.papierLigne + '"/>');
+    out.push('<rect x="-52" y="-58" width="104" height="3" rx="1" fill="' + C.papierLigne + '"/>');
+    out.push('<rect x="-52" y="-50" width="104" height="3" rx="1" fill="' + C.papierLigne + '"/>');
+    out.push('<rect x="-52" y="-42" width="104" height="3" rx="1" fill="' + C.papierLigne + '"/>');
+    out.push('</g>');
+
+    out.push('</g>');
+    return out.join('');
+  }
+
+  /* capsule (doigt) : base en (bx,by), direction ang en degres (0 = vers +y, positif = vers +x), longueur L, largeur w */
+  function capsule(bx, by, ang, L, w) {
+    var a = ang * Math.PI / 180, dx = Math.sin(a), dy = Math.cos(a);
+    var px = dy, py = -dx, hw = w / 2;
+    var ex = bx + dx * L, ey = by + dy * L;
+    return 'M ' + n(bx + px * hw) + ',' + n(by + py * hw) +
+      ' L ' + n(ex + px * hw) + ',' + n(ey + py * hw) +
+      ' A ' + n(hw) + ',' + n(hw) + ' 0 0 1 ' + n(ex - px * hw) + ',' + n(ey - py * hw) +
+      ' L ' + n(bx - px * hw) + ',' + n(by - py * hw) +
+      ' A ' + n(hw) + ',' + n(hw) + ' 0 0 1 ' + n(bx + px * hw) + ',' + n(by + py * hw) + ' Z';
+  }
+
+  /* une main en coordonnees locales : poignet en (0,0), avant-bras vers -y, doigts vers +y, pouce et courbure vers -x.
+     curl 0..1 : les doigts se referment vers -x. */
+  function mainForme(curl, bras) {
+    var d = [];
+    /* avant-bras + paume, une seule forme */
+    d.push('M -30,' + n(-bras) + ' L 30,' + n(-bras) + ' L 32,10 C 36,36 46,50 46,68 C 46,78 38,84 28,84 L -36,84 C -48,84 -56,72 -54,60 C -50,36 -36,24 -32,10 Z');
+    /* doigts : index, majeur, annulaire, auriculaire */
+    var base = [-32, -10, 12, 32];
+    var lon = [76, 86, 80, 62];
+    var spread = [-14, -5, 4, 13];
+    var larg = [19, 19, 18, 16];
+    for (var i = 0; i < 4; i++) {
+      var ang = spread[i] * (1 + 0.25 * curl) - curl * (14 + i * 3);
+      var L1 = lon[i] * 0.58, L2 = lon[i] * 0.5;
+      d.push(capsule(base[i], 72, ang, L1, larg[i]));
+      /* phalange distale, un peu plus pliee : le doigt s'incurve autour du centre */
+      var a1 = ang * Math.PI / 180;
+      var jx = base[i] + Math.sin(a1) * L1, jy = 72 + Math.cos(a1) * L1;
+      d.push(capsule(jx, jy, ang - curl * 20, L2, larg[i] * 0.92));
+    }
+    /* pouce */
+    var pang = -50 - curl * 12;
+    d.push(capsule(-44, 34, pang, 62, 20));
+    return d.join(' ');
+  }
+
+  /* deux mains : (x,y) = centre. t 0 : loin, ouvertes ; 1 : refermees autour du centre. */
+  function hands(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, s = (o.scale == null ? 1 : o.scale);
+    var t = Math.max(0, Math.min(1, o.t == null ? 1 : o.t));
+    var bras = o.arm == null ? 260 : o.arm;
+    var e = t * t * (3 - 2 * t);
+    var curl = e;
+    var forme = mainForme(curl, bras);
+    /* le centre, en coordonnees locales de la main quand elle est refermee */
+    var lcx = -112, lcy = 118;
+    var recul = (1 - e) * 320;
+    var out = [];
+    out.push('<g transform="translate(' + n(x) + ',' + n(y) + ') scale(' + n(s) + ')">');
+    var mains = [{ rot: -68 }, { rot: 112 }];
+    for (var i = 0; i < 2; i++) {
+      var th = mains[i].rot * Math.PI / 180;
+      var cs = Math.cos(th), sn = Math.sin(th);
+      /* position du poignet : le centre local (lcx, lcy + recul) doit tomber sur (0,0) */
+      var lx = lcx, ly = lcy + recul;
+      var wx = -(lx * cs - ly * sn), wy = -(lx * sn + ly * cs);
+      /* cote ombre : decalage monde (5,4) ramene en local */
+      var ox = 5 * cs + 4 * sn, oy = -5 * sn + 4 * cs;
+      out.push('<g transform="translate(' + n(wx) + ',' + n(wy) + ') rotate(' + mains[i].rot + ')" filter="url(#bt_ombre)">');
+      out.push('<path d="' + forme + '" fill="' + C.bois + '" transform="translate(' + n(ox) + ',' + n(oy) + ')"/>');
+      out.push('<path d="' + forme + '" fill="' + C.boisClair + '"/>');
+      out.push('</g>');
+    }
+    out.push('</g>');
+    return out.join('');
+  }
+
+  window.defsBouteille = defsBouteille;
+  window.pinaBottle = pinaBottle;
+  window.hands = hands;
+})();
+
+/* ===== medaillon.js ===== */
+/* medaillon.js : le medaillon cuivre Ivresse d'Amour en papier decoupe.
+   Fonctions globales, chacune retourne une chaine SVG a inserer dans un <g>.
+   Coordonnees en unites du viewBox 1600 x 900. Aucune dependance, aucun etat global.
+   Ids prefixes "md_". Les <defs> (filtres) sont fournis une fois par defsMedaillon().
+   Le sceau est dessine dans un repere de rayon 100 puis mis a l'echelle r/100. */
+
+(function () {
+  var C = {
+    cuivre: '#b27309',
+    cuivreSombre: '#7d5108',
+    cuivreClair: '#d29a2b',
+    signe: '#5a3a06'
+  };
+  var FONT = "'Rockwell','Clarendon','Georgia',serif";
+
+  function n(v) { return Math.round(v * 100) / 100; }
+  function pol(rad, deg) {
+    var a = deg * Math.PI / 180;
+    return n(rad * Math.cos(a)) + ',' + n(rad * Math.sin(a));
+  }
+
+  function defsMedaillon() {
+    return '<filter id="md_ombre" x="-30%" y="-30%" width="160%" height="170%">' +
+      '<feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/></filter>' +
+      '<filter id="md_ombre_fine" x="-30%" y="-30%" width="160%" height="170%">' +
+      '<feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-color="#000" flood-opacity="0.22"/></filter>' +
+      '<filter id="md_ombre_hero" x="-40%" y="-40%" width="180%" height="190%">' +
+      '<feDropShadow dx="4" dy="10" stdDeviation="9" flood-color="#000" flood-opacity="0.28"/></filter>';
+  }
+
+  /* etoile a quatre branches, centre (cx,cy), rayon exterieur R */
+  function etoile(cx, cy, R) {
+    var r = R * 0.28, pts = [], i, a, rr;
+    for (i = 0; i < 8; i++) {
+      a = i * Math.PI / 4 - Math.PI / 2;
+      rr = (i % 2 === 0) ? R : r;
+      pts.push(n(cx + rr * Math.cos(a)) + ',' + n(cy + rr * Math.sin(a)));
+    }
+    return '<polygon points="' + pts.join(' ') + '" fill="' + C.signe + '"/>';
+  }
+
+  /* une main : celle du haut, qui vient de la gauche, passe au dessus de la fleur
+     et retombe a droite, doigts vers le bas. L'autre est la meme tournee de 180 degres. */
+  function main() {
+    var s = '';
+    var st = ' fill="none" stroke="' + C.signe + '" stroke-linecap="round" stroke-linejoin="round"';
+    /* avant bras : remonte le long du bord gauche puis file vers la paume, bout coupe net */
+    s += '<path d="M -55,10 C -58,-8 -59,-24 -58,-32 C -56,-46 -44,-52 -22,-54" fill="none" stroke="' + C.signe + '" stroke-width="15" stroke-linecap="butt" stroke-linejoin="round"/>';
+    /* paume */
+    s += '<path d="M -26,-61 C -26,-64 -20,-64 -14,-64 L 12,-64 C 21,-64 24,-58 22,-52 L 19,-43 C 6,-40 -14,-40 -26,-44 Z" fill="' + C.signe + '"/>';
+    /* quatre doigts presque paralleles qui se courbent vers le bas, l'index le plus long */
+    s += '<path d="M 14,-60 C 34,-64 50,-58 52,-46" stroke-width="6.5"' + st + '/>';
+    s += '<path d="M 18,-53 C 36,-55 50,-47 49,-33" stroke-width="6.5"' + st + '/>';
+    s += '<path d="M 18,-46 C 33,-47 44,-39 43,-25" stroke-width="6.2"' + st + '/>';
+    s += '<path d="M 15,-40 C 26,-40 34,-34 33,-21" stroke-width="5.8"' + st + '/>';
+    /* pouce, qui descend vers la fleur */
+    s += '<path d="M -10,-43 C -11,-37 -8,-33 -3,-31" stroke-width="6.5"' + st + '/>';
+    return s;
+  }
+
+  /* fleur d'agave a cinq petales sur une coupe */
+  function fleur() {
+    var s = '', f = ' fill="' + C.signe + '"';
+    /* bouton central */
+    s += '<path d="M 0,-25 C 8,-13 9,4 0,12 C -9,4 -8,-13 0,-25 Z"' + f + '/>';
+    /* petales interieurs */
+    s += '<path d="M -17,-17 C -3,-10 4,4 -3,12 C -14,8 -21,-6 -17,-17 Z"' + f + '/>';
+    s += '<path d="M 17,-17 C 3,-10 -4,4 3,12 C 14,8 21,-6 17,-17 Z"' + f + '/>';
+    /* petales exterieurs, larges, qui s'ouvrent vers les cotes */
+    s += '<path d="M -34,-6 C -20,-4 -8,6 -8,14 C -22,15 -34,7 -34,-6 Z"' + f + '/>';
+    s += '<path d="M 34,-6 C 20,-4 8,6 8,14 C 22,15 34,7 34,-6 Z"' + f + '/>';
+    /* coupe */
+    s += '<path d="M -31,16 L 31,16 C 30,22 18,26 0,26 C -18,26 -30,22 -31,16 Z"' + f + '/>';
+    return s;
+  }
+
+  function texteArc(id, txt, size, spacing) {
+    return '<text font-family="' + FONT + '" font-weight="bold" font-size="' + size + '" letter-spacing="' + spacing +
+      '" fill="' + C.signe + '" text-anchor="middle"><textPath href="#' + id + '" xlink:href="#' + id + '" startOffset="50%">' + txt + '</textPath></text>';
+  }
+
+  function sceau(o) {
+    var x = o.x || 0, y = o.y || 0, r = o.r || 100;
+    var t = (o.t === undefined) ? 1 : o.t;
+    var k = n(r / 100);
+    var uid = 'md_' + Math.round(x) + '_' + Math.round(y) + '_' + Math.round(r);
+    var idH = uid + '_h', idB = uid + '_b';
+    var out = [];
+    out.push('<g opacity="' + n(t) + '">');
+    /* disque cuivre, une seule ombre de papier pour tout le sceau */
+    out.push('<g filter="url(#md_ombre)"><circle cx="' + n(x) + '" cy="' + n(y) + '" r="' + n(r) + '" fill="' + C.cuivre + '"/></g>');
+    out.push('<g transform="translate(' + n(x) + ',' + n(y) + ') scale(' + k + ')">');
+    /* jante sombre et filet clair */
+    out.push('<circle r="96" fill="none" stroke="' + C.cuivreSombre + '" stroke-width="8"/>');
+    out.push('<circle r="88.5" fill="none" stroke="' + C.cuivreClair + '" stroke-width="2.5"/>');
+    /* chemins du texte */
+    out.push('<defs><path id="' + idH + '" d="M ' + pol(71, 187) + ' A 71 71 0 0 1 ' + pol(71, 353) + '"/>' +
+      '<path id="' + idB + '" d="M ' + pol(85.5, 173) + ' A 85.5 85.5 0 0 0 ' + pol(85.5, 7) + '"/></defs>');
+    var fin = (r >= 70) ? ' filter="url(#md_ombre_fine)"' : '';
+    out.push('<g' + fin + '>');
+    out.push(texteArc(idH, "IVRESSE D'AMOUR", 16.5, 1.2));
+    out.push(texteArc(idB, 'TOLOACHE LEGITIMO', 16.5, 1.2));
+    /* separateurs aux flancs */
+    out.push(etoile(-79, 0, 4.6));
+    out.push(etoile(79, 0, 4.6));
+    out.push('</g>');
+    /* le signe milagro */
+    out.push('<g' + fin + ' transform="scale(0.94)">');
+    out.push(main());
+    out.push('<g transform="rotate(180)">' + main() + '</g>');
+    out.push(fleur());
+    out.push(etoile(-21, -33, 3.8));
+    out.push(etoile(6, -35, 3.4));
+    out.push(etoile(-13, 37, 3.4));
+    out.push('</g>');
+    out.push('</g></g>');
+    return out.join('');
+  }
+
+  function medaillon(o) { return sceau(o || {}); }
+
+  function medaillonHero(o) {
+    o = o || {};
+    var t = (o.t === undefined) ? 1 : o.t;
+    var inner = sceau({ x: o.x, y: o.y, r: o.r, t: 1 });
+    return '<g opacity="' + n(t) + '"><g filter="url(#md_ombre_hero)">' + inner + '</g></g>';
+  }
+
+  window.defsMedaillon = defsMedaillon;
+  window.medaillon = medaillon;
+  window.medaillonHero = medaillonHero;
+})();
+
+/* ===== mains.js ===== */
+/* mains.js : les deux mains du logo Ivresse d'Amour, en papier decoupe.
+   Fonction globale hands({x, y, scale, t, part, fixe}) : retourne une chaine SVG a inserer dans un <g>.
+   part : 'haut' | 'bas' | 'deux' (defaut). fixe : true = la main reste en place, seuls les doigts suivent t.
+   Coordonnees en unites du viewBox 1600 x 900. Aucune dependance, aucun etat global.
+   Ids prefixes "mn_". Les <defs> (filtre d'ombre) sont fournis une fois par defsMains().
+
+   Geometrie : une seule main est dessinee (celle du haut) en coordonnees locales centrees sur (x,y),
+   rayon du cercle R = 210 a scale 1. Le dos de la main suit le cercle : l'avant-bras arrive par le
+   haut a droite (manchette douce), la paume est en haut, les quatre doigts s'ouvrent en eventail vers
+   la gauche et redescendent le long du cercle, le pouce est replie sous la paume. La main du bas est
+   la meme, tournee de 180 degres autour du centre. A t=0 la main du haut est au-dessus du cadre et
+   celle du bas en dessous ; a t=1 elles se referment autour du centre, comme le sceau du logo. */
+
+(function () {
+  var CLAIR = '#c9a06a';
+  var OMBRE = '#a07a4a';
+  var R = 210;
+  var DEG = Math.PI / 180;
+
+  function n(v) { return Math.round(v * 100) / 100; }
+  function pol(a, r) { return [r * Math.cos(a * DEG), r * Math.sin(a * DEG)]; }
+  function lisse(u) { u = Math.max(0, Math.min(1, u)); return u * u * (3 - 2 * u); }
+  function ent(a, b, u) { return a + (b - a) * lisse(u); }
+
+  function defsMains() {
+    return '<filter id="mn_ombre" x="-25%" y="-25%" width="150%" height="150%">' +
+      '<feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/></filter>';
+  }
+
+  /* un doigt : base (bx,by), direction dir en degres (0 = +x, 90 = +y ecran), qui tourne de "turn" degres
+     sur sa longueur L, largeur w0 a la base et w1 avant le bout arrondi. Contour ferme, base plate. */
+  function doigt(bx, by, dir, turn, L, w0, w1) {
+    var N = 10, g = [], d = [], i, u, a, x = bx, y = by, step = L / N;
+    var pas = turn / N;
+    /* ligne centrale : petits segments qui tournent regulierement */
+    g.push([x, y, dir]);
+    for (i = 1; i <= N; i++) {
+      a = dir + pas * (i - 0.5);
+      x += Math.cos(a * DEG) * step;
+      y += Math.sin(a * DEG) * step;
+      g.push([x, y, dir + pas * i]);
+    }
+    /* cote gauche */
+    for (i = 0; i <= N; i++) {
+      u = i / N;
+      var w = ent(w0, w1, u) / 2;
+      /* leger renflement des articulations, tres discret */
+      w += Math.sin(u * Math.PI * 2) * 0.6;
+      var nx = -Math.sin(g[i][2] * DEG), ny = Math.cos(g[i][2] * DEG);
+      d.push((i ? 'L ' : 'M ') + n(g[i][0] + nx * w) + ',' + n(g[i][1] + ny * w));
+    }
+    /* bout arrondi : demi cercle de rayon w1/2 autour du dernier point */
+    var tip = g[N], ta = tip[2], rr = w1 / 2, k;
+    for (k = 1; k < 8; k++) {
+      var b = (ta + 90 - k * 180 / 8) * DEG;
+      d.push('L ' + n(tip[0] + Math.cos(b) * rr) + ',' + n(tip[1] + Math.sin(b) * rr));
+    }
+    /* cote droit, retour */
+    for (i = N; i >= 0; i--) {
+      u = i / N;
+      var w2 = ent(w0, w1, u) / 2 + Math.sin(u * Math.PI * 2) * 0.6;
+      var nx2 = -Math.sin(g[i][2] * DEG), ny2 = Math.cos(g[i][2] * DEG);
+      d.push('L ' + n(g[i][0] - nx2 * w2) + ',' + n(g[i][1] - ny2 * w2));
+    }
+    d.push('Z');
+    return d.join(' ');
+  }
+
+  /* avant-bras + paume, une seule forme, echantillonnee en polaire du poignet (aW) au bout de la paume (aP). */
+  function brasPaume(aW, aP) {
+    var d = [], a, i, N = 40;
+    var rOut, rIn;
+    function rayons(a) {
+      /* u : 0 au poignet, 1 au bout de la paume */
+      var u = (a - aW) / (aP - aW);
+      /* bras : bande reguliere ; paume : plus large, bosse du dos et bourrelet du pouce vers l'interieur */
+      var pa = lisse((u - 0.36) / 0.34);
+      rOut = R + 21 + 13 * pa;
+      rIn = R - 23 - 22 * pa;
+      /* le bourrelet du pouce s'arrondit un peu vers le bout de la paume */
+      rIn += 4 * lisse((u - 0.86) / 0.14);
+    }
+    /* bord exterieur (dos), du poignet vers les doigts */
+    for (i = 0; i <= N; i++) {
+      a = aW + (aP - aW) * i / N; rayons(a);
+      var p = pol(a, rOut);
+      d.push((i ? 'L ' : 'M ') + n(p[0]) + ',' + n(p[1]));
+    }
+    /* bout de la paume : ligne des articulations, legerement bombee vers les doigts */
+    rayons(aP);
+    var mid = pol(aP - 3.5, (rOut + rIn) / 2);
+    var pin = pol(aP, rIn);
+    d.push('Q ' + n(mid[0]) + ',' + n(mid[1]) + ' ' + n(pin[0]) + ',' + n(pin[1]));
+    /* bord interieur (creux de la main), retour vers le poignet */
+    for (i = N; i >= 0; i--) {
+      a = aW + (aP - aW) * i / N; rayons(a);
+      var q = pol(a, rIn);
+      d.push('L ' + n(q[0]) + ',' + n(q[1]));
+    }
+    /* manchette douce : bout arrondi du poignet, un demi cercle vers l'exterieur du cadre */
+    rayons(aW);
+    var c = pol(aW, (rOut + rIn) / 2), rc = (rOut - rIn) / 2, k;
+    var urx = Math.cos(aW * DEG), ury = Math.sin(aW * DEG);
+    var utx = Math.cos((aW + 90) * DEG), uty = Math.sin((aW + 90) * DEG);
+    for (k = 1; k < 10; k++) {
+      var ph = (180 - k * 18) * DEG, cr = Math.cos(ph) * rc, ct = Math.sin(ph) * rc * 0.55;
+      d.push('L ' + n(c[0] + urx * cr + utx * ct) + ',' + n(c[1] + ury * cr + uty * ct));
+    }
+    d.push('Z');
+    return d.join(' ');
+  }
+
+  /* une main complete (celle du haut) en coordonnees locales : liste de chemins.
+     ouv 0..1 : 1 = doigts un peu plus ouverts (main qui arrive), 0 = refermes autour du centre. */
+  function uneMain(ouv) {
+    var aW = -24, aP = -124;
+    var paths = [brasPaume(aW, aP)];
+    /* les doigts partent de la ligne des articulations en aP, du dos (r grand) vers le creux (r petit).
+       Le plus haut (auriculaire) est court, puis ils s'allongent ; le plus bas est le plus pres du centre. */
+    var tang = aP - 90;                 /* direction tangente vers les angles decroissants (vers la gauche puis le bas) */
+    var base = [R + 23, R + 3, R - 17, R - 36];
+    var lon = [70, 98, 112, 104];
+    var evt = [6, 3, 0, -3];           /* eventail : positif = vers l'exterieur du cercle */
+    var crb = [-8, -16, -26, -36];      /* courbure : le doigt du haut presque droit, celui du bas suit le cercle */
+    var larg0 = [24, 25, 25, 24];
+    var larg1 = [7, 8, 8, 7];
+    var i;
+    for (i = 0; i < 4; i++) {
+      var p = pol(aP + (i ? 2.5 : 0.8), base[i]);
+      /* les doigts tournent vers le centre le long de leur longueur (ils suivent le cercle) ; quand la
+         main arrive ils sont un peu plus tendus */
+      var turn = crb[i] * (1 - 0.5 * ouv);
+      var dir = tang + evt[i] * (1 + 0.5 * ouv);
+      paths.push(doigt(p[0], p[1], dir, turn, lon[i], larg0[i], larg1[i]));
+    }
+    /* le pouce : replie sous la paume, court et pointu, il part du bourrelet interieur et pointe
+       vers l'avant, un peu vers le centre */
+    var pb = pol(-106, R - 24);
+    paths.push(doigt(pb[0], pb[1], 112, 10, 58, 34, 9));
+    return paths;
+  }
+
+  /* deux mains : (x,y) = centre. t 0 : hors cadre (haut et bas) ; 1 : refermees autour du centre. */
+  function hands(o) {
+    o = o || {};
+    var x = o.x || 0, y = o.y || 0, s = (o.scale == null ? 1 : o.scale);
+    var t = Math.max(0, Math.min(1, o.t == null ? 1 : o.t));
+    var H = o.frame == null ? 900 : o.frame;
+    var e = 1 - Math.pow(1 - t, 2.5);   /* arrivee franche, fin douce */
+    var paths = uneMain(1 - e);
+    var forme = '';
+    for (var i = 0; i < paths.length; i++) forme += '<path d="' + paths[i] + '"/>';
+    /* la main du haut descend en local jusqu'a environ -45 (bout du doigt le plus bas) ; hors cadre a t=0 */
+    var portee = 60 * s + 30;
+    var dHaut = -(y + portee) * (1 - e);          /* monde : vers le haut */
+    var dBas = ((H - y) + portee) * (1 - e);      /* monde : vers le bas */
+    /* part : 'haut' | 'bas' ne dessine qu'une main ; fixe : true laisse la main a sa place finale
+       (seuls les doigts suivent t). Le moteur de la page pose alors chaque main dans sa propre
+       couche et la deplace par transformation CSS, sans redessiner. */
+    var part = o.part || 'deux';
+    if (o.fixe) { dHaut = 0; dBas = 0; }
+    var out = [];
+    out.push('<g transform="translate(' + n(x) + ',' + n(y) + ')">');
+    /* main du haut */
+    if (part !== 'bas') {
+      out.push('<g transform="translate(0,' + n(dHaut) + ') scale(' + n(s) + ')" filter="url(#mn_ombre)">');
+      out.push('<g fill="' + OMBRE + '" transform="translate(' + n(5 / s) + ',' + n(4 / s) + ')">' + forme + '</g>');
+      out.push('<g fill="' + CLAIR + '">' + forme + '</g>');
+      out.push('</g>');
+    }
+    /* main du bas : la meme, tournee de 180 degres autour du centre ; l'ombre reste vers le bas a droite */
+    if (part !== 'haut') {
+      out.push('<g transform="translate(0,' + n(dBas) + ') scale(' + n(s) + ')" filter="url(#mn_ombre)">');
+      out.push('<g fill="' + OMBRE + '" transform="translate(' + n(5 / s) + ',' + n(4 / s) + ') rotate(180)">' + forme + '</g>');
+      out.push('<g fill="' + CLAIR + '" transform="rotate(180)">' + forme + '</g>');
+      out.push('</g>');
+    }
+    out.push('</g>');
+    return out.join('');
+  }
+
+  window.defsMains = defsMains;
+  window.hands = hands;
+})();
+
+/* ===== bords.js ===== */
+/* bords.js : bords de cadre, facon video Insider (1m40 a 1m42, 1m51).
+   API globale (pas de dependance sauf agave.js pour agavePaper / mound) :
+     defsBords()                        -> chaine <defs> a inserer UNE fois dans le svg (avec defsAgave())
+     paperGrain()                       -> chaine : grain papier + quadrillage plein cadre 1600 x 900,
+                                           a poser juste apres le rect de fond kaki #adad70
+     bordAgaves({t, side, scale})       -> chaine <g> : 3 a 4 grandes rosettes qui se chevauchent,
+                                           ancrees au bord gauche et/ou droit, coupees par le bord,
+                                           qui montent depuis le bas du cadre quand t va de 0 a 1
+                                           (les rosettes du fond d'abord). side : 'gauche' | 'droite' | 'deux'.
+                                           scale : multiplicateur global (defaut 1). Le centre (40 % de la
+                                           largeur, x 480..1120) reste libre pour le texte.
+   Coordonnees en unites du viewBox 1600 x 900. Ids prefixes bd_. Aucun etat global. */
+
+(function () {
+  'use strict';
+
+  var W = 1600, H = 900;
+
+  function f1(v) { return Math.round(v * 10) / 10; }
+  function clamp01(v) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
+  function easeOut(p) { var q = 1 - p; return 1 - q * q * q; }
+
+  function defsBords() {
+    return '<pattern id="bd_grid" width="40" height="40" patternUnits="userSpaceOnUse">' +
+        '<path d="M40,0.5 L0,0.5 M0.5,0 L0.5,40" fill="none" stroke="#8f8f56" stroke-opacity="0.3" stroke-width="1"/>' +
+      '</pattern>' +
+      /* grain : bruit fractal fin ; une couche sombre (effet multiply) et une couche claire tres faible
+         pour que la moyenne reste au kaki #adad70 */
+      '<filter id="bd_grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+        '<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" stitchTiles="stitch" result="n"/>' +
+        '<feColorMatrix in="n" type="matrix" values="' +
+          '0 0 0 0 0.33  0 0 0 0 0.33  0 0 0 0 0.22  0.45 0 0 0 -0.17" result="d"/>' +
+        '<feColorMatrix in="n" type="matrix" values="' +
+          '0 0 0 0 0.92  0 0 0 0 0.92  0 0 0 0 0.64  0 0.4 0 0 -0.16" result="l"/>' +
+        '<feMerge><feMergeNode in="d"/><feMergeNode in="l"/></feMerge>' +
+      '</filter>' +
+      /* rosettes du fond : un peu plus sombres, couleurs plates gardees */
+      '<filter id="bd_ombre" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">' +
+        '<feColorMatrix type="matrix" values="0.8 0 0 0 0  0 0.8 0 0 0  0 0 0.86 0 0  0 0 0 1 0"/>' +
+      '</filter>';
+  }
+
+  function paperGrain() {
+    return '<g class="bd_paper">' +
+      '<rect width="' + W + '" height="' + H + '" fill="url(#bd_grid)"/>' +
+      '<rect width="' + W + '" height="' + H + '" filter="url(#bd_grain)"/>' +
+      '</g>';
+  }
+
+  /* Rosettes d'un bord, positions finales mesurees depuis le bord (dx > 0 = vers le centre), y = base
+     (sous le bord bas du cadre : on ne voit que les lames, comme dans la video). depth 0 = tout au fond.
+     Ordre du tableau = ordre de dessin (fond d'abord) = ordre de montee (t0..t1). */
+  var CLUSTER = [
+    { dx: -230, y: 1020, scale: 1.9, seed: 32, leaves:  7, depth: 0, t0: 0.00, t1: 0.50 },
+    { dx:  150, y: 1060, scale: 2.2, seed: 31, leaves:  7, depth: 0, t0: 0.08, t1: 0.60 },
+    { dx:   20, y: 1040, scale: 2.6, seed: 33, leaves:  9, depth: 1, t0: 0.30, t1: 0.85 },
+    { dx:  260, y: 1030, scale: 1.6, seed: 34, leaves:  7, depth: 2, t0: 0.45, t1: 1.00 }
+  ];
+  /* variante pour le bord droit : memes places, autres graines et petites variations */
+  var CLUSTER_R = [
+    { dx: -210, y: 1025, scale: 1.95, seed: 42, leaves:  7, depth: 0, t0: 0.00, t1: 0.50 },
+    { dx:  160, y: 1055, scale: 2.1, seed: 41, leaves:  9, depth: 0, t0: 0.10, t1: 0.62 },
+    { dx:   60, y: 1035, scale: 2.65, seed: 46, leaves:  9, depth: 1, t0: 0.32, t1: 0.86 },
+    { dx:  250, y: 1035, scale: 1.65, seed: 44, leaves:  7, depth: 2, t0: 0.46, t1: 1.00 }
+  ];
+
+  /* etirement : les lames de la video sont plus longues et plus dressees que celles d'agavePaper ;
+     on etire la rosette (x 0.82, y 1.2) sans la redessiner. */
+  var SX = 0.82, SY = 1.2;
+
+  function oneSide(list, side, t, gs, x0, x1, plan) {
+    var out = '';
+    for (var i = 0; i < list.length; i++) {
+      var r = list[i];
+      /* plan : 'fond' ne garde que les rosettes du fond (depth 0), 'devant' les autres ; sinon toutes.
+         Sert au moteur de la page pour tenir deux couches qui montent chacune d'un bloc. */
+      if (plan === 'fond' && r.depth !== 0) continue;
+      if (plan === 'devant' && r.depth === 0) continue;
+      var p = easeOut(clamp01((t - r.t0) / (r.t1 - r.t0)));
+      var sc = r.scale * gs;
+      var rise = (260 * sc * SY + 90) * (1 - p);     /* p = 0 : tout sous le cadre */
+      var x = side === 'gauche' ? x0 + r.dx * gs : x1 - r.dx * gs;
+      var y = H - (H - r.y) * gs + rise;              /* la base reste sous le bord bas */
+      var filt = r.depth === 0 ? ' filter="url(#bd_ombre)"' : '';
+      var yBase = H - (H - r.y) * gs;
+      var riseMax = 260 * sc * SY + 90;
+      out += '<g class="bd_ros" data-t0="' + r.t0 + '" data-t1="' + r.t1 + '" data-x="' + f1(x) + '" data-y="' + f1(yBase) + '" data-rise="' + f1(riseMax) + '"' + filt + ' transform="translate(' + f1(x) + ',' + f1(y) + ') scale(' + SX + ',' + SY + ')">' +
+        mound({ x: 0, y: 0, scale: sc }) +
+        agavePaper({ x: 0, y: 0, scale: sc, seed: r.seed, leaves: r.leaves, palette: 'bleu' }) +
+        '</g>';
+    }
+    return out;
+  }
+
+  function bordAgaves(o) {
+    o = o || {};
+    var t = clamp01(o.t === undefined ? 1 : o.t);
+    var side = o.side || 'deux';
+    var gs = o.scale || 1;
+    /* x0, x1 : les deux bords du cadre visible (defaut 0 et 1600) ; en portrait le moteur passe
+       le cadre reel pour que les rosettes restent accrochees aux bords de l'ecran */
+    var x0 = o.x0 == null ? 0 : o.x0, x1 = o.x1 == null ? W : o.x1;
+    var out = '<g class="bd_agaves">';
+    if (side === 'gauche' || side === 'deux') out += oneSide(CLUSTER, 'gauche', t, gs, x0, x1, o.plan);
+    if (side === 'droite' || side === 'deux') out += oneSide(CLUSTER_R, 'droite', t, gs, x0, x1, o.plan);
+    return out + '</g>';
+  }
+
+  window.defsBords = defsBords;
+  window.paperGrain = paperGrain;
+  window.bordAgaves = bordAgaves;
+  /* met a jour les rosettes deja construites : bordAgavesUpdate(rootElement, t, dy) sans reconstruire */
+  window.bordAgavesUpdate = function(root, t, dy) {
+    if (!root) return;
+    var els = root.querySelectorAll('.bd_ros'); dy = dy || 0;
+    for (var i = 0; i < els.length; i++) {
+      var e = els[i], t0 = +e.getAttribute('data-t0'), t1 = +e.getAttribute('data-t1');
+      var p = easeOut(clamp01((t - t0) / (t1 - t0)));
+      var y = +e.getAttribute('data-y') + (+e.getAttribute('data-rise')) * (1 - p) + dy;
+      e.setAttribute('transform', 'translate(' + e.getAttribute('data-x') + ',' + f1(y) + ') scale(' + SX + ',' + SY + ')');
+    }
+  };
+})();
+
+</script>
+<script>
+/* ---------- les deux mots decoupes ----------
+   Toutes les legendes de la page vivent dans le HTML, en data-fr, data-es,
+   data-en : c est site.js qui les ecrit, comme sur toutes les autres pages.
+   Ces deux mots la sont la seule exception : ce sont les deux moities de
+   mexcalli decoupees dans du papier A L INTERIEUR du dessin (window.ransom).
+   La langue courante est lue sur <html lang>, que site.js tient a jour. */
+const LEGENDES = {
+  fr:{ l1:"agave", l2:"cuit au four" },
+  es:{ l1:"agave", l2:"cocido en horno" },
+  en:{ l1:"agave", l2:"cooked in the oven" }
+};
+function langueDuDocument(){
+  const l = document.documentElement.getAttribute('lang') || 'fr';
+  return LEGENDES[l] ? l : 'fr';
+}
+let LANG = langueDuDocument();
+if(window.MutationObserver){
+  new MutationObserver(function(){
+    const l = langueDuDocument();
+    if(l === LANG) return;
+    LANG = l; cache.delete('L_lettres'); render(P, true);
+  }).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
+}
+
+/* ---------- utilitaires ---------- */
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);            /* 0..1 dans [a,b] */
+const easeOut=t=>1-Math.pow(1-t,3);
+const stepped=(t,n)=>Math.round(t*n)/n;               /* quantifie t en n paliers */
+const g=id=>document.getElementById(id);
+const REDUIT = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const cache=new Map();
+function safe(fn,...a){ try{ return fn?fn(...a):''; }catch(e){ console.error(fn&&fn.name,e); return ''; } }
+
+/* put : construit le contenu d une couche pour une clef d etat donnee. Meme clef, rien a faire :
+   c est ce qui evite tout redessin entre deux etats. Une couche vide est cachee. */
+function put(id,key,html){
+  if(cache.get(id)===key) return;
+  cache.set(id,key);
+  /* html peut etre une fonction : le dessin n est alors calcule que si la clef a change,
+     jamais a chaque image (c est le gros du cout JS par image sinon) */
+  if(typeof html==='function') html=html();
+  const e=g(id); e.innerHTML=html;
+  e.classList.toggle('vide', !html);
+  e.classList.toggle('vive', !!html);
+}
+/* move : deplace une couche entiere par transform et opacity CSS. dx, dy en unites de la scene,
+   convertis en px avec le facteur K du cadrage courant ; sc = echelle autour du point (ox, oy)
+   en unites de la scene. On n ecrit dans le style que si la valeur a change. */
+function move(id,dx,dy,sc,op,ox,oy){
+  const e=g(id); sc=(sc==null?1:sc);
+  const tr='translate3d('+((dx||0)*K).toFixed(1)+'px,'+((dy||0)*K).toFixed(1)+'px,0) scale('+sc.toFixed(4)+')';
+  if(e._tr!==tr){ e._tr=tr; e.style.transform=tr; }
+  if(ox!=null){ const or=(((ox-VB.x)*K+OFFX).toFixed(1))+'px '+(((oy-VB.y)*K+OFFY).toFixed(1))+'px';
+    if(e._or!==or){ e._or=or; e.style.transformOrigin=or; } }
+  const o=clamp(op==null?1:op,0,1).toFixed(3);
+  if(e._op!==o){ e._op=o; e.style.opacity=o; }
+}
+/* cap : la legende id est visible entre a et b ; elle monte en fondu sur les 1,2 % de defilement
+   qui suivent a et redescend sur ceux qui precedent b. Ecrit dans le style seulement si la
+   valeur change, comme move(). Aucune transition CSS derriere. */
+const CAP_RAMPE=0.012;
+function cap(id,a,b){
+  const e=g(id); if(!e) return;
+  let t=0;
+  if(typeof a==='boolean'){ t=a?1:0; }
+  else if(P>=a && P<b){ t=Math.min(a<=0?1:seg(P,a,a+CAP_RAMPE), 1-seg(P,b-CAP_RAMPE,b)); }
+  const o=REDUIT?(t>0.5?1:0):easeOut(t);
+  const os=o.toFixed(3);
+  if(e._op!==os){ e._op=os; e.style.opacity=os; e.classList.toggle('vive',o>0&&o<1); }
+  const dy=((1-o)*14).toFixed(1);
+  const tr=e.classList.contains('centre')?'translate3d(-50%,calc(-50% + '+dy+'px),0)':'translate3d(0,'+dy+'px,0)';
+  if(e._tr!==tr){ e._tr=tr; e.style.transform=tr; }
+}
+/* clip : decouvre une couche du haut de l ecran jusqu a la ligne yScene (unites de scene),
+   par clip-path inset, que le compositeur applique sans redessiner la couche. null = tout. */
+function clipCouche(id,yScene){
+  const e=g(id); let v='';
+  if(yScene!=null){ const bas=Math.max(0, VH-((yScene-VB.y)*K+OFFY)); v='inset(0px 0px '+bas.toFixed(1)+'px 0px)'; }
+  if(e._cp!==v){ e._cp=v; e.style.clipPath=v; }
+}
+/* l eclair long (tour 3) : le meme eclair que window.bolt a t = 1, prolonge vers le haut jusqu au
+   dessus du bord haut du cadre, quelle que soit la hauteur de l ecran : il vient du bord de la fenetre.
+   (x,y) = la pointe, en unites de scene. */
+function eclairLong(x,y,scale){
+  const OUT=[[-150,-300],[-97.5,-300],[-80,-211],[-17.5,-230],[0,0],[-40,-165],[-115,-134]];
+  const IN=[[-132,-300],[-113,-300],[-94,-192.5],[-25,-215],[-15,-87.5],[-39,-184],[-104,-152.5]];
+  const haut=(y-VB.y)/scale+60;                 /* longueur locale du bord haut du cadre a la pointe, plus marge */
+  const ext=Math.max(0, haut-300), k=0.2;   /* pente du prolongement : 12 degres, la pente de la barre */
+  const pts=a=>a.map(q=>q[1]===-300?[q[0]-k*ext,-300-ext]:q).map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');
+  /* en portrait l eclair est retourne (miroir) : sa barre monte a droite de la pointe, la colonne des legendes reste libre */
+  const sx=PORTRAIT?-scale:scale;
+  return '<g transform="translate('+x+','+y+') scale('+sx+','+scale+')" filter="url(#fd_ombre)"><polygon points="'+pts(OUT)+'" fill="#d07735"/><polygon points="'+pts(IN)+'" fill="#ffffff"/></g>';
+}
+
+/* ---------- defs ---------- */
+/* les mots du sceau dans la cloture : arc IVRESSE D'AMOUR, puis TOLOACHE et LEGITIMO, traces de logo.js */
+(function motsDuSceau(){
+  const h=g('motsSceau'); if(!h||typeof window.logoParts!=='function') return;
+  const L=window.logoParts(); const NS='http://www.w3.org/2000/svg';
+  const bloc=(parts,cls)=>{ const svg=document.createElementNS(NS,'svg'); svg.setAttribute('aria-hidden','true'); svg.setAttribute('focusable','false'); if(cls) svg.setAttribute('class',cls);
+    let d=''; for(const k of parts) for(const it of (L[k]||[])) d+='<path d="'+it.d+'" fill-rule="evenodd"/>';
+    svg.innerHTML=d; svg.setAttribute('viewBox','209 52 466 499'); h.appendChild(svg);
+    return svg; };
+  bloc(['arc','toloache','legitimo'],'sceau');
+})();
+/* la cible de la bouteille dans le sceau de la cloture : le centre de la fleur du sceau (443,300 dans
+   son repere natif, boite du svg 209..675 x 52..551) et une hauteur de 262 unites du sceau, en scene */
+function cibleSceau(){
+  const h=g('motsSceau'); const svg=h&&h.firstElementChild; if(!svg) return null;
+  const r=svg.getBoundingClientRect(); if(!(r.width>0)) return null;
+  const u=r.width/466;
+  const sx=r.left+(443-209)*u, sy=r.top+(300-52)*u, sh=262*u;
+  return { x:(sx-OFFX)/K+VB.x, y:(sy-OFFY)/K+VB.y, h:sh/K };
+}
+/* mode leger : peu de coeurs ou peu de memoire declaree, on retire les filtres d ombre (voir css .leger) */
+(function modeLeger(){
+  try{
+    const c=navigator.hardwareConcurrency||8, m=navigator.deviceMemory||8;
+    if(c<=4 || m<=4 || REDUIT) g('stage').classList.add('leger');
+  }catch(e){}
+})();
+(function initDefs(){
+  const d=[];
+  for(const f of ['defsAgave','defsFoudre','defsLettres','defsFlammes','defsBouteille','defsMedaillon','defsMains','defsBords']) if(typeof window[f]==='function') d.push(window[f]());
+  g('defs').innerHTML=d.join('');
+})();
+
+/* ---------- les images en papier decoupe (tour 2) ----------
+   Mesures des fichiers (px) : largeur, hauteur, et la boite opaque, pour poser
+   chaque decoupe par son contenu et non par ses marges transparentes.
+   Les flammes : haut de la plus haute langue (top), ligne a mi couverture (mi),
+   haut de la bande pleine (bande), bas opaque (bas). */
+const IMG='assets/img/historia/';
+const PAPIER={
+  f1:{src:IMG+'flammes_1.webp',w:1800,h:838,top:26,mi:172,bande:279,bas:613},
+  f2:{src:IMG+'flammes_2.webp',w:1800,h:763,top:1,mi:173,bande:277,bas:591},
+  f3:{src:IMG+'flammes_3.webp',w:1800,h:891,top:188,mi:314,bande:625,bas:625,x0:50,x1:1743},
+  f4:{src:IMG+'flammes_4.webp',w:1800,h:903,top:1,mi:372,bande:826,bas:826,x0:56,x1:1745},
+  f5:{src:IMG+'flammes_5.webp',w:1800,h:756,top:0,mi:154,bande:238,bas:726},
+  copita:{src:IMG+'copita_papier.webp',w:700,h:552,ox0:195,ox1:504,oy0:157,oy1:541},
+  botella:{src:IMG+'botella_papier.webp',w:700,h:1731,ox0:2,ox1:686,oy0:126,oy1:1604}
+};
+const n1=v=>(+v).toFixed(1);
+/* une image svg posee par un rectangle en unites de scene */
+function img(im,x,y,w,h){ return '<image href="'+im.src+'" x="'+n1(x)+'" y="'+n1(y)+'" width="'+n1(w)+'" height="'+n1(h)+'" preserveAspectRatio="none"/>'; }
+/* une decoupe posee par sa boite opaque : centre x, ligne du bas (bas de l objet), hauteur de l objet */
+function decoupe(im,cx,bas,hauteur){
+  const ow=im.ox1-im.ox0, oh=im.oy1-im.oy0;
+  const k=hauteur/oh, W=im.w*k, H=im.h*k;
+  return img(im, cx-(im.ox0+ow/2)*k, bas-im.oy1*k, W, H);
+}
+/* precharge (au calme, apres la porte) : les sept decoupes, pour qu aucune ne surgisse en retard */
+function precharger(){
+  for(const k in PAPIER){ const i=new Image(); i.decoding='async'; try{ i.fetchPriority='low'; }catch(e){} i.src=PAPIER[k].src; }
+}
+
+/* ---------- le grain du papier ----------
+   Une tuile de 160 px de bruit, calculee une fois, repetee en fond de scene ;
+   remplace le feTurbulence plein cadre (qui coutait a chaque cadrage, surtout
+   sur telephone). Rien si le mouvement est reduit, comme avant. */
+(function grain(){
+  if(REDUIT) return;
+  try{
+    const c=document.createElement('canvas'); c.width=c.height=160;
+    const ctx=c.getContext('2d'); const id=ctx.createImageData(160,160); const d=id.data;
+    let s=7;
+    const rnd=()=>{ s=(s*16807)%2147483647; return s/2147483647; };
+    for(let i=0;i<d.length;i+=4){ const v=rnd(); const sombre=v<0.5;
+      d[i]=sombre?60:255; d[i+1]=sombre?58:250; d[i+2]=sombre?40:200; d[i+3]=Math.round((sombre?26:16)*rnd()); }
+    ctx.putImageData(id,0,0);
+    const st=g('stage');
+    st.style.backgroundImage='url('+c.toDataURL('image/png')+'),'+getComputedStyle(st).backgroundImage;
+    st.style.backgroundSize='160px 160px,40px 40px,40px 40px';
+  }catch(e){}
+})();
+
+/* ---------- le cadrage ----------
+   Paysage : la scene 1600 x 900, coupee (slice) comme avant.
+   Portrait (telephone) : on cadre une bande verticale de 700 unites de large, centree sur
+   x = 800, dont le bas est a y = 1000 ; la hauteur suit l ecran. La ligne d horizon, les
+   agaves, le sol restent donc en bas, les legendes en haut, et rien ne deborde. Les positions
+   et echelles de chaque element sont donnees par MISE (voir plus bas). */
+const COUCHES=['L_collines','L_bords_fond','L_bords_devant','L_sol','L_flaques','L_agaves','L_eclat','L_flammes_fond','L_flammes_mid','L_flammes_devant','L_lettres','L_soleil','L_soleil_verre','L_main_h','L_main_b','L_bouteille','L_foudre','L_verre'];
+let VB={x:0,y:0,w:1600,h:900}, K=1, OFFX=0, OFFY=0, VW=1600, VH=900, PORTRAIT=false;
+let SCROLL_TOP=0, SCROLL_H=1;
+let MISE=null;
+
+function miseEnPage(portrait){
+  if(!portrait) return {
+    bords:{scale:1, x0:0, x1:1600},
+    ransom:{x:800,y:470,scale:1},
+    /* le feu : largeur des bandes, ligne du bas B (bas du cadre), hauteur de la bande pleine
+       au dessus de B pour chaque plan, les braises devant, les accents (flammes_4) */
+    flammes:{w:1600, devant:-45, mid:20, fond:70, braises:{w:900,cx:800}, accents:[{w:520,cx:430,plan:'mid'},{w:420,cx:1250,plan:'devant'}]},
+    soleil:{x:1080,y:250,scale:1, copita:165, dy:52},
+    cotes:[{x:330,y:790,scale:1.15,seed:11,leaves:12},{x:1270,y:790,scale:1.05,seed:5,leaves:12}],
+    centre:{x:800,y:780,scale:1.35,seed:2,leaves:14},
+    foudre:{scale:1.4}, verre:{scale:1.7}, flaques:{scale:1.9}, sol:{scale:1.35},
+    mains:{x:800,y:470,scale:1}, bouteille:{x:800,y:660,scale:0.85,haut:400,ecart:130,fin:{dx:0,dy:150,zoom:1.12}}, descente:0, pousse:0
+  };
+  return {
+    bords:{scale:0.55, x0:VB.x, x1:VB.x+VB.w},
+    ransom:{x:800,y:390,scale:0.78},
+    flammes:{w:1300, devant:20, mid:80, fond:140, braises:{w:640,cx:800}, accents:[{w:340,cx:640,plan:'mid'},{w:300,cx:1000,plan:'devant'}]},
+    soleil:{x:800,y:210,scale:0.9, copita:165, dy:52},
+    cotes:[{x:540,y:800,scale:0.85,seed:11,leaves:12},{x:1070,y:800,scale:0.8,seed:5,leaves:12}],
+    centre:{x:800,y:780,scale:1.15,seed:2,leaves:14},
+    foudre:{scale:1.2}, verre:{scale:1.45}, flaques:{scale:1.6}, sol:{scale:1.35},
+    mains:{x:800,y:600,scale:0.78}, bouteille:{x:800,y:750,scale:0.78,haut:300,ecart:100,fin:{dx:0,dy:70,zoom:1.15}}, descente:0, pousse:0
+  };
+}
+
+function cadrer(){
+  const st=g('stage'), sc=g('scroller');
+  VW=st.clientWidth||window.innerWidth; VH=st.clientHeight||window.innerHeight;
+  const portrait = VW < VH;
+  const largeurChange = (VW!==cadrer.vw), bascule = (portrait!==PORTRAIT);
+  cadrer.vw=VW; PORTRAIT=portrait;
+  if(PORTRAIT){ const w=700, h=Math.round(w*VH/VW); VB={x:800-w/2, y:1000-h, w:w, h:h}; }
+  else VB={x:0,y:0,w:1600,h:900};
+  K=Math.max(VW/VB.w, VH/VB.h); OFFX=(VW-VB.w*K)/2; OFFY=(VH-VB.h*K)/2;
+  const vb=VB.x+' '+VB.y+' '+VB.w+' '+VB.h;
+  for(const id of COUCHES){ const e=g(id); if(e.getAttribute('viewBox')!==vb) e.setAttribute('viewBox',vb); }
+  SCROLL_TOP=sc.offsetTop; SCROLL_H=Math.max(1, sc.offsetHeight-VH);
+  MISE=miseEnPage(PORTRAIT);
+  /* les bords et le feu dependent du cadre ; les autres dessins non. On ne vide donc le
+     cache que si la largeur ou l orientation change (la barre d un telephone qui se replie
+     ne change que la hauteur : rien a reconstruire, sauf le feu qui se pose sur le bas). */
+  if(largeurChange||bascule){ cache.clear(); }
+  else { for(const id of ['L_flammes_fond','L_flammes_mid','L_flammes_devant']) cache.delete(id); }
+  /* les origines de transformation en px dependent du cadre : on force leur reecriture */
+  for(const id of COUCHES){ const e=g(id); e._or=null; e._tr=null; }
+  render(P,true);
+}
+
+/* ---------- le feu en papier (tour 2) ----------
+   Trois plans, du fond vers l avant, tous poses sur la ligne du bas du cadre B :
+   fond    : flammes_2, les langues hautes et fines, la bande la plus reculee ;
+   mid     : flammes_5, le theatre a quatre couches, plus un accent flammes_4 ;
+   devant  : flammes_1, trois couches rouge orange aux pointes ocre, un accent flammes_4
+             a droite, et flammes_3, les braises basses, tout devant.
+   Chaque bande est plus large que le cadre en portrait (1300 pour 700 visibles) : on
+   voit le coeur du feu, jamais un bord de papier coupe. La bande pleine de chaque plan
+   descend sous le cadre : ce qui se voit, ce sont les langues, et le plan de devant
+   masque le pied des autres, comme dans un theatre de papier. */
+function feu(plan){
+  const F=MISE.flammes, B=VB.y+VB.h, x0=800-F.w/2, k=F.w/1800;
+  const bande=(im,haut)=>img(im, x0, B-haut-im.bande*k, F.w, im.h*k);
+  let out='';
+  if(plan==='fond'){ out+=bande(PAPIER.f2,F.fond); }
+  if(plan==='mid'){ out+=bande(PAPIER.f5,F.mid); }
+  if(plan==='devant'){ out+=bande(PAPIER.f1,F.devant); }
+  for(const a of F.accents){ if(a.plan!==plan) continue;
+    const im=PAPIER.f4, ka=a.w/1800; /* posee par sa boite opaque, le bas 40 unites au dessus de B, derriere la ligne des braises */
+    out+=img(im, a.cx-a.w/2, (B-40)-im.bas*ka, a.w, im.h*ka);
+  }
+  if(plan==='devant'){ const im=PAPIER.f3, br=F.braises, kb=br.w/1800;
+    out+=img(im, br.cx-br.w/2, (B+10)-im.bas*kb, br.w, im.h*kb);
+  }
+  return out;
+}
+
+/* ---------- la ligne du temps (p de 0 a 1) ----------
+ S0 0.00-0.13  titre, les grands agaves montent des bords (deux plans)
+ S1 0.13-0.28  le mot : mexcalli -> metl + ixcalli, le feu monte en trois plans
+ S2 0.28-0.37  collines, soleil, la copita levee
+ S3 0.37-0.64  trois agaves, l eclair en trois temps, violet, brun, la copita, les flaques, le sol
+ S4 0.64-0.86  les mains, le meme eclair, la bouteille
+ S5 0.86-1.00  la maison
+ Principe : chaque couche est construite une fois par etat discret (put), puis deplacee en
+ continu (move) ; les transitions sont des mouvements de papier, pas des coupes.
+------------------------------------------------------ */
+let P=0;
+function render(p,force){
+  P=p; const M=MISE; if(!M) return;
+  const s3=seg(p,0.37,0.64), s4=seg(p,0.64,0.86);
+
+  /* ---- S0 : les grands agaves des bords. Montent 0..0.11 en deux plans, restent pendant le
+     mot, glissent sous le cadre 0.235..0.30 ---- */
+  {
+    const on = p<0.32;
+    if(on){
+      put('L_bords_fond','bf'+M.bords.scale, ()=>safe(window.bordAgaves,{t:1,side:'deux',scale:M.bords.scale,x0:M.bords.x0,x1:M.bords.x1,plan:'fond'}));
+      put('L_bords_devant','bd'+M.bords.scale, ()=>safe(window.bordAgaves,{t:1,side:'deux',scale:M.bords.scale,x0:M.bords.x0,x1:M.bords.x1,plan:'devant'}));
+      const upF=easeOut(seg(p,0,0.085)), upD=easeOut(seg(p,0.03,0.115));
+      const down=easeOut(seg(p,0.235,0.30));
+      const derive = p>=0.13 ? seg(p,0.13,0.2)*40 : 0;
+      /* dy0 : de combien descendre la couche pour que la plus haute rosette (sommet vers
+         y = 1040 - 820 x echelle) passe entierement sous le bord bas du cadre */
+      const dy0=(VB.y+VB.h)-(1040-820*M.bords.scale)+30;
+      move('L_bords_fond',0,(1-upF)*dy0 + down*dy0 + derive*0.6,1,1);
+      move('L_bords_devant',0,(1-upD)*dy0 + down*dy0 + derive,1,1);
+    } else { put('L_bords_fond','',''); put('L_bords_devant','',''); }
+  }
+  cap('c0', 0, 0.115);
+
+  /* ---- S1 : le mot, et le feu en trois plans ---- */
+  cap('c1', 0.135, 0.205); cap('c1b', 0.215, 0.28);
+  {
+    const on = p>=0.12 && p<0.31;
+    if(on){
+      const rt=seg(p,0.145,0.235); const q=stepped(rt,16);
+      put('L_lettres','l'+q+LANG+M.ransom.scale, ()=>safe(window.ransom,{x:M.ransom.x,y:M.ransom.y,scale:M.ransom.scale,t:q,legend1:LEGENDES[LANG].l1,legend2:LEGENDES[LANG].l2}));
+      const inn=easeOut(seg(p,0.12,0.16)), out=easeOut(seg(p,0.265,0.30));
+      move('L_lettres',0,(1-inn)*60 - out*140,1,inn*(1-out));
+      /* le feu : le fond part le premier et monte le moins, le devant part le dernier et
+         monte le plus ; a la sortie, tout descend, le devant plus vite, en fondu */
+      const fF=easeOut(seg(p,0.15,0.245)), fM=easeOut(seg(p,0.16,0.255)), fD=easeOut(seg(p,0.17,0.265));
+      const cle='feu'+VB.x+'x'+VB.y+'x'+VB.w+'x'+VB.h;
+      put('L_flammes_fond',cle+'f', ()=>feu('fond'));
+      put('L_flammes_mid',cle+'m', ()=>feu('mid'));
+      put('L_flammes_devant',cle+'d', ()=>feu('devant'));
+      move('L_flammes_fond',0,(1-fF)*260 + out*300,1,1-out);
+      move('L_flammes_mid',0,(1-fM)*330 + out*360,1,1-out);
+      move('L_flammes_devant',0,(1-fD)*400 + out*420,1,1-out);
+    } else { put('L_lettres','',''); for(const id of ['L_flammes_fond','L_flammes_mid','L_flammes_devant']) put(id,'',''); }
+  }
+
+  /* ---- collines : entrent en S2 en montant, restent jusqu a la fin ---- */
+  {
+    const hin=easeOut(seg(p,0.27,0.35));
+    put('L_collines', hin>0?'h':'', ()=>hin>0 ? safe(window.hills,{t:1,far:'#9a9b62'}) : '');
+    move('L_collines',0,(1-hin)*260,1,1);
+  }
+
+  /* ---- S2 : le soleil et la copita levee. Le disque est une couche, la copita une autre
+     qui suit le meme mouvement (meme origine, meme echelle) puis monte dans le disque ---- */
+  cap('c2', 0.29, 0.37);
+  {
+    const on=p>=0.275 && p<0.40;
+    if(on){
+      const S=M.soleil;
+      const st=easeOut(seg(p,0.285,0.345)); const out=easeOut(seg(p,0.36,0.395));
+      const vt=easeOut(seg(p,0.30,0.35));
+      put('L_soleil','sun'+S.scale, ()=>'<g transform="translate('+S.x+','+S.y+') scale('+S.scale+')"><circle cx="0" cy="0" r="110" fill="#FED5A3" filter="url(#lt_shadow)"/><circle cx="0" cy="0" r="94" fill="none" stroke="#D89A2E" stroke-opacity=".38" stroke-width="2"/></g>');
+      put('L_soleil_verre','cop'+S.scale, ()=>decoupe(PAPIER.copita, S.x, S.y+(S.dy+S.copita/2)*S.scale, S.copita*S.scale));
+      const dy=(1-st)*80 - out*60, sc=1;
+      move('L_soleil',0,dy,sc,st*(1-out),S.x,S.y);
+      move('L_soleil_verre',0,dy+(1-vt)*34,sc,vt*st*(1-out),S.x,S.y);
+    } else { put('L_soleil','',''); put('L_soleil_verre','',''); }
+  }
+
+  /* ---- S3 : la legende ---- */
+  const bx=M.centre.x, by=M.centre.y-90;   /* by : la ligne de reference, l agave central est a by+90 */
+  cap('c3a', 0.375, 0.435); cap('c3b', 0.44, 0.515); cap('c3c', 0.525, 0.61);
+  {
+    const on=p>=0.355 && p<0.68;
+    if(on){
+      const enter=easeOut(seg(p,0.36,0.415));
+      /* l eclair (tour 3) : dessine une fois, entier, du bord haut de la fenetre a l agave ; il descend en
+         continu (clip-path) sur s3 0.20..0.275, tient, puis s efface en fondu 0.36..0.40 */
+      const strike=seg(s3,0.20,0.275), boltVis=s3>=0.20 && s3<0.40, boltFade=1-seg(s3,0.36,0.40);
+      const hit = strike>=1;
+      /* l agave frappe clignote une fois ou deux entre violet et bleu (jamais si mouvement reduit) :
+         c est l opacite de la couche L_eclat (l agave violet, puis brun) qui bat, au dessus des
+         trois agaves bleus qui ne se redessinent jamais */
+      const flick = (!REDUIT && hit && s3<0.40) ? (Math.sin(s3*400)>0.3?1:0) : 1;
+      let pal='', outline=0;
+      if(hit && s3<0.46){ pal='violet'; outline=1; } else if(hit){ pal='brun'; }
+      const gt=seg(s3,0.46,0.62), pt=seg(s3,0.55,0.75), bt=seg(s3,0.78,1);
+      const leave=easeOut(seg(p,0.64,0.68));
+      const c0=M.cotes[0], c1=M.cotes[1], ce=M.centre;
+      put('L_agaves',`s3${PORTRAIT}`, ()=>
+        `${safe(window.mound,{x:c0.x,y:c0.y,scale:c0.scale})}${safe(window.agavePaper,{x:c0.x,y:c0.y,scale:c0.scale,leaves:c0.leaves,seed:c0.seed,palette:'bleu',shadow:'leaf'})}
+         ${safe(window.mound,{x:c1.x,y:c1.y,scale:c1.scale})}${safe(window.agavePaper,{x:c1.x,y:c1.y,scale:c1.scale,leaves:c1.leaves,seed:c1.seed,palette:'bleu',shadow:'leaf'})}
+         ${safe(window.mound,{x:ce.x,y:ce.y,scale:ce.scale})}${safe(window.agavePaper,{x:ce.x,y:ce.y,scale:ce.scale,leaves:ce.leaves,seed:ce.seed,palette:'bleu',shadow:'leaf'})}`);
+      move('L_agaves',0,(1-enter)*300 + leave*420,1,1-leave);
+      put('L_eclat', pal?`e${pal}${outline}${PORTRAIT}`:'', ()=>pal?safe(window.agavePaper,{x:ce.x,y:ce.y,scale:ce.scale,leaves:ce.leaves,seed:ce.seed,palette:pal,outline:outline,shadow:'leaf'}):'');
+      move('L_eclat',0,(1-enter)*300 + leave*420,1,(1-leave)*(pal?flick:0));
+      if(p<0.64){
+        put('L_foudre', boltVis?'bl'+M.foudre.scale+VB.y:'', ()=>boltVis?eclairLong(bx,by-30,M.foudre.scale):'');
+        const yr=(VB.y-10)+((by-30+12)-(VB.y-10))*(1-Math.pow(1-strike,2.2));
+        clipCouche('L_foudre', strike<1?yr:null);
+        move('L_foudre',0,0,1,boltVis?boltFade:0);
+      }
+      /* le sol qui se souleve : sa forme ne change pas quand il monte, on le dessine une fois
+         (t = 1) et c est la couche qui monte de 160 x echelle, par transform ; les flaques,
+         qui s etalent, ont leur couche, huit paliers */
+      const pq=stepped(pt,8);
+      put('L_sol', bt>0?'sol'+PORTRAIT:'', ()=>bt>0?safe(window.groundBump,{x:bx,y:by+90,scale:M.sol.scale,t:1}):'');
+      move('L_sol',0,leave*420 + (1-easeOut(bt))*160*M.sol.scale,1,1-leave);
+      put('L_flaques', pt>0?'fl'+pq+PORTRAIT:'', ()=>pt>0?safe(window.puddles,{x:bx,y:by+96,scale:M.flaques.scale,t:pq}):'');
+      move('L_flaques',0,leave*420,1,1-leave);
+      /* la copita en papier sort du sol devant l agave : coupee a la ligne du sol, douze paliers */
+      const gq=stepped(gt,12);
+      put('L_verre','cp'+gq+PORTRAIT, ()=>{
+        if(gq<=0) return '';
+        const H=80*M.verre.scale, base=by+86, rise=easeOut(gq);
+        return '<clipPath id="hs_clipVerre"><rect x="'+n1(bx-220)+'" y="'+n1(base-520)+'" width="440" height="520"/></clipPath>'+
+          '<g clip-path="url(#hs_clipVerre)">'+decoupe(PAPIER.copita,bx,base+(1-rise)*H,H)+'</g>';
+      });
+      move('L_verre',0,leave*420,1,1-leave);
+    } else { for(const id of ['L_agaves','L_eclat','L_sol','L_flaques','L_verre']) put(id,'',''); if(p<0.355) put('L_foudre','',''); }
+  }
+
+  /* ---- S4 : le meme eclair sur deux personnes ---- */
+  cap('c4a', 0.655, 0.725); cap('c4b', 0.73, 0.80);
+  {
+    const on=p>=0.64;
+    if(on){
+      const mn=M.mains, bo=M.bouteille;
+      const ht=easeOut(seg(p,0.645,0.715));               /* les mains entrent */
+      const strike2=seg(p,0.722,0.748), bolt2Vis=p>=0.722 && p<0.775, bolt2Fade=1-seg(p,0.755,0.775);
+      const bot=seg(p,0.765,0.83);                          /* la bouteille apparait entre les mains */
+      const r=easeOut(seg(p,0.86,0.94));                    /* S5 : les mains s ouvrent et sortent, la bouteille descend */
+      const doigts=stepped(Math.max(ht,bot),6);            /* les doigts se referment par paliers, la main bouge en CSS */
+      put('L_main_h','mh'+doigts+mn.scale, ()=>safe(window.hands,{x:mn.x,y:mn.y,scale:mn.scale,t:doigts,part:'haut',fixe:true}));
+      put('L_main_b','mb'+doigts+mn.scale, ()=>safe(window.hands,{x:mn.x,y:mn.y,scale:mn.scale,t:doigts,part:'bas',fixe:true}));
+      const portee=60*mn.scale+30, e=1-Math.pow(1-ht,2.5);
+      const dHaut=-((mn.y-VB.y)+portee)*(1-e), dBas=((VB.y+VB.h-mn.y)+portee)*(1-e);
+      /* tour 3 : quand la bouteille apparait, les deux mains s ecartent de bo.ecart pour la tenir,
+         la bouteille est centree sur mn.y, entre elles */
+      const ouvre=easeOut(seg(p,0.765,0.83))*bo.ecart;
+      move('L_main_h',0,dHaut - ouvre - r*((mn.y-VB.y)+portee),1,1-r,mn.x,mn.y);
+      move('L_main_b',0,dBas + ouvre + r*((VB.y+VB.h-mn.y)+portee),1,1-r,mn.x,mn.y);
+      put('L_foudre', bolt2Vis?'bl4'+M.foudre.scale+VB.y:'', ()=>bolt2Vis?eclairLong(mn.x,mn.y,M.foudre.scale):'');
+      if(p>=0.68){ const yr=(VB.y-10)+((mn.y+12)-(VB.y-10))*(1-Math.pow(1-strike2,2.2)); clipCouche('L_foudre', strike2<1?yr:null); move('L_foudre',0,0,1,bolt2Vis?bolt2Fade:0); }
+      /* la bouteille en papier : meme place et meme hauteur (422 unites a l echelle 1) que
+         l ancienne bouteille vectorielle, posee par sa boite opaque, le pied a bo.y */
+      /* la bouteille en papier : hauteur bo.haut, le pied a bo.y, donc centree sur mn.y entre les mains ;
+         a la fin (S5) elle glisse vers la droite du cadre (paysage) et grandit un peu, le nom prend la gauche */
+      put('L_bouteille','bo'+bo.scale+bo.haut, ()=>decoupe(PAPIER.botella,bo.x,bo.y,bo.haut*bo.scale));
+      const eb=easeOut(bot), ef=1-Math.pow(1-r,2);
+      /* S5 : la bouteille prend la place de la fleur au centre du sceau de la cloture (l arc au dessus,
+         TOLOACHE LEGITIMO en dessous). Le centre et la hauteur sont lus sur le svg des mots du sceau
+         (une mesure par image en S5 seulement), convertis en unites de scene. */
+      const H0=bo.haut*bo.scale, cy0=bo.y-H0/2;
+      let fdx=0, fdy=0, fsc=1;
+      if(ef>0){ const cible=cibleSceau(); if(cible){ fdx=cible.x-bo.x; fdy=cible.y-cy0; fsc=cible.h/H0; } }
+      move('L_bouteille', ef*fdx, (1-eb)*40 + ef*fdy, (0.8+0.2*eb)*(1+(fsc-1)*ef), eb, bo.x, cy0);
+    } else { put('L_main_h','',''); put('L_main_b','',''); put('L_bouteille','',''); }
+  }
+  /* S5 : le nom, tenu jusqu au bout */
+  cap('c5', 0.895, 2);   /* tenue jusqu au bout, jamais de fondu de sortie */
+  g('hint').classList.toggle('off', p>0.03);
+}
+
+/* ---------- moteur de defilement ----------
+   Une seule lecture de scrollY par image, aucune mesure de mise en page dans la boucle :
+   la position et la hauteur du defilement sont mesurees dans cadrer(), au chargement et au
+   redimensionnement. Tant que la porte d age est levee (html.porte-ouverte), rien ne se
+   dessine : le premier cadrage attend qu elle tombe. */
+let ticking=false;
+function porteLevee(){ return document.documentElement.classList.contains('porte-ouverte'); }
+function progress(){ return clamp((window.scrollY-SCROLL_TOP)/SCROLL_H,0,1); }
+function onScroll(){ if(ticking||porteLevee()) return; ticking=true; requestAnimationFrame(()=>{ ticking=false; render(progress()); }); }
+window.addEventListener('scroll',onScroll,{passive:true});
+let resizeTimer=0;
+function recadrer(delai){ clearTimeout(resizeTimer); resizeTimer=setTimeout(()=>{ if(!porteLevee()) cadrer(); },delai); }
+window.addEventListener('resize',()=>recadrer(120));
+window.addEventListener('orientationchange',()=>recadrer(200));
+if(window.visualViewport) window.visualViewport.addEventListener('resize',()=>recadrer(120));
+window.__setProgress=function(x){ window.scrollTo(0,SCROLL_TOP+SCROLL_H*x); render(x,true); };
+/* mesure : cout JS de render sur n pas (les images reelles se mesurent avec le traceur) */
+window.__perf=function(n){ n=n||200; const ts=[]; for(let i=0;i<=n;i++){ const t0=performance.now(); render(i/n,true); ts.push(performance.now()-t0);} ts.sort((a,b)=>a-b); return {avg:+(ts.reduce((a,b)=>a+b,0)/ts.length).toFixed(2), p95:+ts[Math.floor(ts.length*0.95)].toFixed(2), max:+ts[ts.length-1].toFixed(2)}; };
+/* Le chrome de la maison est pose juste apres ce script : il ajoute l entete fixe, le pied,
+   la porte d age et il ecrit la langue. Le pied change la hauteur du document mais pas celle
+   du scroller ; la langue, elle, arrive apres. On relit tout une fois qu il a fini, et si la
+   porte est levee, on attend qu elle tombe (aucun dessin, aucune couche vivante avant). */
+window.__historiaRelire = function(){
+  LANG = langueDuDocument(); cache.delete('L_lettres');
+  const demarrer=()=>{ cadrer(); if(window.requestIdleCallback) requestIdleCallback(precharger,{timeout:1500}); else setTimeout(precharger,400); };
+  if(!porteLevee()){ demarrer(); return; }
+  const mo=new MutationObserver(()=>{ if(!porteLevee()){ mo.disconnect(); demarrer(); } });
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+};
+window.addEventListener('load', ()=>{ if(!porteLevee()) cadrer(); });
+
+/* ---------- les quatre cartes de la fin ----------
+   L embleme de chaque destination, monte une fois avec EMBLEMES_ANIME (charge dans le
+   head par emblemes.js), en encre, cadre sur son dessin ; il nait une fois quand la carte
+   entre dans l ecran, et rejoue au survol ou au focus (la bouteille ne rejoue que son
+   bouchon, comme dans le menu). Le montage attend que la carte soit proche de l ecran. */
+(function cartes(){
+  const hotes=Array.from(document.querySelectorAll('#cartes .hcarte__em'));
+  if(!hotes.length) return;
+  const NS='http://www.w3.org/2000/svg';
+  function monter(h){
+    if(h.__c!==undefined) return h.__c;
+    h.__c=null;
+    if(!window.EMBLEMES_ANIME) return null;
+    const svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','-120 -120 240 240'); svg.setAttribute('aria-hidden','true'); svg.setAttribute('focusable','false');
+    h.appendChild(svg);
+    let c=null;
+    try{ c=window.EMBLEMES_ANIME.mount(h.getAttribute('data-em'),svg,{color:'#2B2118',paper:'#FEF9F3'}); }catch(e){ c=null; }
+    if(!c){ h.removeChild(svg); return null; }
+    /* cadrer le svg sur l encre : l embleme fait 72 px dans sa plus grande dimension */
+    try{ const b=svg.firstElementChild.getBBox(); if(b.width>0){ const m=Math.max(b.width,b.height)*0.10;
+      const w=b.width+2*m, hh=b.height+2*m; svg.setAttribute('viewBox',(b.x-m)+' '+(b.y-m)+' '+w+' '+hh); } }catch(e){}
+    h.__c=c; return c;
+  }
+  function jouer(h){ const c=monter(h); if(!c||REDUIT) return;
+    if(h.__joue && typeof c.playCrown==='function'){ c.playCrown(); return; }
+    h.__joue=true; if(c.play) c.play(); }
+  hotes.forEach(h=>{ const a=h.closest('a'); if(!a) return;
+    a.addEventListener('mouseenter',()=>jouer(h)); a.addEventListener('focus',()=>jouer(h)); });
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting){ if(e.intersectionRatio>=0.4){ jouer(e.target); io.unobserve(e.target); } else monter(e.target); } }); },{threshold:[0,0.4]});
+    hotes.forEach(h=>io.observe(h));
+  } else { hotes.forEach(monter); }
+})();
+</script>
+
+<script>
+siteChrome.init();
+window.__historiaRelire();
+</script>
+</body>
+</html>
