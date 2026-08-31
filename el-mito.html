@@ -7,11 +7,11 @@
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
 <title>El Mito. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20260901m">
-<script src="assets/js/logo.js?v=20260901m"></script>
-<script src="assets/js/sceau_anime.js?v=20260901m"></script>
-<script src="assets/js/emblemes.js?v=20260901m"></script>
-<script src="assets/js/site.js?v=20260901m"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20260901n">
+<script src="assets/js/logo.js?v=20260901n"></script>
+<script src="assets/js/sceau_anime.js?v=20260901n"></script>
+<script src="assets/js/emblemes.js?v=20260901n"></script>
+<script src="assets/js/site.js?v=20260901n"></script>
 <style>
   /* -------------------------------------------------------------------------
      LA HISTORIA. La page a part du contrat visuel : le seul monde de papier
@@ -2508,7 +2508,18 @@ function miseEnPage(portrait){
     cotes:[{x:540,y:800,scale:0.85,seed:11,leaves:12},{x:1070,y:800,scale:0.8,seed:5,leaves:12}],
     centre:{x:800,y:780,scale:1.15,seed:2,leaves:14},
     foudre:{scale:1.2}, verre:{scale:1.45}, flaques:{scale:1.6}, sol:{scale:1.35},
-    mains:{x:800,y:600,scale:0.78}, bouteille:{x:800,y:750,scale:0.78,haut:300,ecart:100,fin:{dx:0,dy:70,zoom:1.15}}, descente:0, pousse:0
+    /* 1er sept, Raouf : "les mains et la bouteille doivent etre centrees, plus
+       haut, et la bouteille encore plus haut". Mesure a l'appui : en portrait
+       le groupe tombait au centre de 82 % de la hauteur d'ecran (la main basse
+       touchait le bord) alors qu'en paysage il tient a 52 %. La ligne des
+       mains n'est plus une coordonnee fixe — une coordonnee fixe donne un
+       resultat different a chaque hauteur d'ecran, et le 930 partait hors
+       cadre par le haut — mais une FRACTION du cadre : 52 % du cadre visible,
+       la meme part qu'au bureau, quelle que soit la fenetre.
+       La bouteille se pose 30 unites AU DESSUS du milieu des mains (au lieu de
+       34 en dessous) : elle est tenue, pas posee. L'axe x etait deja centre. */
+    mains:{x:800,y:Math.round(VB.y+VB.h*0.52),scale:0.78},
+    bouteille:{x:800,y:Math.round(VB.y+VB.h*0.52 + (300*0.78)/2 - 30),scale:0.78,haut:300,ecart:100,fin:{dx:0,dy:70,zoom:1.15}}, descente:0, pousse:0
   };
 }
 

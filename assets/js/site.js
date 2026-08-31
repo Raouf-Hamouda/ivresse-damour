@@ -434,9 +434,15 @@ function caresserEmbleme(hote, svg, nom){
      piece : chaque piece glisse vers sa cible par interpolation (un cinquieme du chemin
      par image), la cible suit le pointeur, l amplitude monte en douceur a l entree et
      redescend a la sortie. Le premier geste et le centieme sont donc les memes. */
-  var PORTEE = 190, AMPLI = 3.4, LISSAGE = 0.16;
+  /* 1er sept, Raouf : le mouvement, deux fois plus fort (3,4 -> 6,8 unites de
+     glissement par piece, et l'inclinaison du dessin de 0,7 -> 1,4 degre). */
+  var PORTEE = 190, AMPLI = 6.8, LISSAGE = 0.16;
   var pieces = null, centres = null, poids = null, cour = null, cible = null;
   var actif = false, boucle = 0, t0 = 0, dernier = null, sr = 0, stx = 0, sty = 0, crx = 0, ctx = 0, cty = 0;
+  /* fige : la pose atteinte se TIENT (le defilement a place l'emblème, il reste
+     penche la ou il est) et la boucle s'arrete des qu'elle est posee : au repos,
+     un emblème fige ne coute pas une image. */
+  var fige = false;
   function preparer(){
     var racine = svg.firstElementChild; if(!racine) return false;
     var tous = Array.prototype.slice.call(racine.children).filter(function(n){ return n.tagName === 'g' || n.tagName === 'path'; });
@@ -465,7 +471,7 @@ function caresserEmbleme(hote, svg, nom){
     var cx = vb ? vb.x + vb.width/2 : 0, cy = vb ? vb.y + vb.height/2 : 0, demi = vb ? Math.max(vb.width, vb.height)/2 : 120;
     if(p){
       var nx = Math.max(-1, Math.min(1, (p.x - cx)/demi)), ny = Math.max(-1, Math.min(1, (p.y - cy)/demi));
-      crx = nx * 0.7 * e; ctx = nx * 0.8 * e; cty = ny * 0.8 * e;
+      crx = nx * 1.4 * e; ctx = nx * 1.6 * e; cty = ny * 1.6 * e;
     } else { crx = ctx = cty = 0; }
     for(var i = 0; i < pieces.length; i++){
       var c = centres[i]; if(!c || !p){ cible[i][0] = cible[i][1] = 0; continue; }
@@ -489,6 +495,7 @@ function caresserEmbleme(hote, svg, nom){
       if(Math.abs(q[0]) < 0.005 && Math.abs(q[1]) < 0.005 && !t[0] && !t[1]){ if(pieces[i].__t){ pieces[i].style.translate = ''; pieces[i].__t = false; } continue; }
       pieces[i].style.translate = q[0].toFixed(2) + 'px ' + q[1].toFixed(2) + 'px'; pieces[i].__t = true;
     }
+    if(fige){ if(reste > 0.02) boucle = requestAnimationFrame(tourner); return; }
     if(actif || reste > 0.02) boucle = requestAnimationFrame(tourner);
     else { svg.style.rotate = ''; svg.style.translate = ''; }
   }
@@ -498,10 +505,11 @@ function caresserEmbleme(hote, svg, nom){
     /* un vrai geste (souris ou doigt) porte un type ; le pointeur virtuel du
        gyroscope, non. La main a toujours le dernier mot sur le capteur. */
     if(ev && ev.type) DERNIER_GESTE = performance.now();
+    fige = false;
     dernier = ev;
     if(!boucle) boucle = requestAnimationFrame(tourner);
   }
-  function lacher(){ if(!actif) return; actif = false; dernier = null; if(!boucle) boucle = requestAnimationFrame(tourner); }
+  function lacher(){ fige = false; if(!actif) return; actif = false; dernier = null; if(!boucle) boucle = requestAnimationFrame(tourner); }
   if(window.requestAnimationFrame) requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(!pieces) preparer(); }); });
   hote.addEventListener('pointermove', bouger, { passive:true });
   hote.addEventListener('pointerdown', bouger, { passive:true });
@@ -535,6 +543,8 @@ function caresserEmbleme(hote, svg, nom){
              clientY:r.top  + r.height * (0.5 + ny * 0.5) });
   };
   hote.__caresseLache = lacher;
+  /* poser la caresse et la tenir la (fin d'un defilement) */
+  hote.__caresseFiger = function(){ if(!actif) return; fige = true; if(!boucle) boucle = requestAnimationFrame(tourner); };
   CARESSES.push(hote);
 }
 
@@ -549,58 +559,77 @@ function caresserEmbleme(hote, svg, nom){
    toucher de la page les reveille, sans bouton. Coupe si mouvement reduit.
    ------------------------------------------------------------------------ */
 var CARESSES = [], DERNIER_GESTE = 0;
-(function gyroscope(){
+(function vivre(){
   if(reduitMouvement) return;
-  /* RIEN ne demarre tant qu'un vrai capteur n'a pas parle. Un navigateur de
-     bureau connait deviceorientation sans avoir de gyroscope : il envoie des
-     valeurs nulles. Si on partait la dessus, le pointeur virtuel se posait au
-     centre de chaque emblème a chaque image et ecrasait la souris. */
-  var nx = 0, ny = 0, vise = { x:0, y:0 }, boucle = 0, dernierT = 0, derniereMesure = 0;
-  var RAYON = 0.40;   /* le pointeur virtuel balaie le coeur du dessin : a 22 degres
-                         il porte autant que la souris posee sur une feuille */
-  function incliner(e){
-    if(e.gamma == null && e.beta == null) return;      /* pas de capteur : on ignore */
-    /* gamma : le roulis gauche-droite ; beta : le tangage, lu depuis 40 degres,
-       l'inclinaison d'un telephone tenu en main. 22 degres = un bord. */
-    var g = Math.max(-22, Math.min(22, e.gamma || 0));
-    var b = Math.max(-22, Math.min(22, (e.beta || 0) - 40));
-    vise.x = (g / 22) * RAYON; vise.y = (b / 22) * RAYON;
-    derniereMesure = performance.now();
-    if(!boucle) boucle = requestAnimationFrame(tourner);
+  /* -------------------------------------------------------------------------
+     LA VIE DES EMBLEMES SUR TELEPHONE, SANS JAMAIS RIEN DEMANDER.
+     1er sept, Raouf : "des gens vont acheter, ce n'est pas correct de demander
+     une permission pour le gyroscope, la technique n'est pas connue". Il a
+     raison, et sur iPhone il n'y a pas de contournement : depuis iOS 13 les
+     capteurs de mouvement passent par DeviceOrientationEvent.requestPermission,
+     qui n'existe que declenche par un geste, ouvre une boite de dialogue du
+     systeme, et se remet a zero a chaque session. Aucun reglage, aucun en-tete,
+     aucun manifeste ne l'accorde d'avance. Donc ON NE DEMANDE PLUS RIEN.
+     A la place, deux sources qui ne coutent aucune permission :
+       - le DOIGT, qui fait deja le geste exact de la souris ;
+       - le DEFILEMENT : un pointeur virtuel reste pose au milieu de l'ecran,
+         chaque emblème le traverse en montant, et ses feuilles se penchent en
+         le croisant. C'est ce que fait un curseur qu'on descend sur le dessin.
+     Le capteur reste branche la ou il est libre (Android, anciens iOS) : rien
+     a demander la-bas, il s'ajoute simplement.
+     ---------------------------------------------------------------------- */
+  var RAYON = 0.40;            /* le pointeur virtuel balaie le coeur du dessin */
+  var ANCRE = 0.45;            /* sa hauteur a l'ecran : un peu au dessus du milieu */
+  var nx = 0, ny = 0, vise = { x:0, y:0 }, boucle = 0, dernierT = 0;
+  var capteur = 0, defile = 0;  /* instants du dernier signal de chaque source */
+
+  function nourrir(){
+    for(var i = 0; i < CARESSES.length; i++){
+      var h = CARESSES[i];
+      if(!h.__caresseVers || !h.isConnected) continue;
+      var r = h.getBoundingClientRect();
+      if(r.bottom < 0 || r.top > innerHeight || !r.width) continue;   /* hors de l'ecran : rien */
+      if(capteur){ h.__caresseVers(nx, ny); continue; }
+      /* le defilement : la hauteur du pointeur virtuel dans le dessin, selon
+         la distance qui reste entre le centre de l'emblème et l'ancre. */
+      var c = r.top + r.height / 2, d = (innerHeight * ANCRE - c) / (r.height * 0.75);
+      h.__caresseVers(0, Math.max(-1, Math.min(1, d)) * RAYON);
+    }
+  }
+  function poserTout(){
+    /* le defilement s'arrete : chaque emblème GARDE la pose qu'il vient de
+       prendre (il est penche selon l'endroit ou il s'est arrete a l'ecran) et
+       sa boucle s'eteint. Rien ne clignote, rien ne tourne pour rien. */
+    for(var i = 0; i < CARESSES.length; i++){ if(CARESSES[i].__caresseFiger) CARESSES[i].__caresseFiger(); }
   }
   function tourner(t){
     boucle = 0;
-    if(t - derniereMesure > 2000) return;              /* le capteur s'est taru : on s'arrete */
-    nx += (vise.x - nx) * 0.16; ny += (vise.y - ny) * 0.16;
-    /* 30 images par seconde suffisent : chaque emblème lisse ensuite le chemin
-       de son cote, image par image. Et la main passe avant le capteur : tant
-       qu'un doigt ou une souris vient de parler, le gyroscope se tait. */
-    if(t - dernierT > 32 && t - DERNIER_GESTE > 1500){
-      dernierT = t;
-      for(var i = 0; i < CARESSES.length; i++){
-        var h = CARESSES[i];
-        if(!h.__caresseVers || !h.isConnected) continue;
-        var r = h.getBoundingClientRect();
-        if(r.bottom < 0 || r.top > innerHeight || !r.width) continue;   /* hors de l'ecran : rien */
-        h.__caresseVers(nx, ny);
-      }
-    }
+    var now = performance.now();
+    /* plus rien ne parle : on rend la main, les emblèmes reviennent au repos */
+    if(now - capteur > 2000 && now - defile > 500){ poserTout(); return; }
+    if(capteur) { nx += (vise.x - nx) * 0.16; ny += (vise.y - ny) * 0.16; }
+    /* 30 images par seconde suffisent, et la main passe avant tout : tant
+       qu'un doigt ou une souris vient de parler, on se tait. */
+    if(t - dernierT > 32 && now - DERNIER_GESTE > 1200){ dernierT = t; nourrir(); }
     boucle = requestAnimationFrame(tourner);
   }
-  function ecouter(){ window.addEventListener('deviceorientation', incliner, true); }
-  if(typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function'){
-    /* iOS 13+ : les capteurs ne se livrent qu'en HTTPS et apres un geste. Le
-       premier toucher de la page les reveille, sans bouton a presser. */
-    var une = function(){
-      removeEventListener('touchend', une);
-      DeviceOrientationEvent.requestPermission()
-        .then(function(rep){ if(rep === 'granted') ecouter(); })
-        .catch(function(){});
-    };
-    addEventListener('touchend', une, { passive:true });
-  } else if('DeviceOrientationEvent' in window){
-    ecouter();
-  }
+  function reveiller(){ if(!boucle) boucle = requestAnimationFrame(tourner); }
+
+  /* le defilement : gratuit, partout, sans un mot */
+  addEventListener('scroll', function(){ defile = performance.now(); reveiller(); }, { passive:true });
+
+  /* le capteur, seulement la ou il se donne sans rien demander */
+  if(typeof DeviceOrientationEvent !== 'undefined' &&
+     typeof DeviceOrientationEvent.requestPermission === 'function') return;   /* iOS : on n'ouvre aucune boite */
+  if(!('DeviceOrientationEvent' in window)) return;
+  window.addEventListener('deviceorientation', function(e){
+    if(e.gamma == null && e.beta == null) return;      /* pas de capteur reel : on ignore */
+    var g = Math.max(-22, Math.min(22, e.gamma || 0));
+    var b = Math.max(-22, Math.min(22, (e.beta || 0) - 40));
+    vise.x = (g / 22) * RAYON; vise.y = (b / 22) * RAYON;
+    capteur = performance.now();
+    reveiller();
+  }, true);
 })();
 /* la naissance, une fois ; ensuite, pour la bouteille, chaque survol ne rejoue
    que le bouchon (la couronne de feuilles se referme et se rouvre, playCrown),
