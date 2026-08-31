@@ -495,6 +495,9 @@ function caresserEmbleme(hote, svg, nom){
   function bouger(ev){
     if(!pieces && !preparer()) return;
     if(!actif){ actif = true; t0 = performance.now(); }
+    /* un vrai geste (souris ou doigt) porte un type ; le pointeur virtuel du
+       gyroscope, non. La main a toujours le dernier mot sur le capteur. */
+    if(ev && ev.type) DERNIER_GESTE = performance.now();
     dernier = ev;
     if(!boucle) boucle = requestAnimationFrame(tourner);
   }
@@ -504,8 +507,101 @@ function caresserEmbleme(hote, svg, nom){
   hote.addEventListener('pointerdown', bouger, { passive:true });
   hote.addEventListener('pointerleave', lacher);
   hote.addEventListener('pointerup', lacher);
-  hote.addEventListener('pointercancel', lacher);
+  /* 1er sept, Raouf : AU DOIGT, C'EST LE MEME GESTE QU'A LA SOURIS. Le doigt
+     qui glisse sur l'emblème fait exactement ce que fait le pointeur. Les
+     evenements pointeur sont annules par le navigateur des que le geste
+     devient un defilement (pointercancel) : les evenements tactiles prennent
+     alors le relais et la caresse continue tant que le doigt touche. */
+  var doigt = false;
+  function auDoigt(ev){
+    var t = ev.touches && ev.touches[0]; if(!t) return;
+    doigt = true; bouger({ clientX:t.clientX, clientY:t.clientY });
+  }
+  function doigtParti(){ doigt = false; lacher(); }
+  hote.addEventListener('pointercancel', function(){ if(!doigt) lacher(); });
+  hote.addEventListener('touchstart', auDoigt, { passive:true });
+  hote.addEventListener('touchmove', auDoigt, { passive:true });
+  hote.addEventListener('touchend', doigtParti, { passive:true });
+  hote.addEventListener('touchcancel', doigtParti, { passive:true });
+  /* AU GYROSCOPE, C'EST LE MEME GESTE AUSSI. On ne deplace pas la plante :
+     on pose un pointeur virtuel dans l'emblème, a l'endroit ou l'inclinaison
+     du telephone le met (-1 = bord gauche/haut, +1 = bord droit/bas de la
+     boite du dessin), et la caresse fait le reste : les pieces proches se
+     penchent vers lui, le dessin s'incline d'un degre. Exactement la souris. */
+  hote.__caresseVers = function(nx, ny){
+    var r = svg.getBoundingClientRect();
+    if(!(r.width > 0)) return;
+    bouger({ clientX:r.left + r.width * (0.5 + nx * 0.5),
+             clientY:r.top  + r.height * (0.5 + ny * 0.5) });
+  };
+  hote.__caresseLache = lacher;
+  CARESSES.push(hote);
 }
+
+/* ---------------------------------------------------------------------------
+   LE GYROSCOPE (1er sept, Raouf : "je ne veux pas que la plante se deplace
+   en entier, je veux la MEME animation que la souris quand je bouge le
+   telephone"). Un seul pilote pour toute la page : il lit l'inclinaison, la
+   ramene entre -1 et +1, et la donne comme position de pointeur a chaque
+   emblème caressable visible a l'ecran. Aucune couche ne se translate : c'est
+   la caresse, la vraie, celle du curseur.
+   iOS 13+ ne livre les capteurs qu'en HTTPS et apres un geste : le premier
+   toucher de la page les reveille, sans bouton. Coupe si mouvement reduit.
+   ------------------------------------------------------------------------ */
+var CARESSES = [], DERNIER_GESTE = 0;
+(function gyroscope(){
+  if(reduitMouvement) return;
+  /* RIEN ne demarre tant qu'un vrai capteur n'a pas parle. Un navigateur de
+     bureau connait deviceorientation sans avoir de gyroscope : il envoie des
+     valeurs nulles. Si on partait la dessus, le pointeur virtuel se posait au
+     centre de chaque emblème a chaque image et ecrasait la souris. */
+  var nx = 0, ny = 0, vise = { x:0, y:0 }, boucle = 0, dernierT = 0, derniereMesure = 0;
+  var RAYON = 0.40;   /* le pointeur virtuel balaie le coeur du dessin : a 22 degres
+                         il porte autant que la souris posee sur une feuille */
+  function incliner(e){
+    if(e.gamma == null && e.beta == null) return;      /* pas de capteur : on ignore */
+    /* gamma : le roulis gauche-droite ; beta : le tangage, lu depuis 40 degres,
+       l'inclinaison d'un telephone tenu en main. 22 degres = un bord. */
+    var g = Math.max(-22, Math.min(22, e.gamma || 0));
+    var b = Math.max(-22, Math.min(22, (e.beta || 0) - 40));
+    vise.x = (g / 22) * RAYON; vise.y = (b / 22) * RAYON;
+    derniereMesure = performance.now();
+    if(!boucle) boucle = requestAnimationFrame(tourner);
+  }
+  function tourner(t){
+    boucle = 0;
+    if(t - derniereMesure > 2000) return;              /* le capteur s'est taru : on s'arrete */
+    nx += (vise.x - nx) * 0.16; ny += (vise.y - ny) * 0.16;
+    /* 30 images par seconde suffisent : chaque emblème lisse ensuite le chemin
+       de son cote, image par image. Et la main passe avant le capteur : tant
+       qu'un doigt ou une souris vient de parler, le gyroscope se tait. */
+    if(t - dernierT > 32 && t - DERNIER_GESTE > 1500){
+      dernierT = t;
+      for(var i = 0; i < CARESSES.length; i++){
+        var h = CARESSES[i];
+        if(!h.__caresseVers || !h.isConnected) continue;
+        var r = h.getBoundingClientRect();
+        if(r.bottom < 0 || r.top > innerHeight || !r.width) continue;   /* hors de l'ecran : rien */
+        h.__caresseVers(nx, ny);
+      }
+    }
+    boucle = requestAnimationFrame(tourner);
+  }
+  function ecouter(){ window.addEventListener('deviceorientation', incliner, true); }
+  if(typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function'){
+    /* iOS 13+ : les capteurs ne se livrent qu'en HTTPS et apres un geste. Le
+       premier toucher de la page les reveille, sans bouton a presser. */
+    var une = function(){
+      removeEventListener('touchend', une);
+      DeviceOrientationEvent.requestPermission()
+        .then(function(rep){ if(rep === 'granted') ecouter(); })
+        .catch(function(){});
+    };
+    addEventListener('touchend', une, { passive:true });
+  } else if('DeviceOrientationEvent' in window){
+    ecouter();
+  }
+})();
 /* la naissance, une fois ; ensuite, pour la bouteille, chaque survol ne rejoue
    que le bouchon (la couronne de feuilles se referme et se rouvre, playCrown),
    jamais la construction entiere. Les autres emblèmes rejouent leur naissance. */
@@ -1023,6 +1119,16 @@ function brancherTiroir(t, b){
        apres que tout s'est pose : deux rappels suffisent aux montages lents. */
     setTimeout(function(){ ajusterMenu(t); }, 150);
     setTimeout(function(){ ajusterMenu(t); }, 450);
+    /* 1er sept : au doigt, la choregraphie remplace le survol : une fois les
+       rangs poses, chaque emblème joue sa naissance, l'un apres l'autre */
+    if(window.matchMedia('(max-width:1000px)').matches){
+      setTimeout(function(){
+        var ems = m.querySelectorAll('.menu__embleme[data-cle]');
+        for(var e2=0; e2<ems.length; e2++){
+          (function(em, i2){ setTimeout(function(){ jouerEmbleme(em); }, i2*70); })(ems[e2], e2);
+        }
+      }, 260);
+    }
     /* le focus va au panneau, pas au premier lien : sinon l'anneau de focus
        encadre la marque a chaque ouverture (vu au rendu du 31 aout) */
     panneau.focus();

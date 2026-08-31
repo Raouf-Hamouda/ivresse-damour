@@ -7,11 +7,11 @@
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
 <title>La Botella. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20260901j">
-<script src="assets/js/logo.js?v=20260901j"></script>
-<script src="assets/js/sceau_anime.js?v=20260901j"></script>
-<script src="assets/js/emblemes.js?v=20260901j"></script>
-<script src="assets/js/site.js?v=20260901j"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20260901m">
+<script src="assets/js/logo.js?v=20260901m"></script>
+<script src="assets/js/sceau_anime.js?v=20260901m"></script>
+<script src="assets/js/emblemes.js?v=20260901m"></script>
+<script src="assets/js/site.js?v=20260901m"></script>
 </head>
 
 <body data-page="botella"
@@ -234,53 +234,9 @@
   }
 })();
 </script>
-<script>
-/* 1er sept 00h40, Raouf : les plantes de l'accueil VIVENT au gyroscope.
-   L'iPhone (iOS 13+) ne livre ses capteurs qu'en HTTPS et apres un premier
-   toucher (requestPermission) : le premier tap, n'importe ou, les reveille.
-   Sans capteur (bureau, refus, file://) : la souris fait la parallaxe.
-   Grande sensibilite demandee ; jamais en mouvement reduit. */
-(function(){
-  if(window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-  var cible={x:0,y:0}, doux={x:0,y:0}, actif=false;
-  function plantes(){ return document.querySelectorAll('#grille-bouteilles .grille__media svg'); }
-  function anime(){
-    doux.x += (cible.x-doux.x)*0.14; doux.y += (cible.y-doux.y)*0.14;
-    var ps=plantes();
-    for(var i=0;i<ps.length;i++){
-      var k=[1,1.35,0.8][i%3], r=[1,-1,1][i%3];
-      ps[i].style.transform='translate('+(doux.x*k).toFixed(1)+'px,'+(doux.y*k*0.7).toFixed(1)+'px) rotate('+(doux.x*0.14*r*k).toFixed(2)+'deg)';
-      ps[i].style.willChange='transform';
-    }
-    requestAnimationFrame(anime);
-  }
-  function orientation(e){
-    if(e.gamma==null && e.beta==null) return;
-    /* grande sensibilite : 2,2 px par degre lateral, bornee a +/-34 px */
-    var g=Math.max(-15,Math.min(15,e.gamma||0)), b=Math.max(-15,Math.min(15,(e.beta||0)-40));
-    cible.x=g*2.2; cible.y=b*1.4;
-  }
-  function souris(e){
-    var cx=innerWidth/2, cy=innerHeight/2;
-    cible.x=(e.clientX-cx)/cx*26; cible.y=(e.clientY-cy)/cy*16;
-  }
-  function demarrer(){
-    if(actif) return; actif=true;
-    window.addEventListener('deviceorientation', orientation, true);
-    requestAnimationFrame(anime);
-  }
-  addEventListener('mousemove', function(e){ demarrer(); souris(e); }, {passive:true});
-  if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
-    /* iOS : le premier toucher reveille les capteurs, sans bouton */
-    var une=function(){
-      DeviceOrientationEvent.requestPermission().then(function(rep){ if(rep==='granted') demarrer(); }).catch(function(){});
-      removeEventListener('touchend', une);
-    };
-    addEventListener('touchend', une);
-  } else if('DeviceOrientationEvent' in window){
-    demarrer();   /* Android et anciens iOS : direct */
-  }
-})();
-</script>
+<!-- 1er sept 01h, Raouf : "je ne veux pas que la plante se deplace en
+     entier" — la parallaxe qui translatait les plantes est retiree. Le
+     gyroscope pilote desormais la MEME caresse que la souris (site.js) :
+     les feuilles proches se penchent, le dessin s'incline. Rien ici. -->
 </body>
 </html>

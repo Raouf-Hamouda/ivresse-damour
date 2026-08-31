@@ -7,11 +7,11 @@
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
 <title>El Mito. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20260901j">
-<script src="assets/js/logo.js?v=20260901j"></script>
-<script src="assets/js/sceau_anime.js?v=20260901j"></script>
-<script src="assets/js/emblemes.js?v=20260901j"></script>
-<script src="assets/js/site.js?v=20260901j"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20260901m">
+<script src="assets/js/logo.js?v=20260901m"></script>
+<script src="assets/js/sceau_anime.js?v=20260901m"></script>
+<script src="assets/js/emblemes.js?v=20260901m"></script>
+<script src="assets/js/site.js?v=20260901m"></script>
 <style>
   /* -------------------------------------------------------------------------
      LA HISTORIA. La page a part du contrat visuel : le seul monde de papier
@@ -2263,17 +2263,25 @@ function put(id,key,html){
   if(typeof html==='function') html=html();
   const e=g(id); e.innerHTML=html?'<g class="racine">'+html+'</g>':'';
   e.classList.toggle('vide', !html);
-  e.classList.toggle('vive', !!html);
+  e._vv = undefined; vivante(e, false);
   /* OPTIM : la couche prend la taille de son dessin (boite + marge pour les ombres), pas celle de
      l ecran : la texture que le compositeur porte et repeint est celle du soleil, de l eclair, des
      mains, jamais un plein ecran. Le dessin ne change pas : meme viewBox en unites de scene, meme K. */
   e._box = html ? boiteDe(e) : null;
   placer(e);
 }
-/* cacher : la couche garde son dessin et sa texture, elle passe a 0.4 % d opacite (encore
-   dessinee, donc jamais reconstruite ni re-rasterisee quand on revient dessus). */
-const OP_CACHE='0.004';
-function cacher(id){ const e=g(id); if(e._op!==OP_CACHE){ e._op=OP_CACHE; e.style.opacity=OP_CACHE; } }
+/* cacher : la couche garde son dessin (elle n est jamais reconstruite), mais elle passe a
+   ZERO. 1er sept, Raouf : "ca rame comme pas possible sur iPhone 13". Le 0,4 % d opacite
+   gardait dix-huit couches VIVANTES a la fois : le compositeur les melangeait toutes a
+   chaque image, et chacune restait promue en calque GPU (will-change). Sur un telephone
+   c est dix-huit textures plein cadre a porter pour rien. A zero, le navigateur saute la
+   peinture ; le dessin reste en place, seule sa texture se refait a la premiere image ou
+   elle revient — une image, une couche, au lieu de dix-huit a chaque image. */
+const OP_CACHE='0';
+/* la promotion en calque GPU (.vive, will-change) ne vaut que pour une couche qu on voit
+   bouger. Une couche cachee la rend. */
+function vivante(e,on){ if(e._vv!==on){ e._vv=on; e.classList.toggle('vive',on); } }
+function cacher(id){ const e=g(id); if(e._op!==OP_CACHE){ e._op=OP_CACHE; e.style.opacity=OP_CACHE; } vivante(e,false); }
 const MARGE_COUCHE=48;
 function boiteDe(e){
   /* mesure sur le groupe racine (unites de scene, celles du viewBox), jamais sur le svg externe
@@ -2302,6 +2310,7 @@ function move(id,dx,dy,sc,op,ox,oy){
     if(e._or!==or){ e._or=or; e.style.transformOrigin=or; } }
   const o=clamp(op==null?1:op,0,1).toFixed(3);
   if(e._op!==o){ e._op=o; e.style.opacity=o; }
+  vivante(e, +o > 0.01);
 }
 /* cap : la legende id est visible entre a et b ; elle monte en fondu sur les 1,2 % de defilement
    qui suivent a et redescend sur ceux qui precedent b. Ecrit dans le style seulement si la
@@ -2360,13 +2369,40 @@ function cibleSceau(){
   const sx=r.left+(443-209)*u, sy=r.top+(300-52)*u, sh=262*u;
   return { x:(sx-OFFX)/K+VB.x, y:(sy-OFFY)/K+VB.y, h:sh/K };
 }
-/* mode leger : peu de coeurs ou peu de memoire declaree, on retire les filtres d ombre (voir css .leger) */
+/* mode leger : plus aucune ombre portee (voir css .leger). Les ombres SVG (feDropShadow)
+   sont, de loin, le poste le plus cher du recit sur telephone : chaque changement d echelle
+   force le filtre a se recalculer en logiciel, sur toute la couche.
+   On ne DEVINE plus la machine par ce qu elle declare : Safari ne donne pas navigator
+   .deviceMemory et un iPhone 13 annonce six coeurs — l ancienne regle (<= 4) ne le prenait
+   jamais, et c est justement lui qui ramait. On MESURE. */
+function passerEnLeger(){ const st=g('stage'); if(st && !st.classList.contains('leger')) st.classList.add('leger'); }
 (function modeLeger(){
   try{
-    const c=navigator.hardwareConcurrency||8, m=navigator.deviceMemory||8;
-    if(c<=4 || m<=4 || REDUIT) g('stage').classList.add('leger');
+    const c=navigator.hardwareConcurrency||8, m=navigator.deviceMemory||0;
+    /* un ecran qu on tient dans la main : le doigt pour pointeur, aucun survol.
+       Ces machines ont une fraction du budget graphique d un bureau, et ce sont
+       les ombres qui le mangent. Aucun nom d appareil ici : la classe entiere. */
+    const main = window.matchMedia && matchMedia('(hover:none) and (pointer:coarse)').matches;
+    if(REDUIT || main || c<=4 || (m>0 && m<=4)) passerEnLeger();
   }catch(e){}
 })();
+/* le veilleur : pendant le defilement, on regarde l ecart entre deux images. Si, sur une
+   fenetre de vingt-quatre images, la moitie depasse 25 ms (moins de 40 images par seconde),
+   la scene passe en leger, une fois pour toutes. Aucun nom d appareil nulle part : la regle
+   vaut pour toute machine qui peine, aujourd hui comme dans cinq ans. */
+let vN=0, vLent=0, vPrec=0, vTours=0, vFini=false;
+function veiller(t){
+  if(vFini) return;
+  const dt=t-vPrec;
+  /* un trou de plus de 200 ms n est pas une image lente : c est un defilement qui reprend */
+  if(vPrec && dt<200){ if(dt>25) vLent++; vN++; }
+  vPrec=t;
+  if(vN>=24){
+    if(vLent>=12){ passerEnLeger(); vFini=true; }
+    else if(++vTours>=6){ vFini=true; }     /* la machine tient : on cesse de mesurer */
+    vN=0; vLent=0;
+  }
+}
 (function initDefs(){
   const d=[];
   for(const f of ['defsAgave','defsFoudre','defsLettres','defsFlammes','defsBouteille','defsMedaillon','defsMains','defsBords']) if(typeof window[f]==='function') d.push(window[f]());
@@ -2726,7 +2762,7 @@ function render(p,force){
 let ticking=false;
 function porteLevee(){ return document.documentElement.classList.contains('porte-ouverte'); }
 function progress(){ return clamp((window.scrollY-SCROLL_TOP)/SCROLL_H,0,1); }
-function onScroll(){ if(ticking||porteLevee()) return; ticking=true; requestAnimationFrame(()=>{ ticking=false; render(progress()); }); }
+function onScroll(){ if(ticking||porteLevee()) return; ticking=true; requestAnimationFrame(t=>{ ticking=false; veiller(t); render(progress()); }); }
 window.addEventListener('scroll',onScroll,{passive:true});
 let resizeTimer=0;
 function recadrer(delai){ clearTimeout(resizeTimer); resizeTimer=setTimeout(()=>{ if(!porteLevee()) cadrer(); },delai); }

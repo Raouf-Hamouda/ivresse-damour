@@ -2499,3 +2499,69 @@ a.figure__lien:hover img{ transform:scale(1.015); }
    attend 3 s une fois la scene sous les yeux, puis se revele lentement. */
 .campagne__fond.fondu{ opacity:0; transform:none; transition:opacity 1s var(--lineaire) 2s; }   /* 3 s en tout (Raouf) */
 .campagne__fond.fondu.est-vu{ opacity:.07; transform:none; }
+
+
+/* 1er sept 00h45, Raouf : le menu du telephone s'anime aussi (au bureau le
+   curseur fait le jeu ; au doigt, c'est l'ouverture qui choregraphie).
+   Les rangs se posent l'un apres l'autre, puis chaque emblème joue sa
+   naissance en cadence (site.js). Sobre, jamais brouillon. */
+@media (max-width:1000px) and (prefers-reduced-motion:no-preference){
+  .menu__panneau .menu__liste li{ opacity:0; transform:translateY(10px); }
+  .menu.est-ouvert .menu__liste li{
+    opacity:1; transform:none;
+    transition:opacity .38s var(--lineaire), transform .42s var(--courbe);
+  }
+  .menu.est-ouvert .menu__liste li:nth-child(1){ transition-delay:40ms; }
+  .menu.est-ouvert .menu__liste li:nth-child(2){ transition-delay:80ms; }
+  .menu.est-ouvert .menu__liste li:nth-child(3){ transition-delay:120ms; }
+  .menu.est-ouvert .menu__liste li:nth-child(4){ transition-delay:160ms; }
+  .menu.est-ouvert .menu__liste li:nth-child(5){ transition-delay:200ms; }
+  .menu.est-ouvert .menu__liste li:nth-child(6){ transition-delay:240ms; }
+  .menu.est-ouvert .menu__liste li:nth-child(7){ transition-delay:280ms; }
+  .menu.est-ouvert .menu__liste li:nth-child(8){ transition-delay:320ms; }
+  .menu.est-ouvert .menu__liste li:nth-child(9){ transition-delay:360ms; }
+  .menu.est-ouvert .menu__liste--sous li:nth-child(1){ transition-delay:430ms; }
+  .menu.est-ouvert .menu__liste--sous li:nth-child(2){ transition-delay:480ms; }
+  .menu.est-ouvert .menu__liste--sous li:nth-child(3){ transition-delay:530ms; }
+}
+
+
+/* ============================================================================
+   1er SEPTEMBRE, 01h — TROIS REPRISES DEMANDEES PAR RAOUF.
+   ========================================================================= */
+
+/* 1. L'OUVERTURE : le sceau, SEUL, sur l'ecran entier. Raouf : "only appears
+   the logo and the scroll get the bottle", et le sceau 1,2 fois plus grand,
+   mieux centre. La regle du 00h12 (l'ecran du sceau cache au bureau) tombe :
+   a toutes les largeurs la page s'ouvre sur le sceau et rien d'autre ; la
+   bouteille arrive au defilement. Le centrage se fait SOUS l'entete fixe :
+   le padding haut rend le sceau optiquement au milieu du champ libre. */
+.page > .scene--premiere:first-child:not(.heros-vente){
+  display:grid; min-height:100svh; padding-top:var(--tete-h);
+}
+.scene--premiere .scene__marque svg,#sceau-accueil{ width:min(89vmin,1050px); }   /* 74vmin x 1,2 */
+@media (max-width:1000px){
+  .page > .scene--premiere:first-child:not(.heros-vente){ min-height:100svh; }
+  .scene--premiere .scene__marque svg,#sceau-accueil{ width:min(96vw,840px); }    /* 80vw x 1,2 */
+  /* le heros ne colle plus au sceau : il commence apres l'ecran, au defilement */
+  .scene--premiere + .scene--premiere.heros-vente .heros-vente__deux{
+    padding-top:calc(var(--u)*5);
+  }
+}
+
+/* 2. LA PAGE D'ACHAT AU TELEPHONE : la hierarchie remise d'aplomb. Raouf,
+   capture a l'appui : "this part need to be first" — l'agave, le nom, le
+   latin, le recit, le prix, la quantite et le bouton ouvrent la page. La
+   photo vient ensuite, puis les vues, puis les depliants, puis les autres
+   bouteilles. display:contents defait les deux colonnes ; le bloc de vente
+   est enveloppe (.fiche__vendre) pour que ses lignes ne se dispersent pas
+   dans la gouttiere de la grille. */
+@media (max-width:1000px){
+  .fiche > .fiche__achat{ display:contents; }
+  .fiche__achat > .fiche__vendre{ order:1; min-width:0; }
+  .fiche__images > .galerie{ order:2; }
+  .fiche__images > .galerie__vignettes{ order:3; }
+  .fiche__images > *{ order:4; }
+  .fiche__achat > .fiche__deplis{ order:6; min-width:0; margin-top:0; }
+  .fiche__images > .fiche__autres2{ order:9; }
+}
