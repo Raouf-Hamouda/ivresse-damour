@@ -7,11 +7,11 @@
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
 <title>El Mito. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20260901p">
-<script src="assets/js/logo.js?v=20260901p"></script>
-<script src="assets/js/sceau_anime.js?v=20260901p"></script>
-<script src="assets/js/emblemes.js?v=20260901p"></script>
-<script src="assets/js/site.js?v=20260901p"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20260901q">
+<script src="assets/js/logo.js?v=20260901q"></script>
+<script src="assets/js/sceau_anime.js?v=20260901q"></script>
+<script src="assets/js/emblemes.js?v=20260901q"></script>
+<script src="assets/js/site.js?v=20260901q"></script>
 <style>
   /* -------------------------------------------------------------------------
      LA HISTORIA. La page a part du contrat visuel : le seul monde de papier
@@ -127,8 +127,11 @@
     background-image:linear-gradient(var(--historia-grille) 1px,transparent 1px),linear-gradient(90deg,var(--historia-grille) 1px,transparent 1px);
     background-size:40px 40px}
   .historia .couche{position:absolute;left:0;top:0;width:100%;height:100%;max-width:none;max-height:none;display:block;pointer-events:none;
-    transform-origin:50% 50%;backface-visibility:hidden}
-  .historia .couche.vive{will-change:transform,opacity}
+    transform-origin:50% 50%}
+  /* backface-visibility:hidden etait pose sur TOUTES les couches : a lui seul il
+     promeut chaque couche en calque compose, les dix-huit, vivantes ou non. Il ne
+     vaut plus que pour celle qu on voit bouger, avec will-change (1er sept). */
+  .historia .couche.vive{will-change:transform,opacity;backface-visibility:hidden}
   /* tant que la porte d age est levee, aucune couche ne reserve de memoire au compositeur */
   html.porte-ouverte .historia .couche.vive{will-change:auto}
   .historia .couche image{image-rendering:auto}
@@ -170,6 +173,11 @@
   /* mode leger : machines modestes (peu de coeurs ou de memoire) : plus aucun filtre d ombre
      dans les couches, ni d ombre sur les lettres ; le papier reste, le mouvement reste */
   .historia .stage.leger [filter]{filter:none !important}
+  /* le grain du papier en MOTIF svg (une tuile de 160 px repetee sur les collines
+     et le sol) se retrame a chaque changement d echelle : c est, apres les ombres,
+     le poste le plus cher. Le grain du fond de page, lui, reste : la feuille garde
+     sa matiere derriere tout le recit. */
+  .historia .stage.leger [fill="url(#lt_grain)"]{display:none}
   .historia .stage.leger .cap{text-shadow:0 1px 0 rgba(43,33,24,.5)}
   .historia .stage.leger .sceau-mots svg{filter:none}
   .historia .hint{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--brun);opacity:.8;z-index:5;transition:opacity .4s var(--lineaire);
@@ -2430,6 +2438,21 @@ const PAPIER={
      inutilise. */
   botella:{src:IMG+'botella_papier.webp',w:700,h:1731,ox0:2,ox1:686,oy0:126,oy1:1604}
 };
+/* 1er sept, Raouf : "el mito rame trop". Les cinq flammes font 1800 px de large :
+   decodees, elles occupent 6 Mo de memoire CHACUNE, et un telephone ne les montre
+   jamais a plus de 1170 px reels. Une copie de demi-taille existe a cote (_demi) :
+   meme dessin, meme rapport, quatre fois moins de memoire d image. On la prend
+   quand l ecran ne peut PAS montrer davantage — la regle est la largeur reelle en
+   pixels de l appareil, aucun nom de machine. Le trace ne change pas d un cheveu :
+   chaque decoupe est posee par des rapports, jamais par les pixels du fichier. */
+(function imagesALaTailleDeLEcran(){
+  try{
+    var reel = (window.innerWidth || 390) * (window.devicePixelRatio || 1);
+    if(reel > 1300) return;                       /* l ecran merite la pleine taille */
+    for(var k in PAPIER){ var im = PAPIER[k];
+      if(im.src) im.src = im.src.replace(/\.webp$/, '_demi.webp'); }
+  }catch(e){}
+})();
 const n1=v=>(+v).toFixed(1);
 /* une image svg posee par un rectangle en unites de scene */
 function img(im,x,y,w,h){ return '<image href="'+im.src+'" x="'+n1(x)+'" y="'+n1(y)+'" width="'+n1(w)+'" height="'+n1(h)+'" preserveAspectRatio="none"/>'; }

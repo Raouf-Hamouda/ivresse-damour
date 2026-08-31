@@ -437,6 +437,10 @@ function caresserEmbleme(hote, svg, nom){
   /* 1er sept, Raouf : le mouvement, deux fois plus fort (3,4 -> 6,8 unites de
      glissement par piece, et l'inclinaison du dessin de 0,7 -> 1,4 degre). */
   var PORTEE = 190, AMPLI = 6.8, LISSAGE = 0.16;
+  /* 1er sept, Raouf : "qu'il bouge deux fois plus au doigt et quatre fois plus au
+     gyroscope". La souris garde sa mesure (le curseur est deja precis) ; le doigt
+     et le capteur, eux, sont des gestes larges et meritent une reponse large. */
+  var gain = 1;
   var pieces = null, centres = null, poids = null, cour = null, cible = null;
   var actif = false, boucle = 0, t0 = 0, dernier = null, sr = 0, stx = 0, sty = 0, crx = 0, ctx = 0, cty = 0;
   /* fige : la pose atteinte se TIENT (le defilement a place l'emblème, il reste
@@ -471,13 +475,13 @@ function caresserEmbleme(hote, svg, nom){
     var cx = vb ? vb.x + vb.width/2 : 0, cy = vb ? vb.y + vb.height/2 : 0, demi = vb ? Math.max(vb.width, vb.height)/2 : 120;
     if(p){
       var nx = Math.max(-1, Math.min(1, (p.x - cx)/demi)), ny = Math.max(-1, Math.min(1, (p.y - cy)/demi));
-      crx = nx * 1.4 * e; ctx = nx * 1.6 * e; cty = ny * 1.6 * e;
+      crx = nx * 1.4 * e * gain; ctx = nx * 1.6 * e * gain; cty = ny * 1.6 * e * gain;
     } else { crx = ctx = cty = 0; }
     for(var i = 0; i < pieces.length; i++){
       var c = centres[i]; if(!c || !p){ cible[i][0] = cible[i][1] = 0; continue; }
       var dx = p.x - c[0], dy = p.y - c[1], d = Math.sqrt(dx*dx + dy*dy);
       var w = Math.max(0, 1 - d/PORTEE); w = w*w;
-      var k = d > 0.5 ? (AMPLI * e * poids[i] * w / d) : 0;
+      var k = d > 0.5 ? (AMPLI * gain * e * poids[i] * w / d) : 0;
       cible[i][0] = dx*k; cible[i][1] = dy*k;
     }
   }
@@ -511,8 +515,9 @@ function caresserEmbleme(hote, svg, nom){
   }
   function lacher(){ fige = false; if(!actif) return; actif = false; dernier = null; if(!boucle) boucle = requestAnimationFrame(tourner); }
   if(window.requestAnimationFrame) requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(!pieces) preparer(); }); });
-  hote.addEventListener('pointermove', bouger, { passive:true });
-  hote.addEventListener('pointerdown', bouger, { passive:true });
+  function aLaSouris(ev){ if(ev.pointerType === 'touch') return; gain = 1; bouger(ev); }
+  hote.addEventListener('pointermove', aLaSouris, { passive:true });
+  hote.addEventListener('pointerdown', aLaSouris, { passive:true });
   hote.addEventListener('pointerleave', lacher);
   hote.addEventListener('pointerup', lacher);
   /* 1er sept, Raouf : AU DOIGT, C'EST LE MEME GESTE QU'A LA SOURIS. Le doigt
@@ -520,22 +525,45 @@ function caresserEmbleme(hote, svg, nom){
      evenements pointeur sont annules par le navigateur des que le geste
      devient un defilement (pointercancel) : les evenements tactiles prennent
      alors le relais et la caresse continue tant que le doigt touche. */
+  /* 1er sept, Raouf : "s'il presse loin de la plante, dans le blanc, sans toucher
+     aucune ligne noire, ca veut dire qu'il veut defiler : alors on defile, tout de
+     suite". La boite d'un emblème est un carre ; le dessin, lui, est de l'encre au
+     milieu de beaucoup de blanc. C'est donc l'ENCRE qui prend le geste, pas la
+     boite : au poser du doigt on regarde ce qu'il y a REELLEMENT sous lui (le
+     navigateur ne compte que les surfaces peintes d'un svg). Sur l'encre — a huit
+     pixels pres, pour que le jeu reste facile entre deux feuilles — le doigt joue
+     et la page ne bouge pas. Dans le blanc, on ne retient rien : la page defile
+     comme partout ailleurs, des le premier pixel. */
   var doigt = false, dx0 = 0, dy0 = 0, aJoue = false;
+  function surEncre(x, y){
+    var pas = [[0,0],[8,0],[-8,0],[0,8],[0,-8]];
+    for(var i = 0; i < pas.length; i++){
+      var e = document.elementFromPoint(x + pas[i][0], y + pas[i][1]);
+      if(e && e !== svg && svg.contains(e)) return true;
+    }
+    return false;
+  }
   function auDoigt(ev){
     var t = ev.touches && ev.touches[0]; if(!t) return;
-    if(!doigt){ doigt = true; dx0 = t.clientX; dy0 = t.clientY; aJoue = false; }
+    if(!doigt){
+      if(!surEncre(t.clientX, t.clientY)) return;      /* du blanc : on rend la main au defilement */
+      doigt = true; dx0 = t.clientX; dy0 = t.clientY; aJoue = false;
+      gain = 2;                                        /* au doigt : deux fois plus */
+    }
     else if(!aJoue && Math.abs(t.clientX - dx0) + Math.abs(t.clientY - dy0) > 14){
       /* le doigt ne fait plus que toucher : IL JOUE. C'est l'instant, et le seul,
          ou l'on propose le capteur (1er sept, Raouf : "que la demande arrive
          quand on commence a jouer, pas en entrant sur le site"). */
       aJoue = true; PROPOSER_CAPTEUR();
     }
+    /* le doigt tient le dessin : la page ne defile pas sous lui */
+    if(ev.cancelable) ev.preventDefault();
     bouger({ clientX:t.clientX, clientY:t.clientY });
   }
   function doigtParti(){ doigt = false; lacher(); }
   hote.addEventListener('pointercancel', function(){ if(!doigt) lacher(); });
-  hote.addEventListener('touchstart', auDoigt, { passive:true });
-  hote.addEventListener('touchmove', auDoigt, { passive:true });
+  hote.addEventListener('touchstart', auDoigt, { passive:false });
+  hote.addEventListener('touchmove', auDoigt, { passive:false });
   hote.addEventListener('touchend', doigtParti, { passive:true });
   hote.addEventListener('touchcancel', doigtParti, { passive:true });
   /* 1er sept, Raouf : "quand on presse l'image de la plante, rien n'arrive, on ne
@@ -544,12 +572,6 @@ function caresserEmbleme(hote, svg, nom){
      Le dessin devient donc un objet qu'on manipule, pas une porte : tout clic ne
      dans l'emblème s'arrete la. Le mot sous le dessin (« Voir la bouteille ») garde
      le lien, seul. Le defilement du doigt sur la carte reste normal. */
-  /* 1er sept, Raouf : "quand on joue avec les plantes, le defilement ne bouge
-     pas". Le geste est pris par le DESSIN seul (touch-action:none sur le svg),
-     pas par toute la carte : le doigt qui caresse la plante joue, le doigt pose
-     a cote d'elle fait defiler la page comme partout ailleurs. C'est la mesure
-     juste — bloquer la carte entiere rendrait la page dure a parcourir. */
-  svg.style.touchAction = 'none';
   var lien = hote.closest && hote.closest('a[href]');
   if(lien){
     hote.style.cursor = 'default';
@@ -561,9 +583,10 @@ function caresserEmbleme(hote, svg, nom){
      du telephone le met (-1 = bord gauche/haut, +1 = bord droit/bas de la
      boite du dessin), et la caresse fait le reste : les pieces proches se
      penchent vers lui, le dessin s'incline d'un degre. Exactement la souris. */
-  hote.__caresseVers = function(nx, ny){
+  hote.__caresseVers = function(nx, ny, g){
     var r = svg.getBoundingClientRect();
     if(!(r.width > 0)) return;
+    gain = g || 1;
     bouger({ clientX:r.left + r.width * (0.5 + nx * 0.5),
              clientY:r.top  + r.height * (0.5 + ny * 0.5) });
   };
@@ -614,11 +637,11 @@ var PROPOSER_CAPTEUR = function(){ return false; };
       if(!h.__caresseVers || !h.isConnected) continue;
       var r = h.getBoundingClientRect();
       if(r.bottom < 0 || r.top > innerHeight || !r.width) continue;   /* hors de l'ecran : rien */
-      if(capteur){ h.__caresseVers(nx, ny); continue; }
+      if(capteur){ h.__caresseVers(nx, ny, 4); continue; }    /* au gyroscope : quatre fois plus */
       /* le defilement : la hauteur du pointeur virtuel dans le dessin, selon
          la distance qui reste entre le centre de l'emblème et l'ancre. */
       var c = r.top + r.height / 2, d = (innerHeight * ANCRE - c) / (r.height * 0.75);
-      h.__caresseVers(0, Math.max(-1, Math.min(1, d)) * RAYON);
+      h.__caresseVers(0, Math.max(-1, Math.min(1, d)) * RAYON, 2);   /* au defilement : comme le doigt */
     }
   }
   function poserTout(){
