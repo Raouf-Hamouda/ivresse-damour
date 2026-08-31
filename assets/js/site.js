@@ -520,10 +520,17 @@ function caresserEmbleme(hote, svg, nom){
      evenements pointeur sont annules par le navigateur des que le geste
      devient un defilement (pointercancel) : les evenements tactiles prennent
      alors le relais et la caresse continue tant que le doigt touche. */
-  var doigt = false;
+  var doigt = false, dx0 = 0, dy0 = 0, aJoue = false;
   function auDoigt(ev){
     var t = ev.touches && ev.touches[0]; if(!t) return;
-    doigt = true; bouger({ clientX:t.clientX, clientY:t.clientY });
+    if(!doigt){ doigt = true; dx0 = t.clientX; dy0 = t.clientY; aJoue = false; }
+    else if(!aJoue && Math.abs(t.clientX - dx0) + Math.abs(t.clientY - dy0) > 14){
+      /* le doigt ne fait plus que toucher : IL JOUE. C'est l'instant, et le seul,
+         ou l'on propose le capteur (1er sept, Raouf : "que la demande arrive
+         quand on commence a jouer, pas en entrant sur le site"). */
+      aJoue = true; PROPOSER_CAPTEUR();
+    }
+    bouger({ clientX:t.clientX, clientY:t.clientY });
   }
   function doigtParti(){ doigt = false; lacher(); }
   hote.addEventListener('pointercancel', function(){ if(!doigt) lacher(); });
@@ -531,6 +538,24 @@ function caresserEmbleme(hote, svg, nom){
   hote.addEventListener('touchmove', auDoigt, { passive:true });
   hote.addEventListener('touchend', doigtParti, { passive:true });
   hote.addEventListener('touchcancel', doigtParti, { passive:true });
+  /* 1er sept, Raouf : "quand on presse l'image de la plante, rien n'arrive, on ne
+     va pas sur une autre page ; on n'y va que par les mots en dessous — on ne peut
+     pas jouer avec quelque chose qui est un lien."
+     Le dessin devient donc un objet qu'on manipule, pas une porte : tout clic ne
+     dans l'emblème s'arrete la. Le mot sous le dessin (« Voir la bouteille ») garde
+     le lien, seul. Le defilement du doigt sur la carte reste normal. */
+  /* 1er sept, Raouf : "quand on joue avec les plantes, le defilement ne bouge
+     pas". Le geste est pris par le DESSIN seul (touch-action:none sur le svg),
+     pas par toute la carte : le doigt qui caresse la plante joue, le doigt pose
+     a cote d'elle fait defiler la page comme partout ailleurs. C'est la mesure
+     juste — bloquer la carte entiere rendrait la page dure a parcourir. */
+  svg.style.touchAction = 'none';
+  var lien = hote.closest && hote.closest('a[href]');
+  if(lien){
+    hote.style.cursor = 'default';
+    hote.style.webkitTapHighlightColor = 'transparent';
+    hote.addEventListener('click', function(ev){ ev.preventDefault(); ev.stopPropagation(); }, true);
+  }
   /* AU GYROSCOPE, C'EST LE MEME GESTE AUSSI. On ne deplace pas la plante :
      on pose un pointeur virtuel dans l'emblème, a l'endroit ou l'inclinaison
      du telephone le met (-1 = bord gauche/haut, +1 = bord droit/bas de la
@@ -559,24 +584,24 @@ function caresserEmbleme(hote, svg, nom){
    toucher de la page les reveille, sans bouton. Coupe si mouvement reduit.
    ------------------------------------------------------------------------ */
 var CARESSES = [], DERNIER_GESTE = 0;
+/* propose le capteur de mouvement, au moment du jeu et jamais avant. Rend true
+   si quelque chose a ete ouvert (l'appel qui suit ne doit alors pas naviguer). */
+var PROPOSER_CAPTEUR = function(){ return false; };
 (function vivre(){
   if(reduitMouvement) return;
   /* -------------------------------------------------------------------------
-     LA VIE DES EMBLEMES SUR TELEPHONE, SANS JAMAIS RIEN DEMANDER.
-     1er sept, Raouf : "des gens vont acheter, ce n'est pas correct de demander
-     une permission pour le gyroscope, la technique n'est pas connue". Il a
-     raison, et sur iPhone il n'y a pas de contournement : depuis iOS 13 les
-     capteurs de mouvement passent par DeviceOrientationEvent.requestPermission,
-     qui n'existe que declenche par un geste, ouvre une boite de dialogue du
-     systeme, et se remet a zero a chaque session. Aucun reglage, aucun en-tete,
-     aucun manifeste ne l'accorde d'avance. Donc ON NE DEMANDE PLUS RIEN.
-     A la place, deux sources qui ne coutent aucune permission :
-       - le DOIGT, qui fait deja le geste exact de la souris ;
-       - le DEFILEMENT : un pointeur virtuel reste pose au milieu de l'ecran,
-         chaque emblème le traverse en montant, et ses feuilles se penchent en
-         le croisant. C'est ce que fait un curseur qu'on descend sur le dessin.
-     Le capteur reste branche la ou il est libre (Android, anciens iOS) : rien
-     a demander la-bas, il s'ajoute simplement.
+     LA VIE DES EMBLEMES, ET LA DEMANDE DU CAPTEUR AU BON MOMENT.
+     1er sept, Raouf : "que les gens puissent commencer a jouer, et que la
+     demande arrive quand on arrive a la plante et qu'on commence a jouer avec ;
+     et que la demande soit dans le site, pas une notification iOS".
+     Ce qui est possible, et ce qui ne l'est pas : la boite d'iOS ne peut pas
+     etre remplacee — requestPermission ouvre une boite du systeme, point. Mais
+     on peut la PRECEDER et la CHOISIR : la maison pose d'abord son propre mot,
+     dans sa lettre et ses couleurs, et il n'apparait qu'a l'instant ou un doigt
+     se met a jouer avec un emblème. Rien a l'arrivee sur le site, rien avant.
+     Qui refuse n'est plus jamais derange. Qui accepte une fois n'a plus que la
+     boite d'iOS aux sessions suivantes (elle, iOS la redemande a chaque fois).
+     Et sans capteur du tout, le DOIGT et le DEFILEMENT mènent la meme caresse.
      ---------------------------------------------------------------------- */
   var RAYON = 0.40;            /* le pointeur virtuel balaie le coeur du dessin */
   var ANCRE = 0.45;            /* sa hauteur a l'ecran : un peu au dessus du milieu */
@@ -605,11 +630,8 @@ var CARESSES = [], DERNIER_GESTE = 0;
   function tourner(t){
     boucle = 0;
     var now = performance.now();
-    /* plus rien ne parle : on rend la main, les emblèmes reviennent au repos */
     if(now - capteur > 2000 && now - defile > 500){ poserTout(); return; }
     if(capteur) { nx += (vise.x - nx) * 0.16; ny += (vise.y - ny) * 0.16; }
-    /* 30 images par seconde suffisent, et la main passe avant tout : tant
-       qu'un doigt ou une souris vient de parler, on se tait. */
     if(t - dernierT > 32 && now - DERNIER_GESTE > 1200){ dernierT = t; nourrir(); }
     boucle = requestAnimationFrame(tourner);
   }
@@ -618,18 +640,66 @@ var CARESSES = [], DERNIER_GESTE = 0;
   /* le defilement : gratuit, partout, sans un mot */
   addEventListener('scroll', function(){ defile = performance.now(); reveiller(); }, { passive:true });
 
-  /* le capteur, seulement la ou il se donne sans rien demander */
-  if(typeof DeviceOrientationEvent !== 'undefined' &&
-     typeof DeviceOrientationEvent.requestPermission === 'function') return;   /* iOS : on n'ouvre aucune boite */
-  if(!('DeviceOrientationEvent' in window)) return;
-  window.addEventListener('deviceorientation', function(e){
-    if(e.gamma == null && e.beta == null) return;      /* pas de capteur reel : on ignore */
-    var g = Math.max(-22, Math.min(22, e.gamma || 0));
-    var b = Math.max(-22, Math.min(22, (e.beta || 0) - 40));
-    vise.x = (g / 22) * RAYON; vise.y = (b / 22) * RAYON;
-    capteur = performance.now();
-    reveiller();
-  }, true);
+  function ecouter(){
+    window.addEventListener('deviceorientation', function(e){
+      if(e.gamma == null && e.beta == null) return;      /* pas de capteur reel : on ignore */
+      var g = Math.max(-22, Math.min(22, e.gamma || 0));
+      var b = Math.max(-22, Math.min(22, (e.beta || 0) - 40));
+      vise.x = (g / 22) * RAYON; vise.y = (b / 22) * RAYON;
+      capteur = performance.now();
+      reveiller();
+    }, true);
+  }
+
+  var iOS = typeof DeviceOrientationEvent !== 'undefined' &&
+            typeof DeviceOrientationEvent.requestPermission === 'function';
+  if(!iOS){ if('DeviceOrientationEvent' in window) ecouter(); return; }
+
+  /* ---- iOS : le mot de la maison, puis la boite du systeme ---- */
+  function memoire(cle){ try{ return localStorage.getItem(cle); }catch(e){ return null; } }
+  function noter(cle, v){ try{ localStorage.setItem(cle, v); }catch(e){} }
+  var demande = false, panneau = null;
+  function demanderAuSysteme(){
+    DeviceOrientationEvent.requestPermission()
+      .then(function(rep){ if(rep === 'granted'){ noter('ida.capteur', 'oui'); ecouter(); }
+                           else noter('ida.capteur', 'non'); })
+      .catch(function(){});
+  }
+  function fermer(){ if(panneau){ panneau.classList.remove('est-la'); var q = panneau;
+    setTimeout(function(){ if(q.parentNode) q.parentNode.removeChild(q); }, 400); panneau = null; } }
+  function mot(){
+    var l = (window.siteChrome && siteChrome.langueCourante) ? siteChrome.langueCourante() : 'fr';
+    var T = {
+      fr:{ p:"Incliner le téléphone fait vivre les plantes.", oui:"Activer", non:"Non merci" },
+      es:{ p:"Inclinar el teléfono hace vivir las plantas.",  oui:"Activar", non:"No, gracias" },
+      en:{ p:"Tilting the phone brings the plants to life.",  oui:"Turn on", non:"No thanks" }
+    };
+    return T[l] || T.fr;
+  }
+  function proposer(){
+    if(demande) return false;
+    demande = true;
+    if(memoire('ida.capteur') === 'non') return false;        /* refuse une fois : plus jamais */
+    if(memoire('ida.capteur') === 'oui'){ demanderAuSysteme(); return true; }
+    var t = mot();
+    panneau = document.createElement('div');
+    panneau.className = 'capteur';
+    panneau.setAttribute('role', 'group');
+    panneau.innerHTML = '<p class="capteur__mot"></p>' +
+      '<div class="capteur__b"><button type="button" class="capteur__oui"></button>' +
+      '<button type="button" class="capteur__non"></button></div>';
+    panneau.querySelector('.capteur__mot').textContent = t.p;
+    panneau.querySelector('.capteur__oui').textContent = t.oui;
+    panneau.querySelector('.capteur__non').textContent = t.non;
+    document.body.appendChild(panneau);
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(panneau) panneau.classList.add('est-la'); }); });
+    panneau.querySelector('.capteur__oui').addEventListener('click', function(){ fermer(); demanderAuSysteme(); });
+    panneau.querySelector('.capteur__non').addEventListener('click', function(){ noter('ida.capteur', 'non'); fermer(); });
+    /* seul, il s'efface : on ne barre pas une page pour un ornement */
+    setTimeout(function(){ if(panneau) fermer(); }, 9000);
+    return true;
+  }
+  PROPOSER_CAPTEUR = proposer;
 })();
 /* la naissance, une fois ; ensuite, pour la bouteille, chaque survol ne rejoue
    que le bouchon (la couronne de feuilles se referme et se rouvre, playCrown),

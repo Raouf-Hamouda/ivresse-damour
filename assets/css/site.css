@@ -2565,3 +2565,43 @@ a.figure__lien:hover img{ transform:scale(1.015); }
   .fiche__achat > .fiche__deplis{ order:6; min-width:0; margin-top:0; }
   .fiche__images > .fiche__autres2{ order:9; }
 }
+
+
+/* ============================================================================
+   1er SEPTEMBRE — LE MOT DE LA MAISON POUR LE CAPTEUR (Raouf : "que la demande
+   soit dans le site, avec le design du site, pas une notification iOS").
+   Ce qui est possible : la boite d'iOS ne se remplace pas, mais elle se
+   precede. Voici le mot de la maison ; il ne parait qu'a l'instant ou un doigt
+   se met a JOUER avec un emblème, jamais a l'arrivee sur le site, jamais deux
+   fois. Papier, encre, un filet : la meme lettre que le reste.
+   ========================================================================= */
+.capteur{
+  position:fixed; z-index:60;
+  left:var(--marge); right:var(--marge);
+  bottom:max(calc(var(--u)*2), env(safe-area-inset-bottom));
+  margin-inline:auto; max-width:420px;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:calc(var(--u)*2);
+  padding:calc(var(--u)*2) calc(var(--u)*2.5);
+  background:var(--papier); color:var(--encre);
+  border:1px solid var(--filet); border-radius:var(--rond-net);
+  box-shadow:0 6px 28px rgba(43,33,24,.14);
+  opacity:0; transform:translateY(14px);
+  transition:opacity .5s var(--lineaire), transform .5s var(--courbe);
+}
+.capteur.est-la{ opacity:1; transform:none; }
+.capteur__mot{
+  font-family:var(--serif); font-size:14px; line-height:1.4;
+  margin:0; max-width:22ch;
+}
+.capteur__b{ display:flex; align-items:center; gap:calc(var(--u)*1.5); flex:none; }
+.capteur__oui,.capteur__non{
+  font-size:10px; letter-spacing:var(--ls-petit); text-transform:uppercase;
+  padding:9px 14px; border-radius:var(--rond-net); cursor:pointer; white-space:nowrap;
+  min-height:38px;
+}
+.capteur__oui{ background:var(--encre); color:var(--papier); border:1px solid var(--encre); }
+.capteur__non{ background:none; color:var(--brun); border:0; padding-inline:4px; }
+@media (prefers-reduced-motion:reduce){
+  .capteur{ transition:none; opacity:1; transform:none; }
+}
