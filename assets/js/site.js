@@ -617,6 +617,7 @@ function caresserEmbleme(hote, svg, nom){
       aJoue = true; PROPOSER_CAPTEUR();
     }
     if(ev.cancelable) ev.preventDefault();                 /* il joue : la page ne bouge pas sous lui */
+    DERNIER_GESTE = performance.now();                     /* 2 sept : le doigt date son geste, sinon le capteur le recouvrait toutes les 32 ms (Raouf : "capteur allume, je ne peux plus jouer") */
     bouger({ clientX:t.clientX, clientY:t.clientY });
   }
   function doigtParti(){ doigt = false; tranche = false; lacher(); }
@@ -704,8 +705,14 @@ var PROPOSER_CAPTEUR = function(){ return false; };
      autour, et la caresse fait le reste, exactement comme a la souris : les
      feuilles proches s'ecartent, le dessin entier se penche vers lui. Tourner le
      telephone, c'est tourner autour de la plante. */
-  var ORBITE = 0.92;           /* le curseur tient a 92 % du demi-cote de la boite : sur les pointes, jamais au coeur */
-  var GAIN = 2;                /* a pleine inclinaison : la reponse du doigt (2/2), deux fois la souris */
+  /* 2 sept, 01h37, Raouf : "quand je bouge le telephone, c'est comme ma main
+     qui pousse la plante, pas au centre mais au milieu de la plante, j'aime cet
+     effet ; pas la plante qui tourne ou se deplace". Le curseur se tient donc
+     a MI-RAYON (0,58), la ou la souris fait cet effet-la, et le dessin entier
+     ne s'incline plus ni ne se deplace (gain d'inclinaison a zero) : seules
+     les pieces autour de la main s'ecartent. */
+  var ORBITE = 0.58;           /* le curseur tient a 58 % du demi-cote de la boite : au milieu de la plante */
+  var GAIN = 2;                /* a pleine inclinaison : la reponse du doigt (2), deux fois la souris ; sur les pieces seulement */
   var ZONE_MORTE = 0.06;       /* sous six centiemes d'inclinaison, la plante est au repos */
   var ANCRE = 0.45;            /* hauteur de l'ancre du defilement a l'ecran : un peu au dessus du milieu */
   var nx = 0, ny = 0, vise = { x:0, y:0 }, boucle = 0, dernierT = 0;
@@ -723,7 +730,7 @@ var PROPOSER_CAPTEUR = function(){ return false; };
       if(r.bottom < 0 || r.top > innerHeight || !r.width) continue;   /* hors de l'ecran : rien */
       if(capteur){
         if(!force){ if(h.__caresseLache) h.__caresseLache(); continue; }    /* telephone au repos : la plante aussi */
-        h.__caresseVers(ux * ORBITE, uy * ORBITE, GAIN * force, GAIN * force);   /* le curseur sur le bord, du cote ou ca penche */
+        h.__caresseVers(ux * ORBITE, uy * ORBITE, GAIN * force, 0);   /* la main a mi-rayon, du cote ou ca penche ; le dessin ne bouge pas en entier */
         continue;
       }
       /* le defilement souffle aussi (meme remarque de Raouf : le coeur ne doit pas
@@ -1987,9 +1994,9 @@ function poserFavicon(){
   if(document.querySelector('link[rel="icon"]')) return;
   var base = baseScripts();
   var liens = [
-    { rel:'icon', href:'assets/img/favicon.svg?v=20260902l', type:'image/svg+xml' },
-    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902l', sizes:'32x32' },
-    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902l' }
+    { rel:'icon', href:'assets/img/favicon.svg?v=20260902m', type:'image/svg+xml' },
+    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902m', sizes:'32x32' },
+    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902m' }
   ];
   for(var i=0;i<liens.length;i++){
     var l = document.createElement('link'), k;

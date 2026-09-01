@@ -3058,3 +3058,10 @@ body[data-page="mito"] .tete.a-panneau{ background:#C9C48D; }
 @media (max-width:1000px){
   .caisse__col, .caisse__deux{ padding-top:calc(var(--tete-h) + var(--u)*4); }
 }
+
+/* 2 sept, 01h37, capture de Raouf : le mot du capteur se cassait un mot par
+   ligne, les boutons lui prenaient la place. Deux etages : la phrase, puis
+   les deux boutons a droite. */
+.capteur{ flex-direction:column; align-items:stretch; gap:calc(var(--u)*1.5); }
+.capteur__mot{ max-width:none; }
+.capteur__b{ justify-content:flex-end; }
