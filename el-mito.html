@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/img/favicon.svg?v=20260902n" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png?v=20260902n" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20260902n">
+<link rel="icon" href="assets/img/favicon.svg?v=20260902o" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png?v=20260902o" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20260902o">
 <title>El Mito. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20260902n">
-<script src="assets/js/logo.js?v=20260902n"></script>
-<script src="assets/js/sceau_anime.js?v=20260902n"></script>
-<script src="assets/js/emblemes.js?v=20260902n"></script>
-<script src="assets/js/site.js?v=20260902n"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20260902o">
+<script src="assets/js/logo.js?v=20260902o"></script>
+<script src="assets/js/sceau_anime.js?v=20260902o"></script>
+<script src="assets/js/emblemes.js?v=20260902o"></script>
+<script src="assets/js/site.js?v=20260902o"></script>
 <style>
   /* -------------------------------------------------------------------------
      LA HISTORIA. La page a part du contrat visuel : le seul monde de papier
@@ -206,8 +206,11 @@
 
   /* telephone : les legendes gardent la place, la scene est cadree en portrait par le moteur */
   @media (max-width:700px){
-    .historia .cap,.historia .cap.g,.historia .cap.d{left:var(--marge);right:auto;width:min(66vw,360px);text-align:left;top:max(13vh, calc(var(--tete-h) + var(--u)*3))}
-    .historia .cap p{font-size:clamp(24px,7vw,32px)}
+    /* 2 sept, iPhone de Raouf : a 27 px sur 66 vw la legende faisait cinq lignes
+       et descendait sur la main du haut. 22 px sur 78 vw : trois lignes, au-dessus
+       des mains. */
+    .historia .cap,.historia .cap.g,.historia .cap.d{left:var(--marge);right:auto;width:min(78vw,360px);text-align:left;top:max(13vh, calc(var(--tete-h) + var(--u)*3))}
+    .historia .cap p{font-size:clamp(20px,5.6vw,26px);line-height:1.15}
     .historia .cap h1{font-size:clamp(48px,15vw,72px)}
     .historia .cap.centre,.historia .cap.titre,.historia .cap.cloture{left:50%;right:auto;text-align:center;width:min(88vw,420px)}
     .historia .cap.titre{top:38%}
@@ -1175,17 +1178,23 @@
        permettent d ajuster si le fond de page change */
     var farCol = o.far || '#B9B482';
     var nearCol = o.near || '#A6A274';
+    /* 2 sept, iPhone de Raouf : en portrait, sous les collines, une bande plate
+       d'un cinquieme de l'ecran. Les bases descendent vers le bas du cadre
+       (dyNear, dyFar) et les bosses grandissent (amp) : les cretes gardent leur
+       hauteur, le plat disparait. Rien ne change en paysage (valeurs a 0 et 1). */
+    var dyF = o.dyFar || 0, dyN = o.dyNear || 0, amp = o.amp || 1;
     var out = [];
     /* plan lointain, clair, haut dans le cadre */
-    var farBase = 560 - 60 * k;
+    var farBase = 560 - 60 * k + dyF;
     var farBumps = [
       [40, 230, 60], [420, 300, 20], [830, 220, 70], [1200, 320, 10], [1560, 240, 60]
     ];
     /* plan proche, sombre */
-    var nearBase = 800 - 90 * k;
+    var nearBase = 800 - 90 * k + dyN;
     var nearBumps = [
       [-20, 250, 50], [330, 200, 90], [720, 280, 40], [1110, 230, 90], [1490, 270, 50]
     ];
+    if (amp !== 1) { farBumps = farBumps.map(function(b){ return [b[0], b[1] * amp, b[2]]; }); nearBumps = nearBumps.map(function(b){ return [b[0], b[1] * amp, b[2]]; }); }
     out.push('<g>');
     out.push(hillLayer(farBase, farBumps, farCol, 'lt_shadowSoft'));
     out.push(hillLayer(nearBase, nearBumps, nearCol, 'lt_shadowSoft'));
@@ -2638,7 +2647,7 @@ function render(p,force){
   cap('c0', 0, 0.125);
 
   /* ---- S1 : le mot, et le feu en trois plans ---- */
-  cap('c1', 0.125, 0.225); cap('c1b', 0.205, 0.295);   /* c1 prend la suite de c0 sans trou */
+  cap('c1', 0.125, 0.205); cap('c1b', 0.205, 0.295);   /* 2 sept : plus aucun chevauchement entre deux legendes (iPhone de Raouf : deux textes l'un sur l'autre pendant le fondu) ; l'une finit ou l'autre commence */
   {
     const on = p>=0.12 && p<0.31;
     if(on){
@@ -2662,7 +2671,7 @@ function render(p,force){
   /* ---- collines : entrent en S2 en montant, restent jusqu a la fin ---- */
   {
     const hin=easeOut(seg(p,0.27,0.35));
-    put('L_collines','h', ()=>safe(window.hills,{t:1}));   /* tour 4 : les tons papier par defaut de hills(), plus d olive verte */
+    put('L_collines','h'+PORTRAIT, ()=>safe(window.hills,{t:1, dyNear:PORTRAIT?150:0, dyFar:PORTRAIT?80:0, amp:1}));   /* tour 4 : les tons papier par defaut de hills() ; 2 sept : en portrait les bases descendent et les bosses grandissent */
     move('L_collines',0,(1-hin)*260,1, hin>0?1:+OP_CACHE);
   }
 
@@ -2685,7 +2694,7 @@ function render(p,force){
 
   /* ---- S3 : la legende ---- */
   const bx=M.centre.x, by=M.centre.y-90;   /* by : la ligne de reference, l agave central est a by+90 */
-  cap('c3a', 0.405, 0.475); cap('c3b', 0.465, 0.55); cap('c3c', 0.515, 0.645);   /* c3c tenue jusqu a l arrivee de c4a : jamais d ecran muet entre S3 et S4 */
+  cap('c3a', 0.405, 0.465); cap('c3b', 0.465, 0.515); cap('c3c', 0.515, 0.65);   /* 2 sept : bornes jointives, sans chevauchement ; c3c tenue jusqu a c4a */
   {
     const on=p>=0.39 && p<0.68;
     if(on){
@@ -2748,7 +2757,7 @@ function render(p,force){
   }
 
   /* ---- S4 : le meme eclair sur deux personnes ---- */
-  cap('c4a', 0.65, 0.74); cap('c4b', 0.725, 0.86);   /* c4b tenue pendant la bouteille entre les mains, jusqu au depart vers le sceau */
+  cap('c4a', 0.65, 0.725); cap('c4b', 0.725, 0.86);   /* 2 sept : jointives ; c4b tenue pendant la bouteille entre les mains, jusqu au depart vers le sceau */
   {
     const on=p>=0.64;
     if(on){

@@ -1996,9 +1996,9 @@ function poserFavicon(){
   if(document.querySelector('link[rel="icon"]')) return;
   var base = baseScripts();
   var liens = [
-    { rel:'icon', href:'assets/img/favicon.svg?v=20260902n', type:'image/svg+xml' },
-    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902n', sizes:'32x32' },
-    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902n' }
+    { rel:'icon', href:'assets/img/favicon.svg?v=20260902o', type:'image/svg+xml' },
+    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902o', sizes:'32x32' },
+    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902o' }
   ];
   for(var i=0;i<liens.length;i++){
     var l = document.createElement('link'), k;
