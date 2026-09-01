@@ -606,9 +606,11 @@ function caresserEmbleme(hote, svg, nom){
       var ax = Math.abs(t.clientX - dx0), ay = Math.abs(t.clientY - dy0);
       if(ax + ay < 3) return;                              /* trop tot pour lire l'intention */
       tranche = true;
-      if(ay > ax * 1.7){                                   /* droit vers le haut ou le bas : il defile */
-        doigt = false; lacher(); return;
-      }
+      /* 2 sept, Raouf : "quand je joue avec mes mains, le defilement s'arrete ;
+         je veux la meme chose sur la bouteille". La regle du 1er sept qui
+         rendait la page a un doigt partant droit vers le haut ou le bas
+         tuait le jeu sur la bouteille, haute et etroite : on y joue de haut
+         en bas. Elle tombe. Sur l'encre on joue, dans le blanc on defile. */
     }
     if(!aJoue && Math.abs(t.clientX - dx0) + Math.abs(t.clientY - dy0) > 14){
       /* le doigt ne fait plus que toucher : IL JOUE. C'est l'instant, et le seul,
@@ -1994,9 +1996,9 @@ function poserFavicon(){
   if(document.querySelector('link[rel="icon"]')) return;
   var base = baseScripts();
   var liens = [
-    { rel:'icon', href:'assets/img/favicon.svg?v=20260902m', type:'image/svg+xml' },
-    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902m', sizes:'32x32' },
-    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902m' }
+    { rel:'icon', href:'assets/img/favicon.svg?v=20260902n', type:'image/svg+xml' },
+    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902n', sizes:'32x32' },
+    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902n' }
   ];
   for(var i=0;i<liens.length;i++){
     var l = document.createElement('link'), k;

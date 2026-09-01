@@ -163,7 +163,19 @@
     var base=group(root,P.base,c), body=group(root,P.body,c), side=group(root,P.side,c), sh=group(root,P.shoulder,c), medal=group(root,P.medal,c), neck=group(root,P.neck.concat(P.collar),c), crown=group(root,P.crown,c);
     /* la caresse (Raouf, 17 aout) : le bord de la bouteille repond (pied, flanc, epaule, col, couronne), le dedans a peine (corps, medaillon a 15 %) */
     base.concat(side,sh,neck,crown).forEach(function(g){ g.setAttribute('data-caresse','1'); }); body.forEach(function(g){ g.setAttribute('data-caresse','0.45'); }); medal.forEach(function(g){ g.setAttribute('data-caresse','0.15'); });   /* le corps (dont le bas de la bouteille) suit a 45 %, le medaillon a 15 % */
-    body[0].setAttribute('clip-path','url(#'+uid+')'); var bb=body[0].firstChild.getBBox();
+    var bb=body[0].firstChild.getBBox();
+    /* 2 sept (Raouf : "le bas arrive comme un bloc, le haut se decompose et c'est
+       beau") : le corps ne se revele plus par un seul balayage. Six bandes, du
+       pied a l'epaule, chacune nait a son tour (montee, leger grandissement,
+       fondu), au rythme des ecailles des cotes. Une fois la derniere posee, la
+       piece entiere prend le relais et les bandes s'effacent (la caresse ne
+       connait que la piece entiere). */
+    var NB=6, bands=[];
+    for(var bi=0;bi<NB;bi++){ var cpi=el('clipPath',{id:uid+'b'+bi},defs); var y0=bb.y+bb.height*(1-(bi+1)/NB), hg=bb.height/NB+0.8;
+      el('rect',{x:(bb.x-2).toFixed(2),y:y0.toFixed(2),width:(bb.width+4).toFixed(2),height:hg.toFixed(2)},cpi);
+      var gb=el('g',{'clip-path':'url(#'+uid+'b'+bi+')'},root); var pa={d:body[0].__it.d,'fill-rule':'evenodd',fill:c}; if(body[0].__it.tf) pa.transform=body[0].__it.tf; el('path',pa,gb);
+      gb.__cy=y0+hg/2; bands.push(gb); }
+    root.appendChild(body[0]);   /* la piece entiere par-dessus les bandes, pour prendre le relais */
     side.sort(function(a,b){ return b.__it.cy-a.__it.cy; }); sh.sort(function(a,b){ return Math.abs(a.__it.cx)-Math.abs(b.__it.cx); }); crown.sort(function(a,b){ return Math.abs(a.__it.cx)-Math.abs(b.__it.cx); });
     /* le nom de la bouteille ecrit dans l espace du ticket (o.label), une seule ligne, capitales espacees, encre */
     var tk=(function(){ var bx=base[0].firstChild.getBBox(); return null; })();
@@ -181,7 +193,9 @@
       base.forEach(function(g,i){ var st=60+i*150; var kk=co(seg(ms,st,st+420));
         T(g,about(g.__it.cx,g.__it.cy,'translate(0 '+(10*(1-kk)).toFixed(2)+') scale('+(0.9+0.1*kk).toFixed(3)+')')); O(g,kk); });
       if(lab) O(lab,co(seg(ms,320,760)));
-      var kb=co(seg(ms,150,750)); rect.setAttribute('y',(bb.y+bb.height*(1-kb)).toFixed(2)); rect.setAttribute('height',(bb.height*kb+1).toFixed(2)); O(body[0],kb>0?1:0);
+      var finB=150+(NB-1)*95+320;
+      bands.forEach(function(g,i){ var st=150+i*95; var kk=co(seg(ms,st,st+320)); T(g,about(0,g.__cy,'translate(0 '+(6*(1-kk)).toFixed(2)+') scale('+(0.96+0.04*kk).toFixed(3)+')')); O(g,ms>=finB?0:kk); });
+      O(body[0],ms>=finB?1:0);
       side.forEach(function(g,i){ var st=250+i*40; var kk=co(seg(ms,st,st+250)); O(g,kk); });
       sh.forEach(function(g,i){ var st=550+i*25; var kk=pop(seg(ms,st,st+300)); T(g,about(g.__it.cx,g.__it.cy,'scale('+kk.toFixed(3)+')')); O(g,kk>0?1:0); });
       medal.forEach(function(g){ var kk=seg(ms,600,1000), ee=co(kk); T(g,about(mc[0],mc[1],'scale('+(1.4-0.4*ee).toFixed(3)+') rotate('+(-12*(1-ee)).toFixed(2)+')')); O(g,ee); });
