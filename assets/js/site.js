@@ -1987,9 +1987,9 @@ function poserFavicon(){
   if(document.querySelector('link[rel="icon"]')) return;
   var base = baseScripts();
   var liens = [
-    { rel:'icon', href:'assets/img/favicon.svg?v=20260902k', type:'image/svg+xml' },
-    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902k', sizes:'32x32' },
-    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902k' }
+    { rel:'icon', href:'assets/img/favicon.svg?v=20260902l', type:'image/svg+xml' },
+    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902l', sizes:'32x32' },
+    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902l' }
   ];
   for(var i=0;i<liens.length;i++){
     var l = document.createElement('link'), k;

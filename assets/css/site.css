@@ -2805,7 +2805,8 @@ a.figure__lien:hover img{ transform:scale(1.015); }
    max-height la bornait, et object-fit:cover coupait ce qui depassait, la
    bouteille comprise. La boite se reduit en proportion, comme au bureau. */
 @media (max-width:1000px){
-  .heros-vente__objet img{ width:auto; max-width:100%; }
+  .heros-vente__objet{ justify-self:stretch; width:100%; }
+  .heros-vente__objet img{ width:auto; max-width:100%; margin-inline:auto; }   /* 2 sept, 01h35, Raouf : "la bouteille n'est pas centree" : la boite plus etroite que la colonne se collait a gauche de sa figure */
 }
 /* la bande des vues entre 701 et 1000 px : deux cartes exactement dans la
    colonne, alignees sur les marges du texte ; au telephone, 78 vw. */
