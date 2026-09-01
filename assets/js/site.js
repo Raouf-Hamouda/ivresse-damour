@@ -437,10 +437,17 @@ function caresserEmbleme(hote, svg, nom){
   /* 1er sept, Raouf : le mouvement, deux fois plus fort (3,4 -> 6,8 unites de
      glissement par piece, et l'inclinaison du dessin de 0,7 -> 1,4 degre). */
   var PORTEE = 190, AMPLI = 6.8, LISSAGE = 0.16;
-  /* 1er sept, Raouf : "qu'il bouge deux fois plus au doigt et quatre fois plus au
-     gyroscope". La souris garde sa mesure (le curseur est deja precis) ; le doigt
-     et le capteur, eux, sont des gestes larges et meritent une reponse large. */
-  var gain = 1;
+  /* Deux gains, pas un. Un emblème repond de deux façons : ses PIECES s'ecartent
+     vers le pointeur, et le DESSIN ENTIER se penche. En separant les deux, chaque
+     main a son propre caractere (1er sept, Raouf : "au gyroscope ca bouge trop
+     maintenant, la main c'est bien ; et un peu different, ce n'est pas le meme
+     effet") :
+       la souris  : 1 / 1     — le curseur est precis, la mesure d'origine ;
+       le doigt   : 2 / 2     — un geste large, une reponse large ;
+       le capteur : 1,1 / 2,6 — les feuilles bougent peu, mais la plante PENCHE :
+                    le telephone qu'on incline fait ployer le dessin comme sous le
+                    vent, au lieu d'ecarter les feuilles comme un doigt qui passe. */
+  var gainP = 1, gainT = 1;
   var pieces = null, centres = null, poids = null, cour = null, cible = null;
   var actif = false, boucle = 0, t0 = 0, dernier = null, sr = 0, stx = 0, sty = 0, crx = 0, ctx = 0, cty = 0;
   /* fige : la pose atteinte se TIENT (le defilement a place l'emblème, il reste
@@ -475,13 +482,13 @@ function caresserEmbleme(hote, svg, nom){
     var cx = vb ? vb.x + vb.width/2 : 0, cy = vb ? vb.y + vb.height/2 : 0, demi = vb ? Math.max(vb.width, vb.height)/2 : 120;
     if(p){
       var nx = Math.max(-1, Math.min(1, (p.x - cx)/demi)), ny = Math.max(-1, Math.min(1, (p.y - cy)/demi));
-      crx = nx * 1.4 * e * gain; ctx = nx * 1.6 * e * gain; cty = ny * 1.6 * e * gain;
+      crx = nx * 1.4 * e * gainT; ctx = nx * 1.6 * e * gainT; cty = ny * 1.6 * e * gainT;
     } else { crx = ctx = cty = 0; }
     for(var i = 0; i < pieces.length; i++){
       var c = centres[i]; if(!c || !p){ cible[i][0] = cible[i][1] = 0; continue; }
       var dx = p.x - c[0], dy = p.y - c[1], d = Math.sqrt(dx*dx + dy*dy);
       var w = Math.max(0, 1 - d/PORTEE); w = w*w;
-      var k = d > 0.5 ? (AMPLI * gain * e * poids[i] * w / d) : 0;
+      var k = d > 0.5 ? (AMPLI * gainP * e * poids[i] * w / d) : 0;
       cible[i][0] = dx*k; cible[i][1] = dy*k;
     }
   }
@@ -515,7 +522,7 @@ function caresserEmbleme(hote, svg, nom){
   }
   function lacher(){ fige = false; if(!actif) return; actif = false; dernier = null; if(!boucle) boucle = requestAnimationFrame(tourner); }
   if(window.requestAnimationFrame) requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(!pieces) preparer(); }); });
-  function aLaSouris(ev){ if(ev.pointerType === 'touch') return; gain = 1; bouger(ev); }
+  function aLaSouris(ev){ if(ev.pointerType === 'touch') return; gainP = gainT = 1; bouger(ev); }
   hote.addEventListener('pointermove', aLaSouris, { passive:true });
   hote.addEventListener('pointerdown', aLaSouris, { passive:true });
   hote.addEventListener('pointerleave', lacher);
@@ -534,9 +541,19 @@ function caresserEmbleme(hote, svg, nom){
      pixels pres, pour que le jeu reste facile entre deux feuilles — le doigt joue
      et la page ne bouge pas. Dans le blanc, on ne retient rien : la page defile
      comme partout ailleurs, des le premier pixel. */
-  var doigt = false, dx0 = 0, dy0 = 0, aJoue = false;
+  var doigt = false, tranche = false, dx0 = 0, dy0 = 0, aJoue = false;
+  /* Deux questions, pas une (1er sept, Raouf : "distingue mieux le doigt qui
+     defile du doigt qui joue avec la plante").
+     1. OU s'est-il pose ? La boite d'un emblème est un carre, le dessin est de
+        l'encre au milieu de beaucoup de blanc. Seule l'ENCRE retient le doigt,
+        a cinq pixels pres (le navigateur ne compte que les surfaces peintes).
+        Dans le blanc, rien n'est retenu : la page defile au premier pixel.
+     2. QUE fait-il ? Meme pose sur une feuille, un doigt qui part droit vers le
+        haut ou vers le bas, franchement, VEUT DEFILER : on lui rend la page.
+        Un doigt qui part de biais, ou qui traine, joue. La reponse se decide au
+        tout premier deplacement — apres, le navigateur a deja choisi. */
   function surEncre(x, y){
-    var pas = [[0,0],[8,0],[-8,0],[0,8],[0,-8]];
+    var pas = [[0,0],[5,0],[-5,0],[0,5],[0,-5]];
     for(var i = 0; i < pas.length; i++){
       var e = document.elementFromPoint(x + pas[i][0], y + pas[i][1]);
       if(e && e !== svg && svg.contains(e)) return true;
@@ -546,21 +563,30 @@ function caresserEmbleme(hote, svg, nom){
   function auDoigt(ev){
     var t = ev.touches && ev.touches[0]; if(!t) return;
     if(!doigt){
-      if(!surEncre(t.clientX, t.clientY)) return;      /* du blanc : on rend la main au defilement */
-      doigt = true; dx0 = t.clientX; dy0 = t.clientY; aJoue = false;
-      gain = 2;                                        /* au doigt : deux fois plus */
+      if(ev.type !== 'touchstart') return;                 /* geste deja rendu a la page */
+      if(!surEncre(t.clientX, t.clientY)) return;          /* du blanc : la page defile */
+      doigt = true; tranche = false; dx0 = t.clientX; dy0 = t.clientY; aJoue = false;
+      gainP = gainT = 2;                                   /* au doigt : deux fois plus */
+      return;                                              /* on ne retient rien avant de savoir */
     }
-    else if(!aJoue && Math.abs(t.clientX - dx0) + Math.abs(t.clientY - dy0) > 14){
+    if(!tranche){
+      var ax = Math.abs(t.clientX - dx0), ay = Math.abs(t.clientY - dy0);
+      if(ax + ay < 3) return;                              /* trop tot pour lire l'intention */
+      tranche = true;
+      if(ay > ax * 1.7){                                   /* droit vers le haut ou le bas : il defile */
+        doigt = false; lacher(); return;
+      }
+    }
+    if(!aJoue && Math.abs(t.clientX - dx0) + Math.abs(t.clientY - dy0) > 14){
       /* le doigt ne fait plus que toucher : IL JOUE. C'est l'instant, et le seul,
          ou l'on propose le capteur (1er sept, Raouf : "que la demande arrive
          quand on commence a jouer, pas en entrant sur le site"). */
       aJoue = true; PROPOSER_CAPTEUR();
     }
-    /* le doigt tient le dessin : la page ne defile pas sous lui */
-    if(ev.cancelable) ev.preventDefault();
+    if(ev.cancelable) ev.preventDefault();                 /* il joue : la page ne bouge pas sous lui */
     bouger({ clientX:t.clientX, clientY:t.clientY });
   }
-  function doigtParti(){ doigt = false; lacher(); }
+  function doigtParti(){ doigt = false; tranche = false; lacher(); }
   hote.addEventListener('pointercancel', function(){ if(!doigt) lacher(); });
   hote.addEventListener('touchstart', auDoigt, { passive:false });
   hote.addEventListener('touchmove', auDoigt, { passive:false });
@@ -583,10 +609,10 @@ function caresserEmbleme(hote, svg, nom){
      du telephone le met (-1 = bord gauche/haut, +1 = bord droit/bas de la
      boite du dessin), et la caresse fait le reste : les pieces proches se
      penchent vers lui, le dessin s'incline d'un degre. Exactement la souris. */
-  hote.__caresseVers = function(nx, ny, g){
+  hote.__caresseVers = function(nx, ny, gp, gt){
     var r = svg.getBoundingClientRect();
     if(!(r.width > 0)) return;
-    gain = g || 1;
+    gainP = gp || 1; gainT = gt || gp || 1;
     bouger({ clientX:r.left + r.width * (0.5 + nx * 0.5),
              clientY:r.top  + r.height * (0.5 + ny * 0.5) });
   };
@@ -637,11 +663,11 @@ var PROPOSER_CAPTEUR = function(){ return false; };
       if(!h.__caresseVers || !h.isConnected) continue;
       var r = h.getBoundingClientRect();
       if(r.bottom < 0 || r.top > innerHeight || !r.width) continue;   /* hors de l'ecran : rien */
-      if(capteur){ h.__caresseVers(nx, ny, 4); continue; }    /* au gyroscope : quatre fois plus */
+      if(capteur){ h.__caresseVers(nx, ny, 1.1, 2.6); continue; }   /* le capteur : peu de feuilles, beaucoup de penchee */
       /* le defilement : la hauteur du pointeur virtuel dans le dessin, selon
          la distance qui reste entre le centre de l'emblème et l'ancre. */
       var c = r.top + r.height / 2, d = (innerHeight * ANCRE - c) / (r.height * 0.75);
-      h.__caresseVers(0, Math.max(-1, Math.min(1, d)) * RAYON, 2);   /* au defilement : comme le doigt */
+      h.__caresseVers(0, Math.max(-1, Math.min(1, d)) * RAYON, 2, 2);   /* au defilement : comme le doigt */
     }
   }
   function poserTout(){
@@ -654,7 +680,9 @@ var PROPOSER_CAPTEUR = function(){ return false; };
     boucle = 0;
     var now = performance.now();
     if(now - capteur > 2000 && now - defile > 500){ poserTout(); return; }
-    if(capteur) { nx += (vise.x - nx) * 0.16; ny += (vise.y - ny) * 0.16; }
+    /* et il glisse : un huitieme du chemin par image au lieu d'un sixieme. Le
+       dessin ploie et revient avec un temps de retard, il ne colle pas au poignet. */
+    if(capteur) { nx += (vise.x - nx) * 0.075; ny += (vise.y - ny) * 0.075; }
     if(t - dernierT > 32 && now - DERNIER_GESTE > 1200){ dernierT = t; nourrir(); }
     boucle = requestAnimationFrame(tourner);
   }
@@ -666,9 +694,11 @@ var PROPOSER_CAPTEUR = function(){ return false; };
   function ecouter(){
     window.addEventListener('deviceorientation', function(e){
       if(e.gamma == null && e.beta == null) return;      /* pas de capteur reel : on ignore */
-      var g = Math.max(-22, Math.min(22, e.gamma || 0));
-      var b = Math.max(-22, Math.min(22, (e.beta || 0) - 40));
-      vise.x = (g / 22) * RAYON; vise.y = (b / 22) * RAYON;
+      /* 30 degres pour aller d'un bord a l'autre, au lieu de 22 : il faut
+         franchement pencher le telephone pour aller au bout du geste. */
+      var g = Math.max(-30, Math.min(30, e.gamma || 0));
+      var b = Math.max(-30, Math.min(30, (e.beta || 0) - 40));
+      vise.x = (g / 30) * RAYON; vise.y = (b / 30) * RAYON;
       capteur = performance.now();
       reveiller();
     }, true);
@@ -1398,9 +1428,9 @@ function construireEntete(pageCourante){
         /* La langue a quitte l entete : elle se choisit a la porte d age, une
            fois, avec la question de la majorite. Decision de Raouf le 16 aout.
            Restent les quatre fonctions dont le site a vraiment besoin. */
-        '<button class="nav__ic" type="button" data-role="chercher" ' +
-           'data-fr-aria-label="Chercher" data-es-aria-label="Buscar" data-en-aria-label="Search">' +
-           ICONES.chercher + '</button>' +
+        /* 1er sept, Raouf : "pas besoin d'un bouton de recherche". Le catalogue
+           tient en trois bouteilles : on ne cherche pas, on regarde. */
+
         '<a class="nav__ic" href="el-registro.html" ' +
            'data-fr-aria-label="Le registre" data-es-aria-label="El registro" data-en-aria-label="The register">' +
            ICONES.registre + '</a>' +

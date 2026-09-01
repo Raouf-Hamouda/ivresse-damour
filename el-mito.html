@@ -7,11 +7,11 @@
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
 <title>El Mito. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20260901q">
-<script src="assets/js/logo.js?v=20260901q"></script>
-<script src="assets/js/sceau_anime.js?v=20260901q"></script>
-<script src="assets/js/emblemes.js?v=20260901q"></script>
-<script src="assets/js/site.js?v=20260901q"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20260901s">
+<script src="assets/js/logo.js?v=20260901s"></script>
+<script src="assets/js/sceau_anime.js?v=20260901s"></script>
+<script src="assets/js/emblemes.js?v=20260901s"></script>
+<script src="assets/js/site.js?v=20260901s"></script>
 <style>
   /* -------------------------------------------------------------------------
      LA HISTORIA. La page a part du contrat visuel : le seul monde de papier
@@ -118,7 +118,7 @@
     from{ transform:translateX(-5px) scaleY(1); }
     to  { transform:translateX(5px)  scaleY(1.022); }
   }
-  .historia .scroller{position:relative;height:1500vh;z-index:1}   /* tour 3 : 1500 au lieu de 1100, tout dure plus longtemps sous le doigt ; en portrait 1050, voir le media 700px plus bas */
+  .historia .scroller{position:relative;height:2100vh;z-index:1}   /* tour 3 : 1500 au lieu de 1100, tout dure plus longtemps sous le doigt ; en portrait 1050, voir le media 700px plus bas */
   /* 100svh : sur un telephone la barre du navigateur ne cache pas le bas de la scene */
   .historia .stage{position:sticky;top:0;height:100vh;height:100svh;width:100%;overflow:hidden;contain:strict;
     /* le papier de la scene : la couleur, le quadrillage (maille 40, comme body::before) et,
@@ -216,7 +216,7 @@
     .historia .cap .lieu{max-width:26ch}
     /* portrait : la meme ligne du temps (p de 0 a 1) sur un chemin plus court, le film est
        plus dense sous le doigt, aucun long defilement sans rien a lire ni a voir bouger */
-    .historia .scroller{height:1050vh}
+    .historia .scroller{height:1700vh}
   }
 </style>
 </head>
@@ -2793,17 +2793,41 @@ function render(p,force){
    la position et la hauteur du defilement sont mesurees dans cadrer(), au chargement et au
    redimensionnement. Tant que la porte d age est levee (html.porte-ouverte), rien ne se
    dessine : le premier cadrage attend qu elle tombe. */
-let ticking=false;
 function porteLevee(){ return document.documentElement.classList.contains('porte-ouverte'); }
 function progress(){ return clamp((window.scrollY-SCROLL_TOP)/SCROLL_H,0,1); }
-function onScroll(){ if(ticking||porteLevee()) return; ticking=true; requestAnimationFrame(t=>{ ticking=false; veiller(t); render(progress()); }); }
+/* 1er sept, Raouf : "plus fluide, et que l'animation prenne plus de temps ; on
+   defile vite et on est deja a la fin".
+   Deux reponses. La duree : la piste passe de 1500 a 2100 vh au bureau, de 1050
+   a 1700 vh au telephone — le meme recit sur deux tiers de defilement en plus,
+   chaque scene a le temps de se poser.
+   La fluidite : l image ne colle plus a la position du doigt, elle la REJOINT.
+   A chaque image, le recit avance d un cinquieme de la distance qui le separe de
+   la position reelle. Un a-coup du pouce ne fait plus sauter la scene, elle y
+   glisse ; et si le telephone perd une image, la suivante rattrape sans secousse.
+   La boucle s eteint des que le recit a rejoint le doigt : rien ne tourne au repos. */
+let pCible=0, pRendu=0, boucleFluide=0;
+const GLISSE=0.2;
+function fluide(t){
+  boucleFluide=0;
+  veiller(t);
+  const d=pCible-pRendu;
+  if(Math.abs(d)<0.0002){ if(pRendu!==pCible){ pRendu=pCible; render(pRendu); } return; }
+  pRendu+=d*GLISSE;
+  render(pRendu);
+  boucleFluide=requestAnimationFrame(fluide);
+}
+function onScroll(){
+  if(porteLevee()) return;
+  pCible=progress();
+  if(!boucleFluide) boucleFluide=requestAnimationFrame(fluide);
+}
 window.addEventListener('scroll',onScroll,{passive:true});
 let resizeTimer=0;
 function recadrer(delai){ clearTimeout(resizeTimer); resizeTimer=setTimeout(()=>{ if(!porteLevee()) cadrer(); },delai); }
 window.addEventListener('resize',()=>recadrer(120));
 window.addEventListener('orientationchange',()=>recadrer(200));
 if(window.visualViewport) window.visualViewport.addEventListener('resize',()=>recadrer(120));
-window.__setProgress=function(x){ window.scrollTo(0,SCROLL_TOP+SCROLL_H*x); render(x,true); };
+window.__setProgress=function(x){ window.scrollTo(0,SCROLL_TOP+SCROLL_H*x); pCible=pRendu=x; render(x,true); };
 /* mesure : cout JS de render sur n pas (les images reelles se mesurent avec le traceur) */
 window.__perf=function(n){ n=n||200; const ts=[]; for(let i=0;i<=n;i++){ const t0=performance.now(); render(i/n,true); ts.push(performance.now()-t0);} ts.sort((a,b)=>a-b); return {avg:+(ts.reduce((a,b)=>a+b,0)/ts.length).toFixed(2), p95:+ts[Math.floor(ts.length*0.95)].toFixed(2), max:+ts[ts.length-1].toFixed(2)}; };
 /* Le chrome de la maison est pose juste apres ce script : il ajoute l entete fixe, le pied,

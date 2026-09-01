@@ -2605,3 +2605,65 @@ a.figure__lien:hover img{ transform:scale(1.015); }
 @media (prefers-reduced-motion:reduce){
   .capteur{ transition:none; opacity:1; transform:none; }
 }
+
+
+/* ============================================================================
+   1er SEPTEMBRE — L'AFFICHE (Raouf, capture Johnnie Walker Blue Label Ice
+   Chalet a l'appui) : une bande pleine largeur ou l'objet occupe la moitie du
+   champ et le mot tient l'autre. La composition de la capture est reprise
+   telle quelle — surtitre en capitales espacees, titre immense, deux lignes
+   de texte, un bouton plein rectangulaire — mais dans la matiere de la maison :
+   le papier au lieu de la montagne, l'encre au lieu du bleu, la bouteille au
+   lieu du flacon bleu. Une variante par page : La Historia prend l'espadín et
+   le fond creme, El Palenque prend la copita et le fond papier.
+   NOTE DE CHANTIER : la photographie de paysage qui remplirait le fond comme
+   chez Johnnie Walker n'existe pas dans les fichiers de la maison. La
+   structure est posee, prete a la recevoir (une image en .affiche__fond).
+   ========================================================================= */
+.affiche{
+  position:relative; width:100%; overflow:hidden; isolation:isolate;
+  background:var(--papier); border-block:1px solid var(--filet);
+}
+.affiche--creme{ background:var(--creme); }
+.affiche__fond{ position:absolute; inset:0; z-index:0; }
+.affiche__fond img{ width:100%; height:100%; object-fit:cover; display:block; }
+.affiche__deux{
+  position:relative; z-index:1; max-width:var(--largeur); margin-inline:auto;
+  display:grid; grid-template-columns:1fr 1fr; align-items:center;
+  gap:calc(var(--u)*6); padding:calc(var(--u)*9) var(--marge);
+}
+.affiche__mot{ max-width:34ch; }
+.affiche__kicker{
+  font-size:var(--t-micro); letter-spacing:var(--ls-large); text-transform:uppercase;
+  color:var(--brun); margin:0 0 calc(var(--u)*3);
+}
+.affiche__titre{
+  font-family:var(--serif); font-weight:400;
+  font-size:clamp(30px,4.2vw,58px); line-height:1.06; letter-spacing:var(--ls-titre);
+  color:var(--encre); margin:0;
+}
+.affiche__ligne{
+  font-family:var(--serif); font-size:clamp(15px,1.15vw,18px); line-height:1.55;
+  color:var(--encre); margin:calc(var(--u)*4) 0 0; max-width:44ch;
+}
+.affiche__b{
+  display:inline-flex; align-items:center; justify-content:center;
+  margin-top:calc(var(--u)*5); min-width:280px; min-height:52px;
+  padding:0 calc(var(--u)*5); text-decoration:none;
+  font-size:13px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+}
+.affiche__objet{ margin:0; justify-self:center; }
+.affiche__objet img{
+  display:block; width:100%; max-width:560px; max-height:62svh;
+  object-fit:contain; mix-blend-mode:multiply;
+}
+@media (max-width:1000px){
+  .affiche__deux{
+    grid-template-columns:1fr; gap:calc(var(--u)*4);
+    padding:calc(var(--u)*6) var(--marge) calc(var(--u)*7);
+  }
+  .affiche__objet{ order:-1; }
+  .affiche__objet img{ max-height:38svh; margin-inline:auto; }
+  .affiche__b{ width:100%; min-width:0; }
+  .affiche__ligne{ margin-top:calc(var(--u)*3); }
+}
