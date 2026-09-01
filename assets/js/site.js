@@ -448,7 +448,18 @@ function caresserEmbleme(hote, svg, nom){
                     le telephone qu'on incline fait ployer le dessin comme sous le
                     vent, au lieu d'ecarter les feuilles comme un doigt qui passe. */
   var gainP = 1, gainT = 1;
-  var pieces = null, centres = null, poids = null, cour = null, cible = null;
+  var pieces = null, centres = null, poids = null, cour = null, cible = null, rayons = null;
+  /* LE VENT (1er sept, Raouf : "au gyroscope, ne bouge pas trop le centre de la
+     plante, plutot les extremites, et avec plus de synergie"). La souris est un
+     effet LOCAL : les pieces pres du curseur bougent, il se deplace, l'effet
+     voyage. Reproduire ca avec un pointeur virtuel pres du centre donnait ce
+     qu'il a vu : le coeur qui remue, les pointes mortes. Le telephone qu'on
+     incline n'est pas un curseur, c'est un souffle sur toute la plante : chaque
+     piece part DANS LA MEME DIRECTION, d'autant plus loin qu'elle est loin du
+     coeur (bras de levier, rayon^1.6). Le coeur tient, les feuilles ploient,
+     ensemble. Le dessin entier s'incline un peu avec elles. */
+  var vent = null;   /* {x,y} entre -1 et 1 quand le vent souffle, null sinon */
+  var AMPLI_VENT = 7;   /* la piece la plus lointaine part de 7 unites a pleine inclinaison ; le coeur ne bouge pas */
   var actif = false, boucle = 0, t0 = 0, dernier = null, sr = 0, stx = 0, sty = 0, crx = 0, ctx = 0, cty = 0;
   /* fige : la pose atteinte se TIENT (le defilement a place l'emblème, il reste
      penche la ou il est) et la boucle s'arrete des qu'elle est posee : au repos,
@@ -466,6 +477,19 @@ function caresserEmbleme(hote, svg, nom){
       if(m){ var mm = m.matrix; return [mm.a*x + mm.c*y + mm.e, mm.b*x + mm.d*y + mm.f]; }
       return [x, y]; }catch(e){ return null; } });
     cour = pieces.map(function(){ return [0, 0]; }); cible = pieces.map(function(){ return [0, 0]; });
+    /* le rayon de chaque piece : 0 au coeur du dessin, 1 a la piece la plus
+       eloignee. C'est le bras de levier du vent (voir __caresseVent). Mesure a
+       l'ECRAN (getBoundingClientRect), pas dans le repere local des pieces : les
+       emblèmes sont dessines dans un groupe transforme, et le repere local
+       rangeait toutes les feuilles pres du centre (mesure : 0,02 a 0,17 au lieu
+       de 0,06 a 0,64). Normalise par piece la plus lointaine, chaque emblème
+       ploie de la meme façon quelle que soit sa forme. */
+    try{
+      var rs = svg.getBoundingClientRect(), scx = rs.left + rs.width/2, scy = rs.top + rs.height/2;
+      rayons = pieces.map(function(n){ var r = n.getBoundingClientRect(); return Math.hypot(r.left + r.width/2 - scx, r.top + r.height/2 - scy); });
+      var rmax = Math.max.apply(null, rayons) || 1;
+      rayons = rayons.map(function(r){ return r / rmax; });
+    }catch(e){ rayons = pieces.map(function(){ return 0.5; }); }
     svg.style.transformOrigin = '50% 60%';
     return true;
   }
@@ -476,6 +500,15 @@ function caresserEmbleme(hote, svg, nom){
   }
   /* la cible de chaque piece, depuis le dernier pointeur et la montee d entree */
   function viser(){
+    if(vent){
+      var ev2 = actif ? Math.min(1, (performance.now() - t0) / 700) : 0; ev2 = 1 - Math.pow(1 - ev2, 3);
+      crx = vent.x * 1.2 * ev2; ctx = vent.x * 0.5 * ev2; cty = vent.y * 0.5 * ev2;
+      for(var j = 0; j < pieces.length; j++){
+        var bras = Math.pow(rayons[j] || 0, 1.6) * AMPLI_VENT * ev2 * poids[j];
+        cible[j][0] = vent.x * bras; cible[j][1] = vent.y * bras;
+      }
+      return;
+    }
     var p = dernier ? pointeur(dernier) : null;
     var e = actif && p ? Math.min(1, (performance.now() - t0) / 700) : 0; e = 1 - Math.pow(1 - e, 3);
     var vb = svg.viewBox && svg.viewBox.baseVal;
@@ -516,11 +549,11 @@ function caresserEmbleme(hote, svg, nom){
     /* un vrai geste (souris ou doigt) porte un type ; le pointeur virtuel du
        gyroscope, non. La main a toujours le dernier mot sur le capteur. */
     if(ev && ev.type) DERNIER_GESTE = performance.now();
-    fige = false;
+    fige = false; vent = null;
     dernier = ev;
     if(!boucle) boucle = requestAnimationFrame(tourner);
   }
-  function lacher(){ fige = false; if(!actif) return; actif = false; dernier = null; if(!boucle) boucle = requestAnimationFrame(tourner); }
+  function lacher(){ fige = false; vent = null; if(!actif) return; actif = false; dernier = null; if(!boucle) boucle = requestAnimationFrame(tourner); }
   if(window.requestAnimationFrame) requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(!pieces) preparer(); }); });
   function aLaSouris(ev){ if(ev.pointerType === 'touch') return; gainP = gainT = 1; bouger(ev); }
   hote.addEventListener('pointermove', aLaSouris, { passive:true });
@@ -616,6 +649,14 @@ function caresserEmbleme(hote, svg, nom){
     bouger({ clientX:r.left + r.width * (0.5 + nx * 0.5),
              clientY:r.top  + r.height * (0.5 + ny * 0.5) });
   };
+  /* le vent : x, y entre -1 et 1, l'inclinaison du telephone */
+  hote.__caresseVent = function(x, y){
+    if(!pieces && !preparer()) return;
+    if(!actif){ actif = true; t0 = performance.now(); }
+    fige = false; dernier = null;
+    vent = { x:Math.max(-1, Math.min(1, x)), y:Math.max(-1, Math.min(1, y)) };
+    if(!boucle) boucle = requestAnimationFrame(tourner);
+  };
   hote.__caresseLache = lacher;
   /* poser la caresse et la tenir la (fin d'un defilement) */
   hote.__caresseFiger = function(){ if(!actif) return; fige = true; if(!boucle) boucle = requestAnimationFrame(tourner); };
@@ -663,11 +704,14 @@ var PROPOSER_CAPTEUR = function(){ return false; };
       if(!h.__caresseVers || !h.isConnected) continue;
       var r = h.getBoundingClientRect();
       if(r.bottom < 0 || r.top > innerHeight || !r.width) continue;   /* hors de l'ecran : rien */
-      if(capteur){ h.__caresseVers(nx, ny, 1.1, 2.6); continue; }   /* le capteur : peu de feuilles, beaucoup de penchee */
-      /* le defilement : la hauteur du pointeur virtuel dans le dessin, selon
-         la distance qui reste entre le centre de l'emblème et l'ancre. */
-      var c = r.top + r.height / 2, d = (innerHeight * ANCRE - c) / (r.height * 0.75);
-      h.__caresseVers(0, Math.max(-1, Math.min(1, d)) * RAYON, 2, 2);   /* au defilement : comme le doigt */
+      if(capteur){ if(h.__caresseVent) h.__caresseVent(nx / RAYON, ny / RAYON); continue; }   /* le capteur SOUFFLE sur la plante */
+      /* le defilement souffle aussi (meme remarque de Raouf : le coeur ne doit pas
+         remuer, les pointes oui, ensemble). La force vient de la distance entre
+         le centre de l'emblème et l'ancre de l'ecran ; la direction est un vent
+         de biais, plus couche que droit : une plante ploie de cote, elle ne
+         s'ecrase pas. */
+      var c = r.top + r.height / 2, d = Math.max(-1, Math.min(1, (innerHeight * ANCRE - c) / (r.height * 0.75)));
+      if(h.__caresseVent) h.__caresseVent(d * 0.6, d * 0.4);
     }
   }
   function poserTout(){
