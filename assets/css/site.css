@@ -3033,3 +3033,27 @@ a.figure__lien:hover img{ transform:scale(1.015); }
 body[data-page="mito"] .pied__ic{ background:none; }
 body[data-page="mito"] .tete.est-posee,
 body[data-page="mito"] .tete.a-panneau{ background:#C9C48D; }
+
+/* 2 sept, 01h40, revue telephone : les notes de la caisse (commande, paiement)
+   etaient des phrases entieres en capitales espacees, trois lignes illisibles.
+   Une note est une phrase : serif, 13 px, brun, casse normale. */
+.mention.caisse__note{
+  font-family:var(--serif); font-size:13px; letter-spacing:0; text-transform:none;
+  line-height:1.55; color:var(--brun); max-width:48ch;
+}
+
+/* 2 sept, 01h45, revue telephone des pages de campagne : un objet par ecran,
+   mais l'objet faisait 156 px (40 vmin) pose en haut d'un ecran vide. Sous
+   860 px l'objet prend 62 vw et le groupe (nom, objet, pastille) se centre
+   dans l'ecran, comme au bureau. */
+@media (max-width:860px){
+  .camp__objet{ align-content:center; }
+  .camp__objet .camp__marque svg{ width:min(62vw,320px); }
+}
+
+/* 2 sept, 01h50 : la caisse (commande, paiement) ouvrait a 186 px sous le
+   haut de l'ecran au telephone, 100 px de blanc sous l'entete quand toutes
+   les autres pages ouvrent a 32. Meme mesure. */
+@media (max-width:1000px){
+  .caisse__col, .caisse__deux{ padding-top:calc(var(--tete-h) + var(--u)*4); }
+}
