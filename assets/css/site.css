@@ -2667,3 +2667,369 @@ a.figure__lien:hover img{ transform:scale(1.015); }
   .affiche__b{ width:100%; min-width:0; }
   .affiche__ligne{ margin-top:calc(var(--u)*3); }
 }
+
+
+/* ============================================================================
+   1er SEPTEMBRE AU SOIR — LA PAGE D'ACHAT AU TELEPHONE, REFAITE (Raouf, capture
+   Johnnie Walker a l'appui : "pas la meilleure, a juger et a rendre world
+   class"). Le premier ecran est celui de l'affiche : l'objet, le nom, le prix,
+   le bouton, tout dans le premier regard, rien a chercher. Puis le recit, les
+   deux autres vues en bande qu'on fait glisser du pouce, les depliants, les
+   autres bouteilles. Et quand le bouton de la fiche quitte l'ecran, une barre
+   au bas garde le nom, le prix et AJOUTER sous le pouce. Au bureau, rien ne
+   change. Meme grammaire sous 1000 px (la fenetre coupee comprise).
+   ========================================================================= */
+@media (max-width:1000px){
+  /* 1. l'ordre : l'objet, le bloc de vente, la bande des vues, les depliants,
+        les autres bouteilles. Les deux colonnes sont defaites plus haut
+        (display:contents) ; ici seulement les rangs. */
+  .fiche{ gap:calc(var(--u)*3); padding-top:calc(var(--tete-h) + var(--u)); }
+  .fiche__images > .galerie{ order:1; margin:0; }
+  .fiche__achat > .fiche__vendre{ order:2; }
+  .fiche__images > .galerie__vignettes{ order:3; }
+  .fiche__achat > .fiche__deplis{ order:4; margin-top:calc(var(--u)*2); }
+  .fiche__images > .fiche__autres2{ order:5; }
+
+  /* 2. l'objet : le packshot est un fichier paysage ou la bouteille tient le
+        tiers central ; le cadre 4/5 recadre le BLANC, jamais la bouteille
+        (regle du 16 aout), et la hauteur est bornee pour que le nom, le prix
+        et le bouton tiennent dans le premier ecran avec elle. La boite se
+        reduit en proportion (width:auto), elle ne s'etire pas en largeur :
+        c'est l'etirement qui coupait la bouteille dans la fenetre coupee. */
+  .fiche .galerie img.galerie__grande{
+    aspect-ratio:4/5; object-fit:cover; width:auto; max-width:100%;
+    max-height:42svh; margin-inline:auto; display:block; mix-blend-mode:multiply;
+  }
+  /* 23h27, Raouf : "tout remonter de 10 px, la bouteille plus haut, le bouton
+     entier". Le blanc propre du packshot au-dessus du bouchon se paie en
+     marge negative ; l'echelle du bloc se resserre d'un cran. */
+  .fiche__images > .galerie{ margin-top:-8px; }
+
+  /* 3. le bloc de vente, dans l'ordre d'une affiche : le surtitre, le nom
+        grand, le latin, le prix, le bouton ; le recit vient APRES le bouton,
+        en legende, pour ne pas repousser l'achat sous le pli. L'agave dessine
+        s'efface : la photo est l'objet, l'entete porte la maison. */
+  .fiche__vendre{ display:flex; flex-direction:column; align-items:stretch; }
+  .fiche__vendre > *{ order:0; }
+  .fiche__vendre > .fiche__agave{ display:none; }
+  .fiche__vendre > .kicker{ margin:0 0 var(--u); }
+  .fiche__vendre > .vente__nom{ font-size:clamp(28px,7vw,34px); line-height:1.05; margin:0; }
+  .fiche__vendre > .vente__latin{ margin-top:4px; font-size:15px; }
+  .fiche__vendre > .vente__filet{ margin-top:calc(var(--u)*1.5); width:40px; }
+  .fiche__vendre > .vente__prix{ margin-top:calc(var(--u)*1.5); font-size:22px; }
+  .fiche__vendre > .vente__note{ margin-top:4px; }
+  .fiche__vendre > .fiche__commande{ margin-top:calc(var(--u)*2); gap:calc(var(--u)*1.5); }
+  /* 23h27, Raouf, capture : les rangs de la table des faits dans le depliant
+     etaient a 100 px chacun (l'etiquette ET la valeur portaient chacune 10 px
+     haut et bas, en plus du rang). Un rang = 10 px, l'etiquette, 2 px, la
+     valeur, 10 px : 58 px. */
+  .fiche .depli__corps .faits__l{ padding:calc(var(--u)*1.25) 0; gap:2px; }
+  .fiche .depli__corps .faits__k{ padding:0; }
+  .fiche .depli__corps .faits__v{ padding:0; }
+  /* le mot du bouton tient sur une ligne a 390 px : 12 px, marges de 16 */
+  .fiche__vendre .fiche__commande .b-plein{ white-space:nowrap; font-size:12px; padding:0 16px; min-width:0; }
+  .fiche__vendre > .vente__recit{ order:1; margin-top:calc(var(--u)*3); font-size:15px; max-width:44ch; }
+  .fiche__vendre > .vente__note:last-child{ order:2; margin-top:calc(var(--u)*1.5); }
+  .fiche__vendre > .mention[data-etat]{ margin-top:calc(var(--u)*1.5); }
+
+  /* 4. les vues : plus de vignettes-timbres. Les deux autres photos passent
+        en bande, largeur de pouce (78 vw, 420 max), bord a bord, glissement
+        aimante, la legende sous chacune. La premiere vignette est la meme
+        photo que l'objet du haut : elle ne se repete pas. Les boutons ne
+        changent plus l'image du haut (on ne la voit plus d'ici). */
+  .galerie__vignettes{
+    display:flex; gap:calc(var(--u)*1.5); margin:0 calc(var(--marge)*-1);
+    padding:0 var(--marge); overflow-x:auto; scroll-snap-type:x mandatory;
+    scroll-padding-inline:var(--marge); -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .galerie__vignettes::-webkit-scrollbar{ display:none; }
+  .galerie__v{
+    flex:0 0 78vw; width:auto; height:auto; scroll-snap-align:start;
+    pointer-events:none; display:block; text-align:left; border-color:var(--filet);
+  }
+  .galerie__v.est-active{ border-color:var(--filet); }
+  .galerie__v:first-child{ display:none; }
+  .galerie__v img{ aspect-ratio:4/3; object-fit:contain; width:100%; height:auto; }
+  .galerie__mot{
+    display:block; font-family:var(--serif); font-style:italic; font-size:13px;
+    color:var(--brun); padding:8px 10px 10px; line-height:1.3;
+  }
+  .fiche__autres2{ margin-top:calc(var(--u)*2); }
+  /* 5. la barre d'achat. Papier, un filet, le nom et le prix a gauche, le
+        bouton plein a droite, 46 px de haut, l'encoche du bas payee. Elle
+        n'existe qu'une fois le bouton de la fiche sorti de l'ecran (site.js),
+        et glisse depuis le bas. Le mot du capteur, s'il parait, monte
+        au-dessus d'elle. */
+  .barre-achat{
+    display:flex; align-items:center; justify-content:space-between; gap:calc(var(--u)*2);
+    position:fixed; left:0; right:0; bottom:0; z-index:55;
+    padding:10px var(--marge) max(10px, env(safe-area-inset-bottom));
+    background:var(--papier); border-top:1px solid var(--filet);   /* comme l'entete posee : papier et un filet, pas d'ombre */
+    transform:translateY(100%); opacity:0; visibility:hidden;
+    transition:transform .32s var(--courbe), opacity .32s var(--lineaire), visibility 0s linear .32s;
+  }
+  .barre-achat.est-la{ transform:none; opacity:1; visibility:visible; transition-delay:0s; }
+  /* la structure d'Alaya (Raouf, 23h11, capture a l'appui) : UNE ligne, le nom,
+     le prix a cote, le bouton a droite. Rien d'empile. */
+  /* et la lettre de la maison, pas celle d'Alaya : le nom en serif d'encre
+     comme le titre de la fiche, le prix en serif d'encre comme le prix de la
+     fiche (l'etat "sur allocation" en italique brun, c'est un etat, pas un
+     prix), le bouton plein de la maison avec son mot entier. */
+  .barre-achat__mot{ display:flex; align-items:baseline; gap:calc(var(--u)*1.5); flex:1 1 auto; min-width:0; }
+  .barre-achat__nom{ font-family:var(--serif); font-size:17px; line-height:1.2; color:var(--encre); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+  .barre-achat__prix{ font-family:var(--serif); font-size:16px; line-height:1.2; color:var(--encre); white-space:nowrap; flex:none; }
+  .barre-achat__prix[data-fr]{ font-style:italic; font-size:14px; color:var(--brun); }
+  .barre-achat .b-plein{ width:auto; min-height:46px; padding:0 18px; flex:0 0 auto; min-width:0; font-size:12px; font-weight:600; letter-spacing:.14em; white-space:nowrap; }   /* width:auto : la regle telephone qui etire tout bouton plein ne s'applique pas ici */
+  /* le mot entier partout ; il ne se raccourcit que la ou la ligne ne peut
+     pas le tenir : une bouteille sur allocation sur un petit telephone */
+  .barre-achat__court{ display:none; }
+  @media (max-width:430px){
+    .barre-achat--allocation .barre-achat__long{ display:none; }
+    .barre-achat--allocation .barre-achat__court{ display:inline; }
+  }
+  body.a-barre .capteur{ bottom:calc(74px + max(10px, env(safe-area-inset-bottom))); }
+  body.a-barre .fiche{ padding-bottom:calc(var(--u)*10 + 74px); }
+  @media (prefers-reduced-motion:reduce){ .barre-achat{ transition:none; } }
+}
+/* au bureau la barre n'existe pas, la legende des vues non plus (les vignettes
+   sont des timbres a presser, la legende vit sous la grande image) */
+@media (min-width:1001px){
+  .barre-achat{ display:none; }
+  .galerie__mot{ display:none; }
+}
+
+/* 1er sept au soir, vu au rendu 930 px : le heros de l'accueil et des pages
+   bouteille coupait la bouteille en haut et en bas dans la fenetre coupee.
+   Cause : width:100% etirait la boite 4/5 sur toute la colonne, puis
+   max-height la bornait, et object-fit:cover coupait ce qui depassait, la
+   bouteille comprise. La boite se reduit en proportion, comme au bureau. */
+@media (max-width:1000px){
+  .heros-vente__objet img{ width:auto; max-width:100%; }
+}
+/* la bande des vues entre 701 et 1000 px : deux cartes exactement dans la
+   colonne, alignees sur les marges du texte ; au telephone, 78 vw. */
+@media (min-width:701px) and (max-width:1000px){
+  .galerie__v{ flex-basis:calc((100% - var(--u)*1.5) / 2); }
+}
+
+/* 1er sept, 23h30 : l'affiche en miroir. Une page sur deux, l'objet passe a
+   gauche et le mot a droite (Raouf : "parfois le bouton a gauche, parfois a
+   droite, le visuel"). En pile, l'objet reste premier partout. */
+@media (min-width:1001px){
+  .affiche--miroir .affiche__objet{ order:-1; justify-self:center; }
+  .affiche--miroir .affiche__mot{ justify-self:start; }
+}
+
+/* 1er sept, 23h40, vu au rendu des trois affiches.
+   1. Le packshot est un fichier PAYSAGE ou la bouteille tient le tiers du
+      milieu : en "contain" elle etait un timbre dans sa colonne. Le cadre
+      3/4 (4/5 en pile) recadre le BLANC, jamais la bouteille, et la boite
+      se reduit en proportion (width:auto), comme le heros.
+   2. Sur l'affiche creme, la photo montrait sa boite blanche : le fondu
+      "multiply" se calcule dans le contexte d'empilement le plus proche, et
+      .affiche__deux (position + z-index) en ouvrait un, sans fond. Plus de
+      z-index : la section isolee (isolation:isolate) porte le fond, et le
+      blanc de la photo disparait dedans, creme ou papier. */
+.affiche__deux{ z-index:auto; }
+@media (min-width:1001px){
+  .affiche__objet img{
+    aspect-ratio:3/4; object-fit:cover; width:auto; max-width:100%;
+    max-height:64svh; margin-inline:auto;
+  }
+}
+@media (max-width:1000px){
+  .affiche__objet img{
+    aspect-ratio:4/5; object-fit:cover; width:auto; max-width:100%;
+    max-height:42svh; margin-inline:auto;
+  }
+}
+
+
+/* ============================================================================
+   1er SEPTEMBRE, 23h50 — LA GRAMMAIRE DES VIDES, POSEE UNE FOIS.
+   Raouf : "le site doit penser les moindres details, les marges dans tout le
+   code, pour la coherence, le feel et le look". Mesure par l'audit de ce soir
+   (toutes les pages, 390 / 457 / 930 / 1600) : entre deux sections le vide
+   tenait une norme (97 px au telephone, 308 au bureau), mais l'entete de
+   page, le bloc d'une phrase et les citations portaient chacun leur propre
+   vide (230, 251, 253, 280, 289) ; la bande 561-1000 gardait la valeur du
+   bureau (193) ; le surtitre etait a 32 px de son titre partout, la distance
+   de deux paragraphes, alors qu'il lui appartient ; et la boutique gardait
+   trois colonnes a 930 px, bouton sur trois lignes, page qui deborde.
+   Ici une regle par relation, valable partout. Rien ne les redit plus bas.
+   ========================================================================= */
+/* 1. L'echelle des sections : 48 sous 560, 56 jusqu'a 1000, 96 x 1,6 au
+      bureau. Section, bloc d'une phrase, citation, bas de l'entete de page :
+      le MEME vide. Deux voisins font toujours deux fois la valeur, quel que
+      soit le couple. Serre = la moitie. */
+@media (max-width:1000px){ :root{ --section:56px; } }
+@media (max-width:560px){ :root{ --section:48px; } }
+:root{ --vide-section:var(--section); }
+/* au bureau, la valeur elle-meme (96) : le x1,6 du 16 aout faisait 308 px
+   entre deux textes, un tiers d'ecran de blanc entre l'entete des CGV et
+   leur premiere ligne. 192, c'est deja le double du telephone. */
+@media (min-width:1001px){ :root{ --vide-section:var(--section); } }
+.section, .bloc-phrase, .citation{ padding-top:var(--vide-section); padding-bottom:var(--vide-section); }
+.entete-page{ padding-bottom:var(--vide-section); }
+.section--serre{ padding-top:calc(var(--vide-section)/2); padding-bottom:calc(var(--vide-section)/2); }
+/* 2. Le surtitre appartient a son titre : 16 px, partout, et jamais le vide
+      de deux paragraphes. */
+.kicker, .scene__kicker, .affiche__kicker, .campagne__kicker{ margin-bottom:calc(var(--u)*2); }
+.section > .boite > .kicker + *{ margin-top:0; }
+.heros-vente__droite .scene__kicker{ margin:0 0 calc(var(--u)*2); }
+.affiche__kicker{ margin:0 0 calc(var(--u)*2); }
+@media (max-width:1000px){
+  .fiche__vendre > .kicker{ margin:0 0 calc(var(--u)*2); }
+  .heros-vente__droite .scene__kicker{ margin:0 0 calc(var(--u)*2); }
+}
+/* 3. La boutique sous 1000 px : une colonne, comme la grille de l'accueil ;
+      aucune case ne peut deborder de sa colonne. */
+@media (max-width:1000px){
+  .grille--trois{ grid-template-columns:1fr; }
+  .grille__c, .grille__pied, .grille__media{ min-width:0; }
+  .grille__pied .fiche__commande{ max-width:100%; }
+}
+/* 4. Les citations : plus de marge du navigateur autour du blockquote
+      (elle ajoutait 17 a 34 px d'un cote, 62 de l'autre) ; le vide est celui
+      des sections, rien d'autre. */
+.citation{ margin:0; }
+.citation > :last-child{ margin-bottom:0; }
+/* 5. Le surtitre garde ses 16 px meme quand le titre vit dans une colonne
+      (FAQ : h3 en tete de colonne) ou dans une grille a gap (paiement). */
+.section > .boite > .kicker + .colonne > h3:first-child{ margin-top:0; }
+.caisse__recap > .kicker{ margin-bottom:0; }
+/* 6. La boutique entre 701 et 1000 px : deux colonnes (trois cartes, la
+      troisieme seule a gauche, comme toute grille de vente) ; sous 700, une.
+      Dans une carte etroite la commande s'empile : le compteur, puis le
+      bouton pleine largeur, son mot sur une ligne. */
+@media (min-width:701px) and (max-width:1000px){
+  .grille--trois{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:1000px){
+  .grille__pied .fiche__commande{ grid-template-columns:1fr; justify-items:stretch; gap:calc(var(--u)*1.5); }
+  .grille__pied .fiche__commande .b-plein{ white-space:nowrap; font-size:11px; padding:0 16px; min-width:0; }
+}
+
+/* ============================================================================
+   2 SEPTEMBRE, 00h20 — LA GALERIE D'ACHAT SE LIT EN DEFILANT (Raouf, page
+   Alaya a l'appui : "pas presser pour voir, plutot defiler"). Au bureau les
+   vues ne sont plus des timbres a presser : elles s'empilent dans la colonne
+   de gauche, pleine largeur, une legende sous chacune, et l'on descend ; la
+   fiche reste collee a droite. La premiere vignette est la meme photo que la
+   grande : elle ne se repete pas. Quatrieme vue ajoutee : de dos, la
+   contre-etiquette (la vraie photo, BACK.jpeg). Au telephone, la bande du
+   pouce reste.
+   ========================================================================= */
+@media (min-width:1001px){
+  .fiche__images{ position:static; }
+  .fiche .galerie__vignettes{ display:grid; gap:calc(var(--u)*3); margin-top:calc(var(--u)*3); }
+  .fiche .galerie__v{
+    width:100%; height:auto; border:0; background:none; padding:0;
+    pointer-events:none; cursor:default; text-align:left; border-radius:0;
+  }
+  .fiche .galerie__v:first-child{ display:none; }
+  .fiche .galerie__v img{ width:100%; height:auto; aspect-ratio:4/3; object-fit:contain; display:block; mix-blend-mode:multiply; }
+  .fiche .galerie__mot{
+    display:block; font-family:var(--slab); font-size:var(--t-micro);
+    letter-spacing:.14em; text-transform:uppercase; color:var(--brun);
+    padding:8px 0 0; font-style:normal;
+  }
+}
+
+
+/* ============================================================================
+   2 SEPTEMBRE, 00h50 — CINQ REGLES, UNE PAR CHOSE (Raouf, captures a l'appui,
+   "suis un CSS coherent").
+   ========================================================================= */
+/* 1. Les scenes de l'accueil et des pages bouteille : TOUTES a l'ecran entier
+      au bureau. La regle du 1er sept 00h18 (scenes courtes a hauteur de
+      contenu) laissait deux scenes basses a cote d'une haute. */
+@media (min-width:1001px){
+  .scene--court{ min-height:100svh; padding-block:0; }
+}
+/* 2. UNE table des faits pour tout le site, celle de l'etiquette (Raouf :
+      "j'adore cet espacement, garde-le pour toutes les tables") : etiquette a
+      gauche, valeur a droite, 20 px au-dessus et au-dessous, filet. Partout,
+      le depliant de la page d'achat et la caisse compris, a toute largeur au-
+      dessus de 560 ; sous 560 les deux s'empilent mais le rang garde ses
+      66 px. Plus aucune table ne redit ses paddings ailleurs. */
+.faits__l, .faits--etiquette .faits__l, .depli__corps .faits__l, .fiche .depli__corps .faits__l{
+  grid-template-columns:min(200px,38%) 1fr; gap:calc(var(--u)*4); padding:0; align-items:baseline;
+}
+.faits__k, .depli__corps .faits__k, .fiche .depli__corps .faits__k{ padding:calc(var(--u)*2.5) 0; }
+.faits__v, .depli__corps .faits__v, .fiche .depli__corps .faits__v{ padding:calc(var(--u)*2.5) 0; font-size:16px; }
+@media (max-width:560px){
+  .faits__l, .faits--etiquette .faits__l, .depli__corps .faits__l, .fiche .depli__corps .faits__l{
+    grid-template-columns:1fr; gap:2px; padding:calc(var(--u)*1.5) 0;
+  }
+  .faits__k, .depli__corps .faits__k, .fiche .depli__corps .faits__k{ padding:0; }
+  .faits__v, .depli__corps .faits__v, .fiche .depli__corps .faits__v{ padding:0; }
+}
+/* 3. La galerie d'achat au bureau : pas de mots sous les vues, les vues plus
+      grandes (le cadre 3/4 recadre le blanc du packshot, la copita garde un
+      carre centre sur les objets), et plus d'air entre elles. */
+@media (min-width:1001px){
+  .fiche .galerie__legende, .fiche .galerie__mot{ display:none; }
+  .fiche .galerie__vignettes{ gap:calc(var(--u)*8); margin-top:calc(var(--u)*8); }
+  .fiche .galerie img.galerie__grande, .fiche .galerie__v img{
+    aspect-ratio:3/4; object-fit:cover; width:auto; max-width:100%; max-height:80vh;
+    margin-inline:auto; display:block;
+  }
+  .fiche .galerie__v[data-src*="copita"] img{ aspect-ratio:1/1; object-position:57% 50%; }
+}
+/* 4. Les autres bouteilles, plus grandes : le meme cadre 3/4 qui recadre le
+      blanc, la grille sur toute la colonne. */
+.autre img{ aspect-ratio:3/4; object-fit:cover; width:auto; max-width:100%; margin-inline:auto; }
+@media (min-width:1001px){
+  .fiche__autres2-l{ max-width:none; gap:calc(var(--u)*6); }
+}
+
+/* 2 sept, 01h05 : la page d'achat au bureau vivait dans une boite de 1180 px
+   qui portait ELLE-MEME ses 8vw de marge : la colonne des images n'avait que
+   420 px. Partout ailleurs la marge est hors de la colonne de 1180. Meme
+   regle ici : la colonne des images fait 676 px, la fiche 440. */
+@media (min-width:1001px){
+  .fiche{ max-width:calc(var(--largeur) + 2*var(--marge)); }
+  .fiche .galerie__v img{ width:100%; }
+}
+/* 2 sept, 01h10, Raouf sur le heros du telephone ("le texte a gauche sous une
+   bouteille centree, ca ne va pas") : en pile, le mot se centre sous l'objet,
+   comme une affiche. L'echelle se resserre : surtitre 16, nom, latin 4, une
+   ligne 16, contenance 16, bouton 24. */
+@media (max-width:1000px){
+  .heros-vente__droite{ justify-items:center; text-align:center; }
+  .heros-vente__droite .scene__titre{ margin:0 0 4px; }
+  .heros-vente__desc{ margin:calc(var(--u)*2) auto 0; max-width:36ch; text-align:center; }
+  .heros-vente__contenance{ margin:calc(var(--u)*2) 0 0; }
+  .heros-vente__acheter{ margin-top:calc(var(--u)*3); }
+}
+
+/* ============================================================================
+   2 SEPTEMBRE, 01h15 — LE PIED AU TELEPHONE, VU SUR L'IPHONE 13 DE RAOUF
+   ("des bugs de marges partout, obsession du detail"). Ce que la capture
+   montrait : le lieu qui casse en deux lignes, les quatre liens en 3 + 1, les
+   deux icones dans des boites qui depassent la marge de 10 px, la ligne de
+   droit qui se casse en deux avec des trous. Une regle par chose, pour tout
+   le site (le pied est le meme partout).
+   ========================================================================= */
+@media (max-width:700px){
+  .pied__marque{ letter-spacing:.14em; font-size:11px; }
+  .pied__nav, .pied__boite--simple .pied__nav{
+    display:grid; grid-template-columns:repeat(2, max-content);
+    gap:calc(var(--u)*1.5) calc(var(--u)*4); justify-content:start; width:auto;
+  }
+  .pied__reseaux, .pied__droite .pied__reseaux, .pied__col--suivre .pied__reseaux, .pied__boite--simple .pied__reseaux{
+    margin:calc(var(--u)*2) 0 0 -10px; justify-content:flex-start;
+  }
+  .pied__legal{ display:flex; flex-direction:column; align-items:flex-start; gap:calc(var(--u)*1.5); }
+  .pied__droit{ display:flex; flex-wrap:wrap; gap:6px 20px; }
+  .pied__droit > span{ flex-basis:100%; }
+}
+/* El Mito : les icones du pied redeviennent des icones (les boites sombres se
+   lisaient comme deux boutons de formulaire), et l'entete posee devient opaque
+   sur la couleur de la page : a 0,9 le texte du dessous transparaissait entre
+   les icones. */
+body[data-page="mito"] .pied__ic{ background:none; }
+body[data-page="mito"] .tete.est-posee,
+body[data-page="mito"] .tete.a-panneau{ background:#C9C48D; }

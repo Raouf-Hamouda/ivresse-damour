@@ -645,7 +645,7 @@ function caresserEmbleme(hote, svg, nom){
   hote.__caresseVers = function(nx, ny, gp, gt){
     var r = svg.getBoundingClientRect();
     if(!(r.width > 0)) return;
-    gainP = gp || 1; gainT = gt || gp || 1;
+    gainP = (gp == null) ? 1 : gp; gainT = (gt == null) ? gainP : gt;   /* 0 est un gain valable : le capteur au repos */
     bouger({ clientX:r.left + r.width * (0.5 + nx * 0.5),
              clientY:r.top  + r.height * (0.5 + ny * 0.5) });
   };
@@ -693,18 +693,39 @@ var PROPOSER_CAPTEUR = function(){ return false; };
      boite d'iOS aux sessions suivantes (elle, iOS la redemande a chaque fois).
      Et sans capteur du tout, le DOIGT et le DEFILEMENT mènent la meme caresse.
      ---------------------------------------------------------------------- */
-  var RAYON = 0.40;            /* le pointeur virtuel balaie le coeur du dessin */
-  var ANCRE = 0.45;            /* sa hauteur a l'ecran : un peu au dessus du milieu */
+  /* LE CAPTEUR EST UNE SOURIS QUI TOURNE AUTOUR DE LA PLANTE (1er sept au soir,
+     Raouf : "imite le mouvement que je fais a la souris quand je tourne autour
+     de la plante en cercle, pas toucher le centre ; dans la direction ou le
+     telephone penche ; et deux fois plus sensible, c'est trop faible"). Le vent
+     est retire. L'inclinaison du telephone est un VECTEUR : sa direction dit de
+     quel cote de la plante le curseur se tient, sa longueur dit avec quelle
+     force il appuie. Le curseur virtuel n'entre jamais dans le coeur : il tient
+     sur le bord du dessin (ORBITE), la ou passe le vrai curseur quand on tourne
+     autour, et la caresse fait le reste, exactement comme a la souris : les
+     feuilles proches s'ecartent, le dessin entier se penche vers lui. Tourner le
+     telephone, c'est tourner autour de la plante. */
+  var ORBITE = 0.92;           /* le curseur tient a 92 % du demi-cote de la boite : sur les pointes, jamais au coeur */
+  var GAIN = 2;                /* a pleine inclinaison : la reponse du doigt (2/2), deux fois la souris */
+  var ZONE_MORTE = 0.06;       /* sous six centiemes d'inclinaison, la plante est au repos */
+  var ANCRE = 0.45;            /* hauteur de l'ancre du defilement a l'ecran : un peu au dessus du milieu */
   var nx = 0, ny = 0, vise = { x:0, y:0 }, boucle = 0, dernierT = 0;
   var capteur = 0, defile = 0;  /* instants du dernier signal de chaque source */
 
   function nourrir(){
+    var mag = Math.min(1, Math.hypot(nx, ny));
+    var force = mag <= ZONE_MORTE ? 0 : (mag - ZONE_MORTE) / (1 - ZONE_MORTE);
+    force = force * force * (3 - 2 * force);                              /* montee douce depuis le repos */
+    var ux = mag > 0 ? nx / mag : 0, uy = mag > 0 ? ny / mag : 0;         /* la direction, seule */
     for(var i = 0; i < CARESSES.length; i++){
       var h = CARESSES[i];
       if(!h.__caresseVers || !h.isConnected) continue;
       var r = h.getBoundingClientRect();
       if(r.bottom < 0 || r.top > innerHeight || !r.width) continue;   /* hors de l'ecran : rien */
-      if(capteur){ if(h.__caresseVent) h.__caresseVent(nx / RAYON, ny / RAYON); continue; }   /* le capteur SOUFFLE sur la plante */
+      if(capteur){
+        if(!force){ if(h.__caresseLache) h.__caresseLache(); continue; }    /* telephone au repos : la plante aussi */
+        h.__caresseVers(ux * ORBITE, uy * ORBITE, GAIN * force, GAIN * force);   /* le curseur sur le bord, du cote ou ca penche */
+        continue;
+      }
       /* le defilement souffle aussi (meme remarque de Raouf : le coeur ne doit pas
          remuer, les pointes oui, ensemble). La force vient de la distance entre
          le centre de l'emblème et l'ancre de l'ecran ; la direction est un vent
@@ -724,9 +745,9 @@ var PROPOSER_CAPTEUR = function(){ return false; };
     boucle = 0;
     var now = performance.now();
     if(now - capteur > 2000 && now - defile > 500){ poserTout(); return; }
-    /* et il glisse : un huitieme du chemin par image au lieu d'un sixieme. Le
-       dessin ploie et revient avec un temps de retard, il ne colle pas au poignet. */
-    if(capteur) { nx += (vise.x - nx) * 0.075; ny += (vise.y - ny) * 0.075; }
+    /* et il glisse : un huitieme du chemin par image, le curseur suit le
+       poignet avec un petit retard, comme une main qui accompagne. */
+    if(capteur) { nx += (vise.x - nx) * 0.12; ny += (vise.y - ny) * 0.12; }
     if(t - dernierT > 32 && now - DERNIER_GESTE > 1200){ dernierT = t; nourrir(); }
     boucle = requestAnimationFrame(tourner);
   }
@@ -735,15 +756,24 @@ var PROPOSER_CAPTEUR = function(){ return false; };
   /* le defilement : gratuit, partout, sans un mot */
   addEventListener('scroll', function(){ defile = performance.now(); reveiller(); }, { passive:true });
 
+  /* 15 degres d'inclinaison pour porter le curseur jusqu'au bord (30 avant :
+     deux fois plus sensible). Le REPOS n'est plus un angle fixe (40 degres) :
+     c'est la pose du telephone dans la main, lue au premier signal, puis qui
+     suit lentement la main (quatre secondes) : une inclinaison tenue devient
+     la nouvelle pose de repos, et c'est le MOUVEMENT du telephone, quelle que
+     soit la facon de le tenir, qui promene le curseur autour de la plante. */
+  var PORTEE_DEG = 15, REPOS_S = 4;
   function ecouter(){
+    var b0 = null, g0 = null, tPrec = 0;
     window.addEventListener('deviceorientation', function(e){
       if(e.gamma == null && e.beta == null) return;      /* pas de capteur reel : on ignore */
-      /* 30 degres pour aller d'un bord a l'autre, au lieu de 22 : il faut
-         franchement pencher le telephone pour aller au bout du geste. */
-      var g = Math.max(-30, Math.min(30, e.gamma || 0));
-      var b = Math.max(-30, Math.min(30, (e.beta || 0) - 40));
-      vise.x = (g / 30) * RAYON; vise.y = (b / 30) * RAYON;
-      capteur = performance.now();
+      var b = e.beta || 0, g = e.gamma || 0, now = performance.now();
+      if(b0 == null){ b0 = b; g0 = g; tPrec = now; }
+      var k = 1 - Math.exp(-Math.min(0.1, (now - tPrec) / 1000) / REPOS_S); tPrec = now;
+      b0 += (b - b0) * k; g0 += (g - g0) * k;
+      vise.x = Math.max(-1, Math.min(1, (g - g0) / PORTEE_DEG));
+      vise.y = Math.max(-1, Math.min(1, (b - b0) / PORTEE_DEG));
+      capteur = now;
       reveiller();
     }, true);
   }
@@ -1783,6 +1813,66 @@ function brancherFondu(){
   for(var j=0;j<els.length;j++) o.observe(els[j]);
 }
 
+/* ---------------------------------------------------------------------------
+   LA BARRE D'ACHAT DU TELEPHONE (1er sept au soir). Sur une page d'achat, quand
+   le bouton de la fiche quitte l'ecran (sous l'entete ou sous le pli), la
+   barre du bas se leve : le nom, le prix, AJOUTER sous le pouce. Elle se
+   couche des que le bouton revient. Le bouton de la barre porte le meme
+   data-ajouter que la fiche : la page le branche comme l'autre. Bureau : la
+   barre n'est pas affichee (site.css), rien ne s'observe pour rien.
+   ------------------------------------------------------------------------ */
+function brancherBarreAchat(){
+  var barre = document.querySelector('.barre-achat'); if(!barre) return;
+  var cible = document.querySelector('.fiche__commande');
+  if(!cible || !('IntersectionObserver' in window)) return;
+  var tete = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--tete-h')) || 90;
+  function poser(visible){
+    barre.classList.toggle('est-la', !visible);
+    document.body.classList.toggle('a-barre', !visible);
+  }
+  /* la barre se leve des que le bouton est COUPE, meme a moitie (Raouf, 23h27 :
+     "we fully see this button") : visible veut dire entier a l'ecran. */
+  new IntersectionObserver(function(es){ poser(es[0].isIntersecting && es[0].intersectionRatio >= 0.98); },
+    { rootMargin:(-tete) + 'px 0px 0px 0px', threshold:[0, 0.98, 1] }).observe(cible);
+}
+
+/* ---------------------------------------------------------------------------
+   LE FAVICON JOUE LE SCEAU (2 sept, Raouf : "le favicon = le logo, et peut-
+   etre le logo en animation"). L'icone de l'onglet est le sceau entier (les
+   fichiers favicon.*). Au chargement, elle rejoue les trois secondes de sa
+   naissance : un petit svg hors ecran est anime par sceauAnime, serialise
+   dix fois par seconde dans le href de l'icone, puis l'icone fixe reprend.
+   Chrome et Arc suivent ; Safari ignore les icones svg et garde le png.
+   Coupe si mouvement reduit. Le cadre : le sceau mesure 457 x 490 autour de
+   (441, 301) dans l'espace de logo.js ; 10 % d'air, un cercle de papier.
+   ------------------------------------------------------------------------ */
+function animerFavicon(){
+  if(reduitMouvement) return;
+  if(typeof window.sceauAnime !== 'function' || typeof window.logoParts !== 'function') return;
+  var lien = document.querySelector('link[rel="icon"][type="image/svg+xml"]'); if(!lien) return;
+  var fixe = lien.getAttribute('href');
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('xmlns', NS);
+  svg.setAttribute('viewBox', '172 31.5 539 539');
+  svg.setAttribute('width', '100'); svg.setAttribute('height', '100');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.style.cssText = 'position:fixed;left:-9999px;top:0;width:100px;height:100px;pointer-events:none';
+  document.body.appendChild(svg);
+  var fond = document.createElementNS(NS, 'circle');
+  fond.setAttribute('cx', '441.5'); fond.setAttribute('cy', '301'); fond.setAttribute('r', '269.5'); fond.setAttribute('fill', '#FEF9F3');
+  svg.appendChild(fond);
+  try{ window.sceauAnime(svg, { color:'#2B2118' }); }catch(e){ svg.remove(); return; }
+  var t0 = performance.now(), ser = new XMLSerializer();
+  var minuteur = setInterval(function(){
+    var t = performance.now() - t0;
+    if(t > 3300 || document.visibilityState === 'hidden' && t > 100){
+      clearInterval(minuteur); lien.setAttribute('href', fixe); svg.remove(); return;
+    }
+    try{ lien.setAttribute('href', 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(ser.serializeToString(svg))); }catch(e){}
+  }, 100);
+}
+
 function brancherParallaxe(){
   var els = document.querySelectorAll('[data-parallaxe]');
   if(!els.length || window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
@@ -1885,6 +1975,8 @@ function init(opt){
   appliquerLangue(langueDepart());
   brancherFondu();
   brancherParallaxe();
+  brancherBarreAchat();
+  animerFavicon();
   entetePosee();
 }
 
@@ -1895,9 +1987,9 @@ function poserFavicon(){
   if(document.querySelector('link[rel="icon"]')) return;
   var base = baseScripts();
   var liens = [
-    { rel:'icon', href:'assets/img/favicon.svg', type:'image/svg+xml' },
-    { rel:'icon', href:'assets/img/favicon-32.png', sizes:'32x32' },
-    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png' }
+    { rel:'icon', href:'assets/img/favicon.svg?v=20260902i', type:'image/svg+xml' },
+    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902i', sizes:'32x32' },
+    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902i' }
   ];
   for(var i=0;i<liens.length;i++){
     var l = document.createElement('link'), k;

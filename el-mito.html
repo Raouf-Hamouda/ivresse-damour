@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<link rel="icon" href="assets/img/favicon.svg?v=20260902i" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png?v=20260902i" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20260902i">
 <title>El Mito. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20260901t">
-<script src="assets/js/logo.js?v=20260901t"></script>
-<script src="assets/js/sceau_anime.js?v=20260901t"></script>
-<script src="assets/js/emblemes.js?v=20260901t"></script>
-<script src="assets/js/site.js?v=20260901t"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20260902i">
+<script src="assets/js/logo.js?v=20260902i"></script>
+<script src="assets/js/sceau_anime.js?v=20260902i"></script>
+<script src="assets/js/emblemes.js?v=20260902i"></script>
+<script src="assets/js/site.js?v=20260902i"></script>
 <style>
   /* -------------------------------------------------------------------------
      LA HISTORIA. La page a part du contrat visuel : le seul monde de papier
@@ -78,7 +78,7 @@
      de la page a 90 % au lieu du papier blanc, des qu elle se pose (defilement)
      ou qu un panneau s ouvre. site.css et site.js ne sont pas touches. */
   body[data-page="mito"] .tete.est-posee,
-  body[data-page="mito"] .tete.a-panneau{background:rgba(201,196,141,.9);border-bottom-color:rgba(43,33,24,.14)}
+  body[data-page="mito"] .tete.a-panneau{background:#C9C48D;border-bottom-color:rgba(43,33,24,.14)}   /* 2 sept : opaque, a 0,9 le texte du dessous transparaissait entre les icones (iPhone de Raouf) */
   body[data-page="mito"] .pan{background:rgba(201,196,141,.96);border-color:rgba(43,33,24,.14)}   /* le sous-menu de la meme couleur que l entete (Raouf, 17 aout 00h57) */
   body[data-page="mito"] .pan .pan__c,body[data-page="mito"] .pan__c{border-color:rgba(43,33,24,.14)}
   body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
@@ -93,8 +93,8 @@
   body[data-page="mito"] .pied__legal{border-top-color:rgba(43,33,24,.22)}
   /* les deux boutons (courrier, Instagram) : au repos un ton de papier plus profond, au survol
      encore un cran plus sombre, l encre reste (Raouf, 17 aout 21h24 ; tons tour 4) */
-  body[data-page="mito"] .pied__ic{background:#98946B;color:var(--encre)}
-  body[data-page="mito"] .pied__ic:hover,body[data-page="mito"] .pied__ic:focus-visible{background:#88855F;color:var(--encre)}
+  body[data-page="mito"] .pied__ic{background:none;color:var(--encre)}   /* 2 sept : plus de boite, les deux carres se lisaient comme des boutons de formulaire */
+  body[data-page="mito"] .pied__ic:hover,body[data-page="mito"] .pied__ic:focus-visible{background:none;color:var(--brique)}
 
   /* tour 4 (31 aout, Raouf : "make the fire move like flames move") : les trois
      plans du feu ondulent en continu, chacun a son souffle (le fond lent, le
@@ -118,7 +118,7 @@
     from{ transform:translateX(-5px) scaleY(1); }
     to  { transform:translateX(5px)  scaleY(1.022); }
   }
-  .historia .scroller{position:relative;height:2100vh;z-index:1}   /* tour 3 : 1500 au lieu de 1100, tout dure plus longtemps sous le doigt ; en portrait 1050, voir le media 700px plus bas */
+  .historia .scroller{position:relative;height:2600vh;z-index:1}   /* 2 sept : 2600 au lieu de 2100 (Raouf : "ca finit trop vite") ; en portrait 2200, voir le media 700px plus bas */
   /* 100svh : sur un telephone la barre du navigateur ne cache pas le bas de la scene */
   .historia .stage{position:sticky;top:0;height:100vh;height:100svh;width:100%;overflow:hidden;contain:strict;
     /* le papier de la scene : la couleur, le quadrillage (maille 40, comme body::before) et,
@@ -212,11 +212,15 @@
     .historia .cap.centre,.historia .cap.titre,.historia .cap.cloture{left:50%;right:auto;text-align:center;width:min(88vw,420px)}
     .historia .cap.titre{top:38%}
     .historia .cap.cloture{top:48%}
-    .historia .sceau-mots{width:min(74vw,320px)}
+    /* 2 sept, capture iPhone de Raouf : la cloture touchait le bord bas. Le sceau
+       se dimensionne aussi par la HAUTEUR visible (36 svh) : le bloc entier tient
+       centre entre l'entete et le bas, quelle que soit la barre de Safari. */
+    .historia .sceau-mots{width:min(74vw,320px,36svh)}
+    .historia .cap.cloture{top:50%}
     .historia .cap .lieu{max-width:26ch}
     /* portrait : la meme ligne du temps (p de 0 a 1) sur un chemin plus court, le film est
        plus dense sous le doigt, aucun long defilement sans rien a lire ni a voir bouger */
-    .historia .scroller{height:1700vh}
+    .historia .scroller{height:2200vh}   /* 2 sept : 2200 au lieu de 1700 */
   }
 </style>
 </head>
