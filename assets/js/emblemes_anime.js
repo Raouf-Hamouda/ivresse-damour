@@ -180,7 +180,18 @@
         gb.__cy=y0+hg/2; out.push(gb); }
       root.appendChild(piece);   /* la piece entiere par-dessus ses bandes, pour prendre le relais */
       return out; }
-    var NB=6, bands=bandes(body[0],NB,'b'), NBA=4, bandsBase=bandes(base[0],NBA,'a');
+    /* 2 sept, Raouf : "pas des tranches, la STRUCTURE de la bouteille". La base
+       se decoupe en ses parties : le pied, le flanc gauche, le flanc droit, la
+       barre basse du ticket, la barre haute du ticket ; chacune surgit avec le
+       meme ressort que les ecailles de l'epaule. */
+    function regions(piece,rects,tag){ var bx=piece.firstChild.getBBox(); var out=[];
+      rects.forEach(function(r,i){ var x0=bx.x+bx.width*r[0], y0=bx.y+bx.height*r[1], w=bx.width*(r[2]-r[0]), h=bx.height*(r[3]-r[1]);
+        var cpi=el('clipPath',{id:uid+tag+i},defs); el('rect',{x:(x0-1).toFixed(2),y:(y0-1).toFixed(2),width:(w+2).toFixed(2),height:(h+2).toFixed(2)},cpi);
+        var gb=el('g',{'clip-path':'url(#'+uid+tag+i+')'},root); var pa={d:piece.__it.d,'fill-rule':'evenodd',fill:c}; if(piece.__it.tf) pa.transform=piece.__it.tf; el('path',pa,gb);
+        gb.__cx=x0+w/2; gb.__cy=y0+h/2; out.push(gb); });
+      root.appendChild(piece); return out; }
+    var NB=6, bands=bandes(body[0],NB,'b');
+    var partsBase=regions(base[0],[[0,0.72,1,1],[0,0,0.34,0.72],[0.66,0,1,0.72],[0.34,0.5,0.66,0.72],[0.34,0,0.66,0.5]],'a');
     side.sort(function(a,b){ return b.__it.cy-a.__it.cy; }); sh.sort(function(a,b){ return Math.abs(a.__it.cx)-Math.abs(b.__it.cx); }); crown.sort(function(a,b){ return Math.abs(a.__it.cx)-Math.abs(b.__it.cx); });
     /* le nom de la bouteille ecrit dans l espace du ticket (o.label), une seule ligne, capitales espacees, encre */
     var tk=(function(){ var bx=base[0].firstChild.getBBox(); return null; })();
@@ -195,8 +206,8 @@
       render:function(ms){
       /* 1er sept (Raouf) : le bas ne tombe plus d un bloc : chaque piece de la
          base se developpe (montee + leger grandissement), l encre du ticket suit */
-      var finA=30+(NBA-1)*60+240;
-      bandsBase.forEach(function(g,i){ var st=30+i*60; var kk=co(seg(ms,st,st+240)); T(g,about(0,g.__cy,'translate(0 '+(6*(1-kk)).toFixed(2)+') scale('+(0.96+0.04*kk).toFixed(3)+')')); O(g,ms>=finA?0:kk); });
+      var finA=30+(partsBase.length-1)*75+360;
+      partsBase.forEach(function(g,i){ var st=30+i*75; var kk=pop(seg(ms,st,st+360)); T(g,about(g.__cx,g.__cy,'scale('+Math.max(kk,0.001).toFixed(3)+')')); O(g,ms>=finA?0:(ms>=st?1:0)); });
       O(base[0],ms>=finA?1:0);
       if(lab) O(lab,co(seg(ms,320,760)));
       var finB=200+(NB-1)*95+320;
