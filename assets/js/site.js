@@ -318,7 +318,7 @@ function emblemeExiste(cle){ return !!(cle && EMBLEMES[cle]); }
 /* 2 sept : ces fichiers se chargent tard, depuis ce script, et n'avaient pas de
    cachet de cache : le telephone de Raouf rejouait l'ancienne animation de la
    bouteille apres chaque correction. Le cachet est celui de site.js. */
-var VERSION_ASSETS = '20260902q';
+var VERSION_ASSETS = '20260902r';
 var FICHIERS_EMBLEMES = ['assets/js/emblemes_parts.js', 'assets/js/embleme_mito.js', 'assets/js/emblemes_anime.js'].map(function(f){ return f + '?v=' + VERSION_ASSETS; });
 var emblemesPrets = false, emblemesEnAttente = [], emblemesChargement = false;
 
@@ -852,7 +852,11 @@ function jouerEmbleme(hote){
      jamais sa construction : le bas arrivait d'un bloc, puis le reste. Un
      fond est la, complet, des le premier regard ; seul le fondu de la feuille
      l'amene. Regle generale : tout hote dans un fond. */
-  if(hote.closest && hote.closest('.campagne__fond,.scene__fond')){ hote.__joue = true; return; }
+  /* 2 sept, Raouf : le filigrane de la campagne joue sa naissance comme les
+     autres bouteilles ("pas un fondu, la meme animation") ; le bas-en-un-bloc
+     qui motivait l'exception est corrige dans le moteur. Seuls les fonds de
+     scene (papier) restent poses complets. */
+  if(hote.closest && hote.closest('.scene__fond')){ hote.__joue = true; return; }
   /* 1er sept, 00h35 : la naissance de la bouteille REJOUE (Raouf y tient) ;
      le defaut du bas-en-un-bloc se corrige dans le moteur, pas en la coupant. */
   if(hote.__joue && typeof c.playCrown === 'function'){ c.playCrown(); return; }
@@ -2001,9 +2005,9 @@ function poserFavicon(){
   if(document.querySelector('link[rel="icon"]')) return;
   var base = baseScripts();
   var liens = [
-    { rel:'icon', href:'assets/img/favicon.svg?v=20260902q', type:'image/svg+xml' },
-    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902q', sizes:'32x32' },
-    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902q' }
+    { rel:'icon', href:'assets/img/favicon.svg?v=20260902r', type:'image/svg+xml' },
+    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902r', sizes:'32x32' },
+    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902r' }
   ];
   for(var i=0;i<liens.length;i++){
     var l = document.createElement('link'), k;

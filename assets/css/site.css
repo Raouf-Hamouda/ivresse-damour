@@ -2497,7 +2497,7 @@ a.figure__lien:hover img{ transform:scale(1.015); }
 
 /* 1er sept 00h30, Raouf : le filigrane de la campagne n'etait pas vu. Il
    attend 3 s une fois la scene sous les yeux, puis se revele lentement. */
-.campagne__fond.fondu{ opacity:0; transform:none; transition:opacity 1s var(--lineaire) 2s; }   /* 3 s en tout (Raouf) */
+.campagne__fond.fondu{ opacity:0; transform:none; transition:opacity .5s var(--lineaire) 0s; }   /* 2 sept : plus d'attente de 2 s, c'est la naissance de la bouteille qui fait l'apparition (Raouf : "la meme animation que les autres, pas un fondu") */
 .campagne__fond.fondu.est-vu{ opacity:.07; transform:none; }
 
 
@@ -3065,3 +3065,21 @@ body[data-page="mito"] .tete.a-panneau{ background:#C9C48D; }
 .capteur{ flex-direction:column; align-items:stretch; gap:calc(var(--u)*1.5); }
 .capteur__mot{ max-width:none; }
 .capteur__b{ justify-content:flex-end; }
+
+/* ============================================================================
+   2 SEPTEMBRE, 02h15 — LE HEROS SUR L'IPHONE (capture de Raouf : la couronne
+   sous l'entete, tout remonte). La scene centrait son contenu dans 100 svh
+   sans compter l'entete fixe : sur un ecran de 664 px le contenu, plus haut
+   que l'espace libre, debordait par le haut. En pile, le heros s'aligne en
+   haut, sous l'entete, et la bouteille se borne pour que le bouton tienne
+   dans le premier ecran meme avec les barres de Safari. Le -33 px du 31 aout
+   (qui compensait ce centrage) tombe.
+   ========================================================================= */
+@media (max-width:1000px){
+  .scene.heros-vente{ align-content:start; align-items:start; }
+  .page > .scene.heros-vente:first-child{ padding-top:var(--tete-h); }   /* pages bouteille : le heros ouvre la page, sous l'entete ; sur l'accueil il suit l'ecran du sceau, sans marge */
+  .scene--premiere + .scene--premiere.heros-vente .heros-vente__deux,
+  .heros-vente__deux{ padding-top:calc(var(--u)*2); }
+  .heros-vente__objet{ margin-top:0; }
+  .heros-vente__objet img{ max-height:min(38svh, 320px); }
+}
