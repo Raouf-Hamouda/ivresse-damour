@@ -3083,3 +3083,11 @@ body[data-page="mito"] .tete.a-panneau{ background:#C9C48D; }
   .heros-vente__objet{ margin-top:0; }
   .heros-vente__objet img{ max-height:min(38svh, 320px); }
 }
+
+/* 2 sept, 02h23, Raouf : "pas de texte ici" vaut PARTOUT, la bande du telephone
+   comprise. Plus de legende sous les vues a aucune largeur, et la carte de la
+   bande n'est plus qu'une photo, sans cadre ni fond. */
+.galerie__mot{ display:none; }
+@media (max-width:1000px){
+  .galerie__v, .galerie__v.est-active{ border:0; background:none; }
+}
