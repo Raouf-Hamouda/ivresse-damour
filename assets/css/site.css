@@ -3091,3 +3091,10 @@ body[data-page="mito"] .tete.a-panneau{ background:#C9C48D; }
 @media (max-width:1000px){
   .galerie__v, .galerie__v.est-active{ border:0; background:none; }
 }
+
+/* 2 sept, 02h26, Raouf sur les conditions de la boutique ("trop de marge,
+   toutes les tables comme celle de l'etiquette") : les paddings etaient deja
+   les memes ; c'est la mesure de lecture (680 px) qui cassait les phrases sur
+   deux lignes et grandissait les rangs. Toute table des faits prend la colonne
+   entiere : une phrase tient sur sa ligne, chaque rang fait ses 66 px. */
+.faits, .faits--etiquette{ max-width:none; }

@@ -318,7 +318,7 @@ function emblemeExiste(cle){ return !!(cle && EMBLEMES[cle]); }
 /* 2 sept : ces fichiers se chargent tard, depuis ce script, et n'avaient pas de
    cachet de cache : le telephone de Raouf rejouait l'ancienne animation de la
    bouteille apres chaque correction. Le cachet est celui de site.js. */
-var VERSION_ASSETS = '20260902s';
+var VERSION_ASSETS = '20260902t';
 var FICHIERS_EMBLEMES = ['assets/js/emblemes_parts.js', 'assets/js/embleme_mito.js', 'assets/js/emblemes_anime.js'].map(function(f){ return f + '?v=' + VERSION_ASSETS; });
 var emblemesPrets = false, emblemesEnAttente = [], emblemesChargement = false;
 
@@ -2005,9 +2005,9 @@ function poserFavicon(){
   if(document.querySelector('link[rel="icon"]')) return;
   var base = baseScripts();
   var liens = [
-    { rel:'icon', href:'assets/img/favicon.svg?v=20260902s', type:'image/svg+xml' },
-    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902s', sizes:'32x32' },
-    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902s' }
+    { rel:'icon', href:'assets/img/favicon.svg?v=20260902t', type:'image/svg+xml' },
+    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902t', sizes:'32x32' },
+    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902t' }
   ];
   for(var i=0;i<liens.length;i++){
     var l = document.createElement('link'), k;
