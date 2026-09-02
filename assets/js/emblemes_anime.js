@@ -170,12 +170,17 @@
        fondu), au rythme des ecailles des cotes. Une fois la derniere posee, la
        piece entiere prend le relais et les bandes s'effacent (la caresse ne
        connait que la piece entiere). */
-    var NB=6, bands=[];
-    for(var bi=0;bi<NB;bi++){ var cpi=el('clipPath',{id:uid+'b'+bi},defs); var y0=bb.y+bb.height*(1-(bi+1)/NB), hg=bb.height/NB+0.8;
-      el('rect',{x:(bb.x-2).toFixed(2),y:y0.toFixed(2),width:(bb.width+4).toFixed(2),height:hg.toFixed(2)},cpi);
-      var gb=el('g',{'clip-path':'url(#'+uid+'b'+bi+')'},root); var pa={d:body[0].__it.d,'fill-rule':'evenodd',fill:c}; if(body[0].__it.tf) pa.transform=body[0].__it.tf; el('path',pa,gb);
-      gb.__cy=y0+hg/2; bands.push(gb); }
-    root.appendChild(body[0]);   /* la piece entiere par-dessus les bandes, pour prendre le relais */
+    /* 2 sept, Raouf encore : "la base aussi arrive comme un bloc". Elle est une
+       seule piece, comme le corps : memes bandes, quatre, nees du pied vers le
+       ticket, avant celles du corps. */
+    function bandes(piece,N,tag){ var bx=piece.firstChild.getBBox(); var out=[];
+      for(var bi=0;bi<N;bi++){ var cpi=el('clipPath',{id:uid+tag+bi},defs); var y0=bx.y+bx.height*(1-(bi+1)/N), hg=bx.height/N+0.8;
+        el('rect',{x:(bx.x-2).toFixed(2),y:y0.toFixed(2),width:(bx.width+4).toFixed(2),height:hg.toFixed(2)},cpi);
+        var gb=el('g',{'clip-path':'url(#'+uid+tag+bi+')'},root); var pa={d:piece.__it.d,'fill-rule':'evenodd',fill:c}; if(piece.__it.tf) pa.transform=piece.__it.tf; el('path',pa,gb);
+        gb.__cy=y0+hg/2; out.push(gb); }
+      root.appendChild(piece);   /* la piece entiere par-dessus ses bandes, pour prendre le relais */
+      return out; }
+    var NB=6, bands=bandes(body[0],NB,'b'), NBA=4, bandsBase=bandes(base[0],NBA,'a');
     side.sort(function(a,b){ return b.__it.cy-a.__it.cy; }); sh.sort(function(a,b){ return Math.abs(a.__it.cx)-Math.abs(b.__it.cx); }); crown.sort(function(a,b){ return Math.abs(a.__it.cx)-Math.abs(b.__it.cx); });
     /* le nom de la bouteille ecrit dans l espace du ticket (o.label), une seule ligne, capitales espacees, encre */
     var tk=(function(){ var bx=base[0].firstChild.getBBox(); return null; })();
@@ -190,11 +195,12 @@
       render:function(ms){
       /* 1er sept (Raouf) : le bas ne tombe plus d un bloc : chaque piece de la
          base se developpe (montee + leger grandissement), l encre du ticket suit */
-      base.forEach(function(g,i){ var st=60+i*150; var kk=co(seg(ms,st,st+420));
-        T(g,about(g.__it.cx,g.__it.cy,'translate(0 '+(10*(1-kk)).toFixed(2)+') scale('+(0.9+0.1*kk).toFixed(3)+')')); O(g,kk); });
+      var finA=30+(NBA-1)*60+240;
+      bandsBase.forEach(function(g,i){ var st=30+i*60; var kk=co(seg(ms,st,st+240)); T(g,about(0,g.__cy,'translate(0 '+(6*(1-kk)).toFixed(2)+') scale('+(0.96+0.04*kk).toFixed(3)+')')); O(g,ms>=finA?0:kk); });
+      O(base[0],ms>=finA?1:0);
       if(lab) O(lab,co(seg(ms,320,760)));
-      var finB=150+(NB-1)*95+320;
-      bands.forEach(function(g,i){ var st=150+i*95; var kk=co(seg(ms,st,st+320)); T(g,about(0,g.__cy,'translate(0 '+(6*(1-kk)).toFixed(2)+') scale('+(0.96+0.04*kk).toFixed(3)+')')); O(g,ms>=finB?0:kk); });
+      var finB=200+(NB-1)*95+320;
+      bands.forEach(function(g,i){ var st=200+i*95; var kk=co(seg(ms,st,st+320)); T(g,about(0,g.__cy,'translate(0 '+(6*(1-kk)).toFixed(2)+') scale('+(0.96+0.04*kk).toFixed(3)+')')); O(g,ms>=finB?0:kk); });
       O(body[0],ms>=finB?1:0);
       side.forEach(function(g,i){ var st=250+i*40; var kk=co(seg(ms,st,st+250)); O(g,kk); });
       sh.forEach(function(g,i){ var st=550+i*25; var kk=pop(seg(ms,st,st+300)); T(g,about(g.__it.cx,g.__it.cy,'scale('+kk.toFixed(3)+')')); O(g,kk>0?1:0); });

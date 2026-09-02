@@ -731,6 +731,7 @@ var PROPOSER_CAPTEUR = function(){ return false; };
       var r = h.getBoundingClientRect();
       if(r.bottom < 0 || r.top > innerHeight || !r.width) continue;   /* hors de l'ecran : rien */
       if(capteur){
+        if(h.__nomEmbleme === 'botella') continue;                           /* 2 sept, Raouf : le capteur ne touche pas la bouteille ; le doigt et la souris, si */
         if(!force){ if(h.__caresseLache) h.__caresseLache(); continue; }    /* telephone au repos : la plante aussi */
         h.__caresseVers(ux * ORBITE, uy * ORBITE, GAIN * force, 0);   /* la main a mi-rayon, du cote ou ca penche ; le dessin ne bouge pas en entier */
         continue;
@@ -1996,9 +1997,9 @@ function poserFavicon(){
   if(document.querySelector('link[rel="icon"]')) return;
   var base = baseScripts();
   var liens = [
-    { rel:'icon', href:'assets/img/favicon.svg?v=20260902o', type:'image/svg+xml' },
-    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902o', sizes:'32x32' },
-    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902o' }
+    { rel:'icon', href:'assets/img/favicon.svg?v=20260902p', type:'image/svg+xml' },
+    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902p', sizes:'32x32' },
+    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902p' }
   ];
   for(var i=0;i<liens.length;i++){
     var l = document.createElement('link'), k;
