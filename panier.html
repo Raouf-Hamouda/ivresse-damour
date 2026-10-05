@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/img/favicon.svg?v=20260902t" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png?v=20260902t" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20260902t">
+<link rel="icon" href="assets/img/favicon.svg?v=20261005e" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png?v=20261005e" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261005e">
 <title>Panier. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20260902t">
-<script src="assets/js/logo.js?v=20260902t"></script>
-<script src="assets/js/sceau_anime.js?v=20260902t"></script>
-<script src="assets/js/emblemes.js?v=20260902t"></script>
-<script src="assets/js/site.js?v=20260902t"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20261005e">
+<script src="assets/js/logo.js?v=20261005e"></script>
+<script src="assets/js/sceau_anime.js?v=20261005e"></script>
+<script src="assets/js/emblemes.js?v=20261005e"></script>
+<script src="assets/js/site.js?v=20261005e"></script>
 </head>
 
 <!-- ============================================================================
@@ -25,9 +25,8 @@
      panier.ajouter appelle majPanier.
 
      CE QUI N EST PAS DANS CETTE PAGE, ET POURQUOI.
-     Pas de champ de code de reduction : la remise de 20 % gagnee aux jeux est
-     un desaccord de fond non tranche, un constructeur ne l implemente pas et
-     ne l evoque pas. Pas de prix barre, pas de "plus que deux", pas de compte
+     Le code du jeu (5 oct 2026, decision de Raouf : 10 %) : un champ, une ligne
+     de remise, le total. La logique vit dans site.js (siteChrome.remise). Pas de prix barre, pas de "plus que deux", pas de compte
      a rebours, pas de seuil de livraison offerte. Le prix monte avec le temps.
      Pas de total avec les frais d envoi : le bareme n existe pas encore, et
      un total invente serait un mensonge. On affiche le sous total, et on dit
@@ -43,12 +42,7 @@
 
   <section class="entete-page">
     <div class="boite">
-      <p class="kicker" data-fr="La vente" data-es="La venta" data-en="Sales"></p>
       <h1 data-fr="Panier" data-es="Carrito" data-en="Bag"></h1>
-      <p class="chapo"
-         data-fr="Ce que vous avez mis de côté. Rien n'est réservé tant que la commande n'est pas passée."
-         data-es="Lo que ha puesto aparte. Nada queda reservado mientras el pedido no se haya hecho."
-         data-en="What you have set aside. Nothing is held until the order is placed."></p>
     </div>
   </section>
 
@@ -64,6 +58,25 @@
         <div class="faits__l">
           <dt class="faits__k" data-fr="Sous-total" data-es="Subtotal" data-en="Subtotal"></dt>
           <dd class="faits__v" id="sous-total"></dd>
+        </div>
+        <div class="faits__l">
+          <dt class="faits__k" data-fr="Code du jeu" data-es="Código del juego" data-en="Game code"></dt>
+          <dd class="faits__v">
+            <form id="f-code" style="display:flex;gap:calc(var(--u)*2);align-items:center;flex-wrap:wrap" autocomplete="off">
+              <label class="sr" for="code" data-fr="Code du jeu" data-es="Código del juego" data-en="Game code"></label>
+              <input id="code" name="code" type="text" spellcheck="false" style="width:12ch;text-transform:uppercase" placeholder="JIMA10">
+              <button class="lien-discret" type="submit" data-fr="Appliquer" data-es="Aplicar" data-en="Apply"></button>
+              <span id="code-mot" class="vente__note" aria-live="polite"></span>
+            </form>
+          </dd>
+        </div>
+        <div class="faits__l" id="l-remise" hidden>
+          <dt class="faits__k" data-fr="Remise du jeu, 10 %" data-es="Descuento del juego, 10 %" data-en="Game discount, 10%"></dt>
+          <dd class="faits__v" id="remise"></dd>
+        </div>
+        <div class="faits__l" id="l-total" hidden>
+          <dt class="faits__k" data-fr="Total, hors envoi" data-es="Total, sin envío" data-en="Total, before shipping"></dt>
+          <dd class="faits__v" id="total-remise"></dd>
         </div>
         <div class="faits__l">
           <dt class="faits__k" data-fr="Frais d'envoi" data-es="Gastos de envío" data-en="Shipping"></dt>
@@ -270,6 +283,11 @@ siteChrome.init();
     LIGNES.liste.insertAdjacentHTML('afterbegin', html);
 
     LIGNES.total.textContent = euros(total);
+    var taux = chrome.remise ? chrome.remise.taux() : 0, moins = Math.round(total * taux * 100) / 100;
+    document.getElementById('l-remise').hidden = document.getElementById('l-total').hidden = !(taux && total);
+    document.getElementById('remise').textContent = '− ' + euros(moins);
+    document.getElementById('total-remise').textContent = euros(total - moins);
+    var champ = document.getElementById('code'); if(champ && !champ.value && chrome.remise) champ.value = chrome.remise.lire() || '';
     LIGNES.plein.hidden = n < 1;
     LIGNES.vide.hidden  = n > 0;
 
@@ -277,6 +295,16 @@ siteChrome.init();
     chrome.appliquerLangue(chrome.langue(), LIGNES.plein);
     brancher();
   }
+
+  var fCode = document.getElementById('f-code');
+  if(fCode) fCode.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var v = document.getElementById('code').value, ok = chrome.remise && chrome.remise.poser(v), mot = document.getElementById('code-mot');
+    mot.setAttribute('data-fr', ok ? 'Appliqué.' : (v ? 'Ce code n\'existe pas.' : 'Code retiré.'));
+    mot.setAttribute('data-es', ok ? 'Aplicado.' : (v ? 'Este código no existe.' : 'Código retirado.'));
+    mot.setAttribute('data-en', ok ? 'Applied.' : (v ? 'This code does not exist.' : 'Code removed.'));
+    dessiner(); chrome.appliquerLangue(chrome.langue(), fCode);
+  });
 
   function brancher(){
     var s = LIGNES.liste.querySelectorAll('[data-q]');

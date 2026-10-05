@@ -3098,3 +3098,295 @@ body[data-page="mito"] .tete.a-panneau{ background:#C9C48D; }
    deux lignes et grandissait les rangs. Toute table des faits prend la colonne
    entiere : une phrase tient sur sa ligne, chaque rang fait ses 66 px. */
 .faits, .faits--etiquette{ max-width:none; }
+
+/* =========================================================================
+   4 octobre 2026, Raouf : La Tierra en registre "rapport d'engagement".
+   Meme papier, meme serif, memes filets que le reste du site ; la mise en
+   page reprend la grammaire d'un rapport extra-financier (son modele : le
+   Non-Financial Statement 2025 de Nestle) : une ouverture en photo avec un
+   bloc plein qui porte le titre, une rangee d'onglets, des reperes en tuiles
+   pleines, une table des enjeux, le texte sur deux colonnes, une table
+   d'indicateurs par annee, des notes. Le rouge de la maison tient le role
+   de leur bleu. Aucune de ces classes ne sert ailleurs.
+   ========================================================================= */
+.ouverture{ position:relative; margin:0; background:var(--creme); }
+.ouverture img{ width:100%; height:min(86svh,820px); object-fit:cover; display:block; }
+.ouverture__bloc{
+  position:absolute; top:var(--tete-h); left:var(--marge);
+  width:min(440px, calc(100% - 2 * var(--marge)));
+  background:var(--brique); color:#fff;
+  padding:calc(var(--u)*5) calc(var(--u)*5) calc(var(--u)*6);
+}
+.ouverture__bloc .kicker{ color:#fff; opacity:.85; margin-bottom:calc(var(--u)*2); }
+.ouverture__bloc h1{ color:#fff; font-size:clamp(40px,5vw,68px); line-height:1.02; margin:0 0 calc(var(--u)*2); }
+.ouverture__an{ font-family:var(--slab); font-size:var(--t-petit); letter-spacing:var(--ls-petit); text-transform:uppercase; margin:0; opacity:.85; }
+
+.onglets{
+  display:flex; gap:calc(var(--u)*3);
+  max-width:calc(var(--largeur) + 2 * var(--marge)); margin:0 auto;
+  padding:calc(var(--u)*4) var(--marge) 0; overflow-x:auto; scrollbar-width:none;
+}
+.onglets::-webkit-scrollbar{ display:none; }
+.onglets a{
+  flex:1 0 auto; min-width:112px; padding-top:var(--u);
+  border-top:1px solid var(--encre); color:var(--brun); text-decoration:none;
+  font-family:var(--slab); font-size:var(--t-micro); letter-spacing:var(--ls-petit); text-transform:uppercase; line-height:1.5;
+  transition:color var(--t-court) var(--courbe), border-color var(--t-court) var(--courbe);
+}
+.onglets a:hover, .onglets a:focus-visible{ color:var(--brique); border-top-color:var(--brique); }
+
+.chapitre{ scroll-margin-top:calc(var(--tete-h) + var(--u)*2); }
+.chapitre__tete{ display:grid; grid-template-columns:1.1fr .9fr; gap:calc(var(--u)*8); align-items:start; margin-bottom:calc(var(--u)*7); }
+.chapitre__tete--seul{ grid-template-columns:1fr; }
+.chapitre__titre{ color:var(--brique); font-size:var(--t-h2); margin:0 0 calc(var(--u)*3); max-width:18ch; }
+.chapitre__intro{ font-size:var(--t-lead); line-height:1.45; max-width:48ch; margin:0; }
+
+.reperes{ display:grid; gap:2px; }
+.reperes__t, .repere{ background:var(--brique); color:#fff; padding:calc(var(--u)*2) calc(var(--u)*3); margin:0; }
+.reperes__t{ font-family:var(--slab); font-size:var(--t-micro); letter-spacing:var(--ls-petit); text-transform:uppercase; }
+.repere{ padding-block:calc(var(--u)*3); }
+.repere__c{ display:block; font-size:var(--t-chiffre); line-height:1.1; }
+.repere__l{ display:block; font-size:15px; line-height:1.45; opacity:.92; margin-top:var(--u); }
+
+.pastille{ display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:var(--u); flex:none; }
+.pastille--neg{ background:var(--brique); }
+.pastille--pos{ background:var(--vert-etiquette); }
+.pastille--risque{ background:var(--ocre); }
+.legende-enjeux{ display:flex; flex-wrap:wrap; gap:calc(var(--u)*1) calc(var(--u)*4); margin:0 0 calc(var(--u)*3); font-size:var(--t-petit); color:var(--brun); }
+.legende-enjeux span{ display:inline-flex; align-items:center; }
+
+.chaine{ display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin:0 0 calc(var(--u)*7); }
+.chaine__m{ background:var(--creme); padding:calc(var(--u)*3); }
+.chaine__n{ font-family:var(--slab); font-size:var(--t-micro); letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--encre);
+  border-bottom:1px solid var(--encre); padding-bottom:var(--u); margin:0 0 calc(var(--u)*2); }
+.chaine__m ul{ list-style:none; margin:0; padding:0; }
+.chaine__m li{ display:flex; align-items:center; gap:0; font-size:15px; line-height:1.4; padding:calc(var(--u)*.75) 0; }
+.chaine__num{ font-family:var(--slab); font-size:var(--t-micro); color:var(--brun); min-width:22px; }
+
+.enjeux{ border-top:1px solid var(--encre); margin:0; }
+.enjeux__g{ font-family:var(--slab); font-size:var(--t-micro); letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun);
+  padding:calc(var(--u)*3) 0 var(--u); border-bottom:1px solid var(--encre); margin:0; }
+.enjeux__l{ display:grid; grid-template-columns:280px 1fr; gap:calc(var(--u)*4); padding:calc(var(--u)*2.5) 0; border-bottom:1px solid var(--filet); }
+.enjeux__n{ margin:0; font-weight:600; }
+.enjeux__t{ display:flex; align-items:center; font-style:italic; font-weight:400; font-size:14px; color:var(--brun); margin-top:calc(var(--u)*.5); }
+.enjeux__d{ margin:0; max-width:72ch; }
+
+.detail{ columns:2; column-gap:calc(var(--u)*7); }
+.detail > div{ break-inside:avoid; margin-bottom:calc(var(--u)*3); }
+.detail p{ margin:0 0 calc(var(--u)*1.5); }
+.inter{ font-family:var(--serif); font-size:var(--t-base); font-weight:600; color:var(--brique); letter-spacing:0; line-height:1.3; margin:0 0 var(--u); }
+.sous-titre{ font-size:var(--t-h3); margin:calc(var(--u)*7) 0 calc(var(--u)*3); }
+
+.engagements{ list-style:none; margin:0; padding:0; border-top:1px solid var(--encre); }
+.engagements li{ display:grid; grid-template-columns:280px 1fr; gap:calc(var(--u)*4); padding:calc(var(--u)*2.5) 0; border-bottom:1px solid var(--filet); }
+.engagements b{ font-weight:600; }
+.engagements span{ max-width:72ch; }
+
+.mesures{ width:100%; border-collapse:collapse; margin:calc(var(--u)*3) 0 0; font-size:15px; line-height:1.45; }
+.mesures caption{ text-align:left; font-size:var(--t-petit); color:var(--brun); padding-bottom:var(--u); }
+.mesures th{ text-align:left; font-weight:400; font-family:var(--slab); font-size:var(--t-micro); letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun);
+  border-bottom:1px solid var(--encre); padding:calc(var(--u)*1.5) calc(var(--u)*2) calc(var(--u)*1.5) 0; }
+.mesures td{ border-bottom:1px solid var(--filet); padding:calc(var(--u)*2.25) calc(var(--u)*2) calc(var(--u)*2.25) 0; vertical-align:top; }
+.mesures td:first-child{ font-weight:600; width:34%; }
+.mesures .an{ color:var(--brique); }
+
+.notes{ margin:0; padding-left:calc(var(--u)*2.5); max-width:var(--mesure-max); font-size:var(--t-petit); line-height:1.55; color:var(--brun); }
+.notes li{ margin-bottom:var(--u); }
+.notes a{ color:inherit; }
+
+@media (max-width:1000px){
+  .ouverture img{ height:min(74svh,620px); }
+  .ouverture__bloc{ padding:calc(var(--u)*3) calc(var(--u)*3) calc(var(--u)*4); width:min(320px, calc(100% - 2 * var(--marge))); }
+  .ouverture__bloc h1{ font-size:40px; }
+  .chapitre__tete{ grid-template-columns:1fr; gap:calc(var(--u)*4); margin-bottom:calc(var(--u)*5); }
+  .chaine{ grid-template-columns:1fr; }
+  .detail{ columns:1; }
+  .enjeux__l, .engagements li{ grid-template-columns:1fr; gap:var(--u); }
+  .sous-titre{ margin-top:calc(var(--u)*5); }
+}
+@media (max-width:700px){
+  /* la table d'indicateurs se lit en fiches : chaque rang devient un bloc, chaque case porte son intitule */
+  .mesures thead{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+  .mesures, .mesures tbody, .mesures tr, .mesures td{ display:block; width:auto; }
+  .mesures tr{ border-bottom:1px solid var(--filet); padding:calc(var(--u)*2) 0; }
+  .mesures td{ border:0; padding:calc(var(--u)*.5) 0; }
+  .mesures td:first-child{ width:auto; }
+  .mesures td[data-t]::before{ content:attr(data-t) " : "; font-family:var(--slab); font-size:var(--t-micro); letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun); }
+}
+.sous-titre--haut{ margin-top:0; }
+.apres-liste{ margin-top:calc(var(--u)*4); }
+.notes{ list-style:decimal; }
+
+/* 4 oct 2026, 18h10, Raouf sur l'ouverture de La Tierra : "work more on this design". Le bloc reste a gauche,
+   sous l'entete, a la marge du contenu ; il prend une proportion de carte haute et porte l'embleme du tobala
+   en blanc, un filet, une ligne qui dit l'engagement, puis le lieu. */
+.ouverture__bloc{
+  width:min(400px, calc(100% - 2 * var(--marge)));
+  padding:calc(var(--u)*5);
+  display:flex; flex-direction:column;
+}
+.ouverture__embleme{ color:#fff; width:72px; height:72px; margin:0 0 calc(var(--u)*5); display:block; }
+.ouverture__embleme svg{ width:100%; height:100%; display:block; }
+.ouverture__bloc .kicker{ margin-bottom:calc(var(--u)*1.5); }
+.ouverture__bloc h1{ font-size:clamp(44px,4.6vw,64px); margin:0; padding-bottom:calc(var(--u)*3); border-bottom:1px solid rgba(255,255,255,.45); }
+.ouverture__ligne{ font-size:var(--t-lead); line-height:1.35; margin:calc(var(--u)*3) 0 calc(var(--u)*4); max-width:20ch; color:#fff; }
+.ouverture__an{ margin-top:auto; }
+@media (max-width:1000px){
+  .ouverture__bloc{ width:min(300px, calc(100% - 2 * var(--marge))); padding:calc(var(--u)*3); }
+  .ouverture__embleme{ width:48px; height:48px; margin-bottom:calc(var(--u)*3); }
+  .ouverture__bloc h1{ font-size:40px; padding-bottom:calc(var(--u)*2); }
+  .ouverture__ligne{ font-size:16px; margin:calc(var(--u)*2) 0 calc(var(--u)*3); }
+}
+/* le mot La Tierra a droite de l'entete, avant les pictos ; au telephone il vit dans le tiroir */
+.nav__lien--droite{ margin-right:calc(var(--u)*1); white-space:nowrap; }
+@media (max-width:1000px){ .nav__lien--droite{ display:none; } }
+
+/* le second mot de droite ne tient qu'au dela de 1300 px ; en dessous, La Siembra se trouve depuis La Tierra et dans le tiroir */
+@media (max-width:1300px){ .nav__lien--second{ display:none; } }
+/* La Siembra s'ouvre sur une photo sombre de plantes : l'entete y est posee sur son papier des l'arrivee, sinon ses mots ne se lisent pas */
+body[data-page="siembra"] .tete{ background:var(--papier); border-bottom-color:var(--filet); }
+
+/* =========================================================================
+   4 oct 2026, 19h35, Raouf, trois remarques sur captures.
+   1. "Bad and not done well" : le bloc rouge de l'ouverture depassait sous la photo et passait sur les onglets
+      des que la fenetre etait basse. La photo et le bloc partagent maintenant UNE case de grille : la figure
+      prend la hauteur du plus haut des deux, le bloc ne peut plus sortir de la photo.
+   2. Les tickets (papier peche, encoches) sont refuses ; le panneau plein est le modele : "minimalist elegant
+      cards like this". Tout devient des TUILES pleines (.tuile ; le nom .carte est deja celui de la carte du lieu de vente), une famille : la tuile de tete porte l'embleme du lieu,
+      les suivantes un numero ; meme couleur sur toute la rangee, deux pixels de papier entre elles.
+   3. "Make the 3 plants together" : les trois agaves cote a cote, chacun sur la couleur de sa bouteille.
+   ========================================================================= */
+.ouverture{ display:grid; }
+.ouverture img{ grid-area:1 / 1; height:100%; min-height:min(86svh,820px); }
+.ouverture__bloc{ position:relative; top:auto; left:auto; grid-area:1 / 1; align-self:start; justify-self:start;
+  margin:var(--tete-h) 0 calc(var(--u)*5) var(--marge); }
+@media (max-width:1000px){ .ouverture img{ min-height:min(74svh,620px); } .ouverture__bloc{ margin-bottom:calc(var(--u)*3); } }
+
+.tuiles{ list-style:none; margin:0 0 2px; padding:0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:2px; }
+.tuiles--village{ grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) minmax(0,1.5fr); }
+.tuiles--trio{ grid-template-columns:repeat(3,minmax(0,1fr)); margin-bottom:calc(var(--u)*7); }
+.tuile{ --c:var(--encre); background:var(--c); color:#fff; padding:calc(var(--u)*4); min-height:300px;
+  display:flex; flex-direction:column; }
+.tuiles--montagne .tuile{ --c:var(--vert-etiquette); }
+.tuiles--palenque .tuile{ --c:var(--brique); }
+.tuiles--village  .tuile{ --c:var(--turquesa); }
+.tuile--espadin{ --c:var(--olive-etiquette); }
+.tuile--tobala{ --c:var(--turquesa); }
+.tuile--coyote{ --c:var(--rosa); }
+.tuile__em{ color:#fff; width:96px; height:96px; display:block; margin:calc(var(--u)*2) auto auto; }
+.tuile__em svg{ width:100%; height:100%; display:block; }
+.tuile__num{ font-size:15px; letter-spacing:.14em; font-family:var(--slab); opacity:.75; margin-bottom:auto;
+  padding-bottom:calc(var(--u)*1.5); border-bottom:1px solid rgba(255,255,255,.35); }
+.tuile__nom{ font-size:24px; line-height:1.15; letter-spacing:var(--ls-titre); margin:calc(var(--u)*5) 0 var(--u); }
+.tuile--tete .tuile__nom{ font-size:clamp(24px,2vw,30px); line-height:1.05; overflow-wrap:anywhere; }
+.tuile__s{ font-family:var(--slab); font-size:var(--t-micro); letter-spacing:var(--ls-petit); text-transform:uppercase; margin:0; opacity:.9; line-height:1.5; }
+.tuile__d{ font-size:15px; line-height:1.5; margin:calc(var(--u)*2) 0 0; opacity:.95; }
+.tuiles--trio .tuile{ min-height:380px; }
+.tuiles--trio .tuile__em{ width:120px; height:120px; }
+@media (max-width:1000px){
+  .tuiles, .tuiles--village, .tuiles--trio{ grid-template-columns:1fr; margin-bottom:calc(var(--u)*2); }
+  .tuile, .tuiles--trio .tuile{ min-height:0; padding:calc(var(--u)*3); }
+  .tuile__num{ margin-bottom:0; }
+  .tuile__nom{ margin-top:calc(var(--u)*2); }
+  .tuile--tete{ flex-direction:row; flex-wrap:wrap; align-items:center; column-gap:calc(var(--u)*3); }
+  .tuile--tete .tuile__em, .tuiles--trio .tuile__em{ width:56px; height:56px; margin:0; }
+  .tuile--tete .tuile__nom{ margin:0; flex:1; }
+  .tuile--tete .tuile__s, .tuile--tete .tuile__d{ flex-basis:100%; }
+  .tuile--tete .tuile__s{ margin-top:calc(var(--u)*1.5); }
+  .tuiles--trio{ margin-bottom:calc(var(--u)*5); }
+}
+
+/* =========================================================================
+   4 oct 2026, 19h40, Raouf sur le bloc d'ouverture : "work more the cards here, get the CSS on point".
+   Ce qui clochait sur sa capture : le titre cassait en deux lignes ("La / Siembra"), le lieu laissait un point
+   median seul en bout de ligne, la phrase finissait sur un mot orphelin, l'embleme flottait dans un coin.
+   La regle maintenant : LE TITRE DONNE LA LARGEUR. Il tient sur une ligne, le bloc se cale sur lui
+   (min-content), et tout le reste se compose dans cette largeur : l'embleme centre au-dessus, le filet de la
+   largeur du titre, la phrase equilibree ligne a ligne, le lieu sur deux lignes voulues. Rythme sur l'unite de
+   8 px : 40 de marge, 40 sous l'embleme, 12 sous le kicker, 24 de part et d'autre du filet, 32 avant le lieu.
+   ========================================================================= */
+.ouverture{ overflow:hidden; }
+.ouverture__bloc{
+  width:min-content; min-width:min(312px, calc(100% - 2 * var(--marge))); max-width:calc(100% - 2 * var(--marge));
+  padding:calc(var(--u)*5);
+}
+.ouverture__embleme{ width:88px; height:88px; margin:0 auto calc(var(--u)*5); }
+.ouverture__bloc .kicker{ white-space:nowrap; margin-bottom:calc(var(--u)*1.5); }
+.ouverture__bloc h1{ white-space:nowrap; font-size:clamp(48px,4.4vw,64px); line-height:1; padding-bottom:0; border-bottom:0; margin:0; }
+.ouverture__bloc h1::after{ content:""; display:block; height:1px; background:rgba(255,255,255,.5); margin-top:calc(var(--u)*3); transform-origin:left center; }
+.ouverture__ligne{ max-width:none; margin:calc(var(--u)*3) 0 calc(var(--u)*4); text-wrap:balance; }
+.ouverture__an{ display:grid; gap:calc(var(--u)*.5); line-height:1.4; }
+.ouverture__an span{ white-space:nowrap; }
+@media (max-width:1000px){
+  .ouverture__bloc{ padding:calc(var(--u)*3); min-width:min(264px, calc(100% - 2 * var(--marge))); }
+  .ouverture__embleme{ width:56px; height:56px; margin-bottom:calc(var(--u)*3); }
+  .ouverture__bloc h1{ font-size:40px; }
+  .ouverture__bloc h1::after{ margin-top:calc(var(--u)*2); }
+  .ouverture__ligne{ margin:calc(var(--u)*2) 0 calc(var(--u)*3); }
+}
+/* l'arrivee : la photo se pose, le bloc descend, puis ses lignes viennent une a une et le filet se tire.
+   Une fois, au chargement ; rien si le visiteur a demande moins de mouvement. */
+@media (prefers-reduced-motion:no-preference){
+  .ouverture img{ animation:ouv-photo 1.8s var(--courbe) both; }
+  .ouverture__bloc{ animation:ouv-bloc .7s var(--courbe) .1s both; }
+  .ouverture__bloc > *{ animation:ouv-ligne .6s var(--courbe) both; }
+  .ouverture__bloc > :nth-child(1){ animation-delay:.40s; }
+  .ouverture__bloc > :nth-child(2){ animation-delay:.50s; }
+  .ouverture__bloc > :nth-child(3){ animation-delay:.58s; }
+  .ouverture__bloc > :nth-child(4){ animation-delay:.74s; }
+  .ouverture__bloc > :nth-child(5){ animation-delay:.84s; }
+  .ouverture__bloc h1::after{ animation:ouv-filet .7s var(--courbe) .78s both; }
+}
+@keyframes ouv-photo{ from{ transform:scale(1.05); } to{ transform:none; } }
+@keyframes ouv-bloc{ from{ opacity:0; transform:translateY(-16px); } to{ opacity:1; transform:none; } }
+@keyframes ouv-ligne{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+@keyframes ouv-filet{ from{ transform:scaleX(0); } to{ transform:none; } }
+
+/* Nous joindre : deux tuiles, le Mexique et la France. Les liens y sont blancs, soulignes d'un filet. */
+.tuiles--duo{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+.tuile--mexique{ --c:var(--vert-etiquette); }
+.tuile--france{ --c:var(--encre); }
+.tuiles--duo .tuile{ min-height:380px; }
+.tuile a{ color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.6); padding-bottom:1px; transition:border-color var(--t-court) var(--courbe); }
+.tuile a:hover, .tuile a:focus-visible{ border-bottom-color:#fff; }
+.tuile__d a{ display:inline-block; margin-top:var(--u); }
+
+/* =========================================================================
+   4 oct 2026, 20h25, Raouf : "check again the margins, stricter, we are selling this for 50 k", puis "start fixing
+   without breaking my DA". Audit mesure sur 37 pages x 3 largeurs (390, 930, 1440). Ce bloc ne touche a aucune
+   couleur, aucune police, aucune composition : il aligne des mesures sur celles que la maison a deja.
+   La mesure maison, relevee sur 19 pages : le contenu ouvre a 64 px sous l'entete (tete-h + 8 u) et la page
+   finit a 72 px du pied au telephone, 125 au bureau (section serree + pied).
+   Les scenes plein ecran (accueil, bouteilles, campagnes, jeux) centrent leur contenu dans l'ecran : c'est la
+   composition voulue, on n'y touche pas.
+   ========================================================================= */
+/* 1. sous l'entete : la caisse ouvrait a 32 (telephone) et 96 (bureau), la fiche d'achat a 48 au bureau. Tout a 64. */
+.caisse__col, .caisse__deux{ padding-top:calc(var(--tete-h) + var(--u)*8); }
+@media (min-width:1001px){ .fiche{ padding-top:calc(var(--tete-h) + var(--u)*8); } }
+/* 2. avant le pied : la caisse laissait 177 / 206 a 267, la fiche 158 au bureau. Meme fin que les autres pages.
+      Au telephone la fiche garde ses 80 px : la barre d'achat collee en bas en a besoin. */
+.caisse__col, .caisse__deux{ padding-bottom:calc(var(--u)*6); }
+@media (max-width:1000px){ .caisse__col, .caisse__deux{ padding-bottom:calc(var(--u)*3); } }
+@media (min-width:1001px){ .fiche{ padding-bottom:calc(var(--u)*6); } }
+/* 3. le pixel du filet : une section a filet ajoutait 1 px a chaque vide (73 pour 72, 97 pour 96, 193 pour 192). */
+.section--filet{ margin-top:-1px; }
+/* 4. la marge du telephone sur l'unite de 8 : 18 px devient 24. */
+@media (max-width:560px){ :root{ --marge:24px; } }
+/* 5. le doigt : au telephone, 381 liens et boutons faisaient moins de 40 px de haut (liens du pied 18 et 28, liens de
+      scene 22, liens discrets 25, quantite 32). Le dessin ne bouge pas : la zone qui recoit le doigt s'etend autour. */
+@media (max-width:1000px){
+  .pied__nav a, .pied__droit a, .pied__liste a, .scene__lien, .lien-discret, .lien, .qte__b, .camp__pastille{ position:relative; }
+  .pied__nav a::after, .pied__droit a::after, .pied__liste a::after, .scene__lien::after, .lien-discret::after, .lien::after, .qte__b::after, .camp__pastille::after{
+    content:""; position:absolute; left:-6px; right:-6px; top:50%; height:44px; transform:translateY(-50%); }
+  .qte__b::after{ left:-6px; right:-6px; }
+}
+/* 6. le plus petit corps au telephone : 11 px (les etiquettes etaient a 10 et 10,5). Le bureau garde ses tailles. */
+@media (max-width:1000px){
+  .faits__k, .scene__kicker, .scene__lien, .campagne__kicker, .grille__etat, .camp__sur, .camp__sous-chiffre, .figure__lien{ font-size:11px; }
+}
+/* 7. plus de mot seul en derniere ligne (36 paragraphes au telephone, dont "Oaxaca." sous chaque bouteille). */
+p, dd, li, blockquote{ text-wrap:pretty; }
+
+/* ---- 5 oct 2026 : le jeu ouvre sa page (jeu-espadin.html) : la scene sous l'entete, cartes et barre DANS la scene ---- */
+.jeu{position:relative;margin-top:var(--tete-h);height:calc(100svh - var(--tete-h));min-height:520px;background:#b9c7d6;overflow:hidden}
+.jeu iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}

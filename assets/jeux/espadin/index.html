@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>La jima</title>
+<!-- Le HUD est celui de JEU_ESPADIN_FIXED.html (le jeu valide, en ligne sur raouf-hamouda.github.io/espadin-la-jima), recopie tel quel. -->
+<style>
+  /* L'interface est le ticket de la maison: papier #FED5A3, encoches perforees sur les
+     deux bords, serif regle, chiffres poses sur des lignes. Jamais de dark mode. */
+  :root{
+    --papier:#FED5A3; --page:#FEF9F3; --encre:#2b2118;
+    --rouge:#A63D24; --olive:#8F9035; --vert:#58705a; --filet:#e0d3c2;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--page);overflow:hidden;
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;color:var(--encre);
+    -webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;touch-action:none}
+  #scene{position:fixed;inset:0}
+  canvas{display:block;cursor:none}
+
+  #chargement{position:fixed;inset:0;background:var(--page);z-index:40;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;
+    transition:opacity .7s ease}
+  #chargement.parti{opacity:0;pointer-events:none}
+  #chargement p{margin:0;font-size:15px;letter-spacing:.04em;color:#8b7c69}
+  .barre{width:132px;height:1px;background:var(--filet);position:relative;overflow:hidden}
+  .barre i{position:absolute;inset:0;background:var(--rouge);transform-origin:left;
+    animation:pousse 2.6s cubic-bezier(.4,0,.2,1) infinite}
+  @keyframes pousse{0%{transform:scaleX(0)}70%{transform:scaleX(1)}100%{transform:scaleX(1);opacity:0}}
+
+  /* HUD compact: obsidienne fumee, laiton et papier chaud. Il garde la signature
+     mezcal sans masquer un quart du terrain comme l'ancien grand ticket orange. */
+  #ticketbox{position:fixed;top:18px;left:18px;z-index:20;width:min(292px,calc(100vw - 36px))}
+  .ticket{position:relative;overflow:hidden;padding:13px 15px 12px;border-radius:13px;
+    color:#f8ead2;border:1px solid rgba(245,211,155,.24);
+    background:linear-gradient(145deg,rgba(29,24,18,.93),rgba(48,37,26,.86));
+    box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 14px 38px rgba(20,12,6,.28);
+    backdrop-filter:blur(12px) saturate(1.1);-webkit-backdrop-filter:blur(12px) saturate(1.1)}
+  .ticket::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(110deg,rgba(255,255,255,.055),transparent 32%,transparent 70%,rgba(187,120,54,.06))}
+  .ticket::after{content:"";position:absolute;left:15px;right:15px;top:0;height:2px;
+    background:linear-gradient(90deg,transparent,#d9a759 20%,#efd39c 55%,transparent)}
+  .eyebrow{margin:0 0 5px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:8.5px;
+    font-weight:650;letter-spacing:.22em;text-transform:uppercase;color:#d9ae6b}
+  h1{margin:0 0 2px;font-size:17px;font-weight:500;letter-spacing:.015em;line-height:1.15;color:#fff4df}
+  #sous{margin:0;max-width:244px;font-size:11.5px;line-height:1.38;color:rgba(248,234,210,.68)}
+  .filet{height:1px;background:linear-gradient(90deg,rgba(223,177,103,.42),rgba(255,255,255,.04));margin:10px 0 8px}
+
+  .ligne{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:8.5px;font-weight:650;letter-spacing:.16em;
+    text-transform:uppercase;color:rgba(241,210,163,.62);margin-bottom:6px}
+  .val{font-variant-numeric:tabular-nums;font-size:11px;letter-spacing:.08em;color:#f8ead2}
+
+  /* les neuf annees sont neuf traits regles, pas un compteur */
+  #ans,#graines{display:flex;gap:4px;margin:0 0 12px}
+  .an{width:100%;height:8px;border-bottom:1px solid rgba(80,60,40,.34);display:block}
+  .an.plein{background:var(--vert);border-bottom-color:var(--vert)}
+  .gr{width:100%;height:8px;border-bottom:1px solid rgba(80,60,40,.34);display:block}
+  .gr.plein{background:var(--encre);border-bottom-color:var(--encre)}
+  .gr.rate{background:var(--rouge);border-bottom-color:var(--rouge)}
+
+  #aide{position:fixed;left:50%;bottom:16px;z-index:20;width:max-content;max-width:calc(100vw - 28px);
+    transform:translateX(-50%);margin:0;padding:7px 12px 6px;border-radius:999px;text-align:center;
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:9px;font-weight:650;letter-spacing:.14em;
+    text-transform:uppercase;color:rgba(255,242,217,.78);background:rgba(24,19,14,.52);
+    border:1px solid rgba(239,204,149,.14);box-shadow:0 7px 24px rgba(0,0,0,.16);
+    backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+  #impact{position:fixed;z-index:19;width:78px;height:78px;margin:-39px 0 0 -39px;border-radius:50%;
+    opacity:0;pointer-events:none;border:2px solid rgba(255,231,174,.92);
+    box-shadow:0 0 0 1px rgba(82,49,20,.7) inset,0 0 24px rgba(255,198,105,.55)}
+  #impact.frappe{animation:impact-coa .28s cubic-bezier(.12,.75,.2,1)}
+  @keyframes impact-coa{0%{opacity:.95;transform:scale(.34)}55%{opacity:.62;transform:scale(.9)}100%{opacity:0;transform:scale(1.42)}}
+  .ticket.frappe{animation:hud-frappe .30s ease-out}
+  @keyframes hud-frappe{0%{border-color:rgba(255,223,164,.72);transform:translateY(-1px)}100%{border-color:rgba(245,211,155,.24);transform:none}}
+
+  /* le ticket de code, il ne sort qu'a la victoire */
+  #ticketcode{position:fixed;right:22px;bottom:22px;z-index:21;background:var(--papier);
+    padding:16px 20px;opacity:0;transform:translateY(10px);pointer-events:none;
+    transition:opacity .6s ease,transform .6s cubic-bezier(.2,.9,.3,1);
+    box-shadow:0 1px 0 rgba(0,0,0,.10),0 10px 26px rgba(70,50,30,.16)}
+  #ticketcode.vu{opacity:1;transform:none}
+  #ticketcode .lab{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#7d6a54}
+  #codeval{font-size:19px;letter-spacing:.10em;margin-top:4px;font-variant-numeric:tabular-nums}
+
+  /* les trois patas: a ras, juste, haute. La barre EST le score, pas un chiffre. */
+  #barres{display:flex;gap:3px;height:5px;margin:0 0 8px;border-radius:9px;overflow:hidden;background:rgba(255,255,255,.07)}
+  #barres i{display:block;border-radius:9px;transition:flex-grow .45s cubic-bezier(.2,.9,.3,1)}
+  .b0{background:#efd39c;border:0}
+  .b1{background:#b6a94b}
+  .b2{background:#64816a}
+  #verdict{margin:0;font-size:10.5px;line-height:1.35;color:rgba(248,234,210,.67);min-height:1.35em}
+  /* tactile: sans ca le navigateur mange le geste avant le jeu */
+  html,body,#scene,canvas{touch-action:none;overscroll-behavior:none}
+
+  @media (max-width:720px){
+    #ticketbox{top:10px;left:10px;width:min(260px,calc(100vw - 20px))}
+    .ticket{padding:11px 13px 10px;border-radius:11px}
+    h1{font-size:15px} #sous{font-size:10.5px}.eyebrow{font-size:7.5px}
+    .filet{margin:8px 0 7px} #verdict{font-size:9.5px}
+    #aide{bottom:10px;font-size:8px;padding:6px 10px}
+    #ticketcode{right:14px;left:14px;bottom:64px}
+  }
+
+  #ticketcode a{display:inline-block;margin-top:10px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--rouge);text-decoration:none;border-bottom:1px solid currentColor;pointer-events:auto}
+  #ticketcode.vu{pointer-events:auto}
+  #barres i{flex:0 0 0}
+</style></head>
+<body>
+<div id="scene"></div>
+<div id="impact" aria-hidden="true"></div>
+
+<div id="ticketbox">
+  <div class="ticket">
+    <div class="eyebrow">Espadín · Oaxaca</div>
+    <h1 id="titre">La jima</h1>
+    <p id="sous">Coupez chaque penca au ras de la piña.</p>
+    <div class="filet"></div>
+    <div class="ligne"><span>Pencas</span><span class="val" id="compte">0</span></div>
+    <div id="barres"><i class="b0"></i><i class="b1"></i><i class="b2"></i></div>
+    <p id="verdict"></p>
+  </div>
+</div>
+
+<p id="aide">Glissez la coa en travers des pencas</p>
+
+<div id="ticketcode"><div class="lab">Votre code · 10 % sur l’Espadín</div><div id="codeval"></div><a id="codelien" href="../../../acheter-espadin.html" target="_top">Acheter l’Espadín</a></div>
+
+<div id="chargement">
+  <p>On affûte.</p>
+  <div class="barre"><i></i></div>
+</div>
+<script type="module" src="jeu.js"></script>
+</body></html>

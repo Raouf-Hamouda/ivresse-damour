@@ -34,7 +34,7 @@
    session est vide). La reponse n'est jamais gardee d'une session a l'autre.
    Passer a false pour revenir au comportement normal (une seule fois, reponse
    gardee sous ida.age dans localStorage). La langue, elle, reste gardee. */
-var PORTE_A_CHAQUE_VISITE = true; /* demo : la porte se represente a chaque session et a chaque rechargement */
+var PORTE_A_CHAQUE_VISITE = false; /* 4 oct 2026, Raouf : "this page open once". La porte ne se montre qu'une fois, la reponse est gardee (ida.age). true = la demo du 16 aout : a chaque session et a chaque rechargement */
 var CLE_AGE_SESSION = 'ida.age.session';   /* sessionStorage, 'oui' quand la porte est passee dans cette session */
 var memoireSession = {};
 function lireSession(cle){
@@ -95,6 +95,8 @@ var MENU = [
   { id:'boutique', href:'boutique.html',      embleme:'ofrenda',  fr:'La Boutique', es:'La Tienda',   en:'The Shop'    },
   { id:'historia', href:'la-historia.html',   embleme:'historia', fr:'La Historia', es:'La Historia', en:'La Historia' },
   { id:'palenque', href:'el-palenque.html',   embleme:'palenque', fr:'El Palenque', es:'El Palenque', en:'El Palenque' },
+  { id:'tierra',   href:'la-tierra.html',     embleme:'tobala',   fr:'La Tierra',   es:'La Tierra',   en:'La Tierra'   },
+  { id:'siembra',  href:'la-siembra.html',    embleme:'espadin',  fr:'La Siembra',  es:'La Siembra',  en:'La Siembra'  },
   { id:'mito',     href:'el-mito.html',       embleme:'mito',     fr:'El Mito',     es:'El Mito',     en:'El Mito'     },
   { id:'registro', href:'el-registro.html',   embleme:'registro', fr:'El Registro', es:'El Registro', en:'El Registro' },
   { id:'ritual',   href:'el-ritual.html',     embleme:'ritual',   fr:'El Ritual',   es:'El Ritual',   en:'El Ritual'   },
@@ -133,7 +135,7 @@ var GROUPES = [
       { href:'les-mezcales.html', embleme:'botella', fr:'Les trois', es:'Los tres', en:'All three' }
     ] },
   { id:'boutique', href:'boutique.html', embleme:'ofrenda', fr:'Boutique', es:'Tienda', en:'Shop' },
-  { id:'maison', href:'la-historia.html', embleme:'maison', fr:'La Maison', es:'La Casa', en:'The House',
+  { id:'maison', href:'la-historia.html', sansPage:true, embleme:'maison', fr:'La Maison', es:'La Casa', en:'The House',   /* pas de page a elle : le clic ouvre ses trois entrees (Raouf, 5 oct) */
     sous:[
       { href:'el-mito.html',     embleme:'mito',     fr:'El Mito',     es:'El Mito',     en:'El Mito'     },
       { href:'la-historia.html', embleme:'historia', fr:'La Historia', es:'La Historia', en:'La Historia' },
@@ -318,7 +320,7 @@ function emblemeExiste(cle){ return !!(cle && EMBLEMES[cle]); }
 /* 2 sept : ces fichiers se chargent tard, depuis ce script, et n'avaient pas de
    cachet de cache : le telephone de Raouf rejouait l'ancienne animation de la
    bouteille apres chaque correction. Le cachet est celui de site.js. */
-var VERSION_ASSETS = '20260902t';
+var VERSION_ASSETS = '20261004q';
 var FICHIERS_EMBLEMES = ['assets/js/emblemes_parts.js', 'assets/js/embleme_mito.js', 'assets/js/emblemes_anime.js'].map(function(f){ return f + '?v=' + VERSION_ASSETS; });
 var emblemesPrets = false, emblemesEnAttente = [], emblemesChargement = false;
 
@@ -727,7 +729,8 @@ var PROPOSER_CAPTEUR = function(){ return false; };
   function nourrir(){
     var mag = Math.min(1, Math.hypot(nx, ny));
     var force = mag <= ZONE_MORTE ? 0 : (mag - ZONE_MORTE) / (1 - ZONE_MORTE);
-    force = force * force * (3 - 2 * force);                              /* montee douce depuis le repos */
+    /* 4 oct 2026, Raouf : "the gyroscope doesn't work enough". La montee douce (force au carre) ecrasait les petites
+       inclinaisons : 5 degres ne donnaient qu'un cinquieme de la reponse. La force suit maintenant l'angle, en ligne droite. */
     var ux = mag > 0 ? nx / mag : 0, uy = mag > 0 ? ny / mag : 0;         /* la direction, seule */
     for(var i = 0; i < CARESSES.length; i++){
       var h = CARESSES[i];
@@ -753,7 +756,10 @@ var PROPOSER_CAPTEUR = function(){ return false; };
     /* le defilement s'arrete : chaque emblème GARDE la pose qu'il vient de
        prendre (il est penche selon l'endroit ou il s'est arrete a l'ecran) et
        sa boucle s'eteint. Rien ne clignote, rien ne tourne pour rien. */
-    for(var i = 0; i < CARESSES.length; i++){ if(CARESSES[i].__caresseFiger) CARESSES[i].__caresseFiger(); }
+    /* 4 oct 2026, Raouf : "the plant, when at rest, needs to be straight... all in the full website". La pose
+       gardee laissait chaque embleme penche la ou le defilement l'avait arrete. Au repos il se REDRESSE : on le
+       lache, il revient droit en douceur, puis sa boucle s'eteint. */
+    for(var i = 0; i < CARESSES.length; i++){ if(CARESSES[i].__caresseLache) CARESSES[i].__caresseLache(); }
   }
   function tourner(t){
     boucle = 0;
@@ -776,8 +782,10 @@ var PROPOSER_CAPTEUR = function(){ return false; };
      suit lentement la main (quatre secondes) : une inclinaison tenue devient
      la nouvelle pose de repos, et c'est le MOUVEMENT du telephone, quelle que
      soit la facon de le tenir, qui promene le curseur autour de la plante. */
-  var PORTEE_DEG = 15, REPOS_S = 4;
+  var PORTEE_DEG = 10, REPOS_S = 8;   /* 4 oct 2026 : 10 degres pour la pleine reponse (15 avant), et une inclinaison tenue met 8 s a devenir le repos (4 avant : l'effet s'eteignait dans la main). Les deux boutons a regler au telephone. */
+  var ecoute = false;
   function ecouter(){
+    if(ecoute) return; ecoute = true;                    /* une seule ecoute, meme si l'accord est redonne */
     var b0 = null, g0 = null, tPrec = 0;
     window.addEventListener('deviceorientation', function(e){
       if(e.gamma == null && e.beta == null) return;      /* pas de capteur reel : on ignore */
@@ -804,8 +812,19 @@ var PROPOSER_CAPTEUR = function(){ return false; };
     DeviceOrientationEvent.requestPermission()
       .then(function(rep){ if(rep === 'granted'){ noter('ida.capteur', 'oui'); ecouter(); }
                            else noter('ida.capteur', 'non'); })
-      .catch(function(){});
+      .catch(function(){ armer(); });                    /* iOS a refuse l'appel (pas un vrai geste) : on retentera au prochain toucher */
   }
+  /* 4 oct 2026, Raouf : "la premiere fois ca marche, je sors, je reviens, ca ne marche plus".
+     iOS redemande l'accord a CHAQUE chargement de page, et n'accepte la demande que dans un
+     vrai geste (un toucher qui se termine, un clic). La premiere fois, le bouton "Activer"
+     en est un. Aux visites suivantes la demande partait du doigt qui GLISSE sur une plante
+     (touchmove) : iOS la rejetait sans rien dire, et on ne reessayait jamais. Qui a deja dit
+     oui est donc rebranche au premier toucher qui se termine, n'importe ou sur la page. */
+  function armer(){
+    function une(){ removeEventListener('touchend', une, true); removeEventListener('click', une, true); demanderAuSysteme(); }
+    addEventListener('touchend', une, true); addEventListener('click', une, true);
+  }
+  if(memoire('ida.capteur') === 'oui') armer();
   function fermer(){ if(panneau){ panneau.classList.remove('est-la'); var q = panneau;
     setTimeout(function(){ if(q.parentNode) q.parentNode.removeChild(q); }, 400); panneau = null; } }
   function mot(){
@@ -821,7 +840,7 @@ var PROPOSER_CAPTEUR = function(){ return false; };
     if(demande) return false;
     demande = true;
     if(memoire('ida.capteur') === 'non') return false;        /* refuse une fois : plus jamais */
-    if(memoire('ida.capteur') === 'oui'){ demanderAuSysteme(); return true; }
+    if(memoire('ida.capteur') === 'oui') return false;        /* deja accepte : le rebranchement est arme plus haut, au premier toucher */
     var t = mot();
     panneau = document.createElement('div');
     panneau.className = 'capteur';
@@ -1232,6 +1251,14 @@ var ICONES = {
    27 juillet, lignes 74 a 78. Le panier vit dans le navigateur tant que la
    route technique n est pas tranchee, statique plus Stripe ou plateforme.
    ------------------------------------------------------------------------ */
+/* LA REMISE DU JEU. Finir le jeu d'une bouteille donne un code ; le code se saisit au panier et retire 10 % du sous-total.
+   Un code par navigateur : ida.jeu.<bouteille> garde qu'il a ete donne ici. Site statique : rien n'empeche de le recopier ailleurs ;
+   le vrai verrou (un code par client) sera un code promotion Stripe le jour ou le paiement est branche. */
+var CODES_JEU = { 'JIMA10':{ taux:0.10, jeu:'espadin' } }, CLE_REMISE = 'ida.remise';
+function remiseCode(c){ c = String(c || '').trim().toUpperCase(); return CODES_JEU[c] ? c : null; }
+function remiseLire(){ return remiseCode(lire(CLE_REMISE)); }
+function remisePoser(c){ c = remiseCode(c); ecrire(CLE_REMISE, c || ''); return c; }
+function remiseTaux(){ var c = remiseLire(); return c ? CODES_JEU[c].taux : 0; }
 var CLE_PANIER = 'ida.panier';
 
 function panierLire(){
@@ -1300,6 +1327,13 @@ function brancherPanneaux(t){
       it.addEventListener('focusin', function(){ ouvrir(id); });
     })(items[i]);
   }
+  /* une entree sans page a elle (La Maison) : le clic ouvre ou ferme son panneau, il ne mene nulle part */
+  var sansPage = t.querySelectorAll('.nav__lien[data-sans-page]');
+  for(var sp=0;sp<sansPage.length;sp++) sansPage[sp].addEventListener('click', function(ev){
+    ev.preventDefault();
+    var id = this.getAttribute('data-id');
+    ouvrir(id);   /* au survol il est deja ouvert : le clic ne doit pas le refermer */
+  });
   var simples = t.querySelectorAll('.nav__i:not([data-groupe])');
   for(var k=0;k<simples.length;k++) simples[k].addEventListener('mouseenter', fermer);
   /* le survol mot vers emblème sur chaque entree de la barre */
@@ -1493,7 +1527,7 @@ function construireEntete(pageCourante){
     var a = '<a class="nav__lien" href="' + g.href + '" data-id="' + g.id + '"' +
             (em ? ' data-a-embleme="1"' : '') +
             (g.id === pageCourante ? ' aria-current="page"' : '') +
-            (g.sous ? ' aria-haspopup="true" aria-expanded="false"' : '') + '>' +
+            (g.sous ? ' aria-haspopup="true" aria-expanded="false"' : '') + (g.sansPage ? ' data-sans-page="1"' : '') + '>' +
             '<span class="nav__mot" data-fr="' + g.fr + '" data-es="' + g.es + '" data-en="' + g.en + '"></span>' +
             (em ? '<span class="nav__em" data-cle="' + g.embleme + '"></span>' : '') + '</a>';
     return '<li class="nav__i"' + (g.sous ? ' data-groupe="' + g.id + '"' : '') + '>' + a + '</li>';
@@ -1517,6 +1551,17 @@ function construireEntete(pageCourante){
         '<span data-fr="' + TEXTES.marque.fr + '" data-es="' + TEXTES.marque.es + '" data-en="' + TEXTES.marque.en + '"></span>' +
       '</a>' +
       '<div class="nav__d">' +
+        /* 4 oct 2026, Raouf : "integrate this page in the website, I can't find it... here at right side".
+           La Tierra, l'engagement de la maison, tient a droite de l'entete, avant les pictos. A gauche, une
+           septieme entree cassait la rangee (les mots passaient sur deux lignes et touchaient la marque).
+           Au telephone le mot vit dans le tiroir (MENU). */
+        '<a class="nav__lien nav__lien--droite" href="la-tierra.html" data-id="tierra"' +
+           (pageCourante === 'tierra' ? ' aria-current="page"' : '') + '>' +
+           '<span class="nav__mot" data-fr="La Tierra" data-es="La Tierra" data-en="La Tierra"></span></a>' +
+        /* La Siembra, le programme pour les producteurs, a cote de La Tierra (Raouf, 4 oct : "a page next to it") */
+        '<a class="nav__lien nav__lien--droite nav__lien--second" href="la-siembra.html" data-id="siembra"' +
+           (pageCourante === 'siembra' ? ' aria-current="page"' : '') + '>' +
+           '<span class="nav__mot" data-fr="La Siembra" data-es="La Siembra" data-en="La Siembra"></span></a>' +
         /* La langue a quitte l entete : elle se choisit a la porte d age, une
            fois, avec la question de la majorite. Decision de Raouf le 16 aout.
            Restent les quatre fonctions dont le site a vraiment besoin. */
@@ -2005,9 +2050,9 @@ function poserFavicon(){
   if(document.querySelector('link[rel="icon"]')) return;
   var base = baseScripts();
   var liens = [
-    { rel:'icon', href:'assets/img/favicon.svg?v=20260902t', type:'image/svg+xml' },
-    { rel:'icon', href:'assets/img/favicon-32.png?v=20260902t', sizes:'32x32' },
-    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20260902t' }
+    { rel:'icon', href:'assets/img/favicon.svg?v=20261004q', type:'image/svg+xml' },
+    { rel:'icon', href:'assets/img/favicon-32.png?v=20261004q', sizes:'32x32' },
+    { rel:'apple-touch-icon', href:'assets/img/favicon-180.png?v=20261004q' }
   ];
   for(var i=0;i<liens.length;i++){
     var l = document.createElement('link'), k;
@@ -2052,6 +2097,9 @@ window.siteChrome = {
   langues: LANGUES,
   menu: MENU,
   bouteilles: BOUTEILLES,              /* espadin, tobala, coyote : page, jeu, vente, accent */
+  remise: { lire: remiseLire, poser: remisePoser, taux: remiseTaux, code: remiseCode,   /* le code gagne au jeu */
+    donner: function(jeu){ var c = null; for(var k in CODES_JEU){ if(CODES_JEU[k].jeu === jeu) c = k; } if(c) ecrire('ida.jeu.' + jeu, '1'); return c; },
+    dejaDonne: function(jeu){ return lire('ida.jeu.' + jeu) === '1'; } },
   panier: {                            /* le panier, garde par le navigateur */
     lire: panierLire,
     ajouter: panierAjouter,

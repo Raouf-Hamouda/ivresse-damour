@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/img/favicon.svg?v=20260902t" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png?v=20260902t" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20260902t">
+<link rel="icon" href="assets/img/favicon.svg?v=20261005e" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png?v=20261005e" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261005e">
 <title>Paiement. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20260902t">
-<script src="assets/js/logo.js?v=20260902t"></script>
-<script src="assets/js/sceau_anime.js?v=20260902t"></script>
-<script src="assets/js/emblemes.js?v=20260902t"></script>
-<script src="assets/js/site.js?v=20260902t"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20261005e">
+<script src="assets/js/logo.js?v=20261005e"></script>
+<script src="assets/js/sceau_anime.js?v=20261005e"></script>
+<script src="assets/js/emblemes.js?v=20261005e"></script>
+<script src="assets/js/site.js?v=20261005e"></script>
 </head>
 
 <!-- DEMO : aucun paiement n'est encaisse ; le vrai prestataire (Stripe Checkout ou autre) remplacera ce formulaire -->
@@ -163,6 +163,10 @@
       '<dd class="faits__v">' + montant + '</dd></div>';
   }
   if(recap && html) recap.insertAdjacentHTML('afterbegin', html);
+  var taux = chrome && chrome.remise ? chrome.remise.taux() : 0;
+  if(taux && somme){ var moins = Math.round(somme * taux * 100) / 100;
+    if(total) total.closest('.faits__l').insertAdjacentHTML('beforebegin', '<div class="faits__l"><dt class="faits__k"><span data-fr="Remise du jeu, 10 %" data-es="Descuento del juego, 10 %" data-en="Game discount, 10%"></span> · ' + chrome.remise.lire() + '</dt><dd class="faits__v">− ' + euros(moins) + '</dd></div>');
+    somme -= moins; }
   if(total) total.textContent = euros(somme);
   if(!n){
     if(vide) vide.hidden = false;
