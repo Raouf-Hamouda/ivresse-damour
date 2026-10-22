@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/img/favicon.svg?v=20261005e" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png?v=20261005e" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261005e">
+<link rel="icon" href="assets/img/favicon.svg?v=20261023r" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png?v=20261023r" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261023r">
 <title>La Historia. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20261005e">
-<script src="assets/js/logo.js?v=20261005e"></script>
-<script src="assets/js/sceau_anime.js?v=20261005e"></script>
-<script src="assets/js/emblemes.js?v=20261005e"></script>
-<script src="assets/js/site.js?v=20261005e"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20261023r">
+<script src="assets/js/logo.js?v=20261023r"></script>
+<script src="assets/js/sceau_anime.js?v=20261023r"></script>
+<script src="assets/js/emblemes.js?v=20261023r"></script>
+<script src="assets/js/site.js?v=20261023r"></script>
 </head>
 
 <!-- ============================================================================
@@ -30,12 +30,20 @@
 
 <main class="page">
 
-  <section class="entete-page">
-    <div class="boite">
-      <h1 data-fr="La Historia" data-es="La Historia" data-en="La Historia"></h1>
-    </div>
-  </section>
-
+  <!-- 22 oct 2026, Raouf : "a mix of the two pages", page par page, La Historia d'abord. Plan arrete avec Gemini 4 Argon
+       (scratchpad argon_historia) : qui nous sommes. La page s'ouvre sur la facade du palenque au sceau peint (photo de la famille
+       16_PHOTOS_CLIENT_WHATSAPP/2026-07-11_160737_c1ae86a3.jpg, entiere), titre pose dessus comme El Ritual ; le village reste ici (Raouf) ; le maestro
+       vient d'El Palenque ; la section sur les associes est retiree (Raouf : "the first one about the couple is wrong"). -->
+  <figure class="bloc-image bloc-image--ecran">
+    <picture>
+      <source media="(max-width:760px)" srcset="assets/img/historia/fachada_portrait_900.jpg?v=20261023r">
+    <img style="object-position:50% 24%" src="assets/img/historia/fachada_1530.jpg?v=20261023r" srcset="assets/img/historia/fachada_900.jpg?v=20261023r 900w, assets/img/historia/fachada_1530.jpg?v=20261023r 1530w" sizes="100vw" width="1530" height="2040" alt="" fetchpriority="high" loading="eager" decoding="sync"
+         data-fr-alt="La façade verte du palenque à Villa Sola de Vega, le sceau Toloache Legítimo peint sur le mur."
+         data-es-alt="La fachada verde del palenque en Villa Sola de Vega, con el sello Toloache Legítimo pintado en el muro."
+         data-en-alt="The green front of the palenque in Villa Sola de Vega, the Toloache Legítimo seal painted on the wall.">
+    </picture>
+    <h1 class="ecran__titre" data-fr="La Historia" data-es="La Historia" data-en="La Historia"></h1>
+  </figure>
 
   <section class="bloc-phrase fondu">
     <p data-fr="En français, tomber amoureux se dit : un coup de foudre."
@@ -47,17 +55,13 @@
     <div class="boite">
       <div class="avec-cote">
         <div class="avec-cote__cote">
-          <p class="kicker" data-fr="Le village" data-es="El pueblo" data-en="The village"></p>
-          <span class="embleme embleme--m" data-embleme="palenque"></span>
+          <p class="kicker" data-fr="Le nom" data-es="El nombre" data-en="The name"></p>
+          <span class="embleme embleme--m" data-embleme="mito"></span>
         </div>
         <div class="colonne fondu">
-          <h2 data-fr="Villa Sola de Vega, Sierra Madre del Sur" data-es="Villa Sola de Vega, Sierra Madre del Sur" data-en="Villa Sola de Vega, Sierra Madre del Sur"></h2>
-          <p data-fr="La maison vient d'un village de l'État d'Oaxaca, dans la Sierra Madre del Sur, au bord du río Sola. À l'entrée du village, l'arche dit : tierra del mezcal tobalá. C'est là que la famille a ses agaves, son palenque et son maestro mezcalero, Gilberto Vásquez."
-             data-es="La casa viene de un pueblo del estado de Oaxaca, en la Sierra Madre del Sur, a orillas del río Sola. En la entrada del pueblo, el arco dice: tierra del mezcal tobalá. Ahí tiene la familia sus agaves, su palenque y su maestro mezcalero, Gilberto Vásquez."
-             data-en="The house comes from a village in the state of Oaxaca, in the Sierra Madre del Sur, on the banks of the río Sola. At the village entrance the arch reads: tierra del mezcal tobalá. That is where the family has its agaves, its palenque and its maestro mezcalero, Gilberto Vásquez."></p>
-          <p data-fr="Espadín chaque année, tobalá et coyote quand la plante le permet : la maison fait la semence, la récolte, le four de terre, la fermentation et la distillation. Rien n'est acheté fini."
-             data-es="Espadín cada año, tobalá y coyote cuando la planta lo permite: la casa hace la siembra, la cosecha, el horno de tierra, la fermentación y la destilación. Nada se compra hecho."
-             data-en="Espadín every year, tobalá and coyote when the plant allows: the house does the sowing, the harvest, the earth oven, the fermentation and the distillation. Nothing is bought finished."></p>
+          <h2 data-fr="Le coup de foudre" data-es="El flechazo y el rayo" data-en="Lightning and love"></h2>
+          <p data-fr="Ivresse d&#x27;Amour joue sur ce double sens : l&#x27;éclair qui a cuit le premier agave de la légende et, en français, l&#x27;amour qui frappe d&#x27;un coup." data-es="Ivresse d&#x27;Amour juega con ese doble sentido: el rayo que coció el primer agave de la leyenda y, en francés, el amor que golpea de repente." data-en="Ivresse d&#x27;Amour plays on this double meaning: the lightning bolt that cooked the first legendary agave and, in French, love that strikes all at once."></p>
+          <p data-fr="Toloache Legítimo désigne la plante des philtres d&#x27;amour du folklore mexicain. Notre sceau réunit ces deux histoires : deux mains autour d&#x27;une fleur d&#x27;agave, peintes comme un ex-voto." data-es="Toloache Legítimo nombra la planta de los filtros de amor del folclore mexicano. Nuestro sello une ambas historias: dos manos alrededor de una flor de agave, pintadas como un exvoto." data-en="Toloache Legítimo names the love-potion plant of Mexican folklore. Our seal brings both stories together: two hands around an agave flower, painted like an ex-voto."></p>
         </div>
       </div>
     </div>
@@ -67,22 +71,129 @@
     <div class="boite">
       <div class="avec-cote">
         <div class="avec-cote__cote">
-          <p class="kicker" data-fr="Le coup de foudre" data-es="El flechazo" data-en="The lightning strike"></p>
-          <span class="embleme embleme--m" data-embleme="mito"></span>
+          <p class="kicker" data-fr="Le village" data-es="El pueblo" data-en="The village"></p>
+          <span class="embleme embleme--m" data-embleme="palenque"></span>
         </div>
         <div class="colonne fondu">
-          <h2 data-fr="Une légende, une maison, un nom" data-es="Una leyenda, una casa, un nombre" data-en="A legend, a house, a name"></h2>
-          <p data-fr="Au Mexique, on raconte qu'un jour la foudre a frappé un agave, l'a cuit dans la terre, et que le premier mezcal en est sorti : l'élixir des dieux, dit-on. La maison recueille cette histoire en gardienne, elle ne la possède pas. Elle est racontée une fois, entière, dans El Mito."
-             data-es="En México se cuenta que un día el rayo golpeó un agave, lo coció en la tierra, y de ahí salió el primer mezcal: el elixir de los dioses, dicen. La casa recoge esa historia como guardiana, no la posee. Se cuenta una vez, entera, en El Mito."
-             data-en="In Mexico they tell that one day lightning struck an agave, cooked it in the earth, and the first mezcal came out of it: the elixir of the gods, they say. The house keeps this story as its guardian, it does not own it. It is told once, whole, in El Mito."></p>
-          <p data-fr="La maison est celle d'associés venus de Villa Sola de Vega. En français, tomber amoureux se dit un coup de foudre : le même éclair. Celui qui frappe l'agave et donne le mezcal, celui qui frappe et fait naître une maison. De là le nom, Ivresse d'Amour, et l'idée : faire la boisson de l'amour, sérieusement, à partir d'un village, d'une plante et d'une main."
-             data-es="La casa es la de unos socios venidos de Villa Sola de Vega. En francés, enamorarse se dice un coup de foudre: el mismo rayo. El que golpea el agave y da el mezcal, el que golpea y hace nacer una casa. De ahí el nombre, Ivresse d'Amour, y la idea: hacer la bebida del amor, en serio, a partir de un pueblo, una planta y una mano."
-             data-en="The house belongs to a few associates from Villa Sola de Vega. In French, falling in love is un coup de foudre: the same lightning. The one that strikes the agave and gives mezcal, the one that strikes and brings a house to life. Hence the name, Ivresse d'Amour, and the idea: to make the drink of love, seriously, from a village, a plant and a hand."></p>
-          <p data-fr="Toloache est l'autre nom, celui de la plante que le folklore mexicain donne aux philtres d'amour. Toloache Legítimo : le vrai. Le sceau porte les deux noms, deux mains autour d'une fleur d'agave, comme un milagro que l'on offre en remerciement."
-             data-es="Toloache es el otro nombre, el de la planta que el folclore mexicano da a los filtros de amor. Toloache Legítimo: el verdadero. El sello lleva los dos nombres, dos manos alrededor de una flor de agave, como un milagro que se ofrece en agradecimiento."
-             data-en="Toloache is the other name, that of the plant Mexican folklore gives to love potions. Toloache Legítimo: the true one. The seal carries both names, two hands around an agave flower, like a milagro offered in thanks."></p>
+          <h2 data-fr="Villa Sola de Vega, Oaxaca" data-es="Villa Sola de Vega, Oaxaca" data-en="Villa Sola de Vega, Oaxaca"></h2>
+          <p data-fr="Notre maison est née à Villa Sola de Vega, un bourg de la Sierra Madre del Sur. À l&#x27;entrée du village, l&#x27;arche annonce la couleur : tierra del mezcal tobalá, cuna de la chilena."
+             data-es="Nuestra casa nació en Villa Sola de Vega, un pueblo de la Sierra Madre del Sur. A la entrada, el arco dice quiénes somos: tierra del mezcal tobalá, cuna de la chilena."
+             data-en="Our house was born in Villa Sola de Vega, a town in the Sierra Madre del Sur. At the entrance, the archway sets the tone: tierra del mezcal tobalá, cuna de la chilena."></p>
+          <p data-fr="Nous y travaillons trois agaves. L&#x27;espadín est récolté chaque année. Le tobalá et le coyote sont coupés plus rarement, seulement lorsque la plante sauvage arrive à pleine maturité sur les pentes."
+             data-es="Aquí trabajamos tres agaves. El espadín se cosecha cada año. El tobalá y el coyote se cortan con menos frecuencia, solo cuando la planta silvestre alcanza su madurez en las laderas."
+             data-en="Here we work with three agaves. Espadín is harvested every year. Tobalá and coyote are cut less often, only when the wild plant reaches full maturity on the slopes."></p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- 22 oct : textes du lieu venus de La Tierra, reecrits pour le recit par Argon -->
+  <section class="section">
+    <div class="boite">
+      <div class="detail fondu">
+        <div>
+          <h3 class="inter" data-fr="Entre rivière et sommets" data-es="Entre el río y las cumbres" data-en="Between river and peaks"></h3>
+          <p data-fr="Nos parcelles grimpent jusqu&#x27;à 2 000 mètres d&#x27;altitude dans la sierra. Plus bas, au palenque, l&#x27;eau qui sert à nos fermentations descend directement du río Sola."
+             data-es="Nuestras parcelas suben hasta los 2 000 metros de altitud en la sierra. Más abajo, en el palenque, el agua de nuestras fermentaciones baja directamente del río Sola."
+             data-en="Our plots climb to 2,000 meters in the sierra. Down at the palenque, the water used for our fermentations flows straight from the río Sola."></p>
+          <p data-fr="C&#x27;est sur ces pentes de pierre que le tobalá pousse seul. Nous le laissons venir à son rythme, neuf ans avant la coupe."
+             data-es="En estas laderas de piedra el tobalá crece solo. Lo dejamos venir a su ritmo, nueve años antes del corte."
+             data-en="On these stony slopes the tobalá grows on its own. We let it come at its own pace, nine years before the cut."></p>
+        </div>
+        <div>
+          <h3 class="inter" data-fr="Ce que la montagne donne" data-es="Lo que da la sierra" data-en="What the mountain gives"></h3>
+          <p data-fr="Nos agaves poussent lentement dans la rocaille. Ils grandissent grâce au travail silencieux de la montagne : les chauves-souris qui pollinisent la nuit, le sol qui tient la pente et la pluie retenue par les arbres."
+             data-es="Nuestros agaves crecen despacio entre las piedras. Se crían gracias al trabajo silencioso del monte: los murciélagos que polinizan de noche, el suelo que sostiene la ladera y la lluvia que guardan los árboles."
+             data-en="Our agaves grow slowly among the stones. They thrive on the mountain&#x27;s quiet work: bats pollinating at night, soil holding the slope, and rain kept by the trees."></p>
+          <p data-fr="Ailleurs, les plantations serrées, la coupe du bois et les vinasses versées aux rivières abîment les sols. Ici, nous laissons les pentes respirer et les plantes se ressemer."
+             data-es="En otras partes, las plantaciones apretadas, la tala y las vinazas tiradas al río dañan el suelo. Aquí dejamos que las laderas respiren y que el monte vuelva a sembrar."
+             data-en="Elsewhere, tight plantations, logging and vinasse dumped in rivers damage the soil. Here, we let the slopes breathe and the plants reseed."></p>
+        </div>
+        <div>
+          <h3 class="inter" data-fr="De la graine au verre" data-es="De la semilla a la copa" data-en="From seed to glass"></h3>
+          <p data-fr="Nous faisons tout sur place : la semence, la récolte, le four de terre, la fermentation et la distillation. Rien n&#x27;est acheté en route, rien n&#x27;est sous-traité hors du bourg."
+             data-es="Hacemos todo en el lugar: la siembra, la cosecha, el horno de tierra, la fermentación y la destilación. Nada se compra hecho, nada sale del pueblo a mitad del camino."
+             data-en="We do everything on site: sowing, harvesting, earth oven, fermentation and distillation. Nothing is bought along the way, nothing is outsourced outside the town."></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <figure class="bloc-image bloc-image--encadre fondu">
+    <img src="assets/img/tierra/arche_large_2400.jpg" srcset="assets/img/tierra/arche_large_1200.jpg 1200w, assets/img/tierra/arche_large_2400.jpg 2400w" sizes="(max-width:1000px) 100vw, 1180px" width="2400" height="1340" alt="" loading="lazy"
+         data-fr-alt="L'arche d'entrée du village : Bienvenidos a V. Sola de Vega, tierra del mezcal tobalá." data-es-alt="El arco de entrada del pueblo: Bienvenidos a V. Sola de Vega, tierra del mezcal tobalá." data-en-alt="The village entrance arch: Bienvenidos a V. Sola de Vega, tierra del mezcal tobalá.">
+  </figure>
+  <p class="legende"><span data-fr="L&#x27;entrée de Villa Sola de Vega, Oaxaca" data-es="La entrada de Villa Sola de Vega, Oaxaca" data-en="The entrance to Villa Sola de Vega, Oaxaca"></span></p>
+
+
+  <section class="section section--filet">
+    <div class="boite">
+      <div class="avec-cote">
+        <div class="avec-cote__cote">
+          <p class="kicker" data-fr="Le maestro" data-es="El maestro" data-en="The maestro"></p>
+          <span class="embleme embleme--m" data-embleme="palenque"></span>
+        </div>
+        <div class="colonne fondu">
+          <h2 data-fr="Gilberto Vásquez" data-es="Gilberto Vásquez" data-en="Gilberto Vásquez"></h2>
+          <p data-fr="Notre maestro mezcalero conduit le palenque. C&#x27;est lui qui juge la coupe des cœurs d&#x27;agave, mène le feu sous le four et règle l&#x27;alambic à l&#x27;œil et au goût." data-es="Nuestro maestro mezcalero lleva el palenque. Él decide el corte de las piñas, cuida el fuego del horno y ajusta el alambique a ojo y a gusto." data-en="Our maestro mezcalero runs the palenque. He judges the cut of the agave hearts, tends the oven fire and tunes the still by eye and by taste."></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <figure class="bloc-image bloc-image--encadre fondu">
+    <img src="assets/img/tierra/maison.jpg" width="1280" height="720" alt="" loading="lazy"
+         data-fr-alt="Une quinzaine de personnes devant la façade verte du palenque, le sceau de la maison peint sur le mur." data-es-alt="Unas quince personas frente a la fachada verde del palenque, con el sello de la casa pintado en el muro." data-en-alt="Some fifteen people in front of the green front of the palenque, the house seal painted on the wall.">
+  </figure>
+  <p class="legende"><span data-fr="Devant le palenque, Villa Sola de Vega" data-es="Frente al palenque, Villa Sola de Vega" data-en="In front of the palenque, Villa Sola de Vega"></span></p>
+
+  <!-- 22 oct : les gens du village, textes de La Tierra reecrits pour le recit par Argon -->
+  <section class="section">
+    <div class="boite">
+      <div class="duo duo--textes fondu"><div class="detail detail--pile">
+        <div>
+          <h3 class="inter" data-fr="Une histoire de familles" data-es="Una historia de familias" data-en="A story of families"></h3>
+          <p data-fr="Chez nous, le mezcal fait vivre les foyers depuis des générations. Parce que chaque étape reste au village, le travail et sa valeur demeurent entre les mains de ceux qui le font."
+             data-es="En casa, el mezcal sostiene a los hogares desde hace generaciones. Como cada paso se queda en el pueblo, el trabajo y su valor permanecen en manos de quienes lo hacen."
+             data-en="Here, mezcal has supported households for generations. Because every step stays in the village, the work and its value remain in the hands of those who do it."></p>
+          <p data-fr="La maison grandit au rythme des familles qui cultivent les pentes et veillent sur les cuves."
+             data-es="La casa crece al ritmo de las familias que cuidan las laderas y vigilan las tinas."
+             data-en="The house grows at the pace of the families who tend the slopes and watch over the vats."></p>
+        </div>
+        <div>
+          <h3 class="inter" data-fr="Le tobalá et la chilena" data-es="El tobalá y la chilena" data-en="Tobalá and chilena"></h3>
+          <p data-fr="Chez les soltecos, le mezcal accompagne les fêtes, les mariages et la musique chilena. Autour des tables, l&#x27;espagnol côtoie toujours le zapotèque, le chatino et le mixtèque."
+             data-es="Entre los soltecos, el mezcal acompaña las fiestas, las bodas y la música chilena. Alrededor de la mesa, el español aún convive con el zapoteco, el chatino y el mixteco."
+             data-en="Among the soltecos, mezcal accompanies festivals, weddings and chilena music. Around the table, Spanish still mingles with Zapotec, Chatino and Mixtec."></p>
+        </div>
+        <div>
+          <h3 class="inter" data-fr="Apprendre au palenque" data-es="Aprender en el palenque" data-en="Learning at the palenque"></h3>
+          <p data-fr="Reconnaître un agave mûr, bâtir le four de pierres ou écouter chanter une cuve qui fermente ne s&#x27;apprend dans aucun livre. Ce sont des gestes transmis de main en main."
+             data-es="Reconocer un agave maduro, armar el horno de piedra o escuchar cantar una tina al fermentar no viene en ningún libro. Son gestos que pasan de mano en mano."
+             data-en="Spotting a ripe agave, building the stone oven or listening to a fermenting vat sing isn&#x27;t found in any book. These skills are passed down from hand to hand."></p>
+          <p data-fr="En travaillant aux côtés des anciens, les jeunes du village reprennent le métier sans avoir à quitter la sierra."
+             data-es="Al trabajar junto a los mayores, los jóvenes del pueblo toman el oficio sin tener que dejar la sierra."
+             data-en="Working alongside their elders, the village youth take up the trade without having to leave the mountains."></p>
+        </div>
+      </div><div><h3 class="sous-titre sous-titre--haut" data-fr="Ce qui fait la maison" data-es="Lo que hace la casa" data-en="What makes the house"></h3>
+      <ul class="engagements fondu">
+        <li><b data-fr="Tout au village" data-es="Todo en el pueblo" data-en="All in the village"></b>
+          <span data-fr="De la graine à la mise en bouteille, chaque étape est menée sur nos terres."
+                data-es="De la semilla a la botella, cada etapa se lleva a cabo en nuestras tierras."
+                data-en="From seed to bottling, every step is carried out on our land."></span></li>
+        <li><b data-fr="Signé par le maestro" data-es="Firmado por el maestro" data-en="Signed by the maestro"></b>
+          <span data-fr="Chaque étiquette porte le nom de notre maestro mezcalero, Gilberto Vásquez."
+                data-es="Cada etiqueta lleva el nombre de nuestro maestro mezcalero, Gilberto Vásquez."
+                data-en="Every label bears the name of our maestro mezcalero, Gilberto Vásquez."></span></li>
+        <li><b data-fr="La relève sur place" data-es="El relevo en casa" data-en="Next generation on site"></b>
+          <span data-fr="Les jeunes soltecos apprennent la culture et la distillation au palenque."
+                data-es="Los jóvenes soltecos aprenden el cultivo y la destilación en el palenque."
+                data-en="Young soltecos learn cultivation and distillation right at the palenque."></span></li>
+        <li><b data-fr="Une origine claire" data-es="Un origen claro" data-en="A clear origin"></b>
+          <span data-fr="Nos bouteilles portent le nom de Villa Sola de Vega bien au-delà d&#x27;Oaxaca."
+                data-es="Nuestras botellas llevan el nombre de Villa Sola de Vega más allá de Oaxaca."
+                data-en="Our bottles carry the name of Villa Sola de Vega far beyond Oaxaca."></span></li>
+      </ul></div></div>
     </div>
   </section>
 
@@ -90,29 +201,8 @@
     <p data-fr="La amistad que nace en el flujo del mezcal sobrevive a cualquier cosa."
        data-es="La amistad que nace en el flujo del mezcal sobrevive a cualquier cosa."
        data-en="La amistad que nace en el flujo del mezcal sobrevive a cualquier cosa."></p>
-    <footer data-fr="La devise de la famille" data-es="La divisa de la familia" data-en="The family's motto"></footer>
+    <footer data-fr="La devise de la famille" data-es="La divisa de la familia" data-en="The family&#x27;s motto"></footer>
   </blockquote>
-
-
-  <!-- 1er sept, Raouf : l'affiche a la maniere de Johnnie Walker (sa capture) :
-       23h30, Raouf : "au milieu, qu'on decouvre un peu la maison d'abord".
-       Elle vient donc apres le village, la legende et la devise ; avant le
-       restaurant.
-       surtitre, titre immense, deux lignes, un bouton plein. Matiere de la
-       maison. Le fond photographique reste a faire (.affiche__fond). -->
-  <section class="affiche">
-    <div class="affiche__deux">
-      <div class="affiche__mot">
-        <p class="affiche__kicker" data-fr="Villa Sola de Vega" data-es="Villa Sola de Vega" data-en="Villa Sola de Vega"></p>
-        <h2 class="affiche__titre" data-fr="Du village au monde" data-es="Del pueblo al mundo" data-en="From the village to the world"></h2>
-        <p class="affiche__ligne" data-fr="Un coup de foudre, des associés, un maestro. La maison n'a jamais fait qu'une chose : mettre en bouteille ce que Villa Sola de Vega sait faire depuis toujours." data-es="Un flechazo, unos socios, un maestro. La casa nunca hizo más que una cosa: embotellar lo que Villa Sola de Vega sabe hacer desde siempre." data-en="Love at first sight, a few associates, a maestro. The house has only ever done one thing: bottle what Villa Sola de Vega has always known how to make."></p>
-        <a class="b-plein affiche__b" href="acheter-espadin.html" data-fr="Voir la bouteille" data-es="Ver la botella" data-en="See the bottle"></a>
-      </div>
-      <figure class="affiche__objet">
-        <img src="assets/img/bouteilles/espadin_1200.jpg" srcset="assets/img/bouteilles/espadin_600.jpg 600w, assets/img/bouteilles/espadin_1200.jpg 1200w, assets/img/bouteilles/espadin_2000.jpg 2000w" sizes="(max-width:1000px) 100vw, 46vw" alt="" data-fr-alt="La bouteille d'espadín sur le papier de la maison." data-es-alt="La bouteille d'espadín sur le papier de la maison." data-en-alt="La bouteille d'espadín sur le papier de la maison." width="1999" height="1493">
-      </figure>
-    </div>
-  </section>
 
   <section class="section section--filet">
     <div class="boite">
@@ -122,21 +212,31 @@
           <span class="embleme embleme--m" data-embleme="ritual"></span>
         </div>
         <div class="colonne fondu">
-          <h2 data-fr="Le restaurant, la table où tout commence" data-es="El restaurante, la mesa donde todo empieza" data-en="The restaurant, the table where it all begins"></h2>
-          <p data-fr="À Paris, les associés tiennent Toloache, un restaurant mexicain sur les flancs de la butte Montmartre, 49 rue de Clignancourt. C'est la première table hors du Mexique où le mezcal se goûte, se sert et se vend."
-             data-es="En París, los socios llevan Toloache, un restaurante mexicano en las laderas de Montmartre, 49 rue de Clignancourt. Es la primera mesa fuera de México donde el mezcal se prueba, se sirve y se vende."
-             data-en="In Paris, the associates run Toloache, a Mexican restaurant on the slopes of Montmartre, 49 rue de Clignancourt. It is the first table outside Mexico where the mezcal is tasted, served and sold."></p>
-          <p data-fr="Chaque bouteille porte son numéro écrit à la main. Le numéro ouvre une page du registre : la parcelle, l'année, le maestro, les litres. Ce que la maison affirme, elle le montre."
-             data-es="Cada botella lleva su número escrito a mano. El número abre una página del registro: la parcela, el año, el maestro, los litros. Lo que la casa afirma, lo muestra."
-             data-en="Each bottle carries its handwritten number. The number opens a page of the register: the plot, the year, the maestro, the litres. What the house claims, it shows."></p>
+          <h2 data-fr="La table de Montmartre" data-es="La mesa de Montmartre" data-en="The table in Montmartre"></h2>
+          <p data-fr="À Paris, nous tenons le restaurant mexicain Toloache, au 49 rue de Clignancourt. C&#x27;est notre table à Montmartre : le premier lieu hors du Mexique où notre mezcal se goûte, se sert et se vend." data-es="En París llevamos el restaurante mexicano Toloache, en el 49 rue de Clignancourt. Es nuestra mesa en Montmartre: el primer lugar fuera de México donde nuestro mezcal se prueba, se sirve y se vende." data-en="In Paris, we run the Mexican restaurant Toloache, at 49 rue de Clignancourt. It is our table in Montmartre: the first place outside Mexico where our mezcal is tasted, poured and sold."></p>
+          <p data-fr="Chaque bouteille y arrive numérotée à la main. Ce numéro ouvre notre registre et indique la parcelle, l&#x27;année de récolte, le nom du maestro et le volume exact du lot." data-es="Cada botella llega numerada a mano. Ese número abre nuestro registro e indica la parcela, el año de cosecha, el nombre del maestro y los litros exactos del lote." data-en="Every bottle arrives numbered by hand. That number opens our ledger, showing the parcel, the harvest year, the maestro&#x27;s name and the exact liters of the batch."></p>
         </div>
       </div>
     </div>
   </section>
 
+  <section class="affiche">
+    <div class="affiche__deux">
+      <div class="affiche__mot">
+        <p class="affiche__kicker" data-fr="Villa Sola de Vega" data-es="Villa Sola de Vega" data-en="Villa Sola de Vega"></p>
+        <h2 class="affiche__titre" data-fr="L&#x27;Espadín de la maison" data-es="El Espadín de la casa" data-en="The house Espadín"></h2>
+        <p class="affiche__ligne" data-fr="Récolté et distillé au village, mis en bouteille en petits lots numérotés." data-es="Cosechado y destilado en el pueblo, embotellado en pequeños lotes numerados." data-en="Harvested and distilled in the village, bottled in small numbered batches."></p>
+        <a class="b-plein affiche__b" href="acheter-espadin.html" data-fr="Voir la bouteille" data-es="Ver la botella" data-en="See the bottle"></a>
+      </div>
+      <figure class="affiche__objet">
+        <img src="assets/img/bouteilles/espadin_1200.jpg" srcset="assets/img/bouteilles/espadin_600.jpg 600w, assets/img/bouteilles/espadin_1200.jpg 1200w, assets/img/bouteilles/espadin_2000.jpg 2000w" sizes="(max-width:1000px) 100vw, 46vw" alt="" data-fr-alt="La bouteille d'espadín sur le papier de la maison." data-es-alt="La botella de espadín sobre el papel de la casa." data-en-alt="The espadín bottle on the house paper." width="1999" height="1493">
+      </figure>
+    </div>
+  </section>
+
   <section class="section section--serre section--filet">
     <div class="boite centre">
-      <a class="lien-discret" href="el-mito.html" data-fr="Lire El Mito, la légende racontée une fois" data-es="Leer El Mito, la leyenda contada una vez" data-en="Read El Mito, the legend told once"></a>
+      <a class="lien-discret" href="el-mito.html" data-fr="Lire El Mito, la légende du premier agave" data-es="Leer El Mito, la leyenda del primer agave" data-en="Read El Mito, the legend of the first agave"></a>
     </div>
   </section>
 

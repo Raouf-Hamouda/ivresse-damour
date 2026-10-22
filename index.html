@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/img/favicon.svg?v=20261005e" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png?v=20261005e" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261005e">
+<link rel="icon" href="assets/img/favicon.svg?v=20261023r" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png?v=20261023r" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261023r">
 <title>La Botella. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20261005e">
-<script src="assets/js/logo.js?v=20261005e"></script>
-<script src="assets/js/sceau_anime.js?v=20261005e"></script>
-<script src="assets/js/emblemes.js?v=20261005e"></script>
-<script src="assets/js/site.js?v=20261005e"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20261023r">
+<script src="assets/js/logo.js?v=20261023r"></script>
+<script src="assets/js/sceau_anime.js?v=20261023r"></script>
+<script src="assets/js/emblemes.js?v=20261023r"></script>
+<script src="assets/js/site.js?v=20261023r"></script>
 </head>
 
 <body data-page="botella"
@@ -65,40 +65,22 @@
     <footer data-fr="Dicho mexicain" data-es="Dicho mexicano" data-en="Mexican saying"></footer>
   </blockquote>
 
-  <section class="scene scene--court">
-    <div class="scene__fond scene__fond--creme"></div>
-    <div class="scene__texte">
-      <p class="scene__kicker" data-fr="La maison" data-es="La casa" data-en="The house"></p>
-      <h2 class="scene__titre" data-fr="Le flacon est une piña, le bouchon en est le cœur de feuilles." data-es="El frasco es una piña, el tapón es su corazón de hojas." data-en="The flask is a piña, the stopper its heart of leaves."></h2>
-    </div>
-  </section>
-
   <!-- El Mito : la scene qui mene au recit du mythe (Raouf, 17 aout 21h26). Creme codex,
        la creme codex d origine (#F5F0DC), chaude, terre, elle se fond dans le blanc de la page. -->
-  <section class="scene scene--court">
-    <div class="scene__fond scene__fond--codex"></div>
+  <section class="scene scene--court scene--porte">
+    <div class="scene__fond scene__fond--codex scene__fond--photo scene__fond--porte"><img width="2400" height="1350" src="assets/img/accueil/mito_tissu_1200.jpg" srcset="assets/img/accueil/mito_tissu_1200.jpg 1200w, assets/img/accueil/mito_tissu_2400.jpg 2400w" sizes="100vw" alt="" loading="eager" decoding="async"></div>
     <div class="scene__texte">
-      <p class="scene__kicker" data-fr="El Mito" data-es="El Mito" data-en="El Mito"></p>
-      <h2 class="scene__titre" data-fr="La foudre frappe un agave. Il en sort le mezcal." data-es="El rayo golpea un agave. De ahí sale el mezcal." data-en="Lightning strikes an agave. Out of it comes the mezcal."></h2>
-      <a class="scene__lien" href="el-mito.html" data-fr="Découvrir le mythe" data-es="Descubrir el mito" data-en="Discover the myth"></a>
+      <div class="ouverture__m"><p class="scene__kicker ouverture__l" data-fr="El Mito" data-es="El Mito" data-en="El Mito"></p></div>
+      <h2 class="scene__titre"><span class="ouverture__m"><span class="ouverture__l" data-fr="La foudre frappe un agave." data-es="El rayo golpea un agave." data-en="Lightning strikes an agave."></span></span><span class="ouverture__m"><span class="ouverture__l" data-fr="Il en sort le mezcal." data-es="De ahí sale el mezcal." data-en="Out of it comes the mezcal."></span></span></h2>
+      <div class="ouverture__m"><a class="scene__lien ouverture__l" href="el-mito.html" data-fr="Découvrir le mythe" data-es="Descubrir el mito" data-en="Discover the myth"></a></div>
     </div>
   </section>
 
-  <section class="scene">
-    <div class="scene__fond scene__fond--papier"></div>
-    <div class="scene__texte">
-      <p class="scene__kicker" data-fr="Le liquide" data-es="El líquido" data-en="The liquid"></p>
-      <h2 class="scene__titre" data-fr="L'agave, Villa Sola de Vega, le palenque." data-es="El agave, Villa Sola de Vega, el palenque." data-en="The agave, Villa Sola de Vega, the palenque."></h2>
-      <!-- Note de chantier, retiree de la vue : photographie du Mexique attendue pour cette scene. -->
-      <p class="scene__ligne" data-fr="Trois agaves, un village, un maestro." data-es="Tres agaves, un pueblo, un maestro." data-en="Three agaves, one village, one maestro."></p>
-      <a class="scene__lien" href="el-palenque.html" data-fr="Voir El Palenque" data-es="Ver El Palenque" data-en="See El Palenque"></a>
-    </div>
-  </section>
 
   <!-- 05. Les faits, lus sur l etiquette. Rien d ajoute, rien d arrondi. -->
   <section class="section">
     <div class="boite">
-      <p class="kicker" data-fr="Lu sur l'étiquette" data-es="Leído en la etiqueta" data-en="Read on the label"></p>
+      <p class="kicker" id="fait-nom" data-fr="Espadín" data-es="Espadín" data-en="Espadín"></p>
       <dl class="faits faits--etiquette">
         <div class="faits__l"><dt class="faits__k" data-fr="Agave" data-es="Agave" data-en="Agave"></dt><dd class="faits__v" id="fait-agave">A. angustifolia, espadín</dd></div>
         <div class="faits__l"><dt class="faits__k" data-fr="Catégorie" data-es="Categoría" data-en="Category"></dt><dd class="faits__v">Mezcal Artesanal, joven, D.O.</dd></div>
@@ -106,35 +88,62 @@
         <div class="faits__l"><dt class="faits__k" data-fr="Village" data-es="Pueblo" data-en="Village"></dt><dd class="faits__v">Villa Sola de Vega, Oaxaca</dd></div>
         <div class="faits__l"><dt class="faits__k" data-fr="Maestro" data-es="Maestro" data-en="Maestro"></dt><dd class="faits__v">Gilberto Vásquez</dd></div>
         <div class="faits__l"><dt class="faits__k" data-fr="Contenant" data-es="Contenido" data-en="Volume"></dt><dd class="faits__v">700 ml</dd></div>
-        <div class="faits__l"><dt class="faits__k" data-fr="Lot" data-es="Lote" data-en="Lot"></dt><dd class="faits__v" data-fr="numéro sur total" data-es="número sobre total" data-en="number over total"></dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="Lot" data-es="Lote" data-en="Lot"></dt><dd class="faits__v" data-fr="bouteille numérotée" data-es="número sobre total" data-en="number over total"></dd></div>
       </dl>
+    </div>
+  </section>
+
+  <section class="scene scene--porte">
+    <div class="scene__fond scene__fond--photo scene__fond--porte"><img width="2400" height="1350" src="assets/img/palenque/pinas_horno_1200.jpg" srcset="assets/img/palenque/pinas_horno_1200.jpg 1200w, assets/img/palenque/pinas_horno_2400.jpg 2400w" sizes="100vw" alt="" loading="eager" decoding="async"></div>
+    <div class="scene__texte">
+      <div class="ouverture__m"><p class="scene__kicker ouverture__l" data-fr="El Palenque" data-es="El Palenque" data-en="El Palenque"></p></div>
+      <div class="ouverture__m"><h2 class="scene__titre ouverture__l" data-fr="Les agaves et le palenque à Villa Sola de Vega." data-es="El agave, Villa Sola de Vega, el palenque." data-en="The agave, Villa Sola de Vega, the palenque."></h2></div>
+      <!-- Note de chantier, retiree de la vue : photographie du Mexique attendue pour cette scene. -->
+      <div class="ouverture__m"><p class="scene__ligne ouverture__l" data-fr="Trois agaves, un village, un maestro." data-es="Tres agaves, un pueblo, un maestro." data-en="Three agaves, one village, one maestro."></p></div>
+      <div class="ouverture__m"><a class="scene__lien ouverture__l" href="el-palenque.html" data-fr="Voir El Palenque" data-es="Ver El Palenque" data-en="See El Palenque"></a></div>
     </div>
   </section>
 
   <!-- 06. Les trois bouteilles. Chacune sa couleur : olive, turquesa, rosa. -->
   <section class="section section--serre">
     <div class="boite">
-      <p class="kicker" data-fr="Les trois bouteilles" data-es="Las tres botellas" data-en="The three bottles"></p>
+      <p class="kicker" data-fr="Les trois agaves" data-es="Los tres agaves" data-en="The three agaves"></p>
     </div>
     <div class="grille grille--trois" id="grille-bouteilles"></div>
   </section>
 
-  <section class="scene scene--court">
-    <div class="scene__fond scene__fond--papier"></div>
-    <div class="scene__marque" data-embleme="ritual"></div>
+  <section class="scene scene--court scene--porte">
+    <div class="scene__fond scene__fond--photo scene__fond--porte"><picture>
+        <source media="(max-width:760px)" srcset="assets/img/rituel/copita_jicara_portrait_900.jpg?v=20261022z 900w, assets/img/rituel/copita_jicara_portrait_1600.jpg?v=20261022z 1600w" sizes="100vw">
+        <img width="1600" height="893" style="view-transition-name:rituel-hero; object-position:71% 100%" src="assets/img/rituel/copita_jicara_1600.jpg?v=20261022z" srcset="assets/img/rituel/copita_jicara_900.jpg?v=20261022z 900w, assets/img/rituel/copita_jicara_1600.jpg?v=20261022z 1600w, assets/img/rituel/copita_jicara_2752.jpg?v=20261022z 2752w" sizes="100vw" alt="" loading="eager" decoding="async">
+      </picture></div>
     <div class="scene__texte">
-      <p class="scene__kicker" data-fr="Le service" data-es="El servicio" data-en="Serving"></p>
-      <h2 class="scene__titre" data-fr="Le verre, la température, un geste." data-es="El vaso, la temperatura, un gesto." data-en="The glass, the temperature, one gesture."></h2>
-      <a class="scene__lien" href="el-ritual.html" data-fr="Voir El Ritual" data-es="Ver El Ritual" data-en="See El Ritual"></a>
+      <div class="ouverture__m"><p class="scene__kicker ouverture__l" data-fr="El Ritual" data-es="El Ritual" data-en="El Ritual"></p></div>
+      <div class="ouverture__m"><h2 class="scene__titre ouverture__l" data-fr="La copita, la jícara et le service à table." data-es="El vaso, la temperatura, un gesto." data-en="The glass, the temperature, one gesture."></h2></div>
+      <div class="ouverture__m"><a class="scene__lien ouverture__l" href="el-ritual.html" data-fr="Voir El Ritual" data-es="Ver El Ritual" data-en="See El Ritual"></a></div>
     </div>
   </section>
 
-  <section class="scene">
-    <div class="scene__fond scene__fond--creme"></div>
-    <div class="scene__texte">
-      <p class="scene__kicker" data-fr="La lettre" data-es="La carta" data-en="The letter"></p>
-      <h2 class="scene__titre" data-fr="La demande d'allocation se fait par lettre." data-es="La solicitud de asignación se hace por carta." data-en="The allocation request is made by letter."></h2>
-      <p class="scene__ligne" data-fr="On écrit, on est alloué ou non. La transaction se fait avec la maison ou l'importateur, hors du site." data-es="Se escribe, se es asignado o no. La transacción se hace con la casa o el importador, fuera del sitio." data-en="You write, you are allocated or not. The transaction happens with the house or the importer, off the site."></p>
+  <!-- 22 oct 2026. Nous ecrire : une bande serree, pas une scene plein ecran (Raouf). Une ligne, un lien. -->
+  <!-- 22 oct 2026, Raouf : "a minimal look, animated like a field, with the plants and mountains". Le champ est dessine
+       avec les trois emblemes (espadin, tobala, coyote) en trois rangs et deux lignes de montagnes en papier decoupe ;
+       parallaxe lente au defilement, une penca qui tombe sous le pointeur (le seul clin d oeil au jeu), texte en masques. -->
+  <section class="section champ" id="le-jeu">
+    <div class="champ__texte">
+      <div class="ouverture__m"><p class="kicker ouverture__l" data-fr="Le jeu" data-es="El juego" data-en="The game"></p></div>
+      <div class="ouverture__m"><p class="ecrire__ligne ouverture__l" data-fr="Coupez les pencas de l'espadín à la coa et dégagez la piña." data-es="Corta las pencas del espadín con la coa y saca la piña." data-en="Cut the espadín pencas with the coa and free the piña."></p></div>
+      <div class="ouverture__m"><a class="scene__lien ouverture__l" href="jeu-espadin.html" data-fr="Jouer à la jima" data-es="Jugar a la jima" data-en="Play La jima"></a></div>
+    </div>
+    <div class="champ__scene" aria-hidden="true">
+      <svg class="champ__svg" viewBox="0 158 1600 202" preserveAspectRatio="xMidYMax slice" focusable="false"></svg>
+    </div>
+  </section>
+
+
+  <section class="section section--serre ecrire">
+    <div class="boite ecrire__boite">
+      <p class="kicker" data-fr="Nous écrire" data-es="Escríbenos" data-en="Write to us"></p>
+      <p class="ecrire__ligne" data-fr="Poser une question ou réserver une bouteille." data-es="Una pregunta, una botella que reservar." data-en="A question, a bottle to reserve."></p>
       <a class="scene__lien" href="contact.html" data-fr="Écrire à la maison" data-es="Escribir a la casa" data-en="Write to the house"></a>
     </div>
   </section>
@@ -190,9 +199,173 @@
   if(nom) nom.textContent = b.nom;
   if(lat) lat.textContent = b.latin;
   if(agave) agave.textContent = b.agave;
+  var fn = document.getElementById('fait-nom');
+  if(fn) for(var k=0;k<3;k++) fn.setAttribute('data-'+langs[k], b.nom);
+})();
+</script>
+<script>
+/* 22 oct 2026. Les portes de l accueil s ouvrent comme sur nude.eu (clip par le bas, image 1.15 a 1, lignes hors masque).
+   Entree dans El Ritual : choregraphie ecrite par Gemini 4 Argon le 22 oct (diagnostic dans scratchpad argon_transition) :
+   pas de clone, la view transition native fait seule le morphing porte -> hero ; texte replie au clic ; prefetch + decode au survol ; bfcache nettoye. */
+(function(){
+  var portes = document.querySelectorAll('.scene--porte, .champ');
+  if (!portes.length) return;
+
+  var reduit = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var supportVT = ('CSS' in window && CSS.supports('view-transition-name: none') && 'onpageswap' in window);
+
+  /* 1. Prefetch HTML + Preload image exacte au survol / touchstart */
+  var lienRituel = document.querySelector('.scene--porte a[href="el-ritual.html"]');
+  var sceneRituel = lienRituel ? lienRituel.closest('.scene--porte') : null;
+
+  if (lienRituel && sceneRituel) {
+    var prechargee = false;
+    var precharger = function() {
+      if (prechargee) return;
+      prechargee = true;
+      var l = document.createElement('link');
+      l.rel = 'prefetch';
+      l.href = lienRituel.href;
+      document.head.appendChild(l);
+      /* Force le décodage en cache mémoire de la source exacte */
+      var img = sceneRituel.querySelector('img');
+      if (img && img.currentSrc) {
+        var preImg = new Image();
+        preImg.src = img.currentSrc;
+        if (preImg.decode) preImg.decode().catch(function(){});
+      }
+    };
+    sceneRituel.addEventListener('pointerenter', precharger, {passive: true});
+    sceneRituel.addEventListener('touchstart', precharger, {passive: true});
+    lienRituel.addEventListener('focus', precharger, {passive: true});
+
+    /* 2. Au clic : si View Transitions natif est supporté, ZERO clone, départ immédiat.
+          Sinon (Firefox), fallback FLIP propre en GPU (transform/clip-path). */
+    lienRituel.addEventListener('click', function(e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+
+      /* Scénario A : Navigateur moderne (Chrome / Safari 18.2+).
+         On laisse la navigation native partir à t=0ms. Le texte se replie pendant le court délai réseau. */
+      if (supportVT && !reduit) {
+        sceneRituel.classList.add('est-quittee');
+        return;
+      }
+
+      /* Scénario B : Fallback sans View Transitions (Firefox) */
+      if (reduit) return;
+      e.preventDefault();
+      if (document.querySelector('.porte-plein')) return;
+
+      sceneRituel.classList.add('est-quittee');
+      var img = sceneRituel.querySelector('.scene__fond--photo img');
+      var r = img.getBoundingClientRect();
+      var th = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--tete-h')) || 0;
+      var targetH = window.innerHeight - th;
+      if (window.innerWidth <= 760) targetH = Math.min(targetH, window.innerWidth * 1.25);
+
+      var box = document.createElement('div');
+      box.className = 'porte-plein';
+      box.style.top = th + 'px';
+      box.style.height = targetH + 'px';
+
+      var c = img.cloneNode(false);
+      c.removeAttribute('loading');
+      c.style.objectPosition = '71% 100%';
+      box.appendChild(c);
+      document.body.appendChild(box);
+
+      /* Calcul du clip-path initial (invert) pour animer uniquement en GPU */
+      var topClip = Math.max(0, r.top - th);
+      var botClip = Math.max(0, (th + targetH) - r.bottom);
+      var leftClip = Math.max(0, r.left);
+      var rightClip = Math.max(0, window.innerWidth - r.right);
+
+      box.style.clipPath = 'inset(' + topClip + 'px ' + rightClip + 'px ' + botClip + 'px ' + leftClip + 'px)';
+      c.style.transform = 'scale(1.06)';
+      box.getBoundingClientRect(); /* Force reflow */
+
+      var D = 650, courbe = 'cubic-bezier(.16,1,.3,1)';
+      box.style.transition = 'clip-path ' + D + 'ms ' + courbe;
+      c.style.transition = 'transform ' + D + 'ms ' + courbe;
+      box.style.clipPath = 'inset(0px 0px 0px 0px)';
+      c.style.transform = 'scale(1)';
+
+      setTimeout(function() { location.href = lienRituel.href; }, D - 30);
+    });
+  }
+
+  /* 3. Nettoyage BFCache (Bouton Back du navigateur) */
+  window.addEventListener('pageshow', function(e) {
+    if (sceneRituel) sceneRituel.classList.remove('est-quittee');
+    var restes = document.querySelectorAll('.porte-plein');
+    for (var i = 0; i < restes.length; i++) restes[i].remove();
+  });
+
+  /* 4. Reveal au scroll des portes */
+  function ouvrir(s) {
+    var l = s.querySelectorAll('.ouverture__l');
+    for (var i = 0; i < l.length; i++) l[i].style.transitionDelay = (i * 90) + 'ms';
+    var img = s.querySelector('.scene__fond--photo img');
+    var go = function() { s.classList.add('est-ouverte'); };
+    if (img && !(img.complete && img.naturalWidth)) {
+      var fin = false, f = function() { if (!fin) { fin = true; go(); } };
+      if (img.decode) img.decode().then(f, f);
+      img.addEventListener('load', f, {once: true});
+      img.addEventListener('error', f, {once: true});
+      setTimeout(f, 2500);
+    } else if (img && img.decode) {
+      img.decode().then(go, go);
+    } else {
+      go();
+    }
+  }
+
+  if (reduit || !('IntersectionObserver' in window)) {
+    for (var i = 0; i < portes.length; i++) portes[i].classList.add('est-ouverte');
+    return;
+  }
+  var o = new IntersectionObserver(function(es) {
+    es.forEach(function(e) {
+      if (e.isIntersecting) { ouvrir(e.target); o.unobserve(e.target); }
+    });
+  }, {rootMargin: '0px 0px -15% 0px'});
+  for (var j = 0; j < portes.length; j++) o.observe(portes[j]);
 })();
 </script>
 <script>siteChrome.init();</script>
+<script>
+/* 22 oct 2026. Le champ du jeu : trois rangs d'emblemes, deux montagnes, parallaxe, une penca qui tombe. */
+(function(){
+  var svg = document.querySelector('.champ__svg'); if(!svg || typeof window.embleme_espadin !== 'function') return;
+  var NS = 'http://www.w3.org/2000/svg', W = 1600, HOR = 330;
+  var reduit = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function el(n, a, parent){ var e = document.createElementNS(NS, n); for(var k in a) e.setAttribute(k, a[k]); (parent || svg).appendChild(e); return e; }
+  /* symboles : un par agave, dessines par emblemes.js dans le disque -120..120 */
+  var defs = el('defs', {});
+  ['espadin','tobala','coyote'].forEach(function(c){
+    var sym = el('symbol', { id:'champ-' + c, viewBox:'-120 -120 240 240' }, defs);
+    sym.innerHTML = window['embleme_' + c]({ color:'currentColor' });
+  });
+  /* montagnes : deux lignes decoupees sur le ciel */
+  function montagne(pts, fill, op, v){
+    var d = 'M0 ' + HOR + ' '; pts.forEach(function(p){ d += 'L' + p[0] + ' ' + p[1] + ' '; }); d += 'L' + W + ' ' + HOR + ' Z';
+    var g = el('g', { 'class':'champ__couche', 'data-v':v });
+    el('path', { d:d, fill:fill, opacity:op }, g); return g;
+  }
+  montagne([[0,250],[140,215],[300,235],[430,180],[560,205],[700,170],[860,200],[990,160],[1130,195],[1270,165],[1410,205],[1520,185],[1600,215]], 'var(--papier-olive)', .55, .018);
+  montagne([[0,300],[120,278],[250,292],[380,262],[520,288],[660,268],[800,290],[950,258],[1100,284],[1250,266],[1400,290],[1520,272],[1600,296]], 'var(--vert-agave)', .42, .030);
+  var devant = [];
+  /* parallaxe : chaque couche glisse d'une fraction de l'ecart au centre de l'ecran */
+  var couches = svg.querySelectorAll('.champ__couche'), scene = svg.parentNode, tick = false;
+  function poser(){
+    tick = false;
+    var r = scene.getBoundingClientRect(), d = (r.top + r.height / 2) - window.innerHeight / 2;
+    for(var i = 0; i < couches.length; i++){ var v = parseFloat(couches[i].getAttribute('data-v')); couches[i].setAttribute('transform', 'translate(0 ' + (d * v).toFixed(1) + ')'); }
+  }
+  if(!reduit){ window.addEventListener('scroll', function(){ if(!tick){ tick = true; requestAnimationFrame(poser); } }, { passive:true }); window.addEventListener('resize', poser); poser(); }
+})();
+</script>
+
 <script>
 /* Le sceau de l accueil : l animation retenue le 16 aout, une fois, au chargement. */
 (function(){

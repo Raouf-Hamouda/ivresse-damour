@@ -203,6 +203,28 @@ var TEXTES = {
 var LANGUES = ['fr','es','en'];
 var langue = 'fr';
 
+/* Les coupes de ligne. On ne touche qu'aux noeuds de texte, et l'espace insecable remplace l'espace :
+   repasser deux fois ne change rien. */
+function soignerCoupes(racine){
+  var NB = '\u00a0';
+  var blocs = (racine || document).querySelectorAll('main p, main li, main dd, main dt, main h1, main h2, main h3, main figcaption, main summary, main blockquote footer');
+  for(var b = 0; b < blocs.length; b++){
+    var bloc = blocs[b];
+    if(bloc.querySelector('p, li, dd, h1, h2, h3')) continue;            /* seulement les blocs de texte terminaux */
+    var marche = document.createTreeWalker(bloc, NodeFilter.SHOW_TEXT, null), noeuds = [], n;
+    while((n = marche.nextNode())){ if(n.nodeValue.trim()) noeuds.push(n); }
+    for(var k = 0; k < noeuds.length; k++){
+      var t = noeuds[k].nodeValue;
+      t = t.replace(/ ([:;?!»])/g, NB + '$1').replace(/« /g, '«' + NB);               /* les signes doubles */
+      t = t.replace(/(^|[ \u00a0(])([aAàÀyYoOeEuU&]) (?=\S)/g, '$1$2' + NB);            /* un mot d'une lettre ne finit pas une ligne */
+      if(k === noeuds.length - 1){                                                    /* les deux derniers mots restent ensemble */
+        t = t.replace(/ (\S{1,14})(\s*)$/, function(m, mot, fin){ return /\s/.test(t.slice(0, t.length - m.length)) ? NB + mot + fin : m; });
+      }
+      if(t !== noeuds[k].nodeValue) noeuds[k].nodeValue = t;
+    }
+  }
+}
+
 function langueDepart(){
   var m = lire(CLE_LANG);
   if(LANGUES.indexOf(m) !== -1) return m;
@@ -241,6 +263,11 @@ function appliquerLangue(l, racine){
     var estLui = els[i].getAttribute('data-lang') === l;
     els[i].classList.toggle('est-actif', estLui);
   }
+
+  /* (b bis) les coupes de ligne. Raouf, 6 oct 2026 : "stop sauter une espace pour rien". Regle generale,
+     pour toutes les pages et les trois langues : jamais un mot seul sur la derniere ligne, jamais une
+     ligne qui finit sur un mot d'une lettre, jamais un signe double separe de son mot. */
+  soignerCoupes(racine);
 
   /* (d) attributs */
   els = racine.querySelectorAll('*');
@@ -1558,7 +1585,7 @@ function construireEntete(pageCourante){
         '<a class="nav__lien nav__lien--droite" href="la-tierra.html" data-id="tierra"' +
            (pageCourante === 'tierra' ? ' aria-current="page"' : '') + '>' +
            '<span class="nav__mot" data-fr="La Tierra" data-es="La Tierra" data-en="La Tierra"></span></a>' +
-        /* La Siembra, le programme pour les producteurs, a cote de La Tierra (Raouf, 4 oct : "a page next to it") */
+        /* La Siembra, le programme pour les producteurs, a cote de La Tierra (Raouf, 4 oct : "a page next to it" ; 6 oct : "2 pages") */
         '<a class="nav__lien nav__lien--droite nav__lien--second" href="la-siembra.html" data-id="siembra"' +
            (pageCourante === 'siembra' ? ' aria-current="page"' : '') + '>' +
            '<span class="nav__mot" data-fr="La Siembra" data-es="La Siembra" data-en="La Siembra"></span></a>' +
@@ -1981,6 +2008,113 @@ function brancherParallaxe(){
    data-page vaut : botella, historia, palenque, mito, registro, ritual, eventos.
    L'entete et le pied ne s'ecrivent pas dans la page : init() les pose.
    ------------------------------------------------------------------------ */
+
+/* ---------------------------------------------------------------------------
+   22 oct 2026, Raouf : "a feature where they can change the text pressing shift".
+   MODE TEXTE. Deux appuis rapides sur Shift (AZERTY ou QWERTY, Mac ou Windows)
+   ouvrent le mode : chaque texte du site devient editable sur place. Ce qui est
+   tape est garde dans ce navigateur (localStorage, par page et par langue) et
+   reapparait au rechargement ; le bouton "Telecharger" produit un fichier JSON
+   que outils/appliquer_textes.py reporte dans les pages HTML. Le site reste
+   statique (GitHub Pages ou Vercel) : rien ne part sur un serveur.
+   ------------------------------------------------------------------------ */
+var CLE_TEXTES = 'ida.textes.' + (location.pathname.split('/').pop() || 'index.html');
+function textesLire(){ try{ return JSON.parse(localStorage.getItem(CLE_TEXTES) || '{}'); }catch(e){ return {}; } }
+function textesEcrire(o){ try{ localStorage.setItem(CLE_TEXTES, JSON.stringify(o)); }catch(e){} }
+function textesCibles(){
+  var all = document.querySelectorAll('[data-fr],[data-es],[data-en]'), out = [];
+  for(var i=0;i<all.length;i++){ if(!all[i].firstElementChild && !all[i].closest('.tete, .pied, .porte, .tiroir, .mode-texte__barre')) out.push(all[i]); }
+  return out;
+}
+/* au chargement : ce que la famille a deja retouche dans ce navigateur */
+function textesAppliquerMemoire(){
+  var m = textesLire(), cles = Object.keys(m); if(!cles.length) return;
+  var els = textesCibles();
+  cles.forEach(function(k){
+    var e = m[k]; var el = els[+k]; if(!el) return;
+    Object.keys(e).forEach(function(l){ if(e[l] && e[l].nouveau !== undefined && el.getAttribute('data-' + l) === e[l].ancien) el.setAttribute('data-' + l, e[l].nouveau); });
+  });
+  appliquerLangue(langue);
+}
+var modeTexte = false, modeTexteBarre = null;
+function modeTexteBasculer(){
+  modeTexte = !modeTexte;
+  document.documentElement.classList.toggle('mode-texte', modeTexte);
+  var els = textesCibles();
+  if(modeTexte){
+    els.forEach(function(el, i){
+      el.setAttribute('contenteditable', 'plaintext-only'); el.setAttribute('data-texte-i', i);
+      if(!el.__modeTexte){
+        el.__modeTexte = true;
+        el.addEventListener('input', function(){
+          var m = textesLire(), k = el.getAttribute('data-texte-i'), l = langue, v = el.textContent;
+          m[k] = m[k] || {}; if(!m[k][l]) m[k][l] = { ancien: el.getAttribute('data-' + l) };
+          m[k][l].nouveau = v; el.setAttribute('data-' + l, v); textesEcrire(m); modeTexteCompter();
+        });
+      }
+    });
+    if(!modeTexteBarre){
+      modeTexteBarre = document.createElement('div'); modeTexteBarre.className = 'mode-texte__barre';
+      modeTexteBarre.innerHTML = '<span class="mode-texte__mot">Mode texte</span><span class="mode-texte__aide">Cliquez un texte et tapez. Échap pour sortir.</span>' +
+        '<button type="button" class="mode-texte__b" data-r="publier">Publier sur le site</button>' +
+        '<button type="button" class="mode-texte__b mode-texte__b--second" data-r="telecharger">Télécharger</button>' +
+        '<button type="button" class="mode-texte__b mode-texte__b--second" data-r="effacer">Tout annuler</button>';
+      modeTexteBarre.addEventListener('click', function(e){
+        var b = e.target.closest('button'); if(!b) return;
+        var r = b.getAttribute('data-r');
+        if(r === 'effacer'){ if(confirm('Annuler toutes les modifications de cette page ?')){ localStorage.removeItem(CLE_TEXTES); location.reload(); } }
+        else if(r === 'publier') modeTextePublier();
+        else modeTexteTelecharger();
+      });
+      document.body.appendChild(modeTexteBarre);
+    }
+    modeTexteBarre.hidden = false; modeTexteCompter();
+  }else{
+    els.forEach(function(el){ el.removeAttribute('contenteditable'); });
+    if(modeTexteBarre) modeTexteBarre.hidden = true;
+  }
+}
+function modeTexteCompter(){
+  if(!modeTexteBarre) return; var m = textesLire(), n = 0;
+  Object.keys(m).forEach(function(k){ Object.keys(m[k]).forEach(function(l){ if(m[k][l].nouveau !== undefined && m[k][l].nouveau !== m[k][l].ancien) n++; }); });
+  var b = modeTexteBarre.querySelector('[data-r="telecharger"]'); b.disabled = !n;
+  var pb = modeTexteBarre.querySelector('[data-r="publier"]'); pb.textContent = 'Publier sur le site' + (n ? ' (' + n + ')' : ''); pb.disabled = !n;
+}
+function modeTexteLignes(){
+  var m = textesLire(), lignes = [], page = location.pathname.split('/').pop() || 'index.html';
+  Object.keys(m).forEach(function(k){ Object.keys(m[k]).forEach(function(l){ var e = m[k][l]; if(e.nouveau !== undefined && e.nouveau !== e.ancien) lignes.push({ page: page, langue: l, ancien: e.ancien, nouveau: e.nouveau }); }); });
+  return lignes;
+}
+/* publier : la fonction api/textes.js (Vercel) ecrit dans le depot GitHub, le site se redeploie seul */
+function modeTextePublier(){
+  var lignes = modeTexteLignes(); if(!lignes.length) return;
+  var mdp = prompt('Mot de passe de la maison pour publier ' + lignes.length + ' texte(s) :'); if(!mdp) return;
+  var pb = modeTexteBarre.querySelector('[data-r="publier"]'); pb.disabled = true; pb.textContent = 'Publication…';
+  fetch('/api/textes', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ motdepasse: mdp, modifications: lignes }) })
+    .then(function(r){ return r.json().then(function(j){ return { s:r.status, j:j }; }); })
+    .then(function(x){
+      if(x.s !== 200 || !x.j.ok){ alert(x.j && x.j.erreur ? x.j.erreur : 'Publication impossible.'); modeTexteCompter(); return; }
+      var ok = 0, ko = []; x.j.rapport.forEach(function(p){ ok += p.appliquees || 0; (p.introuvables || []).forEach(function(t){ ko.push(t); }); if(p.erreur) ko.push(p.page + ' : ' + p.erreur); });
+      alert('Publié : ' + ok + ' texte(s). Le site se met à jour dans une ou deux minutes.' + (ko.length ? '\nNon trouvés : ' + ko.join(' | ') : ''));
+      localStorage.removeItem(CLE_TEXTES); modeTexteCompter();
+    })
+    .catch(function(){ alert('Pas de serveur de publication ici (site statique). Utilisez Télécharger et envoyez le fichier.'); modeTexteCompter(); });
+}
+function modeTexteTelecharger(){
+  var lignes = modeTexteLignes(), page = location.pathname.split('/').pop() || 'index.html';
+  var blob = new Blob([JSON.stringify({ site: 'Ivresse d\'Amour', date: new Date().toISOString(), modifications: lignes }, null, 1)], { type: 'application/json' });
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'textes_' + page.replace('.html','') + '_' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+function modeTexteClavier(){
+  var dernier = 0;
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && modeTexte){ modeTexteBasculer(); return; }
+    if(e.key !== 'Shift' || e.repeat) return;
+    var t = Date.now(); if(t - dernier < 450){ dernier = 0; modeTexteBasculer(); } else dernier = t;
+  });
+}
+
 function init(opt){
   opt = opt || {};
   var page = opt.page || document.body.getAttribute('data-page') || '';
@@ -1990,6 +2124,7 @@ function init(opt){
   construirePorte();
   construireEntete(page);
   poserEmblemes();
+  textesAppliquerMemoire(); modeTexteClavier();   /* 22 oct : mode texte, deux appuis sur Shift */
   /* les pages remplissent parfois leurs cases juste apres init() (grille de
      l'accueil) : on repasse au tour suivant et au chargement complet */
   setTimeout(poserEmblemes, 0);

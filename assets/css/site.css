@@ -1016,9 +1016,9 @@ body{ padding-top:0; }
 }
 .pan__in{
   display:grid; grid-template-columns:repeat(4,1fr);
-  max-width:var(--largeur); margin-inline:auto; padding:calc(var(--u)*5) calc(var(--u)*4) calc(var(--u)*7);
+  max-width:var(--largeur); margin-inline:auto; padding:calc(var(--u)*4) calc(var(--u)*4) calc(var(--u)*4.5);   /* 22 oct : panneau 15 % moins haut, emblemes et noms inchanges */
 }
-.pan__c{ display:grid; justify-items:center; gap:calc(var(--u)*2); text-decoration:none; color:inherit; padding:calc(var(--u)*2); }
+.pan__c{ display:grid; justify-items:center; gap:calc(var(--u)*2); text-decoration:none; color:inherit; padding:calc(var(--u)*1.5) calc(var(--u)*2); }
 .pan__em{ display:grid; place-items:center; height:88px; color:var(--encre); }
 .pan__em svg{ width:auto; height:100%; }
 .pan__n{ font-size:13px; color:var(--brun); transition:color var(--t-court) var(--courbe); }
@@ -3390,3 +3390,375 @@ p, dd, li, blockquote{ text-wrap:pretty; }
 /* ---- 5 oct 2026 : le jeu ouvre sa page (jeu-espadin.html) : la scene sous l'entete, cartes et barre DANS la scene ---- */
 .jeu{position:relative;margin-top:var(--tete-h);height:calc(100svh - var(--tete-h));min-height:520px;background:#b9c7d6;overflow:hidden}
 .jeu iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+
+/* ==========================================================================
+   5 oct 2026, Raouf : "here you didn't fix these". Les onglets ne se coupent
+   plus au telephone : ils passent sur une grille de deux colonnes, chaque
+   onglet entier, le filet au-dessus garde.
+   ========================================================================== */
+@media (max-width: 760px){
+  .onglets{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:calc(var(--u)*3); row-gap:calc(var(--u)*2); overflow:visible; }
+  .onglets a{ min-width:0; }
+}
+
+/* 5 oct 2026, Raouf : "compact, but relaxed". Au telephone, La Tierra raccourcit
+   sans toucher aux vides entre sections : les huit tuiles "a surveiller" ne gardent
+   que leur titre et leur etiquette (chaque phrase est redite dans son chapitre),
+   le numero passe sur la meme ligne que le titre, les tuiles se serrent. */
+@media (max-width: 760px){
+  body[data-page="tierra"] .tuiles--montagne .tuile__d,
+  body[data-page="tierra"] .tuiles--palenque .tuile__d,
+  body[data-page="tierra"] .tuiles--village .tuile__d{ display:none; }
+  body[data-page="tierra"] .tuile:not(.tuile--tete){ display:grid; grid-template-columns:auto 1fr; column-gap:calc(var(--u)*2); align-items:baseline; padding:calc(var(--u)*2) calc(var(--u)*3); }
+  body[data-page="tierra"] .tuile:not(.tuile--tete) .tuile__nom{ font-size:19px; margin:0; }
+  body[data-page="tierra"] .tuile:not(.tuile--tete) .tuile__s{ grid-column:2; margin-top:4px; }
+  body[data-page="tierra"] .tuile--tete{ padding:calc(var(--u)*2.5) calc(var(--u)*3); }
+  body[data-page="tierra"] .tuiles{ margin-bottom:calc(var(--u)*1.5); }
+}
+/* sept onglets depuis la fusion : entre 761 et 1180 px, quatre colonnes au lieu d'une rangee coupee */
+@media (min-width: 761px) and (max-width: 1180px){
+  .onglets{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); row-gap:calc(var(--u)*2); overflow:visible; }
+  .onglets a{ min-width:0; }
+}
+
+/* 5 oct 2026, El Ritual, "En cocktail". Deux colonnes, la seconde decalee vers le bas. Chaque verre :
+   l'image, le numero et le lieu (capitales micro, comme les tuiles), le nom, une ligne, puis le
+   depliant de la maison (.depli : un filet, un titre, le chevron d'un trait) qui porte la table des faits.
+   Raouf : "this need to be our DA". Rien de neuf n'est invente ici, tout vient des blocs existants. */
+.verres{ list-style:none; margin:calc(var(--u)*6) 0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:calc(var(--u)*8); row-gap:calc(var(--u)*8); align-items:start; }
+.verres__i--bas{ margin-top:calc(var(--u)*14); }  /* marge et non transform : le fondu remet transform a none */
+.verres__i img{ display:block; width:100%; height:auto; aspect-ratio:4/5; object-fit:cover; background:var(--creme); }
+.verres__tete{ display:flex; align-items:baseline; gap:calc(var(--u)*2); margin:calc(var(--u)*3) 0 var(--u);
+  font-family:var(--slab); font-size:var(--t-micro); letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun); }
+.verres__num{ color:var(--brique); letter-spacing:.14em; }
+.verres__nom{ margin:0 0 var(--u); }
+.verres__ligne{ margin:0 0 calc(var(--u)*3); color:var(--brun); }  /* une ligne, jamais deux (Raouf, 5 oct) : les phrases sont ecrites pour tenir */
+.verres .depli{ border-top:1px solid var(--filet); }
+.verres .depli summary{ font-family:var(--slab); font-size:var(--t-petit); letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun); }
+.verres .depli summary:hover{ color:var(--brique); }
+.verres .depli__corps .faits__l{ grid-template-columns:150px 1fr; }
+.verres .depli__corps p{ margin:calc(var(--u)*2) 0 0; }
+.verres + .colonne{ margin-top:calc(var(--u)*14); }
+@media (max-width:560px){
+  .verres{ grid-template-columns:1fr; row-gap:calc(var(--u)*7); }
+  .verres__i--bas{ margin-top:0; }
+  .verres + .colonne{ margin-top:0; }
+  .verres .depli__corps .faits__l{ grid-template-columns:1fr; }
+}
+
+/* 5 oct 2026, refonte d'El Ritual. Le trio des accords reprend la carte des verres, sur trois colonnes
+   et sans decalage. La bande des faits remplace la longue table : quatre faits sur une ligne,
+   l'etiquette en capitales micro, la valeur dessous. Le duo se lit sous son embleme. */
+.verres--trio{ grid-template-columns:repeat(3,minmax(0,1fr)); column-gap:calc(var(--u)*5); }
+.verres--trio .verres__ligne{ margin-bottom:calc(var(--u)*2); }
+.bande-faits{ list-style:none; margin:calc(var(--u)*6) 0 0; padding:0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-top:1px solid var(--filet); border-bottom:1px solid var(--filet); }
+.bande-faits li{ padding:calc(var(--u)*3) calc(var(--u)*3) calc(var(--u)*3) 0; display:flex; flex-direction:column; gap:var(--u); }
+.bande-faits li + li{ padding-left:calc(var(--u)*3); border-left:1px solid var(--filet); }
+.bande-faits li span:first-child{ font-family:var(--slab); font-size:var(--t-micro); letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun); }
+.bande-faits li span:last-child{ font-size:var(--t-h3); line-height:1.2; letter-spacing:var(--ls-titre); }
+.rituel__duo .kicker{ margin-top:calc(var(--u)*2); max-width:18ch; line-height:1.6; }
+@media (max-width:560px){
+  .verres--trio{ grid-template-columns:1fr; }
+  .bande-faits{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .bande-faits li:nth-child(3){ padding-left:0; border-left:0; }
+  .bande-faits li:nth-child(n+3){ border-top:1px solid var(--filet); }
+}
+
+/* 5 oct 2026. L'image entiere : pleine largeur, jamais recadree (Raouf, sur Mac : "a full view"). Au telephone
+   la page lui donne une version portrait par <picture>. */
+.bloc-image--entier img{ width:100%; height:auto; display:block; }
+/* Les dichos : trois phrases sur une rangee, la traduction et la source dessous, puis les sorties. */
+.dichos{ list-style:none; margin:calc(var(--u)*4) 0 0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); column-gap:calc(var(--u)*6); row-gap:calc(var(--u)*5); }
+.dicho{ border-top:1px solid var(--encre); padding-top:calc(var(--u)*3); }
+.dicho__es{ font-size:clamp(20px,1.9vw,26px); line-height:1.25; letter-spacing:var(--ls-titre); margin:0 0 calc(var(--u)*2); }
+.dicho__t{ color:var(--brun); margin:0 0 calc(var(--u)*2); }
+.dicho__s{ font-family:var(--slab); font-size:var(--t-micro); letter-spacing:var(--ls-petit); text-transform:uppercase; color:var(--brun); margin:0; }
+.dichos__sorties{ display:flex; flex-wrap:wrap; gap:calc(var(--u)*2) calc(var(--u)*5); margin:calc(var(--u)*7) 0 0; }
+@media (max-width:760px){ .dichos{ grid-template-columns:1fr; } .dichos__sorties{ margin-top:calc(var(--u)*5); } }
+
+/* 5 oct 2026, Raouf : "take care of the titles". La legende touchait le filet de la section suivante : elle respire. */
+.legende{ padding-bottom:calc(var(--u)*6); }
+
+/* 6 oct 2026, Raouf : "stop sauter une espace pour rien". Avec soignerCoupes (site.js) : un lien dans une phrase
+   ne se coupe pas en deux, les titres et les lignes courtes s'equilibrent. */
+.lien{ white-space:nowrap; }
+h1, h2, h3, .kicker, .legende, .verres__ligne, .dicho__es, .dicho__t, .chapitre__intro{ text-wrap:balance; }
+@media (max-width:560px){ .lien{ white-space:normal; } }
+
+/* 6 oct 2026, Raouf : "when I enter a page... I want the image to take the full screen". L'image d'ouverture
+   occupe l'ecran sous l'entete, le titre de la page vient juste dessous, sans bande blanche avant.
+   Au telephone elle ne depasse pas le format 4:5, pour qu'une image large garde son sujet. */
+.bloc-image--ecran{ margin-top:var(--tete-h); height:calc(100svh - var(--tete-h)); min-height:360px; overflow:hidden; }
+.bloc-image--ecran img{ width:100%; height:100%; object-fit:cover; display:block; }
+.bloc-image--ecran ~ .entete-page{ padding-top:calc(var(--u)*7); padding-bottom:calc(var(--u)*3); }
+.bloc-image--ecran + .legende{ padding-bottom:0; }
+@media (max-width:760px){ .bloc-image--ecran{ height:min(calc(100svh - var(--tete-h)), 125vw); } }
+/* Une page sans image d'ouverture : la bande du titre se resserre aussi (elle faisait un tiers d'ecran). */
+.page > .entete-page:first-child{ padding-top:calc(var(--tete-h) + var(--u)*5); padding-bottom:calc(var(--u)*4); }
+
+/* 6 oct 2026, Raouf : "write it here". Le titre de la page s'ecrit sur l'image d'ouverture, en haut a droite,
+   la ou le mur est nu (a gauche passe l'ombre de la feuille). Encre sur mur clair, aucune ombre portee. */
+.bloc-image--ecran{ position:relative; }
+.ecran__titre{ position:absolute; right:var(--marge); top:calc(var(--u)*6); margin:0; color:var(--encre);
+  font-size:clamp(40px,5.2vw,84px); line-height:1; letter-spacing:var(--ls-titre); }
+@media (max-width:760px){ .ecran__titre{ top:calc(var(--u)*4); } }
+
+/* 6 oct 2026. La Siembra, "Nous joindre" : au telephone les deux tuiles passaient cote a cote et le titre se coupait
+   lettre par lettre ("Au Me xiq ue"). Une colonne, et un titre ne se coupe jamais dans un mot. */
+@media (max-width:760px){ .tuiles--duo{ grid-template-columns:1fr; } .tuiles--duo .tuile{ min-height:0; } }
+.tuile--tete .tuile__nom{ overflow-wrap:normal; word-break:normal; hyphens:none; }
+
+/* 22 oct 2026. Table des faits plus compacte (Raouf : "respecter la DA, plus
+   compact") : 12 px au-dessus et au-dessous au lieu de 20 (rang 66 -> 50 px),
+   colonne des intitules 150 px, intitules dans le brun de la palette au lieu
+   d un gris hors nuancier. Une seule table pour tout le site, inchangee. */
+.faits__l, .faits--etiquette .faits__l, .depli__corps .faits__l, .fiche .depli__corps .faits__l{
+  grid-template-columns:min(150px,34%) 1fr; gap:calc(var(--u)*3);
+}
+.faits__k, .depli__corps .faits__k, .fiche .depli__corps .faits__k{ padding:calc(var(--u)*1.5) 0; color:var(--brun); }
+.faits__v, .depli__corps .faits__v, .fiche .depli__corps .faits__v{ padding:calc(var(--u)*1.5) 0; }
+@media (max-width:560px){
+  .faits__l, .faits--etiquette .faits__l, .depli__corps .faits__l, .fiche .depli__corps .faits__l{ grid-template-columns:1fr; gap:2px; padding:calc(var(--u)*1.25) 0; }
+  .faits__k, .depli__corps .faits__k, .fiche .depli__corps .faits__k{ padding:0; }
+  .faits__v, .depli__corps .faits__v, .fiche .depli__corps .faits__v{ padding:0; }
+}
+
+/* 22 oct 2026. El Mito sur l accueil : la couverture tissee (photo) derriere le texte,
+   un voile de papier codex pour que l encre reste lisible, fondu long a l arrivee. */
+.scene__fond--porte::after{ content:""; position:absolute; inset:0; background:radial-gradient(ellipse 48% 64% at 50% 54%, rgba(43,33,24,.40) 0%, rgba(43,33,24,.26) 45%, rgba(43,33,24,0) 100%); }
+.scene__fond--porte ~ .scene__texte{ max-width:none; padding-inline:var(--marge); color:var(--papier); }
+.scene__fond--porte ~ .scene__texte .scene__kicker{ font-size:clamp(18px,1.8vw,28px); color:var(--papier); margin-bottom:calc(var(--u)*3); }
+.scene__fond--porte ~ .scene__texte .scene__titre{ color:var(--papier); font-size:clamp(30px,4.2vw,64px); line-height:1.08; max-width:none; margin-inline:auto; }
+.scene__fond--porte ~ .scene__texte .scene__titre > span{ display:block; }
+.scene__fond--porte ~ .scene__texte .scene__ligne{ color:var(--papier); opacity:.85; font-size:clamp(17px,1.4vw,22px); }
+/* le bouton de porte : un filet de papier autour du mot, et au survol le papier monte du bas et
+   remplit le bouton, le mot passe a l encre (le bouton contour de nude.eu, rempli par elevation) */
+.scene__fond--porte ~ .scene__texte .scene__lien{
+  position:relative; isolation:isolate; overflow:hidden; margin-top:calc(var(--u)*5);
+  padding:16px 30px; border:1px solid var(--papier); border-radius:var(--rond);
+  font-size:clamp(13px,1vw,15px); font-weight:600; letter-spacing:.18em; color:var(--papier);
+  transition:color var(--t-menu) var(--courbe);
+}
+/* l eau qui monte. Trois couches dans un seul pseudo-element : une vague avant (papier plein), une vague
+   arriere plus large et plus claire qui derive en sens inverse (profondeur), et le corps d eau. La surface
+   garde un menisque d un pixel en creme. La montee depasse de 3 % puis se pose (l eau qui s immobilise). */
+.scene__fond--porte ~ .scene__texte .scene__lien::before{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:calc(100% + 18px); z-index:-1;
+  background:
+    url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='14' viewBox='0 0 72 14'%3E%3Cpath d='M0 7.0 Q9.0 2.0 18.0 7.0 T36.0 7.0 T54.0 7.0 T72 7.0 V14 H0 Z' fill='%23FEF9F3'/%3E%3C/svg%3E") 0 0 / 72px 14px repeat-x,
+    url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='16' viewBox='0 0 96 16'%3E%3Cpath d='M0 8.0 Q12.0 2.0 24.0 8.0 T48.0 8.0 T72.0 8.0 T96 8.0 V16 H0 Z' fill='rgba%28254,249,243,0.55%29'/%3E%3C/svg%3E") 0 2px / 96px 16px repeat-x,
+    linear-gradient(var(--creme), var(--creme)) 0 13px / 100% 1px no-repeat,
+    linear-gradient(var(--papier), var(--papier)) 0 14px / 100% calc(100% - 14px) no-repeat;
+  transform:translateY(calc(100% + 2px));
+  transition:transform .6s cubic-bezier(.22,1.3,.36,1);   /* leger depassement puis repos */
+}
+@keyframes porte-eau{
+  from{ background-position:0 0, 0 2px, 0 13px, 0 14px; }
+  to  { background-position:72px 0, -96px 2px, 0 13px, 0 14px; }
+}
+@media (hover:hover) and (pointer:fine){
+  .scene__fond--porte ~ .scene__texte .scene__lien:hover{ color:var(--encre); transition-delay:.18s; }
+  .scene__fond--porte ~ .scene__texte .scene__lien:hover::before{ transform:translateY(0); animation:porte-eau 3.2s linear infinite; }
+}
+.scene__fond--porte ~ .scene__texte .scene__lien:focus-visible{ color:var(--encre); }
+.scene__fond--porte ~ .scene__texte .scene__lien:focus-visible::before{ transform:translateY(0); }
+.scene__fond--porte ~ .scene__texte .scene__lien:active::before{ transition-duration:80ms; }
+
+/* 22 oct 2026. L ouverture des portes (recette nude.eu, portee en CSS) : expo.out = cubic-bezier(.16,1,.3,1). */
+.scene--porte .scene__fond--photo{ clip-path:inset(100% 0 0 0); transition:clip-path 1.3s cubic-bezier(.16,1,.3,1); }
+.scene--porte .scene__fond--photo img{ transform:scale(1.15); transition:transform 1.6s cubic-bezier(.16,1,.3,1); }
+.scene--porte.est-ouverte .scene__fond--photo{ clip-path:inset(0 0 0 0); }
+.scene--porte.est-ouverte .scene__fond--photo img{ transform:none; }
+.ouverture__m{ display:block; overflow:hidden; padding:4px 12px 18px; margin:-4px -12px -18px; }   /* de l air dans le masque : descendantes (g, p, ç) et italiques jamais coupees */
+.ouverture__m > .ouverture__l{ transform:translateY(130%) rotate(1.5deg); }
+.ouverture__l{ display:block; transform:translateY(110%) rotate(1.5deg); transform-origin:left top; transition:transform 1.1s cubic-bezier(.16,1,.3,1); }
+.scene--porte.est-ouverte .ouverture__l{ transform:none; }
+.scene__texte .ouverture__m > .scene__lien{ display:inline-block; }
+.scene__texte .ouverture__m > .scene__lien.ouverture__l{ display:inline-block; }
+@media (prefers-reduced-motion:reduce){
+  .scene--porte .scene__fond--photo, .scene--porte .scene__fond--photo img, .ouverture__l{ transition:none; }
+}
+
+/* 22 oct 2026. La bande "Nous ecrire" de l accueil : filet au-dessus, texte centre sur la mesure de phrase, lien de scene. */
+/* meme respiration que le pied de page (9,6 u en haut, 8,4 u en bas, mesure sur .pied), meme bord gauche */
+.ecrire{ border-top:1px solid var(--filet); padding:calc(var(--u)*20) var(--marge) !important; }
+.ecrire__boite{ text-align:center; }
+.ecrire .kicker{ margin:0 0 calc(var(--u)*2); }
+.ecrire__ligne{ font-size:var(--t-h3); line-height:1.3; margin:0; white-space:nowrap; max-width:none; }
+.ecrire .scene__lien{ margin-top:calc(var(--u)*3); }
+@media (max-width:1000px){ .ecrire{ padding-top:calc(var(--u)*12) !important; padding-bottom:calc(var(--u)*12) !important; } }
+@media (max-width:560px){ .ecrire__ligne{ white-space:normal; } }
+@media (max-width:560px){ .ecrire{ padding-top:calc(var(--u)*10) !important; padding-bottom:calc(var(--u)*10) !important; } }
+
+/* 22 oct 2026, Raouf : sur le mur ocre du rituel, le titre passe en papier */
+body[data-page="ritual"] .ecran__titre{ color:var(--papier); }
+
+/* 22 oct 2026 : transition porte -> El Ritual, CSS ecrit par Gemini 4 Argon */
+/* ==========================================================================
+   TRANSITION DE PORTE : ACCUEIL <-> EL RITUAL
+   ========================================================================== */
+
+/* 1. Alignement chirurgical du point focal entre la porte et le hero :
+   évite tout glissement interne ou cross-fade flou pendant la View Transition */
+/* (object-position 71% 100% : pose en ligne sur la porte El Ritual, pas sur les autres portes) */
+
+/* 2. Repli rapide du texte de la porte au clic (dans le masque existant) */
+.scene--porte.est-quittee .ouverture__l {
+  transform: translateY(-115%) rotate(-1deg) !important;
+  transition: transform 240ms cubic-bezier(.22, 1, .36, 1) !important;
+  transition-delay: 0ms !important;
+}
+
+/* 3. Isolation de la barre de navigation : toujours au-dessus, jamais dupliquée */
+.tete {
+  view-transition-name: site-tete;
+}
+::view-transition-group(site-tete) {
+  z-index: 100;
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(.16, 1, .3, 1);
+}
+
+/* 4. La photo partagée (rituel-hero) : UNE SEULE course géométrique (900ms expo.out) */
+::view-transition-group(rituel-hero) {
+  z-index: 10;
+  animation-duration: 1100ms;
+  animation-timing-function: cubic-bezier(.65, 0, .15, 1); /* 22 oct, mesure au screencast : avec expo.out la photo etait en place a 230 ms puis plus rien pendant 1 s ; une courbe en S fait lire la course */
+}
+::view-transition-image-pair(rituel-hero) {
+  isolation: auto;
+}
+::view-transition-old(rituel-hero),
+::view-transition-new(rituel-hero) {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: 71% 100%;
+  overflow: hidden;
+}
+/* Même image des deux côtés : on affiche la nouvelle immédiatement et on coupe l'ancienne.
+   Zéro fantôme de double exposition pendant que le cadre grandit. */
+::view-transition-new(rituel-hero) {
+  animation: none;
+}
+::view-transition-old(rituel-hero) {
+  animation: none;
+  opacity: 0;
+}
+
+/* 5. Fond de page (root) : calme, pas de sursaut */
+::view-transition-old(root) {
+  animation: 450ms cubic-bezier(.22, 1, .36, 1) both vt-fondu-sortie;
+}
+::view-transition-new(root) {
+  animation: 650ms cubic-bezier(.16, 1, .3, 1) both vt-fondu-entree;
+}
+
+/* 6. Arrivée différée du titre "El Ritual" sur le mur à la chaux :
+   il attend que la photo ait presque fini de se poser (380ms de délai) */
+/* 22 oct 2026, Raouf : "the title needs to appear in a more subtle and stylish way". Le titre monte hors du mur
+   comme les lignes des portes : masque fixe au pied du mot (clip-path qui recule exactement comme le texte
+   monte), 1.1 s expo.out, apres que la photo s'est posee. */
+@keyframes entree-titre-rituel {
+  from { opacity: 0; transform: translateY(.6em); clip-path: inset(-.2em -.2em .6em -.2em); }
+  30%  { opacity: 1; }
+  to   { opacity: 1; transform: none;             clip-path: inset(-.2em -.2em -.25em -.2em); }
+}
+.ecran__titre {
+  animation: entree-titre-rituel 1100ms cubic-bezier(.16, 1, .3, 1) 700ms both;
+}
+
+/* 7. Fallback sans View Transitions (Firefox) : conteneur fixe animé par clip-path */
+.porte-plein {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 35; /* Sous .tete (z-index: 40) */
+  overflow: hidden;
+  pointer-events: none;
+  will-change: clip-path;
+}
+.porte-plein img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  .ecran__titre {
+    animation: none !important;
+  }
+}
+
+/* 22 oct 2026, Raouf : "the sub menu, slightly smaller, 15 %". Le panneau entier a 0.85 : emblemes, noms, ecarts, marges. */
+.pan__in{ padding:calc(var(--u)*3.4) calc(var(--u)*3.4) calc(var(--u)*3.8); }
+.pan__c{ gap:calc(var(--u)*1.7); padding:calc(var(--u)*1.3) calc(var(--u)*1.7); }
+.pan__em{ height:75px; }
+.pan__n{ font-size:11px; }
+
+
+/* 22 oct 2026, Raouf : "La Tierra needs to be more clear and visual". Plan de Gemini 4 Argon (scratchpad argon_tierra) :
+   photo + textes cote a cote dans les chapitres, le jeu dans la case 05, trois grands chiffres en tete du palenque,
+   citation retiree, grille des enjeux en carrousel au telephone. */
+.duo{ display:grid; grid-template-columns:5fr 7fr; gap:calc(var(--u)*6); align-items:start; margin-top:calc(var(--u)*5); }
+.duo--textes{ grid-template-columns:7fr 5fr; }
+.duo__img{ margin:0; }
+.duo__img img{ display:block; width:100%; height:auto; border-radius:var(--rond-petit); }
+.legende--duo{ padding:var(--u) 0 0; margin:0; text-align:left; }
+.detail--pile{ columns:1; }
+.detail--pile > div{ margin-bottom:calc(var(--u)*3.5); }
+.duo .sous-titre--haut, .duo .sous-titre{ margin-top:0; }
+.duo .engagements li{ grid-template-columns:1fr; gap:calc(var(--u)*.75); }
+.procede__lien{ display:inline-block; margin-top:calc(var(--u)*2); font-size:13px; letter-spacing:.08em; text-transform:uppercase;
+  font-family:var(--slab); color:var(--brique); text-decoration:none; border-bottom:1px solid var(--brique); padding-bottom:2px; }
+.procede__lien:hover{ color:var(--encre); border-color:var(--encre); }
+body[data-page="tierra"] .chapitre__tete .reperes{ margin-top:calc(var(--u)*1); }
+@media (max-width:1000px){
+  .duo, .duo--textes{ grid-template-columns:1fr; gap:calc(var(--u)*4); }
+  .duo--textes > div:last-child{ order:-1; }
+}
+@media (max-width:760px){
+  body[data-page="tierra"] .tuiles{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+    margin-left:calc(var(--marge)*-1); margin-right:calc(var(--marge)*-1); padding:0 var(--marge); }
+  body[data-page="tierra"] .tuiles::-webkit-scrollbar{ display:none; }
+  body[data-page="tierra"] .tuile{ flex:0 0 76vw; scroll-snap-align:start; min-height:0; }
+  body[data-page="tierra"] .tuile--tete{ flex-basis:64vw; }
+}
+
+/* 22 oct 2026, Raouf : le champ du jeu sur l'accueil (index.html, section .champ). Version minimale retenue :
+   papier, texte au-dessus, deux lignes de montagnes en papier decoupe qui glissent au defilement. */
+.champ{ border-top:1px solid var(--filet); padding:calc(var(--u)*14) 0 0 !important; text-align:center; overflow:hidden; background:var(--papier); }
+.champ__texte{ padding:0 var(--marge); }
+.champ .kicker{ margin:0 0 calc(var(--u)*2); }
+.champ .ecrire__ligne{ margin:0; }
+.champ .scene__lien{ margin-top:calc(var(--u)*3); }
+.champ .ouverture__m > .scene__lien.ouverture__l{ display:inline-block; }
+.champ__scene{ position:relative; height:clamp(120px,14vw,202px); margin-top:0; }  /* 22 oct, Raouf : 30 px entre le bouton et la premiere montagne, mesure au centre */
+.champ + .ecrire{ border-top:0; }  /* 22 oct, Raouf : pas de filet sous les montagnes */
+.champ__svg{ display:block; width:100%; height:100%; }
+.champ__couche{ will-change:transform; }
+.champ.est-ouverte .ouverture__l{ transform:none; }
+@media (max-width:760px){
+  .champ{ padding-top:calc(var(--u)*9) !important; }
+  .champ__scene{ height:120px; margin-top:12px; }
+  .champ .ecrire__ligne{ white-space:normal; }
+}
+
+/* 22 oct 2026 : La Historia s'ouvre sur la facade verte, titre en papier comme El Ritual */
+body[data-page="historia"] .ecran__titre{ color:var(--papier); }
+
+/* 22 oct 2026 : MODE TEXTE (deux appuis sur Shift). Les textes editables se signalent, une barre en bas. */
+.mode-texte [contenteditable]{ outline:1px dashed var(--brique); outline-offset:3px; cursor:text; min-width:1ch; }
+.mode-texte [contenteditable]:focus{ outline-style:solid; background:rgba(166,61,36,.06); }
+.mode-texte__barre{ position:fixed; left:50%; bottom:calc(var(--u)*2); transform:translateX(-50%); z-index:200; display:flex; align-items:center; gap:calc(var(--u)*2);
+  background:var(--encre); color:var(--papier); padding:calc(var(--u)*1.25) calc(var(--u)*2.5); border-radius:var(--rond); font-size:13px; box-shadow:0 8px 30px rgba(43,33,24,.25); max-width:calc(100vw - 32px); flex-wrap:wrap; justify-content:center; }
+.mode-texte__mot{ font-family:var(--slab); letter-spacing:var(--ls-petit); text-transform:uppercase; font-size:11px; }
+.mode-texte__aide{ opacity:.7; }
+.mode-texte__b{ background:var(--papier); color:var(--encre); border:0; border-radius:var(--rond); padding:6px 12px; font:inherit; font-size:12px; cursor:pointer; }
+.mode-texte__b:disabled{ opacity:.45; cursor:default; }
+.mode-texte__b--second{ background:transparent; color:var(--papier); border:1px solid rgba(254,249,243,.4); }

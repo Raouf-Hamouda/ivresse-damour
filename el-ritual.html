@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/img/favicon.svg?v=20261005e" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png?v=20261005e" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261005e">
+<link rel="icon" href="assets/img/favicon.svg?v=20261023r" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png?v=20261023r" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261023r">
 <title>El Ritual. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20261005e">
-<script src="assets/js/logo.js?v=20261005e"></script>
-<script src="assets/js/sceau_anime.js?v=20261005e"></script>
-<script src="assets/js/emblemes.js?v=20261005e"></script>
-<script src="assets/js/site.js?v=20261005e"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20261023r">
+<script src="assets/js/logo.js?v=20261023r"></script>
+<script src="assets/js/sceau_anime.js?v=20261023r"></script>
+<script src="assets/js/emblemes.js?v=20261023r"></script>
+<script src="assets/js/site.js?v=20261023r"></script>
 </head>
 
 <!-- ============================================================================
@@ -69,225 +69,93 @@
 
 <main class="page">
 
+  <!-- 6 oct 2026 : l'image ouvre la page, plein ecran, le titre vient dessous (Raouf). -->
+  <figure class="bloc-image bloc-image--ecran">
+    <picture>
+      <source media="(max-width:760px)" srcset="assets/img/rituel/copita_jicara_portrait_900.jpg?v=20261022z 900w, assets/img/rituel/copita_jicara_portrait_1600.jpg?v=20261022z 1600w" sizes="100vw">
+      <img style="object-position:71% 100%; view-transition-name:rituel-hero" src="assets/img/rituel/copita_jicara_900.jpg?v=20261022z" srcset="assets/img/rituel/copita_jicara_900.jpg?v=20261022z 900w, assets/img/rituel/copita_jicara_1600.jpg?v=20261022z 1600w, assets/img/rituel/copita_jicara_2752.jpg?v=20261022z 2752w" sizes="100vw" width="1600" height="900" fetchpriority="high" loading="eager" decoding="sync" alt="" data-fr-alt="Une jícara et une copita de mezcal sur une pierre claire, devant un mur à la chaux couleur abricot." data-es-alt="Una jícara y una copita de mezcal sobre una piedra clara, frente a un muro de cal color durazno." data-en-alt="A jícara and a copita of mezcal on pale stone, in front of an apricot lime-washed wall.">
+    </picture>
+    <h1 class="ecran__titre" data-fr="El Ritual" data-es="El Ritual" data-en="El Ritual"></h1>
+  </figure>
+
+
   <!-- ===================================================================
        1. ENTETE DE PAGE. Une seule par page. Le texte de la structure du
        3 aout, resserre, y compris la phrase qui definit cette page :
        c est la seule qui grandit avec le temps.
        =================================================================== -->
-  <section class="entete-page">
-    <div class="boite">
-      <h1 data-fr="El Ritual" data-es="El Ritual" data-en="El Ritual"></h1>
-    </div>
-  </section>
 
   <!-- ===================================================================
-       2. LA VERSEE. Image pleine largeur, aucun texte dessus.
+       REFONTE DU 5 OCTOBRE 2026 (Raouf : "the ritual page need to be redone
+       better"). Les plaques vides, le kicker "La maniere", la longue table des
+       faits, la phrase seule et le choix par onglets sont retires (ancienne
+       page : _archives/el-ritual_avant_refonte_2026-10-05.html). La page prend
+       la grammaire de la section des cocktails : une image, un numero, un nom,
+       une ligne. Images : 20_IMAGES_COMME_VAGO/COCKTAILS/v4.
+       Ecart avec l'appel du 27 juillet (lignes 730 a 766, images qui changent
+       au clic) : les trois accords sont montres ensemble, sans clic.
        =================================================================== -->
-  <figure class="bloc-image bloc-image--haut fondu">
-    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="1600" height="900" fill="var(--creme)"/>
-      <rect x="60" y="60" width="1480" height="780" fill="none" stroke="var(--papier)" stroke-width="3"/>
-      <path d="M60 60 L1540 840 M1540 60 L60 840" stroke="var(--papier)" stroke-width="3" fill="none"/>
-    </svg>
-  </figure>
-  <p class="legende">
-    <span data-fr="La versée" data-es="El servido" data-en="The pour"></span>
-    <!-- Note de chantier, retiree de la vue : photographie attendue, mise en scene.
-    <span class="mention" data-fr="· Photographie attendue, mise en scène"
-          data-es="· Fotografía pendiente, puesta en escena"
-          data-en="· Photograph awaited, staged"></span> -->
-  </p>
 
-  <!-- ===================================================================
-       3. LA MANIERE. Le verre, la temperature, le geste.
-       L emblème valide pour cette page est ritual : les deux mains du sceau
-       qui offrent la copita.
-       =================================================================== -->
-  <section class="section section--filet">
+  <!-- 1. PUR D'ABORD. Le duo se lit a cote de son embleme, les quatre faits tiennent sur une bande. -->
+  <section class="section">
     <div class="boite">
       <div class="avec-cote">
-        <div class="avec-cote__cote">
-          <p class="kicker" data-fr="La manière" data-es="La manera" data-en="The way"></p>
+        <div class="avec-cote__cote rituel__duo">
           <span class="embleme embleme--m" data-embleme="ritual"></span>
+          <p class="kicker" data-fr="Un duo, à l'apéritif ou de nuit" data-es="Un dúo, en el aperitivo o de noche" data-en="A duo, at the aperitivo or at night"></p>
         </div>
         <div class="colonne fondu">
-          <h2 data-fr="Le verre et la jícara" data-es="El vaso y la jícara" data-en="The glass and the jícara"></h2>
-          <p data-fr="On le boit pur, dans la copita, à température ambiante. Rien de froid, rien de coupé, rien par dessus."
-             data-es="Se bebe solo, en la copita, a temperatura ambiente. Nada frío, nada rebajado, nada encima."
-             data-en="It is drunk neat, in the copita, at room temperature. Nothing cold, nothing cut, nothing on top."></p>
-          <p data-fr="Le service se joue entre le verre et la jícara, la demi calebasse. La table de la maison emploie les deux."
-             data-es="El servicio se juega entre el vaso y la jícara, la media calabaza. La mesa de la casa usa los dos."
-             data-en="The service is played between the glass and the jícara, the half gourd. The table of the house uses both."></p>
-          <p data-fr="À table, un duo. Pas forcément un couple : un duo, à l'apéritif, ou de nuit."
-             data-es="En la mesa, un dúo. No forzosamente una pareja: un dúo, en el aperitivo, o de noche."
-             data-en="At the table, a duo. Not necessarily a couple: a duo, at the aperitivo, or at night."></p>
+          <h2 data-fr="Pur, dans la copita" data-es="Solo, en la copita" data-en="Neat, in the copita"></h2>
+          <p data-fr="Il se déguste pur, à température ambiante, dans un verre copita ou dans une jícara, la traditionnelle coupe en calebasse."
+             data-es="Primero se prueba solo, a temperatura ambiente, en la copita o en la jícara, la media calabaza. La mesa de la casa usa las dos."
+             data-en="First taste it neat, at room temperature, in the copita or in the jícara, the half gourd. The table of the house uses both."></p>
+          <p data-fr="On verse peu, on boit lentement, et la bouteille reste sur la table."
+             data-es="Se sirve poco, se bebe despacio, y la botella se queda en la mesa."
+             data-en="Pour a little, drink slowly, and the bottle stays on the table."></p>
         </div>
       </div>
-
-      <dl class="faits fondu">
-        <div class="faits__l"><dt class="faits__k" data-fr="Verre" data-es="Vaso" data-en="Glass"></dt>
-          <dd class="faits__v" data-fr="La copita" data-es="La copita" data-en="The copita"></dd></div>
-        <div class="faits__l"><dt class="faits__k" data-fr="Récipient" data-es="Recipiente" data-en="Vessel"></dt>
-          <dd class="faits__v">
-            <span data-fr="La jícara, la demi calebasse" data-es="La jícara, la media calabaza" data-en="The jícara, the half gourd"></span>
-            <!-- Note de chantier, retiree de la vue : mot transcrit « kikara » dans l appel du 27 juillet, ligne 70.
-            <span class="mention" data-fr="· transcrite « kikara » le 27 juillet"
-                  data-es="· transcrita « kikara » el 27 de julio"
-                  data-en="· transcribed “kikara” on 27 July"></span> --></dd></div>
-        <div class="faits__l"><dt class="faits__k" data-fr="Température" data-es="Temperatura" data-en="Temperature"></dt>
-          <dd class="faits__v" data-fr="Ambiante" data-es="Ambiente" data-en="Room temperature"></dd></div>
-        <div class="faits__l"><dt class="faits__k" data-fr="Service" data-es="Servicio" data-en="Service"></dt>
-          <dd class="faits__v" data-fr="Pur, sans glace" data-es="Solo, sin hielo" data-en="Neat, no ice"></dd></div>
-        <div class="faits__l"><dt class="faits__k" data-fr="Compagnie" data-es="Compañía" data-en="Company"></dt>
-          <dd class="faits__v" data-fr="Un duo, pas forcément un couple" data-es="Un dúo, no forzosamente una pareja" data-en="A duo, not necessarily a couple"></dd></div>
-        <div class="faits__l"><dt class="faits__k" data-fr="Moment" data-es="Momento" data-en="Moment"></dt>
-          <dd class="faits__v" data-fr="L'apéritif, ou la nuit" data-es="El aperitivo, o la noche" data-en="The aperitivo, or the night"></dd></div>
-      </dl>
+      <ul class="bande-faits fondu">
+        <li><span data-fr="Verre" data-es="Vaso" data-en="Glass"></span><span data-fr="La copita" data-es="La copita" data-en="The copita"></span></li>
+        <li><span data-fr="Récipient" data-es="Recipiente" data-en="Vessel"></span><span data-fr="La jícara" data-es="La jícara" data-en="The jícara"></span></li>
+        <li><span data-fr="Température" data-es="Temperatura" data-en="Temperature"></span><span data-fr="Ambiante" data-es="Ambiente" data-en="Room"></span></li>
+        <li><span data-fr="Service" data-es="Servicio" data-en="Service"></span><span data-fr="Pur, sans glace" data-es="Solo, sin hielo" data-en="Neat, no ice"></span></li>
+      </ul>
     </div>
   </section>
 
-  <!-- ===================================================================
-       4. LE DUO. L image que la famille decrit lignes 749 a 766 : un duo,
-       pas forcement un couple, a l aperitif ou de nuit. Emplacement tenu.
-       =================================================================== -->
-  <figure class="bloc-image bloc-image--encadre fondu">
-    <svg viewBox="0 0 1600 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="1600" height="620" fill="var(--creme)"/>
-      <rect x="40" y="40" width="1520" height="540" fill="none" stroke="var(--papier)" stroke-width="3"/>
-      <path d="M40 40 L1560 580 M1560 40 L40 580" stroke="var(--papier)" stroke-width="3" fill="none"/>
-    </svg>
-  </figure>
-  <p class="legende">
-    <span data-fr="Un duo, à l'apéritif ou de nuit"
-          data-es="Un dúo, en el aperitivo o de noche"
-          data-en="A duo, at the aperitivo or at night"></span>
-    <!-- Note de chantier, retiree de la vue : photographie attendue, mise en scene.
-    <span class="mention" data-fr="· Photographie attendue, mise en scène"
-          data-es="· Fotografía pendiente, puesta en escena"
-          data-en="· Photograph awaited, staged"></span> -->
-  </p>
-
-  <!-- ===================================================================
-       5. UNE SEULE PHRASE. Vingt six signes de large, jamais deux phrases.
-       =================================================================== -->
-  <section class="bloc-phrase fondu">
-    <p data-fr="Le service se joue entre le verre et la jícara."
-       data-es="El servicio se juega entre el vaso y la jícara."
-       data-en="The service is played between the glass and the jícara."></p>
-  </section>
-
-  <!-- ===================================================================
-       6. LA TABLE. Un rituel par bouteille, leurs accords.
-       Les trois noms sont les declencheurs demandes par la famille : au
-       survol la plaque du rituel se decouvre, au clic elle reste. Chaque
-       rituel garde en plus son propre lien vers sa bouteille, plus bas.
-       Sans JavaScript les trois noms restent des liens d ancre vers leur
-       bloc de texte, et les trois plaques restent visibles l une sous
-       l autre : rien ne disparait.
-       =================================================================== -->
-  <section class="section section--filet">
+  <!-- 2. UN RITUEL PAR BOUTEILLE. Les trois accords de la famille (appel, lignes 972 a 998), cote a cote. -->
+  <section class="section section--filet" id="accords">
     <div class="boite">
       <p class="kicker" data-fr="La table" data-es="La mesa" data-en="The table"></p>
       <div class="colonne fondu">
         <h2 data-fr="Un rituel par bouteille" data-es="Un ritual por botella" data-en="One ritual per bottle"></h2>
-        <p data-fr="Trois bouteilles, trois rituels. Les accords de la maison, tels qu'elle les sert à sa table."
-           data-es="Tres botellas, tres rituales. Los maridajes de la casa, tal como los sirve en su mesa."
-           data-en="Three bottles, three rituals. The pairings of the house, as it serves them at its table."></p>
+        <p data-fr="Trois bouteilles, trois accords, tels que la maison les sert à sa table."
+           data-es="Tres botellas, tres maridajes, tal como la casa los sirve en su mesa."
+           data-en="Three bottles, three pairings, as the house serves them at its table."></p>
       </div>
-      <p>
-        <a class="lien-discret" data-choix="espadin" href="#rituel-espadin">Espadín</a>
-        <span class="mention"> · </span>
-        <a class="lien-discret" data-choix="tobala" href="#rituel-tobala">Tobalá</a>
-        <span class="mention"> · </span>
-        <a class="lien-discret" data-choix="coyote" href="#rituel-coyote">Coyote</a>
-      </p>
-    </div>
-  </section>
-
-  <!-- 1er sept, 23h35 : la troisieme affiche de la maison (les deux autres :
-       La Historia avec l'espadín, El Palenque avec le tobalá, en miroir).
-       Au milieu de la page, une fois le rituel lu. Le coyote, la bouteille
-       qu'on ouvre pour ce geste-la ; le bouton mene a sa page d'achat. -->
-  <section class="affiche affiche--creme">
-    <div class="affiche__deux">
-      <div class="affiche__mot">
-        <p class="affiche__kicker" data-fr="Le service" data-es="El servicio" data-en="Serving"></p>
-        <h2 class="affiche__titre" data-fr="Pur, dans la copita" data-es="Solo, en la copita" data-en="Neat, in the copita"></h2>
-        <p class="affiche__ligne" data-fr="À température ambiante. Rien de froid, rien de coupé, rien par-dessus. On verse peu, on boit lentement, et la bouteille reste sur la table." data-es="A temperatura ambiente. Nada frío, nada rebajado, nada encima. Se sirve poco, se bebe despacio, y la botella se queda en la mesa." data-en="At room temperature. Nothing cold, nothing cut, nothing on top. Pour a little, drink slowly, and the bottle stays on the table."></p>
-        <a class="b-plein affiche__b" href="acheter-coyote.html" data-fr="Voir la bouteille" data-es="Ver la botella" data-en="See the bottle"></a>
-      </div>
-      <figure class="affiche__objet">
-        <img src="assets/img/bouteilles/coyote_1200.jpg" srcset="assets/img/bouteilles/coyote_600.jpg 600w, assets/img/bouteilles/coyote_1200.jpg 1200w, assets/img/bouteilles/coyote_2000.jpg 2000w" sizes="(max-width:1000px) 100vw, 46vw" alt="" data-fr-alt="La bouteille de coyote sur le papier de la maison." data-es-alt="La botella de coyote sobre el papel de la casa." data-en-alt="The coyote bottle on the house paper." width="1999" height="1493">
-      </figure>
-    </div>
-  </section>
-
-  <!-- Les trois plaques du rituel. Meme hauteur, trois formats de cadre :
-       portrait pour la versee de l espadin, carre pour le tobala, panoramique
-       pour la table du coyote. Le format est une decision, pas un dessin :
-       rien de figuratif n est improvise ici. -->
-  <figure class="bloc-image bloc-image--encadre fondu" id="plaques-rituel">
-    <svg data-plaque="espadin" viewBox="0 0 1600 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="1600" height="760" fill="var(--creme)"/>
-      <rect x="600" y="30" width="400" height="700" fill="none" stroke="var(--papier)" stroke-width="3"/>
-      <path d="M600 30 L1000 730 M1000 30 L600 730" stroke="var(--papier)" stroke-width="3" fill="none"/>
-    </svg>
-    <svg data-plaque="tobala" viewBox="0 0 1600 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="1600" height="760" fill="var(--creme)"/>
-      <rect x="460" y="40" width="680" height="680" fill="none" stroke="var(--papier)" stroke-width="3"/>
-      <path d="M460 40 L1140 720 M1140 40 L460 720" stroke="var(--papier)" stroke-width="3" fill="none"/>
-    </svg>
-    <svg data-plaque="coyote" viewBox="0 0 1600 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="1600" height="760" fill="var(--creme)"/>
-      <rect x="60" y="170" width="1480" height="420" fill="none" stroke="var(--papier)" stroke-width="3"/>
-      <path d="M60 170 L1540 590 M1540 170 L60 590" stroke="var(--papier)" stroke-width="3" fill="none"/>
-    </svg>
-  </figure>
-  <p class="legende">
-    <span data-rl="espadin" data-fr="L'espadín, presque tout, et l'essai aux oranges"
-          data-es="El espadín, casi todo, y el ensayo con naranjas"
-          data-en="The espadín, almost everything, and the try with oranges"></span>
-    <span data-rl="tobala" hidden data-fr="Le tobalá et le comté douze mois"
-          data-es="El tobalá y el comté de doce meses"
-          data-en="The tobalá and twelve month comté"></span>
-    <span data-rl="coyote" hidden data-fr="Le coyote et les tomates"
-          data-es="El coyote y los tomates"
-          data-en="The coyote and tomatoes"></span>
-    <!-- Note de chantier, retiree de la vue : photographie attendue, photographe d Alejandro Strauss.
-    <span class="mention" data-fr="· Photographie attendue, photographe d'Alejandro Strauss"
-          data-es="· Fotografía pendiente, fotógrafo de Alejandro Strauss"
-          data-en="· Photograph awaited, Alejandro Strauss's photographer"></span> -->
-  </p>
-
-  <!-- Les trois rituels, en toutes lettres. Chacun renvoie a sa bouteille. -->
-  <section class="section">
-    <div class="boite">
-      <div class="colonne fondu" id="rituel-espadin">
-        <h3 data-fr="Espadín" data-es="Espadín" data-en="Espadín"></h3>
-        <p data-fr="Il va avec presque tout. Le dernier essai de la maison s'est fait avec des oranges."
-           data-es="Va con casi todo. El último ensayo de la casa se hizo con naranjas."
-           data-en="It goes with almost everything. The last try by the house was made with oranges."></p>
-        <p><a class="lien-discret" href="espadin.html"
-              data-fr="La bouteille espadín" data-es="La botella espadín" data-en="The espadín bottle"></a></p>
-      </div>
-
-      <div class="colonne fondu" id="rituel-tobala">
-        <h3 data-fr="Tobalá" data-es="Tobalá" data-en="Tobalá"></h3>
-        <p data-fr="Avec un comté douze mois. C'est l'accord que la maison cite en premier."
-           data-es="Con un comté de doce meses. Es el maridaje que la casa cita primero."
-           data-en="With a twelve month comté. It is the pairing the house names first."></p>
-        <p><a class="lien-discret" href="tobala.html"
-              data-fr="La bouteille tobalá" data-es="La botella tobalá" data-en="The tobalá bottle"></a></p>
-      </div>
-
-      <div class="colonne fondu" id="rituel-coyote">
-        <h3 data-fr="Coyote" data-es="Coyote" data-en="Coyote"></h3>
-        <p data-fr="Avec des tomates. La table se monte autour d'elles, pas autour du verre."
-           data-es="Con tomates. La mesa se arma alrededor de ellos, no alrededor del vaso."
-           data-en="With tomatoes. The table is built around them, not around the glass."></p>
-        <p><a class="lien-discret" href="coyote.html"
-              data-fr="La bouteille coyote" data-es="La botella coyote" data-en="The coyote bottle"></a></p>
-      </div>
+      <ul class="verres verres--trio">
+        <li class="verres__i fondu" id="rituel-espadin">
+          <img src="assets/img/rituel/accord_espadin_900.jpg?v=20261022v" srcset="assets/img/rituel/accord_espadin_900.jpg?v=20261022v 900w, assets/img/rituel/accord_espadin_1600.jpg?v=20261022v 1600w" sizes="(max-width:760px) 100vw, 30vw" width="1600" height="2000" alt="" loading="lazy" data-fr-alt="Presque tout, et les oranges" data-es-alt="Casi todo, y las naranjas" data-en-alt="Almost everything, and oranges">
+          <p class="verres__tete"><span class="verres__num">01</span><span>Espadín</span></p>
+          <h3 class="verres__nom" data-fr="Des quartiers d'orange" data-es="Casi todo, y las naranjas" data-en="Almost everything, and oranges"></h3>
+          <p class="verres__ligne" data-fr="Servi avec quelques quartiers d'orange fraîche." data-es="El último ensayo: naranjas." data-en="The latest try: oranges."></p>
+          <p><a class="lien-discret" href="espadin.html" data-fr="L'Espadín" data-es="La botella espadín" data-en="The espadín bottle"></a></p>
+        </li>
+        <li class="verres__i fondu" id="rituel-tobala">
+          <img src="assets/img/rituel/accord_tobala_900.jpg?v=20261022v" srcset="assets/img/rituel/accord_tobala_900.jpg?v=20261022v 900w, assets/img/rituel/accord_tobala_1600.jpg?v=20261022v 1600w" sizes="(max-width:760px) 100vw, 30vw" width="1600" height="2000" alt="" loading="lazy" data-fr-alt="Le comté douze mois" data-es-alt="El comté de doce meses" data-en-alt="Twelve month comté">
+          <p class="verres__tete"><span class="verres__num">02</span><span>Tobalá</span></p>
+          <h3 class="verres__nom" data-fr="Le comté douze mois" data-es="El comté de doce meses" data-en="Twelve month comté"></h3>
+          <p class="verres__ligne" data-fr="Pur, dans la jícara. Jamais mélangé." data-es="Solo, en jícara. Nunca mezclado." data-en="Neat, in the jícara. Never mixed."></p>
+          <p><a class="lien-discret" href="tobala.html" data-fr="Le Tobalá" data-es="La botella tobalá" data-en="The tobalá bottle"></a></p>
+        </li>
+        <li class="verres__i fondu" id="rituel-coyote">
+          <img src="assets/img/rituel/accord_coyote_900.jpg?v=20261022v" srcset="assets/img/rituel/accord_coyote_900.jpg?v=20261022v 900w, assets/img/rituel/accord_coyote_1600.jpg?v=20261022v 1600w" sizes="(max-width:760px) 100vw, 30vw" width="1600" height="2000" alt="" loading="lazy" data-fr-alt="Les tomates" data-es-alt="Los tomates" data-en-alt="Tomatoes">
+          <p class="verres__tete"><span class="verres__num">03</span><span>Coyote</span></p>
+          <h3 class="verres__nom" data-fr="Les tomates" data-es="Los tomates" data-en="Tomatoes"></h3>
+          <p class="verres__ligne" data-fr="Avec des tomates fraîches légèrement salées." data-es="La mesa se arma alrededor de ellos." data-en="The table is built around them."></p>
+          <p><a class="lien-discret" href="coyote.html" data-fr="Le Coyote" data-es="La botella coyote" data-en="The coyote bottle"></a></p>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -300,10 +168,10 @@
        =================================================================== -->
   <section class="section section--filet">
     <div class="boite">
-      <p class="kicker" data-fr="Ce qu'on mange avec" data-es="Con qué se come" data-en="What is eaten with it"></p>
+      <p class="kicker" data-fr="Accords à table" data-es="Con qué se come" data-en="What is eaten with it"></p>
       <div class="colonne fondu">
-        <h2 data-fr="Les insectes de la table" data-es="Los insectos de la mesa" data-en="The insects at the table"></h2>
-        <p data-fr="Toritos salés, chicatanas, grillons au sel. C'est ce que la maison sert avec ses bouteilles."
+        <h2 data-fr="Les accompagnements d'Oaxaca" data-es="Los insectos de la mesa" data-en="The insects at the table"></h2>
+        <p data-fr="À Oaxaca comme chez Toloache, nous servons le mezcal avec des toritos salés, des fourmis chicatanas et des grillons au sel."
            data-es="Toritos salados, chicatanas, grillos con sal. Es lo que la casa sirve con sus botellas."
            data-en="Salted toritos, chicatanas, crickets with salt. That is what the house serves with its bottles."></p>
 
@@ -321,6 +189,157 @@
       <p class="mention" data-fr="La maison a dit les deux le 27 juillet, sans les relier"
          data-es="La casa dijo las dos cosas el 27 de julio, sin unirlas"
          data-en="The house said both on 27 July, without joining them"></p> -->
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       7 bis. EN COCKTAIL. Refait le 5 oct 2026 sur la page "How to drink" de
+       Mezcal Vago, dans la DA du site : deux colonnes decalees, l'image, le numero et le
+       lieu, le nom, une ligne, puis le depliant de la maison (.depli, comme sur les pages d'achat).
+       Quatre verres de la carte de Toloache (Mezcalita, Mezcal Sour, Mezcal
+       Mule, Mezcalfe ; toloacheparis.com/menu.php, sans recettes publiees :
+       specs classiques A FAIRE CONFIRMER PAR TOLOACHE) et deux de la maison.
+       Images : 20_IMAGES_COMME_VAGO/COCKTAILS/v3 (murs a la chaux aux couleurs de la maison, soleil, la tete de la bouteille sur deux images seulement).
+       =================================================================== -->
+  <section class="section section--filet" id="cocktails">
+    <div class="boite">
+      <p class="kicker" data-fr="En cocktail" data-es="En coctel" data-en="In a cocktail"></p>
+      <div class="colonne fondu">
+        <h2 data-fr="Six cocktails" data-es="Solo primero, luego seis tragos" data-en="Neat first, then six drinks"></h2>
+        <p data-fr="Après une première dégustation pure en copita, l'espadín et le coyote peuvent se prêter aux cocktails. Le tobalá se boit uniquement pur."
+           data-es="La primera vez, se prueba la botella sola, en la copita. Después, el espadín y el coyote se prestan al trago: cuatro recetas de la carta de Toloache, dos de la casa. El tobalá no se mezcla."
+           data-en="The first time, taste the bottle neat, in the copita. After that, the espadín and the coyote take well to a glass: four recipes from Toloache's menu, two from the house. The tobalá is never mixed."></p>
+      </div>
+      <ul class="verres">
+        <li class="verres__i fondu" id="cocktail-mezcalita">
+          <img src="assets/img/rituel/cv3_mezcalita_900.jpg" srcset="assets/img/rituel/cv3_mezcalita_900.jpg 900w, assets/img/rituel/cv3_mezcalita_1600.jpg 1600w" sizes="(max-width:760px) 100vw, 45vw" width="1600" height="2000" alt="" loading="lazy" data-fr-alt="Mezcalita" data-es-alt="Mezcalita" data-en-alt="Mezcalita">
+          <p class="verres__tete"><span class="verres__num">01</span><span data-fr="Chez Toloache" data-es="En Toloache" data-en="At Toloache"></span></p>
+          <h3 class="verres__nom" data-fr="Mezcalita" data-es="Mezcalita" data-en="Mezcalita"></h3>
+          <p class="verres__ligne" data-fr="Espadín, citron vert et sel." data-es="Limón y sal, el espadín por delante." data-en="Lime and salt, the espadín in front."></p>
+          <details class="depli">
+            <summary data-fr="La recette" data-es="La receta" data-en="The recipe"></summary>
+            <div class="depli__corps">
+              <dl class="faits">
+              <div class="faits__l"><dt class="faits__k" data-fr="Espadín" data-es="Espadín" data-en="Espadín"></dt><dd class="faits__v" data-fr="5 cl" data-es="5 cl" data-en="5 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Citron vert" data-es="Limón" data-en="Lime"></dt><dd class="faits__v" data-fr="2,5 cl" data-es="2,5 cl" data-en="2.5 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Sirop d'agave" data-es="Jarabe de agave" data-en="Agave syrup"></dt><dd class="faits__v" data-fr="1,5 cl" data-es="1,5 cl" data-en="1.5 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Le geste" data-es="El gesto" data-en="Method"></dt><dd class="faits__v" data-fr="Secouer fort sur glace, verser dans une coupe au bord à moitié salé, une rondelle de citron vert." data-es="Agitar fuerte con hielo, servir en copa con medio borde de sal, una rodaja de limón." data-en="Shake hard over ice, strain into a coupe with a half salt rim, a lime wheel."></dd></div>
+              </dl>
+              <p><a class="lien-discret" href="espadin.html" data-fr="L'Espadín" data-es="La botella espadín" data-en="The espadín bottle"></a></p>
+            </div>
+          </details>
+        </li>
+        <li class="verres__i verres__i--bas fondu" id="cocktail-sour">
+          <img src="assets/img/rituel/cv3_sour_900.jpg" srcset="assets/img/rituel/cv3_sour_900.jpg 900w, assets/img/rituel/cv3_sour_1600.jpg 1600w" sizes="(max-width:760px) 100vw, 45vw" width="1600" height="2000" alt="" loading="lazy" data-fr-alt="Mezcal Sour" data-es-alt="Mezcal Sour" data-en-alt="Mezcal Sour">
+          <p class="verres__tete"><span class="verres__num">02</span><span data-fr="Chez Toloache" data-es="En Toloache" data-en="At Toloache"></span></p>
+          <h3 class="verres__nom" data-fr="Mezcal Sour" data-es="Mezcal Sour" data-en="Mezcal Sour"></h3>
+          <p class="verres__ligne" data-fr="L'espadín sous une mousse blanche." data-es="El espadín bajo una espuma blanca." data-en="Espadín under a white foam."></p>
+          <details class="depli">
+            <summary data-fr="La recette" data-es="La receta" data-en="The recipe"></summary>
+            <div class="depli__corps">
+              <dl class="faits">
+              <div class="faits__l"><dt class="faits__k" data-fr="Espadín" data-es="Espadín" data-en="Espadín"></dt><dd class="faits__v" data-fr="5 cl" data-es="5 cl" data-en="5 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Citron vert" data-es="Limón" data-en="Lime"></dt><dd class="faits__v" data-fr="2,5 cl" data-es="2,5 cl" data-en="2.5 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Sirop de sucre" data-es="Jarabe simple" data-en="Simple syrup"></dt><dd class="faits__v" data-fr="1,5 cl" data-es="1,5 cl" data-en="1.5 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Blanc d'œuf" data-es="Clara de huevo" data-en="Egg white"></dt><dd class="faits__v" data-fr="1" data-es="1" data-en="1"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Le geste" data-es="El gesto" data-en="Method"></dt><dd class="faits__v" data-fr="Secouer d'abord sans glace, puis avec, verser dans un verre court, trois gouttes d'amer sur la mousse." data-es="Agitar primero sin hielo, luego con hielo, servir en vaso corto, tres gotas de amargo sobre la espuma." data-en="Dry shake, then shake with ice, pour into a short glass, three drops of bitters on the foam."></dd></div>
+              </dl>
+              <p><a class="lien-discret" href="espadin.html" data-fr="L'Espadín" data-es="La botella espadín" data-en="The espadín bottle"></a></p>
+            </div>
+          </details>
+        </li>
+        <li class="verres__i fondu" id="cocktail-mule">
+          <img src="assets/img/rituel/cv3_mule_900.jpg?v=20261022s" srcset="assets/img/rituel/cv3_mule_900.jpg?v=20261022s 900w, assets/img/rituel/cv3_mule_1600.jpg?v=20261022s 1600w" sizes="(max-width:760px) 100vw, 45vw" width="1600" height="2000" alt="" loading="lazy" data-fr-alt="Mezcal Mule" data-es-alt="Mezcal Mule" data-en-alt="Mezcal Mule">
+          <p class="verres__tete"><span class="verres__num">03</span><span data-fr="Chez Toloache" data-es="En Toloache" data-en="At Toloache"></span></p>
+          <h3 class="verres__nom" data-fr="Mezcal Mule" data-es="Mezcal Mule" data-en="Mezcal Mule"></h3>
+          <p class="verres__ligne" data-fr="Gingembre, citron vert, cuivre." data-es="Jengibre, limón, cobre." data-en="Ginger, lime, copper."></p>
+          <details class="depli">
+            <summary data-fr="La recette" data-es="La receta" data-en="The recipe"></summary>
+            <div class="depli__corps">
+              <dl class="faits">
+              <div class="faits__l"><dt class="faits__k" data-fr="Espadín" data-es="Espadín" data-en="Espadín"></dt><dd class="faits__v" data-fr="5 cl" data-es="5 cl" data-en="5 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Citron vert" data-es="Limón" data-en="Lime"></dt><dd class="faits__v" data-fr="1,5 cl" data-es="1,5 cl" data-en="1.5 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Ginger beer" data-es="Ginger beer" data-en="Ginger beer"></dt><dd class="faits__v" data-fr="12 cl" data-es="12 cl" data-en="12 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Le geste" data-es="El gesto" data-en="Method"></dt><dd class="faits__v" data-fr="Dans une tasse de cuivre pleine de glace, l'espadín et le citron, puis la ginger beer ; menthe et une lamelle de gingembre." data-es="En taza de cobre llena de hielo, el espadín y el limón, luego la ginger beer; menta y una lámina de jengibre." data-en="In a copper mug full of ice, espadín and lime, then ginger beer; mint and a slice of ginger."></dd></div>
+              </dl>
+              <p><a class="lien-discret" href="espadin.html" data-fr="L'Espadín" data-es="La botella espadín" data-en="The espadín bottle"></a></p>
+            </div>
+          </details>
+        </li>
+        <li class="verres__i verres__i--bas fondu" id="cocktail-mezcalfe">
+          <img src="assets/img/rituel/cv3_mezcalfe_900.jpg" srcset="assets/img/rituel/cv3_mezcalfe_900.jpg 900w, assets/img/rituel/cv3_mezcalfe_1600.jpg 1600w" sizes="(max-width:760px) 100vw, 45vw" width="1600" height="2000" alt="" loading="lazy" data-fr-alt="Mezcalfé" data-es-alt="Mezcalfé" data-en-alt="Mezcalfé">
+          <p class="verres__tete"><span class="verres__num">04</span><span data-fr="Chez Toloache" data-es="En Toloache" data-en="At Toloache"></span></p>
+          <h3 class="verres__nom" data-fr="Mezcalfé" data-es="Mezcalfé" data-en="Mezcalfé"></h3>
+          <p class="verres__ligne" data-fr="Un café serré, secoué avec l'espadín." data-es="Un café corto, agitado con espadín." data-en="A short coffee, shaken with espadín."></p>
+          <details class="depli">
+            <summary data-fr="La recette" data-es="La receta" data-en="The recipe"></summary>
+            <div class="depli__corps">
+              <dl class="faits">
+              <div class="faits__l"><dt class="faits__k" data-fr="Espadín" data-es="Espadín" data-en="Espadín"></dt><dd class="faits__v" data-fr="4 cl" data-es="4 cl" data-en="4 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Espresso" data-es="Espresso" data-en="Espresso"></dt><dd class="faits__v" data-fr="3 cl" data-es="3 cl" data-en="3 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Sirop de sucre" data-es="Jarabe simple" data-en="Simple syrup"></dt><dd class="faits__v" data-fr="1 cl" data-es="1 cl" data-en="1 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Le geste" data-es="El gesto" data-en="Method"></dt><dd class="faits__v" data-fr="Secouer très fort sur glace, filtrer dans un verre à pied, trois grains de café sur la crème." data-es="Agitar muy fuerte con hielo, colar en copa, tres granos de café sobre la crema." data-en="Shake very hard over ice, strain into a stemmed glass, three coffee beans on the crema."></dd></div>
+              </dl>
+              <p><a class="lien-discret" href="espadin.html" data-fr="L'Espadín" data-es="La botella espadín" data-en="The espadín bottle"></a></p>
+            </div>
+          </details>
+        </li>
+        <li class="verres__i fondu" id="cocktail-orange">
+          <img src="assets/img/rituel/cv3_orange_900.jpg" srcset="assets/img/rituel/cv3_orange_900.jpg 900w, assets/img/rituel/cv3_orange_1600.jpg 1600w" sizes="(max-width:760px) 100vw, 45vw" width="1600" height="2000" alt="" loading="lazy" data-fr-alt="L'espadín à l'orange" data-es-alt="El espadín con naranja" data-en-alt="Espadín and orange">
+          <p class="verres__tete"><span class="verres__num">05</span><span data-fr="La maison" data-es="La casa" data-en="The house"></span></p>
+          <h3 class="verres__nom" data-fr="Old Fashioned à l'espadín" data-es="El espadín con naranja" data-en="Espadín and orange"></h3>
+          <p class="verres__ligne" data-fr="Espadín, amer à l'orange et zeste." data-es="El último ensayo de la casa." data-en="The house's latest try."></p>
+          <details class="depli">
+            <summary data-fr="La recette" data-es="La receta" data-en="The recipe"></summary>
+            <div class="depli__corps">
+              <dl class="faits">
+              <div class="faits__l"><dt class="faits__k" data-fr="Espadín" data-es="Espadín" data-en="Espadín"></dt><dd class="faits__v" data-fr="6 cl" data-es="6 cl" data-en="6 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Sirop d'agave" data-es="Jarabe de agave" data-en="Agave syrup"></dt><dd class="faits__v" data-fr="1 cl" data-es="1 cl" data-en="1 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Amer à l'orange" data-es="Amargo de naranja" data-en="Orange bitters"></dt><dd class="faits__v" data-fr="2 traits" data-es="2 golpes" data-en="2 dashes"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Le geste" data-es="El gesto" data-en="Method"></dt><dd class="faits__v" data-fr="Remuer sur glace, verser sur un gros glaçon, presser un zeste d'orange au-dessus." data-es="Remover con hielo, servir sobre un hielo grande, exprimir una cáscara de naranja encima." data-en="Stir over ice, pour over one large cube, express an orange peel on top."></dd></div>
+              </dl>
+              <p><a class="lien-discret" href="espadin.html" data-fr="L'Espadín" data-es="La botella espadín" data-en="The espadín bottle"></a></p>
+            </div>
+          </details>
+        </li>
+        <li class="verres__i verres__i--bas fondu" id="cocktail-sangrita">
+          <img src="assets/img/rituel/cv3_sangrita_900.jpg" srcset="assets/img/rituel/cv3_sangrita_900.jpg 900w, assets/img/rituel/cv3_sangrita_1600.jpg 1600w" sizes="(max-width:760px) 100vw, 45vw" width="1600" height="2000" alt="" loading="lazy" data-fr-alt="Le coyote et sa sangrita" data-es-alt="El coyote y su sangrita" data-en-alt="Coyote and its sangrita">
+          <p class="verres__tete"><span class="verres__num">06</span><span data-fr="La maison" data-es="La casa" data-en="The house"></span></p>
+          <h3 class="verres__nom" data-fr="Le coyote et sa sangrita" data-es="El coyote y su sangrita" data-en="Coyote and its sangrita"></h3>
+          <p class="verres__ligne" data-fr="Une gorgée de l'un, puis de l'autre." data-es="Un trago de uno, luego del otro." data-en="A sip of one, then the other."></p>
+          <details class="depli">
+            <summary data-fr="La recette" data-es="La receta" data-en="The recipe"></summary>
+            <div class="depli__corps">
+              <dl class="faits">
+              <div class="faits__l"><dt class="faits__k" data-fr="Coyote" data-es="Coyote" data-en="Coyote"></dt><dd class="faits__v" data-fr="4 cl, pur" data-es="4 cl, solo" data-en="4 cl, neat"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Tomate pressée" data-es="Jitomate exprimido" data-en="Pressed tomato"></dt><dd class="faits__v" data-fr="4 cl" data-es="4 cl" data-en="4 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Orange et citron vert" data-es="Naranja y limón" data-en="Orange and lime"></dt><dd class="faits__v" data-fr="1 cl" data-es="1 cl" data-en="1 cl"></dd></div>
+              <div class="faits__l"><dt class="faits__k" data-fr="Le geste" data-es="El gesto" data-en="Method"></dt><dd class="faits__v" data-fr="La copita de coyote à côté de la sangrita : tomate, agrumes, une pincée de piment et de sel, servie fraîche." data-es="La copita de coyote junto a la sangrita: jitomate, cítricos, una pizca de chile y sal, servida fresca." data-en="The copita of coyote beside the sangrita: tomato, citrus, a pinch of chilli and salt, served chilled."></dd></div>
+              </dl>
+              <p><a class="lien-discret" href="coyote.html" data-fr="Le Coyote" data-es="La botella coyote" data-en="The coyote bottle"></a></p>
+            </div>
+          </details>
+        </li>
+      </ul>
+      <div class="colonne fondu">
+        <p data-fr="À la carte de Toloache aussi : le gâteau au cacao mexicain et mezcal, et le baba au mezcal."
+           data-es="También en la carta de Toloache: el pastel de cacao mexicano con mezcal, y el baba al mezcal."
+           data-en="Also on Toloache's menu: the Mexican cacao and mezcal cake, and the mezcal baba."></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="affiche affiche--creme">
+    <div class="affiche__deux">
+      <div class="affiche__mot">
+        <p class="affiche__kicker" data-fr="Agave sauvage" data-es="Agave silvestre" data-en="Wild agave"></p>
+        <h2 class="affiche__titre" data-fr="Le Coyote de Sola" data-es="El Coyote de Sola" data-en="The Coyote from Sola"></h2>
+        <p class="affiche__ligne" data-fr="Distillé seulement les années où la plante donne." data-es="Destilado solo los años en que la planta da." data-en="Distilled only in years when the plant yields."></p>
+        <a class="b-plein affiche__b" href="acheter-coyote.html" data-fr="Voir la bouteille" data-es="Ver la botella" data-en="See the bottle"></a>
+      </div>
+      <figure class="affiche__objet">
+        <img src="assets/img/bouteilles/coyote_1200.jpg" srcset="assets/img/bouteilles/coyote_600.jpg 600w, assets/img/bouteilles/coyote_1200.jpg 1200w, assets/img/bouteilles/coyote_2000.jpg 2000w" sizes="(max-width:1000px) 100vw, 46vw" alt="" data-fr-alt="La bouteille de coyote sur le papier de la maison." data-es-alt="La botella de coyote sobre el papel de la casa." data-en-alt="The coyote bottle on the house paper." width="1999" height="1493">
+      </figure>
     </div>
   </section>
 
@@ -346,57 +365,36 @@
        cosa." vient de la structure envoyee au client le 3 aout, ou elle est
        posee sur cette page. C est la phrase de la table, elle reste.
        =================================================================== -->
+  <!-- 5 oct 2026, Raouf : "why these parts are far away, people will get sick navigating".
+       Les trois phrases tiennent sur une rangee (une colonne au telephone), la traduction juste dessous,
+       et les deux sorties ferment la meme section. La traduction ne se montre pas en espagnol. -->
   <section class="section section--creme">
-    <div class="boite centre">
+    <div class="boite">
       <p class="kicker" data-fr="La devise" data-es="El lema" data-en="The motto"></p>
-
-      <blockquote class="citation fondu">
-        <!-- Graphie de la famille dans ses notes du 27 juillet : « En este mondo terrenal es oro liquido el mezcal ». Ecrit ici en espagnol courant (mundo, líquido), a confirmer mot a mot avec la famille avant impression. -->
-        <p>En este mundo terrenal es oro líquido el mezcal.</p>
-        <footer data-fr="La maison, 27 juillet 2026"
-                data-es="La casa, 27 de julio de 2026"
-                data-en="The house, 27 July 2026"></footer>
-      </blockquote>
-      <p class="colonne centre"
-         data-fr="Dans ce monde terrestre, le mezcal est de l'or liquide."
-         data-es="En este mundo terrenal, el mezcal es oro líquido."
-         data-en="In this earthly world, mezcal is liquid gold."></p>
-
-      <blockquote class="citation fondu">
-        <p>La amistad que nace en el flujo del mezcal sobrevive a cualquier cosa.</p>
-        <footer data-fr="La phrase de la table" data-es="La frase de la mesa" data-en="The sentence of the table"></footer>
-      </blockquote>
-      <p class="colonne centre"
-         data-fr="L'amitié qui naît dans le flux du mezcal survit à n'importe quoi."
-         data-es="La amistad que nace en el flujo del mezcal sobrevive a cualquier cosa."
-         data-en="The friendship born in the flow of mezcal survives anything."></p>
-
-      <!-- Le dicho. La famille aime les deux : celui ci est aussi sur El Mito, il
-           reste la bas. Ajoute ici le 16 aout au soir, a la demande de Raouf. -->
-      <blockquote class="citation fondu">
-        <p>Para todo mal, mezcal. Para todo bien, también.</p>
-        <footer data-fr="Dicho, Oaxaca" data-es="Dicho, Oaxaca" data-en="Dicho, Oaxaca"></footer>
-      </blockquote>
-      <p class="colonne centre"
-         data-fr="Pour tout mal, mezcal. Pour tout bien, aussi."
-         data-es="Para todo mal, mezcal. Para todo bien, también."
-         data-en="For every ill, mezcal. For every good, too."></p>
-    </div>
-  </section>
-
-  <!-- ===================================================================
-       9. LA SORTIE. La maison n a pas de bouton.
-       =================================================================== -->
-  <section class="section section--serre section--filet">
-    <div class="boite centre">
-      <!-- Note de chantier, retiree de la vue : cette page grandit avec le temps, nouveaux services, nouvelles tables, nouvelles occasions.
-      <p class="mention" data-fr="Cette page grandit : nouveaux services, nouvelles tables, nouvelles occasions"
-         data-es="Esta página crece: nuevos servicios, nuevas mesas, nuevas ocasiones"
-         data-en="This page grows: new services, new tables, new occasions"></p> -->
-      <p><a class="lien-discret" href="les-mezcales.html"
-            data-fr="Les trois bouteilles" data-es="Las tres botellas" data-en="The three bottles"></a></p>
-      <p><a class="lien-discret" href="eventos.html"
-            data-fr="Eventos, les tables de la maison" data-es="Eventos, las mesas de la casa" data-en="Eventos, the house's tables"></a></p>
+      <ul class="dichos">
+        <li class="dicho fondu"><!-- Graphie de la famille dans ses notes du 27 juillet : « En este mondo terrenal es oro liquido el mezcal ». Ecrit ici en espagnol courant (mundo, líquido), a confirmer mot a mot avec la famille avant impression. -->
+          <p class="dicho__es" lang="es">En este mundo terrenal es oro líquido el mezcal.</p>
+          <p class="dicho__t" data-lang="fr">Dans ce monde terrestre, le mezcal est de l'or liquide.</p>
+          <p class="dicho__t" data-lang="en">In this earthly world, mezcal is liquid gold.</p>
+          <p class="dicho__s" data-fr="La maison, 27 juillet 2026" data-es="La casa, 27 de julio de 2026" data-en="The house, 27 July 2026"></p>
+        </li>
+        <li class="dicho fondu">
+          <p class="dicho__es" lang="es">La amistad que nace en el flujo del mezcal sobrevive a cualquier cosa.</p>
+          <p class="dicho__t" data-lang="fr">L'amitié qui naît dans le flux du mezcal survit à n'importe quoi.</p>
+          <p class="dicho__t" data-lang="en">The friendship born in the flow of mezcal survives anything.</p>
+          <p class="dicho__s" data-fr="Proverbe d'Oaxaca" data-es="La frase de la mesa" data-en="The sentence of the table"></p>
+        </li>
+        <li class="dicho fondu">
+          <p class="dicho__es" lang="es">Para todo mal, mezcal. Para todo bien, también.</p>
+          <p class="dicho__t" data-lang="fr">Pour tout mal, mezcal. Pour tout bien, aussi.</p>
+          <p class="dicho__t" data-lang="en">For every ill, mezcal. For every good, too.</p>
+          <p class="dicho__s" data-fr="Dicho, Oaxaca" data-es="Dicho, Oaxaca" data-en="Dicho, Oaxaca"></p>
+        </li>
+      </ul>
+      <p class="dichos__sorties">
+        <a class="lien-discret" href="les-mezcales.html" data-fr="Les trois bouteilles" data-es="Las tres botellas" data-en="The three bottles"></a>
+        <a class="lien-discret" href="eventos.html" data-fr="Eventos, les tables de la maison" data-es="Eventos, las mesas de la casa" data-en="Eventos, the house's tables"></a>
+      </p>
     </div>
   </section>
 
@@ -404,105 +402,5 @@
 
 <script>siteChrome.init();</script>
 
-<script>
-/* ============================================================================
-   LE CHOIX DU RITUEL. La seule interaction de la page, et elle n existe que
-   sur cette page.
-
-   Demande de la famille, appel du 27 juillet, lignes 730 a 766 : au survol du
-   bouton rituel une illustration apparait, et au clic les images changent
-   derriere. Lignes 740 a 741, ils REFUSENT que cela devienne le comportement
-   de tous les boutons du site. Le mecanisme est donc ecrit ici, dans ce
-   fichier, et nulle part ailleurs : site.js, site.css et emblemes.js ne sont
-   pas touches.
-
-   Ce que cela fait, exactement :
-     survol ou focus d un nom  -> sa plaque se decouvre en fondu, sa legende
-                                  la nomme. C est un apercu, il se defait
-                                  quand le curseur part.
-     clic                      -> la plaque reste, elle devient celle qui est
-                                  derriere. Le nom courant passe au rouge de
-                                  la maison, comme la page courante du menu.
-
-   OBEISSANCE AU CHAPITRE 5 DU CONTRAT :
-     un seul fondu d opacite, la duree du site (--t-menu, 280 ms), la courbe
-     lineaire du site, aucune translation, aucune echelle, aucun rebond, rien
-     qui se rejoue tout seul, rien au chargement. Sous
-     prefers-reduced-motion la feuille ramene deja toute transition a 1 ms,
-     l echange devient instantane et reste juste.
-
-   ECART ASSUME, a dire a Raouf. La famille a demande une ILLUSTRATION ANIMEE.
-   Aucune illustration n existe et le dossier interdit d en improviser une dans
-   le code. Ce qui est livre est le mecanisme complet avec des plaques vides :
-   le jour ou les photographies d Alejandro Strauss arrivent, on remplace trois
-   <svg> par trois <img> et rien d autre ne bouge.
-
-   Sans JavaScript la page reste entiere : les trois noms sont des liens
-   d ancre vers les trois blocs de texte, et les trois plaques restent
-   visibles l une sous l autre.
-   ========================================================================= */
-(function(){
-  var figure = document.getElementById('plaques-rituel');
-  if(!figure) return;
-
-  var plaques  = figure.querySelectorAll('[data-plaque]');
-  var legendes = document.querySelectorAll('[data-rl]');
-  var choix    = document.querySelectorAll('[data-choix]');
-  if(!plaques.length || !choix.length) return;
-
-  /* Les plaques se superposent : la premiere tient la hauteur du bloc, les
-     autres se posent dessus. Aucune n est retiree du document, la boite ne
-     bouge donc jamais d un rituel a l autre. */
-  var i;
-  for(i = 0; i < plaques.length; i++){
-    if(i > 0){
-      plaques[i].style.position = 'absolute';
-      plaques[i].style.top = '0';
-      plaques[i].style.left = '0';
-    }
-    plaques[i].style.width = '100%';
-    plaques[i].style.opacity = (i === 0) ? '1' : '0';
-    plaques[i].style.transition = 'opacity var(--t-menu) var(--lineaire)';
-  }
-
-  var epingle = plaques[0].getAttribute('data-plaque');
-
-  function montrer(id){
-    var j;
-    for(j = 0; j < plaques.length; j++){
-      plaques[j].style.opacity = (plaques[j].getAttribute('data-plaque') === id) ? '1' : '0';
-    }
-    for(j = 0; j < legendes.length; j++){
-      legendes[j].hidden = (legendes[j].getAttribute('data-rl') !== id);
-    }
-    for(j = 0; j < choix.length; j++){
-      var lui = (choix[j].getAttribute('data-choix') === epingle);
-      /* le rouge de la maison marque le rituel retenu, exactement comme il
-         marque la page courante dans le menu. Aucune couleur en dur. */
-      choix[j].style.color = lui ? 'var(--brique)' : '';
-      choix[j].style.borderBottomColor = lui ? 'var(--brique)' : '';
-      if(lui){ choix[j].setAttribute('aria-current','true'); }
-      else   { choix[j].removeAttribute('aria-current'); }
-    }
-  }
-
-  for(i = 0; i < choix.length; i++){
-    (function(a){
-      var id = a.getAttribute('data-choix');
-      a.addEventListener('mouseenter', function(){ montrer(id); });
-      a.addEventListener('focus',      function(){ montrer(id); });
-      a.addEventListener('mouseleave', function(){ montrer(epingle); });
-      a.addEventListener('blur',       function(){ montrer(epingle); });
-      a.addEventListener('click', function(e){
-        e.preventDefault();
-        epingle = id;
-        montrer(id);
-      });
-    })(choix[i]);
-  }
-
-  montrer(epingle);
-})();
-</script>
 </body>
 </html>

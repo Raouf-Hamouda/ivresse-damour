@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/img/favicon.svg?v=20261005e" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png?v=20261005e" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261005e">
+<link rel="icon" href="assets/img/favicon.svg?v=20261023r" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png?v=20261023r" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261023r">
 <title>El Palenque. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20261005e">
-<script src="assets/js/logo.js?v=20261005e"></script>
-<script src="assets/js/sceau_anime.js?v=20261005e"></script>
-<script src="assets/js/emblemes.js?v=20261005e"></script>
-<script src="assets/js/site.js?v=20261005e"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20261023r">
+<script src="assets/js/logo.js?v=20261023r"></script>
+<script src="assets/js/sceau_anime.js?v=20261023r"></script>
+<script src="assets/js/emblemes.js?v=20261023r"></script>
+<script src="assets/js/site.js?v=20261023r"></script>
 </head>
 
 <!-- ============================================================================
@@ -21,6 +21,7 @@
      les pages de lecture reviennent a la boite, parce que c est ainsi qu une
      maison d alcool se lit.
 
+     5 OCT 2026 : deux images generees gardees par Raouf (20_IMAGES_COMME_VAGO/BERG/v3) : le tobala en ouverture, les pinas avant le four. Le chemin est refuse ("not this one").
      AUCUNE PHOTOGRAPHIE N EXISTE. Chaque bloc image est une plaque vide, un
      aplat de papier calme marque en diagonale, avec sa legende exacte et la
      mention que la photographie du Mexique est attendue. Aucun paysage n est
@@ -43,36 +44,35 @@
 
 <main class="page">
 
-  <!-- ===================================================================
-       1. ENTETE DE PAGE. Le texte de la structure du 3 aout, resserre.
-       =================================================================== -->
+  <!-- 6 oct 2026 : l'image ouvre la page, plein ecran, le titre vient dessous (Raouf). -->
+  <figure class="bloc-image bloc-image--ecran">
+    <img style="object-position:22% 70%" src="assets/img/palenque/tobala_roche_1200.jpg" srcset="assets/img/palenque/tobala_roche_1200.jpg 1200w, assets/img/palenque/tobala_roche_2400.jpg 2400w" sizes="100vw" width="2400" height="1340" alt="" data-fr-alt="Un tobalá sauvage sur une pente de pierres, d'autres tobalás épars derrière." data-es-alt="Un tobalá silvestre en una ladera pedregosa, otros tobalás dispersos detrás." data-en-alt="A wild tobalá on a stony slope, other tobalás scattered behind.">
+  </figure>
+  <p class="legende">
+    <span data-fr="Tobalá sauvage, Villa Sola de Vega"
+          data-es="Tobalá silvestre, Villa Sola de Vega"
+          data-en="Wild tobalá, Villa Sola de Vega"></span>
+    <!-- Note de chantier, retiree de la vue : photographie du Mexique attendue.
+    <span class="mention" data-fr="· Photographie du Mexique attendue"
+          data-es="· Fotografía de México pendiente"
+          data-en="· Photograph from Mexico awaited"></span> -->
+  </p>
+
   <section class="entete-page">
     <div class="boite">
       <h1 data-fr="El Palenque" data-es="El Palenque" data-en="El Palenque"></h1>
     </div>
   </section>
 
+  <!-- ===================================================================
+       1. ENTETE DE PAGE. Le texte de la structure du 3 aout, resserre.
+       =================================================================== -->
+
 
   <!-- ===================================================================
        2. IMAGE PLEINE LARGEUR. La montagne, le rio Sola, le palenque.
        Plaque vide en attendant les images du Mexique. Aucun texte dessus.
        =================================================================== -->
-  <figure class="bloc-image bloc-image--haut fondu">
-    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="1600" height="900" fill="var(--creme)"/>
-      <rect x="60" y="60" width="1480" height="780" fill="none" stroke="var(--papier)" stroke-width="3"/>
-      <path d="M60 60 L1540 840 M1540 60 L60 840" stroke="var(--papier)" stroke-width="3" fill="none"/>
-    </svg>
-  </figure>
-  <p class="legende">
-    <span data-fr="Villa Sola de Vega, le río Sola, le palenque"
-          data-es="Villa Sola de Vega, el río Sola, el palenque"
-          data-en="Villa Sola de Vega, the río Sola, the palenque"></span>
-    <!-- Note de chantier, retiree de la vue : photographie du Mexique attendue.
-    <span class="mention" data-fr="· Photographie du Mexique attendue"
-          data-es="· Fotografía de México pendiente"
-          data-en="· Photograph from Mexico awaited"></span> -->
-  </p>
 
   <!-- ===================================================================
        3. LE LIEU. Colonne de texte, emblème de la page en colonne laterale.
@@ -90,10 +90,10 @@
           <p data-fr="Le palenque est à Villa Sola de Vega, Oaxaca, dans la Sierra Madre del Sur. Les parcelles montent jusqu'à deux mille mètres. L'eau qui entre dans le mezcal est celle du río Sola."
              data-es="El palenque está en Villa Sola de Vega, Oaxaca, en la Sierra Madre del Sur. Las parcelas suben hasta dos mil metros. El agua que entra en el mezcal es la del río Sola."
              data-en="The palenque stands in Villa Sola de Vega, Oaxaca, in the Sierra Madre del Sur. The plots rise to two thousand metres. The water that goes into the mezcal is that of the río Sola."></p>
-          <p data-fr="Le village est, dans les mots de la maison, le berceau du tobalá et de la musique chilena."
+          <p data-fr="Le village est le berceau du mezcal tobalá et de la musique chilena."
              data-es="El pueblo es, en palabras de la casa, la cuna del tobalá y de la música chilena."
              data-en="The village is, in the words of the house, the cradle of the tobalá and of chilena music."></p>
-          <p data-fr="Ce qui en sort est un Mezcal Artesanal, joven, sous denominación de origen protégée. Espadín, A. angustifolia, cinquante degrés, sept cents millilitres. C'est ce que porte l'étiquette."
+          <p data-fr="Mezcal Artesanal, joven, Denominación de Origen protégée. 50 % vol., 700 ml."
              data-es="Lo que sale de ahí es un Mezcal Artesanal, joven, con denominación de origen protegida. Espadín, A. angustifolia, cincuenta grados, setecientos mililitros. Es lo que lleva la etiqueta."
              data-en="What comes out of it is a Mezcal Artesanal, joven, under protected denominación de origen. Espadín, A. angustifolia, fifty per cent, seven hundred millilitres. That is what the label carries."></p>
         </div>
@@ -106,22 +106,6 @@
        sont dues par la famille (appel du 27 juillet, ligne 110), donc
        attendues et pas inventees.
        =================================================================== -->
-  <figure class="bloc-image bloc-image--encadre fondu">
-    <svg viewBox="0 0 1600 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="1600" height="620" fill="var(--creme)"/>
-      <rect x="40" y="40" width="1520" height="540" fill="none" stroke="var(--papier)" stroke-width="3"/>
-      <path d="M40 40 L1560 580 M1560 40 L40 580" stroke="var(--papier)" stroke-width="3" fill="none"/>
-    </svg>
-  </figure>
-  <p class="legende">
-    <span data-fr="Gilberto Vásquez, maestro mezcalero"
-          data-es="Gilberto Vásquez, maestro mezcalero"
-          data-en="Gilberto Vásquez, maestro mezcalero"></span>
-    <!-- Note de chantier, retiree de la vue : photographie du Mexique attendue.
-    <span class="mention" data-fr="· Photographie du Mexique attendue"
-          data-es="· Fotografía de México pendiente"
-          data-en="· Photograph from Mexico awaited"></span> -->
-  </p>
 
   <section class="section section--filet">
     <div class="boite">
@@ -129,7 +113,7 @@
       <div class="colonne fondu">
         <h2 data-fr="Gilberto Vásquez" data-es="Gilberto Vásquez" data-en="Gilberto Vásquez"></h2>
         <!-- Ses annees de metier sont dues par la famille (appel du 27 juillet, ligne 110) : a confirmer, ne pas estimer. -->
-        <p data-fr="Le maestro mezcalero est nommé sur l'étiquette de chaque bouteille. Il est nommé ici de la même façon."
+        <p data-fr="Maestro mezcalero à Villa Sola de Vega. Son nom figure sur chaque bouteille."
            data-es="El maestro mezcalero está nombrado en la etiqueta de cada botella. Aquí está nombrado igual."
            data-en="The maestro mezcalero is named on every bottle label. He is named here in the same way."></p>
       </div>
@@ -166,27 +150,27 @@
     <div class="boite">
       <p class="kicker" data-fr="Le procédé" data-es="El proceso" data-en="The process"></p>
       <div class="colonne">
-        <h2 data-fr="Cinq stations" data-es="Cinco estaciones" data-en="Five stations"></h2>
-        <p data-fr="De la semence à l'alambic. L'embouteillage n'est pas une station : la maison ne l'a pas retenu dans son procédé."
+        <h2 data-fr="Cinq étapes" data-es="Cinco estaciones" data-en="Five stations"></h2>
+        <p data-fr="De la graine à l'alambic."
            data-es="De la semilla al alambique. El embotellado no es una estación: la casa no lo mantuvo dentro de su proceso."
            data-en="From the seed to the still. Bottling is not a station: the house did not keep it inside its process."></p>
       </div>
       <ol class="procede fondu">
         <li class="procede__e"><span class="procede__n">01</span>
           <span class="procede__t" data-fr="Siembra, la semence" data-es="Siembra" data-en="Siembra, the sowing"></span>
-          <p class="procede__d" data-fr="La maison sème. Les hijuelos, les rejets qui poussent autour de la mère, sont remis en terre."
+          <p class="procede__d" data-fr="Les graines sont semées en pépinière et les hijuelos — les rejets du pied mère — sont replantés."
                 data-es="La casa siembra. Los hijuelos, los brotes que crecen alrededor de la madre, se vuelven a plantar."
                 data-en="The house sows. The hijuelos, the offshoots that grow around the mother plant, go back into the ground."></p></li>
         <li class="procede__e"><span class="procede__n">02</span>
           <span class="procede__t" data-fr="Récolte" data-es="Cosecha" data-en="Harvest"></span>
-          <p class="procede__d" data-fr="Coupe des pencas à la machette, puis le cœur."
+          <p class="procede__d" data-fr="Les feuilles sont tranchées à la machette pour dégager le cœur de l'agave."
                 data-es="Corte de las pencas a machete, luego el corazón."
                 data-en="The pencas are cut with the machete, then the heart."></p>
           <!-- Note de chantier, retiree de la vue : age de la plante a la recolte, a confirmer par la maison.
           <p class="mention" data-fr="Âge de la plante attendu" data-es="Edad de la planta pendiente" data-en="Age of the plant awaited"></p> --></li>
         <li class="procede__e"><span class="procede__n">03</span>
           <span class="procede__t" data-fr="Four de terre" data-es="Horno de tierra" data-en="Earth oven"></span>
-          <p class="procede__d" data-fr="Les cœurs cuisent dans le four creusé dans la terre."
+          <p class="procede__d" data-fr="Les cœurs d'agave cuisent lentement dans une fosse creusée à même la terre."
                 data-es="Los corazones se cuecen en el horno abierto en la tierra."
                 data-en="The hearts cook in the oven dug into the earth."></p>
           <!-- Note de chantier, retiree de la vue : nombre de jours de cuisson, a confirmer par la maison.
@@ -203,7 +187,7 @@
                 data-en="Twice, in the copper still."></p></li>
       </ol>
       <div class="colonne">
-        <p data-fr="La station de la récolte a son jeu : la coupe des pencas de l'espadín."
+        <p data-fr="Découvrir le jeu de la récolte de l'espadín."
            data-es="La estación de la cosecha tiene su juego: el corte de las pencas del espadín."
            data-en="The harvest station has its game: the cutting of the espadín pencas."></p>
         <p><a class="lien-discret" href="campagne-espadin.html"
@@ -224,7 +208,7 @@
       <div class="affiche__mot">
         <p class="affiche__kicker" data-fr="Le maestro" data-es="El maestro" data-en="The maestro"></p>
         <h2 class="affiche__titre" data-fr="Le savoir-faire de Gilberto Vásquez" data-es="El saber hacer de Gilberto Vásquez" data-en="Gilberto Vásquez's craft"></h2>
-        <p class="affiche__ligne" data-fr="Four de terre, mouture à la tahona, fermentation en cuves de bois, double distillation au cuivre. Rien n'accélère, rien ne corrige : le lot sort quand il est prêt." data-es="Horno de tierra, molienda de tahona, fermentación en tinas de madera, doble destilación en cobre. Nada se acelera, nada se corrige: el lote sale cuando está listo." data-en="Earth oven, tahona milling, fermentation in wooden vats, double copper distillation. Nothing is rushed, nothing corrected: the lot leaves when it is ready."></p>
+        <p class="affiche__ligne" data-fr="Cuisson au four de terre, broyage à la tahona, fermentation en cuves de bois et double distillation en alambic de cuivre." data-es="Horno de tierra, molienda de tahona, fermentación en tinas de madera, doble destilación en cobre. Nada se acelera, nada se corrige: el lote sale cuando está listo." data-en="Earth oven, tahona milling, fermentation in wooden vats, double copper distillation. Nothing is rushed, nothing corrected: the lot leaves when it is ready."></p>
         <a class="b-plein affiche__b" href="acheter-tobala.html" data-fr="Voir la bouteille" data-es="Ver la botella" data-en="See the bottle"></a>
       </div>
       <figure class="affiche__objet">
@@ -244,7 +228,7 @@
       <p class="kicker" data-fr="Station 01" data-es="Estación 01" data-en="Station 01"></p>
       <div class="colonne fondu">
         <h2 data-fr="La siembra" data-es="La siembra" data-en="La siembra"></h2>
-        <p data-fr="La maison sème elle même. La plante, la semence, et l'endroit où elle est mise en terre."
+        <p data-fr="Nous cultivons nos propres agaves à Villa Sola de Vega."
            data-es="La casa siembra ella misma. La planta, la semilla, y el lugar donde se planta."
            data-en="The house sows for itself. The plant, the seed, and the place where it goes into the ground."></p>
       </div>
@@ -252,42 +236,22 @@
   </section>
 
   <figure class="bloc-image bloc-image--encadre fondu">
-    <svg viewBox="0 0 1600 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="1600" height="760" fill="var(--creme)"/>
-      <rect x="40" y="40" width="1520" height="680" fill="none" stroke="var(--papier)" stroke-width="3"/>
-      <path d="M40 40 L1560 720 M1560 40 L40 720" stroke="var(--papier)" stroke-width="3" fill="none"/>
-    </svg>
+    <img src="assets/img/palenque/pinas_horno_1200.jpg" srcset="assets/img/palenque/pinas_horno_1200.jpg 1200w, assets/img/palenque/pinas_horno_2400.jpg 2400w" sizes="100vw" width="2400" height="1018" alt="" loading="lazy" style="aspect-ratio:21/9;object-fit:cover;width:100%;height:auto" data-fr-alt="Des piñas d'espadín taillées, posées à côté du four, la fumée entre les pierres." data-es-alt="Piñas de espadín jimadas, junto al horno, el humo entre las piedras." data-en-alt="Trimmed espadín piñas beside the oven, smoke rising between the stones.">
   </figure>
   <p class="legende">
-    <span data-fr="L'agave espadín sur pied"
-          data-es="El agave espadín en pie"
-          data-en="The espadín agave standing"></span>
+    <span data-fr="Les piñas, avant le four de terre"
+          data-es="Las piñas, antes del horno de tierra"
+          data-en="The piñas, before the earth oven"></span>
     <!-- Note de chantier, retiree de la vue : photographie du Mexique attendue.
     <span class="mention" data-fr="· Photographie du Mexique attendue"
           data-es="· Fotografía de México pendiente"
           data-en="· Photograph from Mexico awaited"></span> -->
   </p>
 
-  <figure class="bloc-image bloc-image--encadre fondu">
-    <svg viewBox="0 0 1600 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="1600" height="560" fill="var(--creme)"/>
-      <rect x="40" y="40" width="1520" height="480" fill="none" stroke="var(--papier)" stroke-width="3"/>
-      <path d="M40 40 L1560 520 M1560 40 L40 520" stroke="var(--papier)" stroke-width="3" fill="none"/>
-    </svg>
-  </figure>
-  <p class="legende">
-    <span data-fr="La semence"
-          data-es="La semilla"
-          data-en="The seed"></span>
-    <!-- Note de chantier, retiree de la vue : photographie du Mexique attendue.
-    <span class="mention" data-fr="· Photographie du Mexique attendue"
-          data-es="· Fotografía de México pendiente"
-          data-en="· Photograph from Mexico awaited"></span> -->
-  </p>
 
   <section class="section">
     <div class="boite">
-      <p class="kicker" data-fr="Où elle est semée"
+      <p class="kicker" data-fr="Terroir"
          data-es="Dónde se siembra"
          data-en="Where it is sown"></p>
       <dl class="faits fondu">
@@ -316,7 +280,7 @@
        le 27 juillet, lignes 143 a 146. Elle est citee, pas reecrite.
        =================================================================== -->
   <blockquote class="citation fondu">
-    <p data-fr="On contrôle notre produit de la semence à la bouteille."
+    <p data-fr="Nous maîtrisons chaque étape, de la graine à la bouteille."
        data-es="Controlamos nuestro producto de la semilla a la botella."
        data-en="We control our product from the seed to the bottle."></p>
     <footer data-fr="La maison, 27 juillet 2026"
@@ -330,7 +294,7 @@
        =================================================================== -->
   <section class="section section--filet">
     <div class="boite">
-      <p class="kicker" data-fr="Lu sur l'étiquette" data-es="Leído en la etiqueta" data-en="Read on the label"></p>
+      <p class="kicker" data-fr="Mentions de l'étiquette" data-es="Leído en la etiqueta" data-en="Read on the label"></p>
       <h2 data-fr="Les faits" data-es="Los hechos" data-en="The facts"></h2>
       <dl class="faits faits--etiquette fondu">
         <div class="faits__l"><dt class="faits__k">Agave</dt>
@@ -355,6 +319,37 @@
        9. LA SORTIE. La preuve continue dans le registre, lot par lot.
        La maison n a pas de bouton.
        =================================================================== -->
+  <!-- ===================================================================
+       VENIR AU PALENQUE. 5 oct 2026, Raouf : ce que Real Minero offre
+       (recorridos, catas, alojamiento), en un seul bloc court. Distance :
+       94 km depuis Oaxaca de Juarez par la carretera federal 131 (Wikipedia).
+       A VALIDER PAR LA MAISON : visites et catas sur demande, adresses pour dormir.
+       =================================================================== -->
+  <section class="section section--filet" id="venir">
+    <div class="boite">
+      <p class="kicker" data-fr="Venir au palenque" data-es="Visitar el palenque" data-en="Visiting the palenque"></p>
+      <div class="colonne fondu">
+        <h2 data-fr="Nous vous attendons à Villa Sola de Vega" data-es="Los esperamos en Villa Sola de Vega" data-en="We will be waiting for you in Villa Sola de Vega"></h2>
+        <p data-fr="Le palenque se visite sur rendez-vous : découverte des parcelles d'agaves, du four de terre, de l'alambic et dégustation sur place."
+           data-es="El palenque se visita con cita. Caminamos hasta los agaves, vemos el horno de tierra y el alambique, y catamos en el palenque, donde sale el mezcal."
+           data-en="The palenque can be visited on request. We walk out to the agaves, look at the earth oven and the still, and taste at the palenque, where the mezcal comes out."></p>
+      </div>
+      <dl class="faits fondu">
+        <div class="faits__l"><dt class="faits__k" data-fr="Recorrido" data-es="Recorrido" data-en="Walk"></dt>
+          <dd class="faits__v" data-fr="Les parcelles, le four, la fermentation, l'alambic" data-es="Las parcelas, el horno, la fermentación, el alambique" data-en="The plots, the oven, the fermentation, the still"></dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="Cata" data-es="Cata" data-en="Tasting"></dt>
+          <dd class="faits__v" data-fr="Au palenque, dans la jícara" data-es="En el palenque, en jícara" data-en="At the palenque, in the jícara"></dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="Adresse" data-es="Dirección" data-en="Address"></dt>
+          <dd class="faits__v">Calle 16 de Septiembre s/n, C.P. 71417 Villa Sola de Vega, Oaxaca, México</dd></div><!-- adresse de la contre-etiquette -->
+        <div class="faits__l"><dt class="faits__k" data-fr="Route" data-es="Camino" data-en="Getting there"></dt>
+          <dd class="faits__v" data-fr="94 km depuis la ville d'Oaxaca, par la carretera federal 131" data-es="94 km desde la ciudad de Oaxaca, por la carretera federal 131" data-en="94 km from Oaxaca city, on federal highway 131"></dd></div>
+        <div class="faits__l"><dt class="faits__k" data-fr="Dormir" data-es="Dormir" data-en="Staying"></dt>
+          <dd class="faits__v" data-fr="Indiquez-nous vos dates, nous vous conseillerons pour l'hébergement au village." data-es="Díganos sus fechas y les indicamos dónde dormir en el pueblo" data-en="Tell us your dates and we will tell you where to stay in the village"></dd></div>
+      </dl>
+      <p class="fondu"><a class="b-plein affiche__b" href="contact.html" data-fr="Demander une visite" data-es="Pedir una visita" data-en="Ask for a visit"></a></p>
+    </div>
+  </section>
+
   <section class="section section--serre section--filet">
     <div class="boite centre">
       <a class="lien-discret" href="el-registro.html"
