@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/img/favicon.svg?v=20261023s" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png?v=20261023s" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261023s">
+<link rel="icon" href="assets/img/favicon.svg?v=20261023v" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png?v=20261023v" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261023v">
 <title>Paiement. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20261023s">
-<script src="assets/js/logo.js?v=20261023s"></script>
-<script src="assets/js/sceau_anime.js?v=20261023s"></script>
-<script src="assets/js/emblemes.js?v=20261023s"></script>
-<script src="assets/js/site.js?v=20261023s"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20261023v">
+<script src="assets/js/logo.js?v=20261023v"></script>
+<script src="assets/js/sceau_anime.js?v=20261023v"></script>
+<script src="assets/js/emblemes.js?v=20261023v"></script>
+<script src="assets/js/site.js?v=20261023v"></script>
 </head>
 
 <!-- DEMO : aucun paiement n'est encaisse ; le vrai prestataire (Stripe Checkout ou autre) remplacera ce formulaire -->
@@ -58,7 +58,7 @@
       </dl>
 
       <p id="recap-vide" hidden>
-        <span data-fr="Le panier est vide. " data-es="El carrito está vacío. " data-en="The bag is empty. "></span>
+        <span data-fr="Le panier est vide. " data-es="El carrito está vacío. " data-en="The cart is empty. "></span>
         <a class="lien" href="boutique.html" data-fr="Voir la boutique" data-es="Ver la tienda" data-en="See the shop"></a>
       </p>
 
@@ -86,19 +86,19 @@
         </label>
         <div class="caisse__rang">
           <label class="caisse__l" for="expiration">
-            <span class="sr" data-fr="Date d'expiration" data-es="Fecha de caducidad" data-en="Expiry date"></span>
+            <span class="sr" data-fr="Date d'expiration" data-es="Fecha de vencimiento" data-en="Expiration date"></span>
             <input id="expiration" name="expiration" type="text" inputmode="numeric" autocomplete="cc-exp" required
                    data-fr-placeholder="MM / AA *" data-es-placeholder="MM / AA *" data-en-placeholder="MM / YY *">
           </label>
           <label class="caisse__l" for="cvc">
-            <span class="sr" data-fr="Cryptogramme" data-es="Criptograma" data-en="Security code"></span>
+            <span class="sr" data-fr="Cryptogramme" data-es="Código de seguridad" data-en="Security code"></span>
             <input id="cvc" name="cvc" type="text" inputmode="numeric" autocomplete="cc-csc" required
                    data-fr-placeholder="CVC *" data-es-placeholder="CVC *" data-en-placeholder="CVC *">
           </label>
         </div>
 
         <p class="caisse__erreur" id="erreur" hidden
-           data-fr="Merci de remplir tous les champs." data-es="Complete todos los campos, por favor." data-en="Please fill in every field."></p>
+           data-fr="Merci de remplir tous les champs." data-es="Complete todos los campos, por favor." data-en="Please fill in all fields."></p>
 
         <button class="b-plein" id="payer" type="submit"
                 data-fr="Payer" data-es="Pagar" data-en="Pay"></button>
@@ -114,7 +114,7 @@
 
       <p class="mention caisse__note"
          data-fr="Vente réservée aux personnes ayant l'âge légal. Les données de la carte ne sont ni lues ni conservées par le site : le prestataire de paiement les reçoit directement."
-         data-es="Venta reservada a personas en edad legal. Los datos de la tarjeta no los lee ni los guarda el sitio: el proveedor de pago los recibe directamente."
+         data-es="Venta reservada a mayores de edad. Los datos de la tarjeta no los lee ni los guarda el sitio: el proveedor de pago los recibe directamente."
          data-en="Sale restricted to those of legal age. Card details are neither read nor stored by the site: the payment provider receives them directly."></p>
     </section>
 
@@ -156,7 +156,7 @@
     if(prix) somme += prix * q;
     html += '<div class="faits__l">' +
       '<dt class="faits__k">' +
-        '<span data-fr="' + b.fr + '" data-es="' + b.es + '" data-en="' + b.en + '"></span>' +
+        '<span data-fr="' + b.fr + '" data-es="&#x27; + b.es + &#x27;" data-en="&#x27; + b.en + &#x27;"></span>' +
         ' <span class="caisse__qte">× ' + q + '</span>' +
         (prix ? ' <span class="caisse__qte">· ' + euros(prix) + ' <span data-fr="l\'unité" data-es="la unidad" data-en="each"></span></span>' : '') +
       '</dt>' +
