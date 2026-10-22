@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/img/favicon.svg?v=20261023w" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png?v=20261023w" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261023w">
+<link rel="icon" href="assets/img/favicon.svg?v=20261023x" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png?v=20261023x" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261023x">
 <title>Boutique. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20261023w">
-<script src="assets/js/logo.js?v=20261023w"></script>
-<script src="assets/js/sceau_anime.js?v=20261023w"></script>
-<script src="assets/js/emblemes.js?v=20261023w"></script>
-<script src="assets/js/site.js?v=20261023w"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20261023x">
+<script src="assets/js/logo.js?v=20261023x"></script>
+<script src="assets/js/sceau_anime.js?v=20261023x"></script>
+<script src="assets/js/emblemes.js?v=20261023x"></script>
+<script src="assets/js/site.js?v=20261023x"></script>
 </head>
 
 <!-- ============================================================================
@@ -84,7 +84,7 @@
             <span data-fr="Quantité" data-es="Cantidad" data-en="Quantity"></span>
             <div class="qte" role="group" aria-label="Quantité"><button type="button" class="qte__b" data-moins aria-label="Moins">&minus;</button><input class="qte__v" id="qte-espadin" data-qte="espadin" type="text" inputmode="numeric" value="1" readonly><button type="button" class="qte__b" data-plus aria-label="Plus">+</button></div></div>
           <button class="b-plein" type="button" data-ajouter="espadin"
-                  data-fr="Ajouter au panier" data-es="Añadir al carrito" data-en="Add to bag"></button>
+                  data-fr="Acheter" data-es="Comprar" data-en="Buy"></button>
         </div>
         <p class="mention" data-etat="espadin" hidden>
           <span data-fr="Dans le panier :" data-es="En el carrito:" data-en="In the bag:"></span>
@@ -113,7 +113,7 @@
             <div class="qte" role="group" aria-label="Quantité"><button type="button" class="qte__b" data-moins aria-label="Moins">&minus;</button><input class="qte__v" id="qte-tobala" data-qte="tobala" type="text" inputmode="numeric" value="1" readonly><button type="button" class="qte__b" data-plus aria-label="Plus">+</button></div>
           </div>
           <button class="b-plein" type="button" data-ajouter="tobala"
-                  data-fr="Ajouter au panier" data-es="Añadir al carrito" data-en="Add to bag"></button>
+                  data-fr="Acheter" data-es="Comprar" data-en="Buy"></button>
         </div>
         <p class="mention" data-etat="tobala" hidden>
           <span data-fr="Dans le panier :" data-es="En el carrito:" data-en="In the bag:"></span>
@@ -142,7 +142,7 @@
             <div class="qte" role="group" aria-label="Quantité"><button type="button" class="qte__b" data-moins aria-label="Moins">&minus;</button><input class="qte__v" id="qte-coyote" data-qte="coyote" type="text" inputmode="numeric" value="1" readonly><button type="button" class="qte__b" data-plus aria-label="Plus">+</button></div>
           </div>
           <button class="b-plein" type="button" data-ajouter="coyote"
-                  data-fr="Ajouter au panier" data-es="Añadir al carrito" data-en="Add to bag"></button>
+                  data-fr="Acheter" data-es="Comprar" data-en="Buy"></button>
         </div>
         <p class="mention" data-etat="coyote" hidden>
           <span data-fr="Dans le panier :" data-es="En el carrito:" data-en="In the bag:"></span>
@@ -298,6 +298,7 @@ siteChrome.init();
       var q = s ? (parseInt(s.value, 10) || 1) : 1;
       panier.ajouter(id, q);
       etat();
+      window.location.href = 'commande.html';   /* 22 oct 2026, Raouf : achat direct, pas de detour par le panier */
     });
   }
   etat();
