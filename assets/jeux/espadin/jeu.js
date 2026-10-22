@@ -439,7 +439,7 @@ function couper(i, bande, dir, muet) {
   { const q = f.pointe; p[q * 3] = C[0] + nc[0] * 0.003; p[q * 3 + 1] = C[1] + nc[1] * 0.003; p[q * 3 + 2] = C[2] + nc[2] * 0.003; l[q * 3] = 0; d[q * 3 + 1] = 0; d[q * 3 + 2] = 1; n[q * 3] = nc[0]; n[q * 3 + 1] = nc[1]; n[q * 3 + 2] = nc[2]; }
   for (let q = f.d0; q < f.vFin; q++) { p[q * 3] = C[0]; p[q * 3 + 1] = C[1]; p[q * 3 + 2] = C[2]; }
   aPos.needsUpdate = aLuv.needsUpdate = aDat.needsUpdate = aNor.needsUpdate = true; rendu.shadowMap.needsUpdate = true;
-  f.coupee = bande; J.patas[i] = bande; J.coupees++; uSur.value = -1; majUI(); reveil(3);
+  f.coupee = bande; J.patas[i] = bande; J.coupees++; tDerniereCoupe = performance.now(); if (typeof gesteCacher === 'function') gesteCacher(); uSur.value = -1; majUI(); reveil(3);
   if (J.coupees >= N) { J.acte = 'barreta'; J.gel = 0.1; dire(); UI.titre.textContent = 'La barreta'; UI.sous.textContent = 'Tirez vers le haut pour la sortir de terre.'; UI.aide.textContent = 'Tirez la barreta vers le haut'; poserBarreta(); }
   return true;
 }
@@ -486,10 +486,10 @@ function viser(x1, y1, x2, y2) { let best = null;
   for (let i = 0; i < N; i++) { const f = PL.pencas[i]; if (f.coupee >= 0) continue; let A = ecran(f.epine[0]);
     for (let s = 1; s < f.epine.length; s++) { const B = ecran(f.epine[s]); if (A[2] < 1 && B[2] < 1) { const rx = B[0] - A[0], ry = B[1] - A[1], sx = x2 - x1, sy = y2 - y1, den = rx * sy - ry * sx;
         if (Math.abs(den) > 1e-6) { const t = ((x1 - A[0]) * sy - (y1 - A[1]) * sx) / den, w = ((x1 - A[0]) * ry - (y1 - A[1]) * rx) / den;
-          if (t >= 0 && t <= 1 && w >= 0 && w <= 1) { const z = A[2] + (B[2] - A[2]) * t, u = f.epine[s - 1][3] + (f.epine[s][3] - f.epine[s - 1][3]) * t; if (!best || z < best.z) best = { i, z, u }; } } }
+          if (t >= -0.08 && t <= 1.08 && w >= -0.08 && w <= 1.08) { const z = A[2] + (B[2] - A[2]) * t, u = f.epine[s - 1][3] + (f.epine[s][3] - f.epine[s - 1][3]) * t; if (!best || z < best.z) best = { i, z, u }; } } }
       A = B; } }
   return best; }
-function survol(x, y) { let best = -1, bd = 40; if (J.acte === 'jima') for (let i = 0; i < N; i++) { const f = PL.pencas[i]; if (f.coupee >= 0) continue; let A = ecran(f.epine[0]);
+function survol(x, y) { let best = -1, bd = 64; if (J.acte === 'jima') for (let i = 0; i < N; i++) { const f = PL.pencas[i]; if (f.coupee >= 0) continue; let A = ecran(f.epine[0]);
     for (let s = 1; s < f.epine.length; s++) { const B = ecran(f.epine[s]), dx = B[0] - A[0], dy = B[1] - A[1], t = clamp(((x - A[0]) * dx + (y - A[1]) * dy) / (dx * dx + dy * dy || 1), 0, 1), dd = Math.hypot(x - A[0] - dx * t, y - A[1] - dy * t) + A[2] * 8; if (dd < bd) { bd = dd; best = i; } A = B; } }
   if (uSur.value !== best) { uSur.value = best; } }
 el.addEventListener('pointerdown', (e) => { el.setPointerCapture(e.pointerId); trace = { pts: [[e.clientX, e.clientY]], fait: false, t0: performance.now() }; souris.actif = true; reveil(2); });
@@ -499,9 +499,22 @@ el.addEventListener('pointermove', (e) => { souris.vx = e.clientX - souris.x; so
   const n = trace.pts.length, a = trace.pts[Math.max(0, n - 5)], b = trace.pts[n - 1];
   if (J.acte === 'jima' && !trace.fait && J.gel <= 0 && Math.hypot(b[0] - a[0], b[1] - a[1]) > 12) { const c = viser(a[0], a[1], b[0], b[1]);
     if (c) { trace.fait = true; souris.coup = 1; { const im = document.getElementById('impact'); im.style.left = b[0] + 'px'; im.style.top = b[1] + 'px'; im.classList.remove('frappe'); void im.offsetWidth; im.classList.add('frappe'); const tk = document.querySelector('.ticket'); tk.classList.remove('frappe'); void tk.offsetWidth; tk.classList.add('frappe'); } const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1, dr = new THREE.Vector3(dx / l, -dy / l, 0).applyQuaternion(cam.quaternion);
-      const bande = c.u < 0.16 ? 0 : c.u < 0.32 ? 1 : 2; if (couper(c.i, bande, [dr.x, dr.z])) for (const j of voisines(c.i, Math.random() < 0.7 ? 2 : 1)) couper(j, bande, [dr.x, dr.z], true); } }
+      const bande = c.u < 0.16 ? 0 : c.u < 0.32 ? 1 : 2; if (couper(c.i, bande, [dr.x, dr.z])) for (const j of voisines(c.i, 3)) couper(j, bande, [dr.x, dr.z], true);   /* 22 oct, Raouf : plus facile et plus rapide, 4 pencas par coup */ } }
   if (J.acte === 'barreta' && n > 1) { const dy = trace.pts[n - 2][1] - b[1]; if (dy > 0) { J.levier = Math.min(1, J.levier + dy / (innerHeight * 0.8)); dire(); J.secousse = Math.min(1, J.secousse + dy * 0.001);
       if (J.levier >= 1) finir(); } } });
+
+/* 22 oct 2026 : les signes. Le geste de la coa au depart et des qu'on reste 5 s sans couper ; la fleche vers le haut pour la barreta. */
+const GESTE = document.getElementById('geste'); let tDerniereCoupe = performance.now(), gesteVu = false;
+function gesteMontrer(haut) { if (!GESTE) return; GESTE.classList.toggle('haut', !!haut); GESTE.classList.add('vu'); gesteVu = true; }
+function gesteCacher() { if (!GESTE) return; GESTE.classList.remove('vu'); gesteVu = false; }
+setInterval(() => { if (J.acte === 'jima') { if (performance.now() - tDerniereCoupe > 5000 && !gesteVu) gesteMontrer(false); }
+  else if (J.acte === 'barreta') { if (J.levier <= 0 && !gesteVu) gesteMontrer(true); else if (J.levier > 0.05 && gesteVu) gesteCacher(); }
+  else gesteCacher(); }, 500);
+setTimeout(() => { if (J.coupees === 0) gesteMontrer(false); }, 1200);
+const PLEIN = document.getElementById('plein');
+if (PLEIN) { PLEIN.addEventListener('click', () => { const d = document; const el = d.documentElement;
+  if (d.fullscreenElement || d.webkitFullscreenElement) { (d.exitFullscreen || d.webkitExitFullscreen).call(d); }
+  else { const f = el.requestFullscreen || el.webkitRequestFullscreen; if (f) f.call(el).catch?.(() => {}); } }); }
 function finir() { if (J.acte !== 'barreta') return; J.acte = 'fini'; dire({ fini: 1 }); { let code = 'JIMA10'; try { const R = parent.siteChrome && parent.siteChrome.remise; if (R) { code = R.donner('espadin') || code; R.poser(code); } } catch (e) {}
     document.getElementById('codeval').textContent = code; if (!SITE) document.getElementById('codelien').remove(); setTimeout(() => document.getElementById('ticketcode').classList.add('vu'), 1400); } J.tFin = 0; UI.titre.textContent = 'Arrachée.'; UI.sous.textContent = 'La piña part au palenque.'; UI.aide.textContent = 'Piña prête pour le palenque'; reveil(6); }
 const finTrait = () => { trace = null; souris.actif = false; }; el.addEventListener('pointerup', finTrait); el.addEventListener('pointercancel', finTrait);

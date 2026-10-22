@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/img/favicon.svg?v=20261023v" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon-32.png?v=20261023v" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261023v">
+<link rel="icon" href="assets/img/favicon.svg?v=20261023w" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png?v=20261023w" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png?v=20261023w">
 <title>La Botella. Ivresse d'Amour, Toloache Legitimo</title>
-<link rel="stylesheet" href="assets/css/site.css?v=20261023v">
-<script src="assets/js/logo.js?v=20261023v"></script>
-<script src="assets/js/sceau_anime.js?v=20261023v"></script>
-<script src="assets/js/emblemes.js?v=20261023v"></script>
-<script src="assets/js/site.js?v=20261023v"></script>
+<link rel="stylesheet" href="assets/css/site.css?v=20261023w">
+<script src="assets/js/logo.js?v=20261023w"></script>
+<script src="assets/js/sceau_anime.js?v=20261023w"></script>
+<script src="assets/js/emblemes.js?v=20261023w"></script>
+<script src="assets/js/site.js?v=20261023w"></script>
 </head>
 
 <body data-page="botella"
@@ -332,6 +332,25 @@
 })();
 </script>
 <script>siteChrome.init();</script>
+<script>
+/* 22 oct 2026, Raouf : "after the animation is finished, after 2 sec, the part with the logo goes up". Le sceau joue 3,1 s,
+   puis deux secondes, puis la page glisse d'elle-meme jusqu'a la bouteille. Une fois par session, et seulement si
+   personne n'a encore touche la page (le moindre geste annule). */
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  try{ if(sessionStorage.getItem('ida.accueil.monte') === 'oui') return; }catch(e){}
+  if(window.scrollY > 10) return;
+  var cible = document.querySelector('.heros-vente'); if(!cible) return;
+  var annule = false, fin = function(){ annule = true; };
+  ['wheel','touchstart','pointerdown','keydown','scroll'].forEach(function(ev){ window.addEventListener(ev, fin, { passive:true, once:true }); });
+  var attente = (document.documentElement.classList.contains('porte-ouverte') ? 0 : 0) + 3100 + 2000;
+  setTimeout(function(){
+    if(annule || window.scrollY > 10 || document.documentElement.classList.contains('porte-ouverte')) return;
+    try{ sessionStorage.setItem('ida.accueil.monte','oui'); }catch(e){}
+    window.scrollTo({ top: cible.getBoundingClientRect().top + window.scrollY, behavior:'smooth' });
+  }, attente);
+})();
+</script>
 <script>
 /* 22 oct 2026. Le champ du jeu : trois rangs d'emblemes, deux montagnes, parallaxe, une penca qui tombe. */
 (function(){

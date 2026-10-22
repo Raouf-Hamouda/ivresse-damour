@@ -102,6 +102,22 @@
   #ticketcode a{display:inline-block;margin-top:10px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--rouge);text-decoration:none;border-bottom:1px solid currentColor;pointer-events:auto}
   #ticketcode.vu{pointer-events:auto}
   #barres i{flex:0 0 0}
+
+  /* 22 oct 2026, Raouf : signes visuels (ou glisser), rappel apres 5 s sans coupe, fleche pour sortir la pina, plein ecran a gauche */
+  #geste{position:fixed;left:50%;top:50%;z-index:18;width:min(46vw,260px);height:120px;margin:-60px 0 0 calc(min(46vw,260px) / -2);pointer-events:none;opacity:0;transition:opacity .4s}
+  #geste.vu{opacity:1}
+  #geste .trait{position:absolute;left:0;top:50%;width:100%;height:2px;background:linear-gradient(90deg,transparent,rgba(255,236,196,.9),transparent);transform:rotate(-14deg);transform-origin:50% 50%}
+  #geste .main{position:absolute;left:0;top:50%;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;background:rgba(255,236,196,.95);box-shadow:0 0 0 6px rgba(255,236,196,.22),0 6px 18px rgba(0,0,0,.25);animation:geste-coa 1.5s cubic-bezier(.4,0,.2,1) infinite}
+  @keyframes geste-coa{0%{transform:translate(0,22px) scale(.85);opacity:0}15%{opacity:1}70%{transform:translate(min(46vw,260px),-34px) scale(1);opacity:1}100%{transform:translate(min(46vw,260px),-34px) scale(.85);opacity:0}}
+  #geste.haut .trait{display:none}
+  #geste.haut .main{left:50%;animation:geste-barreta 1.3s cubic-bezier(.4,0,.2,1) infinite}
+  @keyframes geste-barreta{0%{transform:translate(0,60px);opacity:0}20%{opacity:1}80%{transform:translate(0,-70px);opacity:1}100%{transform:translate(0,-80px);opacity:0}}
+  #geste .fleche{display:none;position:absolute;left:50%;top:-10px;width:0;height:0;margin-left:-14px;border:14px solid transparent;border-bottom:22px solid rgba(255,236,196,.95);border-top:0}
+  #geste.haut .fleche{display:block;animation:fleche-haut 1.3s ease-in-out infinite}
+  @keyframes fleche-haut{0%,100%{transform:translateY(8px);opacity:.5}50%{transform:translateY(-8px);opacity:1}}
+  #plein{position:fixed;left:16px;bottom:16px;z-index:21;width:42px;height:42px;border-radius:50%;border:1px solid rgba(239,204,149,.3);background:rgba(24,19,14,.55);color:rgba(255,242,217,.9);cursor:pointer;display:grid;place-items:center;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+  #plein svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  @media (max-width:760px){ #plein{left:10px;bottom:10px;width:38px;height:38px} }
 </style></head>
 <body>
 <div id="scene"></div>
@@ -119,6 +135,8 @@
   </div>
 </div>
 
+<div id="geste" aria-hidden="true"><span class="trait"></span><span class="fleche"></span><span class="main"></span></div>
+<button id="plein" type="button" aria-label="Plein écran"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
 <p id="aide">Glissez la coa en travers des pencas</p>
 
 <div id="ticketcode"><div class="lab">Votre code · 10 % sur l’Espadín</div><div id="codeval"></div><a id="codelien" href="../../../acheter-espadin.html" target="_top">Acheter l’Espadín</a></div>
@@ -127,5 +145,5 @@
   <p>On affûte.</p>
   <div class="barre"><i></i></div>
 </div>
-<script type="module" src="jeu.js"></script>
+<script type="module" src="jeu.js?v=20261023w"></script>
 </body></html>

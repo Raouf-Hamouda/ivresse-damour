@@ -3762,3 +3762,23 @@ body[data-page="historia"] .ecran__titre{ color:var(--papier); }
 .mode-texte__b{ background:var(--papier); color:var(--encre); border:0; border-radius:var(--rond); padding:6px 12px; font:inherit; font-size:12px; cursor:pointer; }
 .mode-texte__b:disabled{ opacity:.45; cursor:default; }
 .mode-texte__b--second{ background:transparent; color:var(--papier); border:1px solid rgba(254,249,243,.4); }
+
+/* 22 oct 2026 : la commande directe (coordonnees + adresse de livraison) */
+.caisse__kicker2{ margin:calc(var(--u)*3) 0 0; }
+.caisse__case{ cursor:pointer; }
+.caisse__case input{ width:18px; height:18px; margin:0; accent-color:var(--encre); }
+#livraison{ display:grid; gap:calc(var(--u)*2); }
+.caisse__f input.est-vide{ border-color:var(--brique); }
+
+/* 22 oct 2026, Raouf : au telephone, un defilement lateral faisait apparaitre du blanc : rien ne deborde plus. */
+html, body{ overflow-x:clip; }
+body{ overscroll-behavior-x:none; }
+
+/* 22 oct 2026, Raouf : El Ritual, les six cocktails glissent de cote au telephone (scroll-snap), une carte a la fois. */
+@media (max-width:760px){
+  #cocktails .verres{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; gap:calc(var(--u)*3);
+    margin-left:calc(var(--marge)*-1); margin-right:calc(var(--marge)*-1); padding:0 var(--marge); }
+  #cocktails .verres::-webkit-scrollbar{ display:none; }
+  #cocktails .verres__i{ flex:0 0 78vw; scroll-snap-align:start; }
+  #cocktails .verres__i--bas{ margin-top:0; }
+}
